@@ -1,0 +1,88 @@
+@import '../../styles/constants';
+
+.filter {
+    margin-bottom: 30px;
+
+    &__header {
+        margin-bottom: 9px;
+
+        &-name {
+            color: $text-primary;
+            font-family: $font-main;
+            font-size: 16px;
+            text-transform: capitalize;
+            margin-right: 6px;
+        }
+
+        &__range {
+            width: 70px;
+            height: 22px;
+            border: 1px solid $secondary;
+            border-radius: 11px;
+
+            &-numbers {
+                width: 48px;
+                color: $secondary;
+                font-family: $font-other;
+                font-size: 12px;
+                line-height: 22px;
+                text-align: center;
+            }
+
+            &-close {
+                height: 22px;
+                cursor: pointer;
+            }
+        }
+
+        &__tooltip {
+            position: relative;
+
+            &-container {
+                width: 200px;
+                min-height: 115px;
+                height: auto;
+                position: absolute;
+                top: -5px;
+                left: 40px;
+                border-radius: 5px;
+                background-color: $primary;
+                z-index: 10;
+                padding: 15px;
+            }
+
+            &-text {
+                color: white;
+                font-family: $font-other;
+                font-size: 12px;
+                line-height: 17px;
+                text-align: center;
+            }
+        }
+    }
+    .rc-slider {
+        padding: 0;
+        height: 38px;
+        &-rail {
+            height: 38px;
+            background-color: transparent;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        &-track {
+            height: 38px;
+            background-color: transparent;
+        }
+        &-step {
+            height: 38px;
+        }
+        .rc-slider-handle {
+            width: 4px;
+            height: 38px;
+            background-color: $secondary;
+            border: none;
+            border-radius: 0;
+            margin: 0;
+        }
+    }
+}

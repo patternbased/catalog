@@ -1,0 +1,68 @@
+extends:
+    - eslint:recommended
+    - plugin:import/errors
+    - plugin:import/warnings
+    - plugin:react/recommended
+
+plugins:
+    - import
+    - babel
+    - require-jsdoc-except
+    - react-hooks
+
+rules:
+    # Disabled rules
+    comma-dangle: off
+    arrow-parens: off
+    space-before-function-paren: off
+    object-curly-spacing: off
+    padded-blocks: off
+    require-jsdoc: off
+    no-invalid-this: off
+
+    # Warning rules
+    no-console: [1, { allow: ['warn', 'error'] }]
+    camelcase: [1, { ignoreDestructuring: true }]
+    # quotes: [1, 'single']
+
+    # Enabled rules
+    babel/no-invalid-this: 2
+    curly: [2, 'all']
+    indent: [2, 4, { SwitchCase: 1, ignoredNodes: ['JSXElement *'] }]
+    space-infix-ops: 2
+    prefer-template: 2
+    valid-jsdoc: [2, { prefer: { return: 'returns' }, requireReturn: false, requireReturnDescription: false }]
+    max-len: [2, { code: 130, tabWidth: 2, ignoreUrls: true, ignoreStrings: true }]
+    max-lines-per-function: [2, 120]
+    max-lines: [2, { max: 600, skipComments: true, skipBlankLines: true }]
+    require-jsdoc-except/require-jsdoc:
+        [
+            'error',
+            {
+                require: { FunctionDeclaration: true, MethodDefinition: true, FunctionExpression: true },
+                ignore: ['constructor', 'componentDidMount', 'componentDidUpdate', 'componentWillUnmount', 'render'],
+            },
+        ]
+    react-hooks/rules-of-hooks: error
+
+settings:
+    import/resolver: webpack
+
+parser: babel-eslint
+parserOptions:
+    ecmaVersion: 8
+
+env:
+    browser: true
+    node: true
+
+globals:
+    Promise: true
+    describe: true
+    beforeAll: true
+    afterAll: true
+    it: true
+    expect: true
+    jest: true
+    afterEach: true
+    beforeEach: true

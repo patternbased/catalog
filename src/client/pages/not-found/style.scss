@@ -1,0 +1,27 @@
+@import '../../styles/constants.scss';
+
+.not-found-page {
+    display: flex;
+    min-height: 100vh;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: #f8f8f8;
+
+    &__content {
+        padding: 40px;
+        border: 1px solid #ddd;
+        background-color: #fff;
+    }
+
+    &__header {
+        font-size: 140px;
+        margin: 0;
+        font-family: $font-alt;
+    }
+
+    &__sub-header {
+        font-weight: 300;
+        font-size: 32px;
+    }
+}

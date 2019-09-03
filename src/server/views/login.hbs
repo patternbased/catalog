@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Login</title>
+    <meta name="viewport"
+        content="width=device-width, minimum-scale=1, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta name="robots" content="noindex, nofollow">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700&display=swap" rel="stylesheet" />
+    <style type="text/css">
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url("/assets/images/login-background.jpg");
+            background-size: cover;
+            background-color: #666;
+        }
+
+        * {
+            font-family: 'Open Sans', 'Helvetica Neue', Arial, sans-serif;
+            box-sizing: border-box;
+            font-weight: 300;
+        }
+
+        .login {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .login form {
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            background-color: rgba(255, 255, 255, .8);
+            padding: 40px;
+            box-shadow: rgba(0, 0, 0, .5) 1px 4px 5px;
+            border-radius: 2px;
+        }
+
+        .login input[type=text],
+        .login input[type=password] {
+            width: 100%;
+            margin-bottom: 15px;
+            background-color: #f0f0f0;
+            border: 0;
+            padding: 15px;
+            border: 1px solid #f0f0f0;
+            font-size: 16px;
+        }
+
+        .login input[type=text]:focus,
+        .login input[type=password]:focus {
+            background-color: white;
+            outline: none;
+            border-color: transparent;
+            box-shadow: rgba(0, 0, 0, .1) 1px 1px 3px;
+        }
+
+        .login button {
+            padding: 15px 0;
+            width: 100%;
+            cursor: pointer;
+            text-transform: uppercase;
+            outline: none;
+            border: none;
+            background-color: #3f77d9;
+            color: #fff;
+            letter-spacing: 1px;
+            font-weight: 500;
+        }
+
+        .error,
+        .info {
+            background-color: #d92e2e;
+            color: white;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-size: 12px;
+            text-align: left;
+        }
+
+        .info {
+            background-color: #7aae54;
+        }
+    </style>
+</head>
+
+<body class="login-page">
+    <div class="login">
+        <form method="post" action="">
+            {{#if error}}
+            <div class="error">{{ error }}</div>
+            {{/if}}
+            {{#if info}}
+            <div class="info">{{ info }}</div>
+            {{/if}}
+            <input type="hidden" id="username" name="username" value="admin">
+            <div>
+                <input type="password" placeholder="Password" id="password" name="password">
+            </div>
+            <div>
+                <button class="login-button" type="submit">Login</button>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

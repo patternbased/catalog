@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+        "target": "esnext",
+        "baseUrl": "./",
+        "module": "commonjs",
+        "allowSyntheticDefaultImports": true,
+        "jsx": "react",
+        "paths": {
+            "actions/*": ["src/client/actions/*"],
+            "components/*": ["src/client/components/*"],
+            "pages/*": ["src/client/pages/*"],
+            "reducers/*": ["src/client/reducers/*"],
+            "store/*": ["src/client/store/*"],
+            "selectors/*": ["src/client/selectors/*"],
+            "selectors": ["src/client/selectors"],
+            "utils/*": ["src/client/utils/*"],
+            "hooks/*": ["src/client/hooks/*"]
+        }
+    },
+    "exclude": ["node_modules", "dist"]
+}

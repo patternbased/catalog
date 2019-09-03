@@ -1,0 +1,61 @@
+@import '../../styles/constants';
+
+.header {
+    position: fixed;
+    height: 100px;
+    width: 100%;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+    padding: 12px 50px;
+    background: $background;
+    z-index: 999;
+
+    &--small {
+        height: 60px;
+    }
+
+    &__buttons {
+        &-icon {
+            width: 36px;
+            height: 36px;
+            margin-right: 30px;
+            cursor: pointer;
+        }
+    }
+
+    &__logo {
+        cursor: pointer;
+
+        &-icon {
+            width: 48px;
+            height: 48px;
+            margin-right: 12px;
+
+            &--small {
+                width: 36px;
+                height: 36px;
+            }
+        }
+
+        &__text {
+            &-main {
+                font-size: 26px;
+                letter-spacing: 1.5px;
+                margin-bottom: 7px;
+
+                &--colored {
+                    color: #3d91c0;
+                }
+            }
+
+            &-secondary {
+                color: #808080;
+                font-family: $font-alt;
+                font-size: 18px;
+                font-weight: 600;
+                letter-spacing: 2.9px;
+                line-height: 26px;
+                text-transform: uppercase;
+            }
+        }
+    }
+}

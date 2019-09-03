@@ -1,0 +1,107 @@
+@import './constants.scss';
+
+html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    background-color: $background;
+    -ms-overflow-x: hidden;
+}
+
+* {
+    font-family: $font-main;
+    line-height: 1.2;
+}
+
+h1,
+h2,
+h3,
+h4 {
+    font-family: $font-alt;
+    margin: 0;
+}
+
+p {
+    font-family: $font-main;
+    margin: 0;
+}
+
+main {
+    display: block;
+    margin: 0 auto;
+}
+
+*:focus {
+    outline: none;
+}
+
+::-ms-clear {
+    display: none;
+}
+
+.align {
+    &--left {
+        text-align: left;
+    }
+
+    &--right {
+        text-align: right;
+    }
+
+    &--center {
+        text-align: center;
+    }
+}
+
+.flex {
+    display: flex;
+
+    &--space-between {
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+.margin {
+    &--top {
+        margin-top: 10px;
+    }
+
+    &--bottom {
+        margin-right: 10px;
+    }
+
+    &--left {
+        margin-right: 10px;
+    }
+
+    &--right {
+        margin-right: 10px;
+    }
+}
+
+.hide {
+    display: none;
+}
+
+.info-tooltip {
+    cursor: pointer;
+    width: 15px;
+    height: 15px;
+    margin: 0;
+    padding: 0;
+    background-color: $text-primary;
+    border-radius: 50%;
+    color: white;
+    font-size: 10px;
+    vertical-align: middle;
+    line-height: 15px;
+    text-align: center;
+    font-weight: bold;
+
+    &--active {
+        background-color: $secondary;
+    }
+}

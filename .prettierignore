@@ -1,0 +1,8 @@
+package.json
+.env*
+.prettierignore
+Procfile
+*.hbs
+*.otf
+*.png
+*.svg
