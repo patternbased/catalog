@@ -1,7 +1,8 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, memo } from 'react';
 import { Range } from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
 
 import { FILTERS_BACKGROUNDS, FILTERS_DESCRIPTIONS } from 'utils/constants';
 
@@ -9,12 +10,15 @@ import '../style.scss';
 
 /**
  * Left side panel component
+ * @param {String} name the name of the filter
+ * @param {Boolean} isOpened boolean to determine if the range slider is displayed or toggled
  * @returns {React.Component}
  */
-function BasicFilter({ name }) {
+function BasicFilter({ name, isOpened }) {
     const [range, setRange] = useState([1, 10]);
     const [changed, setChanged] = useState(false);
     const [openedTooltip, setOpenedTooltip] = useState(false);
+    const [opened, setOpened] = useState(isOpened);
 
     const onRangeChange = value => {
         setRange(value);
@@ -56,7 +60,7 @@ function BasicFilter({ name }) {
                         )}
                     </div>
                 </div>
-                {changed > 0 && (
+                {changed && (
                     <div className="filter__header__range flex flex--space-between">
                         <p className="filter__header__range-numbers">
                             {range[0]} - {range[1]}
@@ -68,18 +72,34 @@ function BasicFilter({ name }) {
                         />
                     </div>
                 )}
+                {!changed && (
+                    <div className="filter__header__toggle flex flex--space-between" onClick={() => setOpened(!opened)}>
+                        <p className="filter__header__toggle-symbol">{opened ? '-' : '+'}</p>
+                    </div>
+                )}
             </div>
-            <Range
-                min={1}
-                max={10}
-                onChange={onRangeChange}
-                value={range}
-                railStyle={{ backgroundImage: `url(${FILTERS_BACKGROUNDS[name]}` }}
-            />
+            {opened && (
+                <Range
+                    min={1}
+                    max={10}
+                    onChange={onRangeChange}
+                    value={range}
+                    railStyle={{ backgroundImage: `url(${FILTERS_BACKGROUNDS[name]}` }}
+                />
+            )}
         </div>
     );
 }
 
 BasicFilter.displayName = 'BasicFilter';
 
-export default BasicFilter;
+BasicFilter.propTypes = {
+    name: PropTypes.string.isRequired,
+    isOpened: PropTypes.bool,
+};
+
+BasicFilter.defaultProps = {
+    isOpened: false,
+};
+
+export default memo(BasicFilter);
