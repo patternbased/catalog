@@ -4,12 +4,14 @@ import 'rc-slider/assets/index.css';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 
+import Tooltip from 'components/filters/tooltip';
+
 import { FILTERS_BACKGROUNDS, FILTERS_DESCRIPTIONS } from 'utils/constants';
 
 import '../style.scss';
 
 /**
- * Left side panel component
+ * Basic Filter component
  * @param {String} name the name of the filter
  * @param {Boolean} isOpened boolean to determine if the range slider is displayed or toggled
  * @param {Array} values values of selected filters; default [1, 10]
@@ -32,27 +34,28 @@ function BasicFilter({ name, isOpened, values, onRangeChange, onFilterCancel }) 
     const openedForValues = isOpened || !isInitial;
 
     const [opened, setOpened] = useState(openedForValues);
+    const [tooltipPosition, setTooltipPosition] = useState([]);
+
+    const placeTooltip = e => {
+        setTooltipPosition([e.clientX + 20, e.clientY - 10]);
+        setOpenedTooltip(true);
+    };
 
     return (
         <div className="filter">
             <div className="filter__header flex flex--space-between">
                 <div className="flex flex--space-between">
                     <p className="filter__header-name">{name}</p>
-                    <div className="filter__header__tooltip">
-                        <div onMouseOut={() => setOpenedTooltip(false)}>
-                            <div className={infoTooltipClass} onMouseOver={() => setOpenedTooltip(true)}>
-                                ?
+                    {FILTERS_DESCRIPTIONS[name].length > 0 && (
+                        <div className="filter__header__tooltip">
+                            <div onMouseOut={() => setOpenedTooltip(false)}>
+                                <div className={infoTooltipClass} onMouseOver={e => placeTooltip(e)}>
+                                    ?
+                                </div>
                             </div>
+                            {openedTooltip && <Tooltip text={FILTERS_DESCRIPTIONS[name]} position={tooltipPosition} />}
                         </div>
-                        {openedTooltip && (
-                            <div className="filter__header__tooltip-container">
-                                <p
-                                    className="filter__header__tooltip-text"
-                                    dangerouslySetInnerHTML={{ __html: FILTERS_DESCRIPTIONS[name] }}
-                                ></p>
-                            </div>
-                        )}
-                    </div>
+                    )}
                 </div>
                 {!isInitial && (
                     <div className="filter__header__range flex flex--space-between">

@@ -30,6 +30,9 @@ export const FILTERS_DESCRIPTIONS = {
         '<strong>Mood</strong> refers to the emotional content. Around zero you would find terror and extreme uncomfort. Lots of more complex emotional content like nostalgia and bittersweet around 3-6. While 7 and above would be uplifting and happy.',
     grid:
         'Lower numbers would correspond to rigid mechanical pieces, straightforward electronic beat-based music. Higher numbers would correspond to looser, more organic human feeling live music.',
+    duration: '',
+    flow: '',
+    instruments: '',
 };
 
 export const FLOW_SHAPES = [

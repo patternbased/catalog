@@ -3,12 +3,14 @@ import React, { useState, useMemo, memo, useEffect } from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 
+import Tooltip from 'components/filters/tooltip';
+
 import { FILTERS_DESCRIPTIONS, INSTRUMENTS } from 'utils/constants';
 
 import '../style.scss';
 
 /**
- * Left side panel component
+ * Instruments filter component
  * @param {Boolean} isOpened boolean to determine if the input is displayed or toggled
  * @param {Array} values values of selected filters; default []
  * @param {Function} onSelectInstrument action to call when an instrument is selected
@@ -35,6 +37,12 @@ function InstrumentsFilter({ isOpened, values, onSelectInstrument, onCancelInstr
     const openedForValues = isOpened || !isInitial;
 
     const [opened, setOpened] = useState(openedForValues);
+    const [tooltipPosition, setTooltipPosition] = useState([]);
+
+    const placeTooltip = e => {
+        setTooltipPosition([e.clientX + 20, e.clientY - 10]);
+        setOpenedTooltip(true);
+    };
 
     useEffect(() => {
         if (instrument !== '') {
@@ -57,21 +65,18 @@ function InstrumentsFilter({ isOpened, values, onSelectInstrument, onCancelInstr
             <div className="filter__header flex flex--space-between">
                 <div className="flex flex--space-between">
                     <p className="filter__header-name">Instruments</p>
-                    <div className="filter__header__tooltip">
-                        <div onMouseOut={() => setOpenedTooltip(false)}>
-                            <div className={infoTooltipClass} onMouseOver={() => setOpenedTooltip(true)}>
-                                ?
+                    {FILTERS_DESCRIPTIONS['instruments'].length > 0 && (
+                        <div className="filter__header__tooltip">
+                            <div onMouseOut={() => setOpenedTooltip(false)}>
+                                <div className={infoTooltipClass} onMouseOver={e => placeTooltip(e)}>
+                                    ?
+                                </div>
                             </div>
+                            {openedTooltip && (
+                                <Tooltip text={FILTERS_DESCRIPTIONS['instruments']} position={tooltipPosition} />
+                            )}
                         </div>
-                        {openedTooltip && (
-                            <div className="filter__header__tooltip-container">
-                                <p
-                                    className="filter__header__tooltip-text"
-                                    dangerouslySetInnerHTML={{ __html: FILTERS_DESCRIPTIONS['flow'] }}
-                                ></p>
-                            </div>
-                        )}
-                    </div>
+                    )}
                 </div>
                 {values.length > 0 && (
                     <div

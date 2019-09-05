@@ -82,9 +82,7 @@ function LeftPanel({ visible, style }) {
     );
 
     const applyPreset = filters => {
-        console.log('one');
         Object.keys(filters).forEach(filter => {
-            console.log('two');
             dispatch(setFilter(filter, filters[filter]));
         });
     };
@@ -104,54 +102,56 @@ function LeftPanel({ visible, style }) {
     }, [filtersValues]);
 
     return (
-        <div className={panelClass} style={style}>
-            <div className="left-panel__container">
-                <div className="left-panel__filters">
-                    {BASIC_FILTERS.map((filter, index) => (
-                        <div key={index}>
-                            <BasicFilter
-                                name={filter}
-                                isOpened={filter === 'duration' ? false : true}
-                                values={filtersValues[filter]}
-                                onRangeChange={changeSlider(filter)}
-                                onFilterCancel={() => cancelFilter(filter)}
-                            />
-                        </div>
-                    ))}
-                    <FlowFilter
-                        values={filtersValues['flow']}
-                        onToggleFlow={toggleFlow}
-                        onFilterCancel={() => cancelFilter('flow')}
-                    />
-                    <InstrumentsFilter
-                        values={filtersValues['instruments']}
-                        onSelectInstrument={selectInstrument}
-                        onCancelInstrument={removeInstrument}
-                        onFilterCancel={() => cancelFilter('instruments')}
-                    />
-                    {wereFiltersChanged && (
-                        <div className="left-panel__button">
-                            <Button
-                                onClick={() => {
-                                    dispatch(resetAllFilters());
-                                    setSimilarPresets([]);
-                                }}
-                            >
-                                Clear All
-                            </Button>
+        <div>
+            <div className={panelClass} style={style}>
+                <div className="left-panel__container">
+                    <div className="left-panel__filters">
+                        {BASIC_FILTERS.map((filter, index) => (
+                            <div key={index}>
+                                <BasicFilter
+                                    name={filter}
+                                    isOpened={filter === 'duration' ? false : true}
+                                    values={filtersValues[filter]}
+                                    onRangeChange={changeSlider(filter)}
+                                    onFilterCancel={() => cancelFilter(filter)}
+                                />
+                            </div>
+                        ))}
+                        <FlowFilter
+                            values={filtersValues['flow']}
+                            onToggleFlow={toggleFlow}
+                            onFilterCancel={() => cancelFilter('flow')}
+                        />
+                        <InstrumentsFilter
+                            values={filtersValues['instruments']}
+                            onSelectInstrument={selectInstrument}
+                            onCancelInstrument={removeInstrument}
+                            onFilterCancel={() => cancelFilter('instruments')}
+                        />
+                        {wereFiltersChanged && (
+                            <div className="left-panel__button">
+                                <Button
+                                    onClick={() => {
+                                        dispatch(resetAllFilters());
+                                        setSimilarPresets([]);
+                                    }}
+                                >
+                                    Clear All
+                                </Button>
+                            </div>
+                        )}
+                    </div>
+                    {similarPresets.length > 0 && (
+                        <div className="left-panel__presets">
+                            <p className="left-panel__presets-title">Similar presets</p>
+                            {similarPresets.map((preset, index) => (
+                                <div key={index} onClick={() => applyPreset(preset.filters)}>
+                                    <Preset name={preset.name} />
+                                </div>
+                            ))}
                         </div>
                     )}
                 </div>
-                {similarPresets.length > 0 && (
-                    <div className="left-panel__presets">
-                        <p className="left-panel__presets-title">Similar presets</p>
-                        {similarPresets.map((preset, index) => (
-                            <div key={index} onClick={() => applyPreset(preset.filters)}>
-                                <Preset name={preset.name} />
-                            </div>
-                        ))}
-                    </div>
-                )}
             </div>
         </div>
     );

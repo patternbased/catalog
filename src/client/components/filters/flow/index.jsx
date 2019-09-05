@@ -2,12 +2,14 @@ import React, { useState, useMemo, memo } from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 
+import Tooltip from 'components/filters/tooltip';
+
 import { FILTERS_DESCRIPTIONS, FLOW_SHAPES } from 'utils/constants';
 
 import '../style.scss';
 
 /**
- * Left side panel component
+ * Flow filter component
  * @param {Boolean} isOpened boolean to determine if the flow shapes are displayed or toggled
  * @param {Array} values values of selected filters; default []
  * @param {Function} onToggleFlow action to call when a flow is clicked
@@ -30,27 +32,30 @@ function FlowFilter({ isOpened, values, onToggleFlow, onFilterCancel }) {
     const openedForValues = isOpened || !isInitial;
 
     const [opened, setOpened] = useState(openedForValues);
+    const [tooltipPosition, setTooltipPosition] = useState([]);
+
+    const placeTooltip = e => {
+        setTooltipPosition([e.clientX + 20, e.clientY - 10]);
+        setOpenedTooltip(true);
+    };
 
     return (
         <div className="filter">
             <div className="filter__header flex flex--space-between">
                 <div className="flex flex--space-between">
                     <p className="filter__header-name">Flow (Arc)</p>
-                    <div className="filter__header__tooltip">
-                        <div onMouseOut={() => setOpenedTooltip(false)}>
-                            <div className={infoTooltipClass} onMouseOver={() => setOpenedTooltip(true)}>
-                                ?
+                    {FILTERS_DESCRIPTIONS['flow'].length > 0 && (
+                        <div className="filter__header__tooltip">
+                            <div onMouseOut={() => setOpenedTooltip(false)}>
+                                <div className={infoTooltipClass} onMouseOver={e => placeTooltip(e)}>
+                                    ?
+                                </div>
                             </div>
+                            {openedTooltip && (
+                                <Tooltip text={FILTERS_DESCRIPTIONS['flow']} position={tooltipPosition} />
+                            )}
                         </div>
-                        {openedTooltip && (
-                            <div className="filter__header__tooltip-container">
-                                <p
-                                    className="filter__header__tooltip-text"
-                                    dangerouslySetInnerHTML={{ __html: FILTERS_DESCRIPTIONS['flow'] }}
-                                ></p>
-                            </div>
-                        )}
-                    </div>
+                    )}
                 </div>
                 {values.length > 0 && (
                     <div
