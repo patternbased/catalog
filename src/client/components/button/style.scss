@@ -1,57 +1,25 @@
 @import '../../styles/constants';
 
 .button {
-    border: 0;
-    background-color: #3667e9;
-    color: #fff;
-    font-size: 12px;
-    padding: 10px 30px;
-    cursor: pointer;
-    transition: background-color 0.1s;
+    border: 2px solid $secondary;
+    border-radius: 2px;
+    background-color: white;
+    color: $secondary;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 16px;
+    text-align: center;
     text-transform: uppercase;
+    cursor: pointer;
+    transition: background-color 0.2s;
 
     &:hover {
-        background-color: #3667e9;
+        background-color: $secondary;
+        color: white;
     }
 
     &:disabled {
         cursor: default;
-        background-color: #93bdff;
-    }
-
-    &--large {
-        font-size: 16px;
-        font-weight: bold;
-        letter-spacing: 0.89px;
-        line-height: 19px;
-        padding: 13px 30px;
-    }
-
-    &--small {
-        font-size: 14px;
-        padding: 6px 18px;
-    }
-
-    &--rounded {
-        border-radius: 25px;
-    }
-
-    &--blue-borders {
-        background-color: transparent;
-        border: 1px solid #2a71ec;
-        color: #2a71ec;
-        width: 50%;
-        padding: 5px;
-        margin-top: 30px;
-    }
-
-    &--black-borders {
-        background-color: transparent;
-        border: 1px solid #000;
-        color: #000;
-        font-size: 16px;
-        font-weight: bold;
-        padding: 5px 25px;
-        margin-right: 20px;
+        opacity: 0.5;
     }
 }

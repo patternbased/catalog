@@ -22,7 +22,12 @@ const resetFilter = (state, action) => ({
     [action.label]: initialState[action.label],
 });
 
+const resetAllFilters = () => ({
+    ...initialState,
+});
+
 export default createReducer(initialState, {
     [ACTIONS.SET_FILTER]: setFilter,
     [ACTIONS.RESET_FILTER]: resetFilter,
+    [ACTIONS.RESET_ALL_FILTERS]: resetAllFilters,
 });

@@ -7,9 +7,10 @@ import selectors from 'selectors';
 import BasicFilter from 'components/filters/basic';
 import FlowFilter from 'components/filters/flow';
 import InstrumentsFilter from 'components/filters/instruments';
+import Button from 'components/button';
 
-import { setFilter, resetFilter } from 'actions/filters';
-import { BASIC_FILTERS } from 'utils/constants';
+import { setFilter, resetFilter, resetAllFilters } from 'actions/filters';
+import { BASIC_FILTERS, INITIAL_FILTER_VALUES } from 'utils/constants';
 
 import './style.scss';
 
@@ -22,6 +23,8 @@ import './style.scss';
 function LeftPanel({ visible, style }) {
     const dispatch = useDispatch();
     const filtersValues = useSelector(selectors.filters.getAll);
+
+    const wereFiltersChanged = JSON.stringify(filtersValues) !== JSON.stringify(INITIAL_FILTER_VALUES);
 
     const changeSlider = name => values => {
         dispatch(setFilter(name, values));
@@ -81,6 +84,11 @@ function LeftPanel({ visible, style }) {
                     onCancelInstrument={removeInstrument}
                     onFilterCancel={() => cancelFilter('instruments')}
                 />
+                {wereFiltersChanged && (
+                    <div className="left-panel__button">
+                        <Button onClick={() => dispatch(resetAllFilters())}>Clear All</Button>
+                    </div>
+                )}
             </div>
         </Animated>
     );

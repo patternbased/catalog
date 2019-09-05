@@ -1,3 +1,14 @@
+export const INITIAL_FILTER_VALUES = {
+    rhythm: [1, 10],
+    speed: [1, 10],
+    experimental: [1, 10],
+    mood: [1, 10],
+    grid: [1, 10],
+    duration: [1, 10],
+    flow: [],
+    instruments: [],
+};
+
 export const BASIC_FILTERS = ['rhythm', 'speed', 'experimental', 'mood', 'grid', 'duration'];
 
 export const FILTERS_BACKGROUNDS = {

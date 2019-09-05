@@ -1,11 +1,12 @@
 export const ACTIONS = {
     SET_FILTER: 'filters.setFilter',
     RESET_FILTER: 'filters.resetFilter',
+    RESET_ALL_FILTERS: 'filters.resetAllFilters',
 };
 
 /**
- * Sets data for the current user session
- * @param {String} label the label for the user data
+ * Sets values for a filter
+ * @param {String} label the label of the filter
  * @param {String} value the value to set
  * @returns {Object}
  */
@@ -16,12 +17,20 @@ export const setFilter = (label, value) => ({
 });
 
 /**
- * Sets data for the current user session
- * @param {String} label the label for the user data
- * @param {String} value the value to set
+ * Resets values for a filter
+ * @param {String} label the label of the filter
+
  * @returns {Object}
  */
 export const resetFilter = label => ({
     type: ACTIONS.RESET_FILTER,
     label,
+});
+
+/**
+ * Resets values for ALL filters
+ * @returns {Object}
+ */
+export const resetAllFilters = () => ({
+    type: ACTIONS.RESET_ALL_FILTERS,
 });

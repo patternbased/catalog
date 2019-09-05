@@ -9,4 +9,8 @@
     padding: 48px 30px;
     overflow: scroll;
     height: 100vh;
+
+    &__button {
+        text-align: right;
+    }
 }

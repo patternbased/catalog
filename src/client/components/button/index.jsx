@@ -7,11 +7,13 @@ import './style.scss';
 /**
  * Button component
  * @param {Array} children node or array of nodes
+ * @param {Number} width custom width
+ * @param {Number} height custom height
  * @param {String} className extra classes
  * @param {Object} props extra props
  * @returns {React.Component}
  */
-function Button({ children, className, ...props }) {
+function Button({ children, width, height, className, ...props }) {
     const buttonClass = useMemo(
         () =>
             classnames('button', {
@@ -21,7 +23,7 @@ function Button({ children, className, ...props }) {
     );
 
     return (
-        <button className={buttonClass} {...props}>
+        <button className={buttonClass} {...props} style={{ width: width, height: height }}>
             {children}
         </button>
     );
@@ -30,10 +32,14 @@ function Button({ children, className, ...props }) {
 Button.propTypes = {
     children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
     className: PropTypes.string,
+    width: PropTypes.number,
+    height: PropTypes.number,
 };
 
 Button.defaultProps = {
     className: '',
+    width: 112,
+    height: 42,
 };
 
 Button.displayName = 'Button';
