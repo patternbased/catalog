@@ -8,7 +8,7 @@ const store = createStore(
     reducer,
     getPersistedState(),
     compose(
-        applyMiddleware(persistStore([])),
+        applyMiddleware(persistStore(['filters'])),
         applyMiddleware(thunk),
         window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : x => x
     )

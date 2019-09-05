@@ -8,13 +8,14 @@ import '../style.scss';
 
 /**
  * Left side panel component
- * @param {Boolean} isOpened boolean to determine if the range slider is displayed or toggled
+ * @param {Boolean} isOpened boolean to determine if the flow shapes are displayed or toggled
+ * @param {Array} values values of selected filters; default []
+ * @param {Function} onToggleFlow action to call when a flow is clicked
+ * @param {Function} onFilterCancel action to call when filter is cancelled
  * @returns {React.Component}
  */
-function FlowFilter({ isOpened }) {
-    const [selectedFlows, setSelectedFlows] = useState([]);
+function FlowFilter({ isOpened, values, onToggleFlow, onFilterCancel }) {
     const [openedTooltip, setOpenedTooltip] = useState(false);
-    const [opened, setOpened] = useState(isOpened);
     const [showCounter, setShowCounter] = useState(true);
 
     const infoTooltipClass = useMemo(
@@ -25,13 +26,10 @@ function FlowFilter({ isOpened }) {
         [openedTooltip]
     );
 
-    const toggleFlow = shape => {
-        if (selectedFlows.includes(shape)) {
-            setSelectedFlows(selectedFlows.filter(x => x !== shape));
-        } else {
-            setSelectedFlows(selectedFlows.concat(shape));
-        }
-    };
+    const isInitial = values.length === 0;
+    const openedForValues = isOpened || !isInitial;
+
+    const [opened, setOpened] = useState(openedForValues);
 
     return (
         <div className="filter">
@@ -54,20 +52,20 @@ function FlowFilter({ isOpened }) {
                         )}
                     </div>
                 </div>
-                {selectedFlows.length > 0 && (
+                {values.length > 0 && (
                     <div
                         className="filter__header__counter"
                         onMouseOver={() => setShowCounter(false)}
                         onMouseOut={() => setShowCounter(true)}
                         onClick={() => {
-                            setSelectedFlows([]);
+                            onFilterCancel();
                             setShowCounter(true);
                         }}
                     >
-                        {showCounter ? selectedFlows.length : '✖'}
+                        {showCounter ? values.length : '✖'}
                     </div>
                 )}
-                {selectedFlows.length === 0 && (
+                {values.length === 0 && (
                     <div className="filter__header__toggle flex flex--space-between" onClick={() => setOpened(!opened)}>
                         <p className="filter__header__toggle-symbol">{opened ? '-' : '+'}</p>
                     </div>
@@ -80,9 +78,9 @@ function FlowFilter({ isOpened }) {
                             <li
                                 key={index}
                                 className="filter__shapes__list-shape"
-                                onClick={() => toggleFlow(shape.name)}
+                                onClick={() => onToggleFlow(shape.name)}
                             >
-                                <img src={selectedFlows.includes(shape.name) ? shape.activeImage : shape.image} />
+                                <img src={values.includes(shape.name) ? shape.activeImage : shape.image} />
                             </li>
                         ))}
                     </ul>
@@ -96,6 +94,9 @@ FlowFilter.displayName = 'FlowFilter';
 
 FlowFilter.propTypes = {
     isOpened: PropTypes.bool,
+    values: PropTypes.array.isRequired,
+    onToggleFlow: PropTypes.func.isRequired,
+    onFilterCancel: PropTypes.func.isRequired,
 };
 
 FlowFilter.defaultProps = {

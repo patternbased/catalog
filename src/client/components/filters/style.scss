@@ -89,6 +89,7 @@
             background-color: transparent;
             background-repeat: no-repeat;
             background-size: cover;
+            border-radius: 0;
         }
         &-track {
             height: 38px;
@@ -118,6 +119,9 @@
                 margin-right: 22px;
                 margin-bottom: 10px;
                 cursor: pointer;
+                height: 28px;
+                position: relative;
+                width: 64px;
 
                 &:nth-child(3n + 3) {
                     margin-right: 0;
@@ -125,6 +129,9 @@
 
                 img {
                     width: 64px;
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
                 }
             }
         }

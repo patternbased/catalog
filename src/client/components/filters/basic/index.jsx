@@ -12,24 +12,13 @@ import '../style.scss';
  * Left side panel component
  * @param {String} name the name of the filter
  * @param {Boolean} isOpened boolean to determine if the range slider is displayed or toggled
+ * @param {Array} values values of selected filters; default [1, 10]
+ * @param {Function} onRangeChange action to call when slider changes
+ * @param {Function} onFilterCancel action to call when slider is cancelled
  * @returns {React.Component}
  */
-function BasicFilter({ name, isOpened }) {
-    const [range, setRange] = useState([1, 10]);
-    const [changed, setChanged] = useState(false);
+function BasicFilter({ name, isOpened, values, onRangeChange, onFilterCancel }) {
     const [openedTooltip, setOpenedTooltip] = useState(false);
-    const [opened, setOpened] = useState(isOpened);
-
-    const onRangeChange = value => {
-        setRange(value);
-        if (!changed) {
-            setChanged(true);
-        }
-    };
-    const onFilterCancel = () => {
-        setRange([1, 10]);
-        setChanged(false);
-    };
 
     const infoTooltipClass = useMemo(
         () =>
@@ -38,6 +27,11 @@ function BasicFilter({ name, isOpened }) {
             }),
         [openedTooltip]
     );
+
+    const isInitial = values[0] === 1 && values[1] === 10;
+    const openedForValues = isOpened || !isInitial;
+
+    const [opened, setOpened] = useState(openedForValues);
 
     return (
         <div className="filter">
@@ -60,10 +54,10 @@ function BasicFilter({ name, isOpened }) {
                         )}
                     </div>
                 </div>
-                {changed && (
+                {!isInitial && (
                     <div className="filter__header__range flex flex--space-between">
                         <p className="filter__header__range-numbers">
-                            {range[0]} - {range[1]}
+                            {values[0]} - {values[1]}
                         </p>
                         <img
                             className="filter__header__range-close"
@@ -72,7 +66,7 @@ function BasicFilter({ name, isOpened }) {
                         />
                     </div>
                 )}
-                {!changed && (
+                {isInitial && (
                     <div className="filter__header__toggle flex flex--space-between" onClick={() => setOpened(!opened)}>
                         <p className="filter__header__toggle-symbol">{opened ? '-' : '+'}</p>
                     </div>
@@ -83,7 +77,7 @@ function BasicFilter({ name, isOpened }) {
                     min={1}
                     max={10}
                     onChange={onRangeChange}
-                    value={range}
+                    value={values}
                     railStyle={{ backgroundImage: `url(${FILTERS_BACKGROUNDS[name]}` }}
                 />
             )}
@@ -96,6 +90,9 @@ BasicFilter.displayName = 'BasicFilter';
 BasicFilter.propTypes = {
     name: PropTypes.string.isRequired,
     isOpened: PropTypes.bool,
+    values: PropTypes.array.isRequired,
+    onRangeChange: PropTypes.func.isRequired,
+    onFilterCancel: PropTypes.func.isRequired,
 };
 
 BasicFilter.defaultProps = {

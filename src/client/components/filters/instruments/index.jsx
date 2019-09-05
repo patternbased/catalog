@@ -9,15 +9,17 @@ import '../style.scss';
 
 /**
  * Left side panel component
- * @param {Boolean} isOpened boolean to determine if the range slider is displayed or toggled
+ * @param {Boolean} isOpened boolean to determine if the input is displayed or toggled
+ * @param {Array} values values of selected filters; default []
+ * @param {Function} onSelectInstrument action to call when an instrument is selected
+ * @param {Function} onCancelInstrument action to call when an instrument is removed
+ * @param {Function} onFilterCancel action to call when slider is cancelled
  * @returns {React.Component}
  */
-function InstrumentsFilter({ isOpened }) {
+function InstrumentsFilter({ isOpened, values, onSelectInstrument, onCancelInstrument, onFilterCancel }) {
     const [openedTooltip, setOpenedTooltip] = useState(false);
-    const [opened, setOpened] = useState(isOpened);
     const [showCounter, setShowCounter] = useState(true);
     const [instrument, setInstrument] = useState('');
-    const [selectedInstruments, setSelectedInstruments] = useState([]);
     const [suggestions, setSuggestions] = useState([]);
     const [showSuggestions, setShowSuggestions] = useState(false);
 
@@ -29,14 +31,15 @@ function InstrumentsFilter({ isOpened }) {
         [openedTooltip]
     );
 
-    const removeInstrument = item => {
-        setSelectedInstruments(selectedInstruments.filter(x => x !== item));
-    };
+    const isInitial = values.length === 0;
+    const openedForValues = isOpened || !isInitial;
+
+    const [opened, setOpened] = useState(openedForValues);
 
     useEffect(() => {
         if (instrument !== '') {
             const lowerCaseTerm = instrument.toLowerCase();
-            const withoutSelected = INSTRUMENTS.filter(x => !selectedInstruments.includes(x));
+            const withoutSelected = INSTRUMENTS.filter(x => !values.includes(x));
             const found = withoutSelected.filter(x => x.toLowerCase().includes(lowerCaseTerm));
             if (found.length === 0) {
                 found.push(instrument);
@@ -70,17 +73,20 @@ function InstrumentsFilter({ isOpened }) {
                         )}
                     </div>
                 </div>
-                {selectedInstruments.length > 0 && (
+                {values.length > 0 && (
                     <div
                         className="filter__header__counter"
                         onMouseOver={() => setShowCounter(false)}
                         onMouseOut={() => setShowCounter(true)}
-                        onClick={() => setSelectedInstruments([])}
+                        onClick={() => {
+                            onFilterCancel();
+                            setShowCounter(true);
+                        }}
                     >
-                        {showCounter ? selectedInstruments.length : '✖'}
+                        {showCounter ? values.length : '✖'}
                     </div>
                 )}
-                {selectedInstruments.length === 0 && (
+                {values.length === 0 && (
                     <div className="filter__header__toggle flex flex--space-between" onClick={() => setOpened(!opened)}>
                         <p className="filter__header__toggle-symbol">{opened ? '-' : '+'}</p>
                     </div>
@@ -102,7 +108,7 @@ function InstrumentsFilter({ isOpened }) {
                                     key={index}
                                     className="filter__instruments__list-item"
                                     onClick={() => {
-                                        setSelectedInstruments(selectedInstruments.concat(item));
+                                        onSelectInstrument(item);
                                         setShowSuggestions(false);
                                         setInstrument('');
                                     }}
@@ -112,15 +118,15 @@ function InstrumentsFilter({ isOpened }) {
                             ))}
                         </ul>
                     )}
-                    {selectedInstruments.length > 0 && (
+                    {values.length > 0 && (
                         <div className="filter__instruments__selected">
-                            {selectedInstruments.map((item, index) => (
+                            {values.map((item, index) => (
                                 <div key={index} className="filter__instruments__selected-item">
                                     <p className="filter__instruments__selected-item-name">{item}</p>
                                     <img
                                         className="filter__instruments__selected-item-close"
                                         src="/assets/images/close.png"
-                                        onClick={() => removeInstrument(item)}
+                                        onClick={() => onCancelInstrument(item)}
                                     />
                                 </div>
                             ))}
@@ -136,6 +142,10 @@ InstrumentsFilter.displayName = 'InstrumentsFilter';
 
 InstrumentsFilter.propTypes = {
     isOpened: PropTypes.bool,
+    values: PropTypes.array.isRequired,
+    onSelectInstrument: PropTypes.func.isRequired,
+    onCancelInstrument: PropTypes.func.isRequired,
+    onFilterCancel: PropTypes.func.isRequired,
 };
 
 InstrumentsFilter.defaultProps = {

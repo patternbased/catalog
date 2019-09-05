@@ -1,10 +1,15 @@
 import React, { memo } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Animated } from 'react-animated-css';
 import PropTypes from 'prop-types';
+import selectors from 'selectors';
 
 import BasicFilter from 'components/filters/basic';
 import FlowFilter from 'components/filters/flow';
 import InstrumentsFilter from 'components/filters/instruments';
+
+import { setFilter, resetFilter } from 'actions/filters';
+import { BASIC_FILTERS } from 'utils/constants';
 
 import './style.scss';
 
@@ -15,27 +20,69 @@ import './style.scss';
  * @returns {React.Component}
  */
 function LeftPanel({ visible, style }) {
+    const dispatch = useDispatch();
+    const filtersValues = useSelector(selectors.filters.getAll);
+
+    const changeSlider = name => values => {
+        dispatch(setFilter(name, values));
+    };
+
+    const toggleFlow = shape => {
+        const flowsCopy = [...filtersValues['flow']];
+        if (flowsCopy.includes(shape)) {
+            dispatch(setFilter('flow', flowsCopy.filter(x => x !== shape)));
+        } else {
+            dispatch(setFilter('flow', flowsCopy.concat(shape)));
+        }
+    };
+
+    const selectInstrument = instrument => {
+        const instrumentsCopy = [...filtersValues['instruments']];
+        dispatch(setFilter('instruments', instrumentsCopy.concat(instrument)));
+    };
+
+    const removeInstrument = instrument => {
+        const instrumentsCopy = [...filtersValues['instruments']];
+        dispatch(setFilter('instruments', instrumentsCopy.filter(x => x !== instrument)));
+    };
+
+    const cancelFilter = name => {
+        dispatch(resetFilter(name));
+    };
+
     return (
-        <>
-            <Animated
-                isVisible={visible}
-                animationIn="slideInLeft"
-                animationOut="slideOutLeft"
-                animationInDuration={800}
-                animationOutDuration={800}
-            >
-                <div className="left-panel" style={style}>
-                    <BasicFilter name="rhythm" isOpened={true} />
-                    <BasicFilter name="speed" isOpened={true} />
-                    <BasicFilter name="experimental" isOpened={true} />
-                    <BasicFilter name="mood" isOpened={true} />
-                    <BasicFilter name="grid" isOpened={true} />
-                    <BasicFilter name="duration" />
-                    <FlowFilter />
-                    <InstrumentsFilter />
-                </div>
-            </Animated>
-        </>
+        <Animated
+            isVisible={visible}
+            animationIn="slideInLeft"
+            animationOut="slideOutLeft"
+            animationInDuration={800}
+            animationOutDuration={800}
+        >
+            <div className="left-panel" style={style}>
+                {BASIC_FILTERS.map((filter, index) => (
+                    <div key={index}>
+                        <BasicFilter
+                            name={filter}
+                            isOpened={filter === 'duration' ? false : true}
+                            values={filtersValues[filter]}
+                            onRangeChange={changeSlider(filter)}
+                            onFilterCancel={() => cancelFilter(filter)}
+                        />
+                    </div>
+                ))}
+                <FlowFilter
+                    values={filtersValues['flow']}
+                    onToggleFlow={toggleFlow}
+                    onFilterCancel={() => cancelFilter('flow')}
+                />
+                <InstrumentsFilter
+                    values={filtersValues['instruments']}
+                    onSelectInstrument={selectInstrument}
+                    onCancelInstrument={removeInstrument}
+                    onFilterCancel={() => cancelFilter('instruments')}
+                />
+            </div>
+        </Animated>
     );
 }
 

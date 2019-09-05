@@ -1,9 +1,18 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import classnames from 'classnames';
+import FilterSvg from 'assets/images/header/filter.svg';
+import PresetSvg from 'assets/images/header/preset.svg';
+import SearchSvg from 'assets/images/header/search.svg';
+import LogoSvg from 'assets/images/header/logo.svg';
+import CartSvg from 'assets/images/header/cart.svg';
+import MenuSvg from 'assets/images/header/menu.svg';
 
 import LeftPanel from 'components/left-panel';
 
 import './style.scss';
+
+const svgDefaultFill = '#808080';
+const svgActiveFill = '#0092C5';
 
 /**
  * Header component
@@ -11,16 +20,16 @@ import './style.scss';
  */
 function Header() {
     const [scrolled, setScrolled] = useState(false);
-    const [panelStyle, setPanelStyle] = useState({ top: 100, height: 'calc(100vh + 100px)' });
+    const [panelStyle, setPanelStyle] = useState({ top: 100 });
     const [filtersOpened, setFiltersOpened] = useState(false);
 
     const scrollHandler = () => {
         if (window.pageYOffset > 100) {
             setScrolled(true);
-            setPanelStyle({ top: 60, height: 'calc(100vh + 60px)' });
+            setPanelStyle({ top: 60 });
         } else {
             setScrolled(false);
-            setPanelStyle({ top: 100, height: 'calc(100vh + 100px)' });
+            setPanelStyle({ top: 100 });
         }
     };
 
@@ -48,16 +57,16 @@ function Header() {
         <>
             <header className={headerModifier}>
                 <div className="header__buttons">
-                    <img
+                    <FilterSvg
                         className="header__buttons-icon"
-                        src={filtersOpened ? '/assets/images/filter-on.png' : '/assets/images/filter.png'}
                         onClick={() => setFiltersOpened(!filtersOpened)}
+                        fill={filtersOpened ? svgActiveFill : svgDefaultFill}
                     />
-                    <img className="header__buttons-icon" src="/assets/images/preset.png" />
-                    <img className="header__buttons-icon" src="/assets/images/search.png" />
+                    <PresetSvg className="header__buttons-icon" fill={svgDefaultFill} />
+                    <SearchSvg className="header__buttons-icon" fill={svgDefaultFill} />
                 </div>
                 <div className="header__logo flex flex--space-between">
-                    <img className={logoModifier} src="/assets/images/logo.png" />
+                    <LogoSvg className={logoModifier} fill={svgActiveFill} />
                     {!scrolled && (
                         <div className="header__logo__text">
                             <p className="header__logo__text-main">
@@ -68,8 +77,8 @@ function Header() {
                     )}
                 </div>
                 <div className="header__buttons">
-                    <img className="header__buttons-icon" src="/assets/images/cart.png" />
-                    <img className="header__buttons-icon" src="/assets/images/menu.png" />
+                    <CartSvg className="header__buttons-icon" fill={svgDefaultFill} />
+                    <MenuSvg className="header__buttons-icon" fill={svgDefaultFill} />
                 </div>
             </header>
             <LeftPanel visible={filtersOpened} style={panelStyle} />

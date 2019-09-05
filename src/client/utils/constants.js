@@ -1,3 +1,5 @@
+export const BASIC_FILTERS = ['rhythm', 'speed', 'experimental', 'mood', 'grid', 'duration'];
+
 export const FILTERS_BACKGROUNDS = {
     rhythm: '/assets/images/rhythm.png',
     speed: '/assets/images/speed.png',
