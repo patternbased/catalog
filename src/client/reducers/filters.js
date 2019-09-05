@@ -2,12 +2,12 @@ import { createReducer } from './utils';
 import { ACTIONS } from '../actions/filters';
 
 const initialState = {
-    rhythm: [1, 10],
-    speed: [1, 10],
-    experimental: [1, 10],
-    mood: [1, 10],
-    grid: [1, 10],
-    duration: [1, 10],
+    rhythm: [0, 10],
+    speed: [0, 10],
+    experimental: [0, 10],
+    mood: [0, 10],
+    grid: [0, 10],
+    duration: [0, 10],
     flow: [],
     instruments: [],
 };

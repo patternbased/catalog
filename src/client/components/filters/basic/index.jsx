@@ -28,7 +28,7 @@ function BasicFilter({ name, isOpened, values, onRangeChange, onFilterCancel }) 
         [openedTooltip]
     );
 
-    const isInitial = values[0] === 1 && values[1] === 10;
+    const isInitial = values[0] === 0 && values[1] === 10;
     const openedForValues = isOpened || !isInitial;
 
     const [opened, setOpened] = useState(openedForValues);
@@ -74,11 +74,13 @@ function BasicFilter({ name, isOpened, values, onRangeChange, onFilterCancel }) 
             </div>
             {opened && (
                 <Range
-                    min={1}
+                    min={0}
                     max={10}
                     onChange={onRangeChange}
                     value={values}
                     railStyle={{ backgroundImage: `url(${FILTERS_BACKGROUNDS[name]}` }}
+                    step={0.25}
+                    allowCross={false}
                 />
             )}
         </div>

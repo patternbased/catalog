@@ -4,13 +4,35 @@
     width: 300px;
     box-shadow: 1px 0 4px 0 rgba(0, 0, 0, 0.3);
     position: fixed;
-    bottom: 0;
     background-color: white;
-    padding: 48px 30px;
+    transition: all 1s ease;
+    left: -300px;
     overflow: scroll;
-    height: 100vh;
+    bottom: 0;
+
+    &__container {
+    }
+
+    &--visible {
+        left: 0;
+    }
+
+    &__filters {
+        padding: 48px 30px;
+    }
 
     &__button {
         text-align: right;
+    }
+
+    &__presets {
+        border-top: 1px solid #979797;
+        padding: 30px;
+
+        &-title {
+            color: $text-primary;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
     }
 }
