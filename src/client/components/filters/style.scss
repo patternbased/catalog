@@ -139,6 +139,8 @@
     }
 
     &__instruments {
+        position: relative;
+
         &-search {
             height: 38px;
             width: 240px;
@@ -158,6 +160,9 @@
             max-height: 110px;
             overflow: scroll;
             margin-top: -1px;
+            position: absolute;
+            width: 100%;
+            background-color: white;
 
             &-item {
                 color: $text-primary;

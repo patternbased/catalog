@@ -4,6 +4,7 @@ import ScrollToTop from './components/scroll-to-top';
 
 import Home from './pages/home';
 import NotFound from './pages/not-found';
+import BackToTop from 'components/back-to-top';
 
 /**
  * Router component
@@ -18,6 +19,7 @@ function Routes() {
                     <Route path="*" component={NotFound} />
                 </Switch>
             </ScrollToTop>
+            <BackToTop />
         </Router>
     );
 }

@@ -17,17 +17,17 @@ import { BASIC_FILTERS, INITIAL_FILTER_VALUES, PRESETS } from 'utils/constants';
 import './style.scss';
 
 /**
- * Left side panel component
+ * Filters panel component
  * @param {Boolean} visible boolean to determine if the panel is opened or not
  * @param {Object} style json with custom CSS styling
  * @returns {React.Component}
  */
-function LeftPanel({ visible, style }) {
+function FiltersPanel({ visible, style }) {
     const [similarPresets, setSimilarPresets] = useState([]);
     const panelClass = useMemo(
         () =>
-            classnames('left-panel', {
-                'left-panel--visible': visible,
+            classnames('filters-panel', {
+                'filters-panel--visible': visible,
             }),
         [visible]
     );
@@ -104,8 +104,8 @@ function LeftPanel({ visible, style }) {
     return (
         <div>
             <div className={panelClass} style={style}>
-                <div className="left-panel__container">
-                    <div className="left-panel__filters">
+                <div className="filters-panel__container">
+                    <div className="filters-panel__filters">
                         {BASIC_FILTERS.map((filter, index) => (
                             <div key={index}>
                                 <BasicFilter
@@ -129,7 +129,7 @@ function LeftPanel({ visible, style }) {
                             onFilterCancel={() => cancelFilter('instruments')}
                         />
                         {wereFiltersChanged && (
-                            <div className="left-panel__button">
+                            <div className="filters-panel__button">
                                 <Button
                                     onClick={() => {
                                         dispatch(resetAllFilters());
@@ -142,8 +142,8 @@ function LeftPanel({ visible, style }) {
                         )}
                     </div>
                     {similarPresets.length > 0 && (
-                        <div className="left-panel__presets">
-                            <p className="left-panel__presets-title">Similar presets</p>
+                        <div className="filters-panel__presets">
+                            <p className="filters-panel__presets-title">Similar presets</p>
                             {similarPresets.map((preset, index) => (
                                 <div key={index} onClick={() => applyPreset(preset.filters)}>
                                     <Preset name={preset.name} />
@@ -178,16 +178,16 @@ const _getSimilarPresets = (presets, filters) => {
     return similarPresets.sort((a, b) => a.similarity - b.similarity).splice(0, 4);
 };
 
-LeftPanel.displayName = 'LeftPanel';
+FiltersPanel.displayName = 'FiltersPanel';
 
-LeftPanel.propTypes = {
+FiltersPanel.propTypes = {
     visible: PropTypes.bool,
     style: PropTypes.object,
 };
 
-LeftPanel.defaultProps = {
+FiltersPanel.defaultProps = {
     visible: false,
     style: {},
 };
 
-export default memo(LeftPanel);
+export default memo(FiltersPanel);
