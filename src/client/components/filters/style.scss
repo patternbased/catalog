@@ -91,6 +91,7 @@
             background-repeat: no-repeat;
             background-size: cover;
             border-radius: 0;
+            width: 101.5%;
         }
         &-track {
             height: 38px;
@@ -106,6 +107,7 @@
             border: none;
             border-radius: 0;
             margin: 0;
+            transition: left 1s linear;
         }
     }
 

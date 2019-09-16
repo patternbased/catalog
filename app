@@ -26,7 +26,7 @@ elif [ "$ARG1" == "deploy" ]; then
         echo "Please pass an environment where to deploy to";
     elif [ "$ARG2" == "qa" ]; then
         echo "Deploying 'develop' branch to the qa environment..."
-        git push qa develop:master
+        git push heroku develop:master
     elif [ "$ARG2" == "production" ]; then
         echo "Deploying 'master' branch to the production environment..."
         git push production master:master

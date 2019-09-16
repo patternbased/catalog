@@ -1,0 +1,86 @@
+@import '../../styles/constants';
+
+.search {
+    &-input {
+        height: 60px;
+        width: 100%;
+        background-color: #f5f4f5;
+        box-shadow: 1px 0 2px 0 rgba(0, 0, 0, 0.3);
+        border: none;
+        padding: 15px 30px;
+        color: $text-primary;
+        font-family: $font-other;
+        font-size: 18px;
+        line-height: 24px;
+        caret-color: $secondary;
+    }
+
+    &__results {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        position: absolute;
+        background-color: white;
+        max-height: 200px;
+        overflow: scroll;
+        width: 100%;
+        z-index: 1;
+        border-top: 1px solid #979797;
+
+        &-item {
+            border-bottom: 1px solid #979797;
+            padding: 10px 30px;
+            font-family: $font-other;
+            font-size: 16px;
+            line-height: 22px;
+            color: $text-primary;
+            cursor: pointer;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            height: 40px;
+
+            &:hover {
+                background-color: $secondary;
+                box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+                color: white;
+            }
+
+            &:hover & {
+                &--type {
+                    background-color: white;
+                    color: $secondary;
+                }
+            }
+
+            &--new {
+                width: 20px;
+                height: 20px;
+                margin-right: 10px;
+                display: inline-block;
+                vertical-align: bottom;
+            }
+
+            &--type {
+                padding: 0 10px;
+                height: 22px;
+                border-radius: 12px;
+                background-color: $secondary;
+                width: 62px;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+                color: white;
+                font-family: $font-other;
+                font-size: 12px;
+                font-weight: 800;
+                line-height: 22px;
+                text-align: center;
+                display: inline-block;
+                text-transform: capitalize;
+                margin-right: 13px;
+                vertical-align: bottom;
+            }
+        }
+    }
+}

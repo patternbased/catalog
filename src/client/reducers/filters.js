@@ -7,7 +7,7 @@ const initialState = {
     experimental: [0, 10],
     mood: [0, 10],
     grid: [0, 10],
-    duration: [0, 10],
+    duration: [0, 20],
     flow: [],
     instruments: [],
 };

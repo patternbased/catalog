@@ -21,6 +21,7 @@ import '../style.scss';
  */
 function BasicFilter({ name, isOpened, values, onRangeChange, onFilterCancel }) {
     const [openedTooltip, setOpenedTooltip] = useState(false);
+    const isDuration = name === 'duration';
 
     const infoTooltipClass = useMemo(
         () =>
@@ -30,7 +31,7 @@ function BasicFilter({ name, isOpened, values, onRangeChange, onFilterCancel }) 
         [openedTooltip]
     );
 
-    const isInitial = values[0] === 0 && values[1] === 10;
+    const isInitial = values[0] === 0 && (values[1] === 10 || values[1] === 20);
     const openedForValues = isOpened || !isInitial;
 
     const [opened, setOpened] = useState(openedForValues);
@@ -60,7 +61,7 @@ function BasicFilter({ name, isOpened, values, onRangeChange, onFilterCancel }) 
                 {!isInitial && (
                     <div className="filter__header__range flex flex--space-between">
                         <p className="filter__header__range-numbers">
-                            {values[0]} - {values[1]}
+                            {isDuration ? `${values[0]}m - ${values[1]}m` : `${values[0]} - ${values[1]}`}
                         </p>
                         <img
                             className="filter__header__range-close"
@@ -78,7 +79,7 @@ function BasicFilter({ name, isOpened, values, onRangeChange, onFilterCancel }) 
             {opened && (
                 <Range
                     min={0}
-                    max={10}
+                    max={isDuration ? 20 : 10}
                     onChange={onRangeChange}
                     value={values}
                     railStyle={{ backgroundImage: `url(${FILTERS_BACKGROUNDS[name]}` }}

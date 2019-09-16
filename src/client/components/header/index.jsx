@@ -26,6 +26,7 @@ function Header() {
     const [panelStyle, setPanelStyle] = useState({ top: 100 });
     const [filtersOpened, setFiltersOpened] = useState(false);
     const [presetsOpened, setPresetsOpened] = useState(false);
+    const [searchOpened, setSearchOpened] = useState(false);
     const filtersValues = useSelector(selectors.filters.getAll);
 
     const scrollHandler = () => {
@@ -65,13 +66,30 @@ function Header() {
         }
     }, [filtersValues]);
 
+    const openSearchBar = () => {
+        setSearchOpened(!searchOpened);
+        if (!filtersOpened) {
+            setFiltersOpened(true);
+        }
+        if (presetsOpened) {
+            setPresetsOpened(false);
+        }
+    };
+
+    const openFiltersPanel = () => {
+        setFiltersOpened(!filtersOpened);
+        if (searchOpened && filtersOpened) {
+            setSearchOpened(false);
+        }
+    };
+
     return (
         <>
             <header className={headerModifier}>
                 <div className="header__buttons">
                     <FilterSvg
                         className="header__buttons-icon"
-                        onClick={() => setFiltersOpened(!filtersOpened)}
+                        onClick={() => openFiltersPanel()}
                         fill={filtersOpened ? svgActiveFill : svgDefaultFill}
                     />
                     <PresetSvg
@@ -79,7 +97,11 @@ function Header() {
                         onClick={() => setPresetsOpened(!presetsOpened)}
                         fill={presetsOpened ? svgActiveFill : svgDefaultFill}
                     />
-                    <SearchSvg className="header__buttons-icon" fill={svgDefaultFill} />
+                    <SearchSvg
+                        className="header__buttons-icon"
+                        onClick={() => openSearchBar()}
+                        fill={searchOpened ? svgActiveFill : svgDefaultFill}
+                    />
                 </div>
                 <div className="header__logo flex flex--space-between">
                     <LogoSvg className={logoModifier} fill={svgActiveFill} />
@@ -97,7 +119,7 @@ function Header() {
                     <MenuSvg className="header__buttons-icon" fill={svgDefaultFill} />
                 </div>
             </header>
-            <FiltersPanel visible={filtersOpened} style={panelStyle} />
+            <FiltersPanel visible={filtersOpened} style={panelStyle} showSearch={searchOpened} />
             <PresetsPanel visible={presetsOpened} style={panelStyle} />
         </>
     );

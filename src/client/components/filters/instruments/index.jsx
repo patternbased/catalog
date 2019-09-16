@@ -97,7 +97,7 @@ function InstrumentsFilter({ isOpened, values, onSelectInstrument, onCancelInstr
                     </div>
                 )}
             </div>
-            {opened && (
+            {(opened || values.length > 0) && (
                 <div className="filter__instruments">
                     <input
                         type="text"

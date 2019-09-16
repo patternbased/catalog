@@ -4,7 +4,7 @@ export const INITIAL_FILTER_VALUES = {
     experimental: [0, 10],
     mood: [0, 10],
     grid: [0, 10],
-    duration: [0, 10],
+    duration: [0, 20],
     flow: [],
     instruments: [],
 };
@@ -17,6 +17,7 @@ export const FILTERS_BACKGROUNDS = {
     experimental: '/assets/images/experimental.png',
     mood: '/assets/images/mood.png',
     grid: '/assets/images/grid.png',
+    duration: '/assets/images/duration.svg',
 };
 
 export const FILTERS_DESCRIPTIONS = {
@@ -280,4 +281,30 @@ export const INSTRUMENTS = [
     'Zylophone',
     'Vibraphone',
     'Flute',
+];
+
+export const ARTISTS = [
+    'Joseph Minadeo',
+    'Low in the Sky',
+    'Insect Sounds',
+    'Hill Sleepers',
+    'PatternBased',
+    'Puffy Shapes',
+    'Joseph Minadeo and Curt Brown',
+    'Joseph Minadeo and Michael Tolan',
+    'Gnosotros',
+    'Solver',
+];
+
+export const SONGS = [
+    'Example 1',
+    'Example 2',
+    'Example 3',
+    'Example 4',
+    'Example 5',
+    'Example 6',
+    'Example 7',
+    'Example 8',
+    'Example 9',
+    'Example 10',
 ];
