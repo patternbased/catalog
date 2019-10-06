@@ -1,0 +1,206 @@
+@import '../../styles/constants';
+
+.music-player {
+    height: 60px;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    background-color: #424242;
+    box-shadow: 0 -1px 2px 0 rgba(0, 0, 0, 0.2);
+    padding: 0 52px 0 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &__section {
+        border-right: 1px solid #f5f4f5;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 60px;
+
+        &:last-child {
+            border-right: none;
+        }
+
+        &--controls {
+            width: 136px;
+
+            &-button {
+                height: 36px;
+                margin-right: 20px;
+                cursor: pointer;
+
+                &:hover {
+                    opacity: 0.5;
+                }
+            }
+        }
+
+        &--content {
+            padding: 0 20px;
+            width: 100%;
+            justify-content: space-between;
+
+            &__song {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                &-image {
+                    width: 40px;
+                    height: 40px;
+                    margin-right: 20px;
+                    cursor: pointer;
+
+                    &:hover {
+                        opacity: 0.5;
+                    }
+                }
+
+                &__details {
+                    cursor: pointer;
+
+                    &-title {
+                        font-size: 14px;
+                        line-height: 16px;
+                        color: white;
+                        margin-bottom: 2px;
+                        display: inline-block;
+
+                        &:hover {
+                            color: $secondary;
+                        }
+                    }
+
+                    &-author,
+                    &-duration {
+                        color: white;
+                        font-family: $font-other;
+                        font-size: 12px;
+                        border-right: 1px solid white;
+                        padding-right: 5px;
+                        margin-right: 5px;
+                        display: inline-block;
+
+                        span {
+                            font-family: $font-other;
+                            font-weight: normal;
+                        }
+                    }
+
+                    &-duration {
+                        font-weight: bold;
+                        margin: 0;
+                        padding: 0;
+                        border-right: none;
+                    }
+
+                    &-author {
+                        &:hover {
+                            color: $secondary;
+                        }
+
+                        &--inline {
+                            border-right: none;
+                            margin-left: 10px;
+                        }
+                    }
+
+                    &-progress {
+                        width: 400px;
+                        margin-right: 13px;
+                        display: inline-block;
+                        vertical-align: middle;
+
+                        .rc-slider-rail {
+                            background-color: #808080;
+                            border-radius: 0;
+                        }
+
+                        .rc-slider-track {
+                            background-color: $secondary;
+                            border-radius: 0;
+                        }
+
+                        .rc-slider-handle {
+                            border: none;
+                            height: 18px;
+                            width: 18px;
+                            border-radius: 9px;
+                            background-color: white;
+                            margin-top: -7px;
+
+                            &:hover {
+                                color: $secondary;
+                            }
+                        }
+                    }
+                }
+            }
+
+            &__actions {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                &-button {
+                    width: 36px;
+                    height: 36px;
+                    background-size: contain;
+                    background-repeat: no-repeat;
+                    margin-right: 10px;
+                    cursor: pointer;
+
+                    &--similar {
+                        background-image: url('/assets/images/player/similar.png');
+                        &:hover {
+                            background-image: url('/assets/images/player/similar-on.png');
+                        }
+                    }
+
+                    &--share {
+                        background-image: url('/assets/images/player/share.png');
+                        &:hover {
+                            background-image: url('/assets/images/player/share-on.png');
+                        }
+                    }
+                }
+
+                &-license {
+                    border-radius: 2px;
+                    background-color: white;
+                    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+                    border: none;
+                    color: #4a4a4a;
+                    font-size: 14px;
+                    line-height: 16px;
+                    text-align: center;
+                    margin-left: 12px;
+
+                    &:hover {
+                        color: #4a4a4a;
+                    }
+                }
+            }
+        }
+
+        &--extra {
+            width: 60px;
+
+            &-button {
+                background-image: url('/assets/images/player/playlist.png');
+                width: 36px;
+                height: 36px;
+                background-repeat: no-repeat;
+                background-size: contain;
+                cursor: pointer;
+                margin-left: 21px;
+
+                &:hover {
+                    background-image: url('/assets/images/player/playlist-on.png');
+                }
+            }
+        }
+    }
+}
