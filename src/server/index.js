@@ -37,6 +37,7 @@ app.engine('.hbs', handlebarsEngine.engine);
 app.set('views', path.join(__dirname, './views'));
 app.set('view engine', '.hbs');
 
+app.use('/api', require('./routes/api'));
 app.use('/', routes);
 
 app.listen(PORT, () => {

@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
 import MusicPlayer from 'components/music-player';
+import { getSongList } from 'actions/songs';
 
 import './style.scss';
 
@@ -10,6 +12,9 @@ import './style.scss';
  */
 function HomePage() {
     const [selectedSong, setSelectedSong] = useState(null);
+    const dispatch = useDispatch();
+
+    dispatch(getSongList());
 
     return (
         <main className="home">
