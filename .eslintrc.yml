@@ -33,7 +33,7 @@ rules:
     prefer-template: 2
     valid-jsdoc: [2, { prefer: { return: 'returns' }, requireReturn: false, requireReturnDescription: false }]
     max-len: [2, { code: 130, tabWidth: 2, ignoreUrls: true, ignoreStrings: true }]
-    max-lines-per-function: [2, 120]
+    max-lines-per-function: [2, 180]
     max-lines: [2, { max: 600, skipComments: true, skipBlankLines: true }]
     require-jsdoc-except/require-jsdoc:
         [

@@ -1,5 +1,5 @@
 import { createReducer } from './utils';
-import { ACTIONS } from '../actions/songs';
+import { ACTIONS } from '../actions/library';
 
 /**
  * Stores the stock list and calculates Values and Sectors/Interests weights based on that data.
@@ -12,7 +12,7 @@ import { ACTIONS } from '../actions/songs';
 const getSongList = (state, action) => {
     return {
         ...state,
-        all: action.data,
+        songs: action.data.songs,
     };
 };
 

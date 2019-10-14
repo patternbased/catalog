@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux';
 
 import filters from './filters';
-import songs from './songs';
+import library from './library';
 
 const reducer = combineReducers({
     filters,
-    songs,
+    library,
 });
 
 export default reducer;

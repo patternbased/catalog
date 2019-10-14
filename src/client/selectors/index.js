@@ -1,3 +1,4 @@
 import filters from './filters';
+import library from './library';
 
-export default { filters };
+export default { filters, library };

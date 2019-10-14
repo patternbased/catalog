@@ -127,7 +127,6 @@ function FiltersPanel({ visible, style, showSearch }) {
             dispatch(setFilter('instruments', instrumentsCopy.concat(item.value)));
         } else {
             const selectedSearchCopy = [...selectedSearch];
-            console.log(selectedSearchCopy);
             setSelectedSearch(selectedSearchCopy.concat(item));
         }
     };

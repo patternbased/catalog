@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import selectors from 'selectors';
 
 import MusicPlayer from 'components/music-player';
-import { getSongList } from 'actions/songs';
+import { getSongList } from 'actions/library';
+import SongsTable from 'components/songs-table';
 
 import './style.scss';
 
@@ -13,20 +15,15 @@ import './style.scss';
 function HomePage() {
     const [selectedSong, setSelectedSong] = useState(null);
     const dispatch = useDispatch();
+    const songList = useSelector(selectors.library.getAll);
 
-    dispatch(getSongList());
+    useEffect(() => {
+        !songList && dispatch(getSongList());
+    }, []);
 
     return (
         <main className="home">
-            <div className="test">
-                <p
-                    onClick={() =>
-                        setSelectedSong('/assets/songs/Joseph Minadeo - Sounds For Scooba - 01 Into The Light.mp3')
-                    }
-                >
-                    Intro test
-                </p>
-            </div>
+            {songList && <SongsTable list={songList} />}
             {selectedSong !== null && <MusicPlayer song={selectedSong} />}
         </main>
     );

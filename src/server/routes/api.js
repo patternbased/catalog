@@ -9,7 +9,6 @@ const cachedSongList = memoizeFunction(() => SongController.getAll(), oneDay);
 
 router.get('/get-all-songs', async (req, res) => {
     const songs = await cachedSongList();
-    console.log(songs);
 
     res.send({
         songs,

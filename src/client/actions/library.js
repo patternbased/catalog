@@ -2,7 +2,7 @@ import { api } from '../services';
 import 'babel-polyfill';
 
 export const ACTIONS = {
-    GET_SONG_LIST: 'songs.getSongList',
+    GET_SONG_LIST: 'library.getSongList',
 };
 
 /**

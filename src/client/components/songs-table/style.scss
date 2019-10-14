@@ -1,0 +1,125 @@
+@import '../../styles/constants';
+
+.table {
+    margin-top: 20px;
+
+    &__header {
+        height: 30px;
+        background-color: $text-primary;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+
+        &__label {
+            color: white;
+            font-family: $font-other;
+            font-size: 12px;
+            line-height: 17px;
+            text-align: center;
+            width: 40px;
+
+            &:first-child {
+                width: 300px;
+                padding-left: 30px;
+                text-align: left;
+            }
+            &:nth-child(2) {
+                width: 220px;
+            }
+            &:nth-child(3) {
+                width: 100px;
+            }
+            &:nth-child(4) {
+                width: 100px;
+            }
+        }
+    }
+
+    &__body {
+        &__row {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+
+            &__column {
+                padding: 0 20px;
+            }
+
+            &-title {
+                display: flex;
+                align-items: center;
+                justify-content: left;
+                width: 300px;
+                img {
+                    width: 60px;
+                    height: 60px;
+                    margin-right: 20px;
+                }
+                &__wrapper {
+                    &-song-title {
+                        color: $text-primary;
+                        font-family: $font-main;
+                        font-size: 16px;
+                        line-height: 19px;
+                    }
+                    &-song-artist {
+                        color: $text-primary;
+                        font-family: $font-other;
+                        font-size: 12px;
+                        line-height: 20px;
+                    }
+                }
+            }
+
+            &-flow {
+                width: 220px;
+                text-align: center;
+                img {
+                    width: 160px;
+                    height: 40px;
+                }
+            }
+
+            &-duration,
+            &-bpm {
+                width: 100px;
+                text-align: center;
+                p {
+                    color: $text-primary;
+                    font-family: $font-other;
+                    font-size: 16px;
+                    line-height: 22px;
+                    text-align: center;
+                }
+            }
+            &-bpm {
+                p {
+                    font-size: 14px;
+                    line-height: 24px;
+                }
+            }
+
+            &-filter {
+                width: 40px;
+                text-align: center;
+                height: 40px;
+                background-repeat: no-repeat;
+                background-position: 50% 50%;
+                background-size: contain;
+                margin-right: 6px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                p {
+                    color: white;
+                    font-family: $font-main;
+                    font-size: 16px;
+                    font-weight: 600;
+                    line-height: 17px;
+                }
+            }
+        }
+    }
+}
