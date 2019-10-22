@@ -17,7 +17,7 @@
             font-size: 12px;
             line-height: 17px;
             text-align: center;
-            width: 40px;
+            width: 46px;
 
             &:first-child {
                 width: 300px;
@@ -52,24 +52,112 @@
                 align-items: center;
                 justify-content: left;
                 width: 300px;
+                .table__body__row--hovered & {
+                    justify-content: space-between;
+                }
+                &__container {
+                    display: flex;
+                    align-items: center;
+                    justify-content: left;
+                }
+                &__actions {
+                    display: none;
+                    .table__body__row--hovered & {
+                        justify-content: center;
+                        align-items: center;
+                        display: flex;
+                    }
+                    &-button {
+                        width: 36px;
+                        height: 36px;
+                        background-size: contain;
+                        background-repeat: no-repeat;
+                        margin-right: 10px;
+                        cursor: pointer;
+
+                        &--similar {
+                            background-image: url('/assets/images/player/similar.png');
+                            &:hover {
+                                background-image: url('/assets/images/player/similar-on.png');
+                            }
+                        }
+
+                        &--share {
+                            background-image: url('/assets/images/player/share.png');
+                            &:hover {
+                                background-image: url('/assets/images/player/share-on.png');
+                            }
+                        }
+                    }
+
+                    &-license {
+                        border-radius: 2px;
+                        background-color: white;
+                        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+                        border: none;
+                        color: #3d91c0;
+                        font-size: 14px;
+                        line-height: 16px;
+                        text-align: center;
+                        margin-left: 12px;
+
+                        &:hover {
+                            border: 1px solid white;
+                            background-color: transparent;
+                            color: white;
+                        }
+                    }
+                }
                 img {
                     width: 60px;
                     height: 60px;
                     margin-right: 20px;
+                    cursor: pointer;
                 }
                 &__wrapper {
+                    max-width: 470px;
                     &-song-title {
                         color: $text-primary;
                         font-family: $font-main;
                         font-size: 16px;
                         line-height: 19px;
+                        span {
+                            display: none;
+                        }
+                        .table__body__row--hovered & {
+                            color: white;
+                            font-weight: 600;
+                            margin-bottom: 5px;
+                            span {
+                                display: inline-block;
+                                font-family: $font-other;
+                                font-size: 12px;
+                                font-weight: 600;
+                                line-height: 20px;
+                            }
+                        }
                     }
                     &-song-artist {
                         color: $text-primary;
                         font-family: $font-other;
                         font-size: 12px;
                         line-height: 20px;
+                        &--description {
+                            display: none;
+                        }
+                        .table__body__row--hovered & {
+                            &--name {
+                                display: none;
+                            }
+                            &--description {
+                                display: block;
+                                color: white;
+                            }
+                        }
                     }
+                }
+                .table__body__row--hovered & {
+                    width: 100%;
                 }
             }
 
@@ -79,6 +167,9 @@
                 img {
                     width: 160px;
                     height: 40px;
+                }
+                .table__body__row--hovered & {
+                    display: none;
                 }
             }
 
@@ -93,11 +184,16 @@
                     line-height: 22px;
                     text-align: center;
                 }
+                .table__body__row--hovered & {
+                    display: none;
+                }
             }
             &-bpm {
+                width: 100px;
                 p {
                     font-size: 14px;
                     line-height: 24px;
+                    text-align: left;
                 }
             }
 
@@ -118,6 +214,9 @@
                     font-size: 16px;
                     font-weight: 600;
                     line-height: 17px;
+                }
+                .table__body__row--hovered & {
+                    display: none;
                 }
             }
         }

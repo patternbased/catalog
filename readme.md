@@ -28,6 +28,10 @@ Install a [Prettier](https://prettier.io/) extension for your editor / IDE and e
 
 Running the app requires 2 commands:
 
-- `npm start` to start webpack in development mode (with watch)
+-   `npm start` to start webpack in development mode (with watch)
 
-- `npm run server` to start the development server
+-   `npm run server` to start the development server
+
+## Running jobs
+
+To run the update-songs job, run `node src/server/jobs/update-songs`

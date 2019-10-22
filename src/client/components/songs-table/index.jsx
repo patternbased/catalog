@@ -2,6 +2,7 @@ import React, { memo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { FLOW_SHAPES } from 'utils/constants';
 import Button from 'components/button';
+import classnames from 'classnames';
 
 import './style.scss';
 
@@ -10,10 +11,12 @@ const headers = ['SONG NAME / ARTIST NAME', 'FLOW', 'DURATION', 'KEY / BPM', 'RT
 /**
  * Songs table component
  * @param {Array} list list of song objects
+ * @param {Function} onSelect action to take when selecting a song
  * @returns {React.Component}
  */
-function SongsTable({ list }) {
+function SongsTable({ list, onSelect }) {
     const [hovered, setHovered] = useState([]);
+    const [songPlaying, setSongPlaying] = useState(null);
 
     const addToHovered = index => {
         let copyHovered = [...hovered];
@@ -27,8 +30,18 @@ function SongsTable({ list }) {
     };
 
     const checkIfHovered = index => {
-        return hovered.includes(index);
+        return hovered.includes(index) || songPlaying === index;
     };
+
+    const playSong = (item, index) => {
+        onSelect(item);
+        setSongPlaying(index);
+    };
+
+    const getRowClass = index =>
+        classnames('table__body__row', {
+            'table__body__row--hovered': checkIfHovered(index),
+        });
 
     return (
         <div className="table">
@@ -42,7 +55,7 @@ function SongsTable({ list }) {
             <div className="table__body">
                 {list.map((item, index) => (
                     <div
-                        className="table__body__row"
+                        className={getRowClass(index)}
                         style={{ backgroundColor: checkIfHovered(index) ? '#0092C5' : 'white' }}
                         key={index}
                         onMouseOver={() => addToHovered(index)}
@@ -50,10 +63,31 @@ function SongsTable({ list }) {
                     >
                         <>
                             <div className="table__body__row-title">
-                                <img src="/assets/images/logo.png" />
-                                <div className="table__body__row-title__wrapper">
-                                    <p className="table__body__row-title__wrapper-song-title">{item.title}</p>
-                                    <p className="table__body__row-title__wrapper-song-artist">by {item.artistName}</p>
+                                <div className="table__body__row-title__container">
+                                    <img
+                                        src={checkIfHovered(index) ? '/assets/images/table/play-btn.png' : item.cover}
+                                        onClick={() => playSong(item, index)}
+                                    />
+                                    <div className="table__body__row-title__wrapper">
+                                        <p className="table__body__row-title__wrapper-song-title">
+                                            {item.title} <span>by {item.artistName}</span>
+                                        </p>
+                                        <p className="table__body__row-title__wrapper-song-artist">
+                                            <span className="table__body__row-title__wrapper-song-artist--name">
+                                                by {item.artistName}
+                                            </span>
+                                            <span className="table__body__row-title__wrapper-song-artist--description">
+                                                {item.description}
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="table__body__row-title__actions">
+                                    <div className="table__body__row-title__actions-button table__body__row-title__actions-button--similar" />
+                                    <div className="table__body__row-title__actions-button table__body__row-title__actions-button--share" />
+                                    <Button className="table__body__row-title__actions-license" width={80} height={40}>
+                                        License
+                                    </Button>
                                 </div>
                             </div>
                             <div className="table__body__row-flow">
@@ -114,6 +148,7 @@ function SongsTable({ list }) {
 
 SongsTable.propTypes = {
     list: PropTypes.array.isRequired,
+    onSelect: PropTypes.func.isRequired,
 };
 
 SongsTable.displayName = 'SongsTable';

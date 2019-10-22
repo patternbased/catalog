@@ -39,6 +39,8 @@ const Song = new Schema({
     dateReleased: Date,
     tools: Array,
     story: String,
+    url: String,
+    cover: String,
 });
 
 Song.options.toJSON = Song.options.toJSON || {};
