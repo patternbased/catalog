@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import classnames from 'classnames';
 import FilterSvg from 'assets/images/header/filter.svg';
 import PresetSvg from 'assets/images/header/preset.svg';
@@ -11,6 +11,8 @@ import selectors from 'selectors';
 
 import FiltersPanel from 'components/filters-panel';
 import PresetsPanel from 'components/presets-panel';
+
+import { setState } from 'actions/general';
 
 import './style.scss';
 
@@ -28,6 +30,8 @@ function Header() {
     const [presetsOpened, setPresetsOpened] = useState(false);
     const [searchOpened, setSearchOpened] = useState(false);
     const filtersValues = useSelector(selectors.filters.getAll);
+
+    const dispatch = useDispatch();
 
     const scrollHandler = () => {
         if (window.pageYOffset > 100) {
@@ -78,6 +82,7 @@ function Header() {
 
     const openFiltersPanel = () => {
         setFiltersOpened(!filtersOpened);
+        dispatch(setState('filtersOpened', !filtersOpened));
         if (searchOpened && filtersOpened) {
             setSearchOpened(false);
         }

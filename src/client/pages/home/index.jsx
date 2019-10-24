@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import selectors from 'selectors';
+import classnames from 'classnames';
 
 import MusicPlayer from 'components/music-player';
 import { getSongList } from 'actions/library';
@@ -20,6 +21,7 @@ function HomePage() {
     const dispatch = useDispatch();
     const songList = useSelector(selectors.library.getAll);
     const filtersValues = useSelector(selectors.filters.getAll);
+    const filtersPanelState = useSelector(selectors.general.get('filtersOpened'));
 
     useEffect(() => {
         !songList && dispatch(getSongList());
@@ -47,9 +49,17 @@ function HomePage() {
         setNextSong(filteredSongs[selectedSongIndex + 1]);
     };
 
+    const homeClass = useMemo(
+        () =>
+            classnames('home', {
+                'home--pushed': filtersPanelState,
+            }),
+        [filtersPanelState]
+    );
+
     return (
         <>
-            <main className="home">
+            <main className={homeClass}>
                 {filteredSongs.length > 0 && <SongsTable list={filteredSongs} onSelect={val => selectSong(val)} />}
             </main>
             {selectedSong !== null && (
