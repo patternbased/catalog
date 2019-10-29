@@ -90,31 +90,35 @@ HomePage.displayName = 'HomePage';
 export default HomePage;
 
 const _filterSongs = (songs, filters) => {
-    return songs.filter(song => {
-        let similar = 0;
-        if (_isInRange(song.experimental, filters.experimental)) {
-            similar += 1;
-        }
-        if (_isInRange(song.grid, filters.grid)) {
-            similar += 1;
-        }
-        if (_isInRange(song.mood, filters.mood)) {
-            similar += 1;
-        }
-        if (_isInRange(song.rhythm, filters.rhythm)) {
-            similar += 1;
-        }
-        if (_isInRange(song.speed, filters.speed)) {
-            similar += 1;
-        }
-        if (_isInRange(song.speed, filters.duration)) {
-            similar += 1;
-        }
-        if (filters.flow && filters.flow.includes(song.arc.toLowerCase())) {
-            similar += 1;
-        }
-        return similar === Object.keys(filters).length;
-    });
+    if (Object.keys(filters).length > 0) {
+        return songs.filter(song => {
+            let similar = 0;
+            if (_isInRange(song.experimental, filters.experimental)) {
+                similar += 1;
+            }
+            if (_isInRange(song.grid, filters.grid)) {
+                similar += 1;
+            }
+            if (_isInRange(song.mood, filters.mood)) {
+                similar += 1;
+            }
+            if (_isInRange(song.rhythm, filters.rhythm)) {
+                similar += 1;
+            }
+            if (_isInRange(song.speed, filters.speed)) {
+                similar += 1;
+            }
+            if (_isInRange(song.speed, filters.duration)) {
+                similar += 1;
+            }
+            if (filters.flow && filters.flow.includes(song.arc.toLowerCase())) {
+                similar += 1;
+            }
+            return similar === Object.keys(filters).length;
+        });
+    } else {
+        return [];
+    }
 };
 
 const _isInRange = (value, range) => {

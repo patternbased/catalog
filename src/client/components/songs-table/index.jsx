@@ -1,8 +1,10 @@
 import React, { memo, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 import { TABLE_FLOW_SHAPES } from 'utils/constants';
 import Button from 'components/button';
 import classnames from 'classnames';
+import selectors from 'selectors';
 
 import './style.scss';
 
@@ -17,6 +19,7 @@ const headers = ['SONG NAME / ARTIST NAME', 'FLOW', 'DURATION', 'KEY / BPM', 'RT
  */
 function SongsTable({ list, onSelect, currentSongIndex }) {
     const [hovered, setHovered] = useState([]);
+    const appliedFilters = useSelector(selectors.filters.getApplied);
 
     const addToHovered = index => {
         let copyHovered = [...hovered];
@@ -47,6 +50,22 @@ function SongsTable({ list, onSelect, currentSongIndex }) {
 
     return (
         <div className="table">
+            {Object.keys(appliedFilters).length > 0 && (
+                <div className="table__filters">
+                    <img src="/assets/images/table/results-play.png" className="table__filters__icon" />
+                    <div className="table__filters__applied">
+                        {Object.keys(appliedFilters).map((filter, index) => (
+                            <div className="table__filters__applied__single" key={index}>
+                                <span className="table__filters__applied__single-bold">
+                                    {filter.charAt(0).toUpperCase() + filter.substring(1)}
+                                </span>
+                                {`${appliedFilters[filter][0]}-${appliedFilters[filter][1]}`},
+                            </div>
+                        ))}
+                        <div className="table__filters__applied__count">{list.length} Tracks</div>
+                    </div>
+                </div>
+            )}
             <div className="table__header">
                 {headers.map((item, index) => (
                     <div className="table__header__label" key={index}>

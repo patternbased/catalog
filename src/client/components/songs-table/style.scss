@@ -1,8 +1,41 @@
 @import '../../styles/constants';
 
 .table {
-    margin-top: 20px;
+    margin-top: 47px;
 
+    &__filters {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        margin-bottom: 20px;
+        &__icon {
+            width: 60px;
+            margin-right: 20px;
+        }
+        &__applied {
+            &__single {
+                color: $text-primary;
+                font-size: 20px;
+                line-height: 24px;
+                display: inline-block;
+                margin-right: 5px;
+                &-bold {
+                    font-weight: 600;
+                    margin-right: 5px;
+                }
+                &:last-child {
+                    margin-right: 0;
+                }
+            }
+            &__count {
+                color: $text-primary;
+                font-family: $font-other;
+                font-size: 12px;
+                line-height: 17px;
+                margin-top: 5px;
+            }
+        }
+    }
     &__header {
         height: 30px;
         background-color: $text-primary;
