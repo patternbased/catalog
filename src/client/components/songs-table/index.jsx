@@ -85,7 +85,7 @@ function SongsTable({ list, onSelect, currentSongIndex }) {
                                                 by {item.artistName}
                                             </span>
                                             <span className="table__body__row-title__wrapper-song-artist--description">
-                                                {item.description}
+                                                {item.description.substr(0, 150) + '...'}
                                             </span>
                                         </p>
                                     </div>
