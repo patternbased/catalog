@@ -2,8 +2,13 @@
 
 .home {
     padding-top: 100px;
+    margin: 0 auto;
     max-width: 1040px;
+}
+.app-container {
+    margin: 0;
+    transition: all 0.7s ease-in-out;
     &--pushed {
-        margin: 0 0 0 25%;
+        margin-left: 300px;
     }
 }

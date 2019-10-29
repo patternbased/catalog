@@ -1,6 +1,6 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { FLOW_SHAPES } from 'utils/constants';
+import { TABLE_FLOW_SHAPES } from 'utils/constants';
 import Button from 'components/button';
 import classnames from 'classnames';
 
@@ -12,11 +12,11 @@ const headers = ['SONG NAME / ARTIST NAME', 'FLOW', 'DURATION', 'KEY / BPM', 'RT
  * Songs table component
  * @param {Array} list list of song objects
  * @param {Function} onSelect action to take when selecting a song
+ * @param {Number} currentSongIndex index of the current playing song
  * @returns {React.Component}
  */
-function SongsTable({ list, onSelect }) {
+function SongsTable({ list, onSelect, currentSongIndex }) {
     const [hovered, setHovered] = useState([]);
-    const [songPlaying, setSongPlaying] = useState(null);
 
     const addToHovered = index => {
         let copyHovered = [...hovered];
@@ -29,13 +29,15 @@ function SongsTable({ list, onSelect }) {
         setHovered(copyHovered.filter(x => x !== index));
     };
 
-    const checkIfHovered = index => {
-        return hovered.includes(index) || songPlaying === index;
-    };
+    const checkIfHovered = useCallback(
+        index => {
+            return hovered.includes(index);
+        },
+        [hovered]
+    );
 
-    const playSong = (item, index) => {
+    const playSong = item => {
         onSelect(item);
-        setSongPlaying(index);
     };
 
     const getRowClass = index =>
@@ -65,7 +67,13 @@ function SongsTable({ list, onSelect }) {
                             <div className="table__body__row-title">
                                 <div className="table__body__row-title__container">
                                     <img
-                                        src={checkIfHovered(index) ? '/assets/images/table/play-btn.png' : item.cover}
+                                        src={
+                                            checkIfHovered(index)
+                                                ? '/assets/images/table/play-btn.png'
+                                                : currentSongIndex === index
+                                                ? '/assets/images/table/play-active.svg'
+                                                : item.cover
+                                        }
                                         onClick={() => playSong(item, index)}
                                     />
                                     <div className="table__body__row-title__wrapper">
@@ -91,8 +99,8 @@ function SongsTable({ list, onSelect }) {
                                 </div>
                             </div>
                             <div className="table__body__row-flow">
-                                {FLOW_SHAPES[item.arc.toLowerCase()] && (
-                                    <img src={FLOW_SHAPES.find(x => x.name === item.arc.toLowerCase()).image} />
+                                {TABLE_FLOW_SHAPES[item.arc.toLowerCase()] && (
+                                    <img src={TABLE_FLOW_SHAPES.find(x => x.name === item.arc.toLowerCase()).image} />
                                 )}
                             </div>
                             <div className="table__body__row-duration">
@@ -149,6 +157,7 @@ function SongsTable({ list, onSelect }) {
 SongsTable.propTypes = {
     list: PropTypes.array.isRequired,
     onSelect: PropTypes.func.isRequired,
+    currentSongIndex: PropTypes.number,
 };
 
 SongsTable.displayName = 'SongsTable';

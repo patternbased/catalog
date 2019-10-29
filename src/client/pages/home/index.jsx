@@ -54,17 +54,25 @@ function HomePage() {
 
     const homeClass = useMemo(
         () =>
-            classnames('home', {
-                'home--pushed': filtersPanelState || presetsPanelState,
+            classnames('app-container', {
+                'app-container--pushed': filtersPanelState || presetsPanelState,
             }),
         [filtersPanelState, presetsPanelState]
     );
 
     return (
         <>
-            <main className={homeClass}>
-                {filteredSongs.length > 0 && <SongsTable list={filteredSongs} onSelect={val => selectSong(val)} />}
-            </main>
+            <div className={homeClass}>
+                <main className="home">
+                    {filteredSongs.length > 0 && (
+                        <SongsTable
+                            list={filteredSongs}
+                            onSelect={val => selectSong(val)}
+                            currentSongIndex={selectedSongIndex}
+                        />
+                    )}
+                </main>
+            </div>
             {selectedSong !== null && (
                 <MusicPlayer
                     song={selectedSong}

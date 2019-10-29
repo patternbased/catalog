@@ -61,6 +61,27 @@ export const FLOW_SHAPES = [
     },
 ];
 
+export const TABLE_FLOW_SHAPES = [
+    { name: 'flat', image: '/assets/images/table/flat.svg' },
+    {
+        name: 'subtleBuild',
+        image: '/assets/images/table/subtleBuild.svg',
+    },
+    { name: 'build', image: '/assets/images/table/build.svg' },
+    {
+        name: 'descending',
+        image: '/assets/images/table/descending.svg',
+    },
+    {
+        name: 'multipleBuild',
+        image: '/assets/images/table/multipleBuild.svg',
+    },
+    {
+        name: 'meandering',
+        image: '/assets/images/table/meandering.svg',
+    },
+];
+
 export const PRESETS = {
     'Commerce and Happiness': {
         background: '/assets/images/presets/tim-mossholder-78CGaGIFkzE-unsplash.jpg',
