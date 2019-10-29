@@ -20,8 +20,9 @@ function HomePage() {
     const [nextSong, setNextSong] = useState(null);
     const dispatch = useDispatch();
     const songList = useSelector(selectors.library.getAll);
-    const filtersValues = useSelector(selectors.filters.getAll);
+    const filtersValues = useSelector(selectors.filters.getApplied);
     const filtersPanelState = useSelector(selectors.general.get('filtersOpened'));
+    const presetsPanelState = useSelector(selectors.general.get('presetsOpened'));
 
     useEffect(() => {
         !songList && dispatch(getSongList());
@@ -38,23 +39,25 @@ function HomePage() {
     };
 
     const goToNextSong = () => {
-        setSelectedSongIndex(selectedSongIndex + 1);
-        setSelectedSong(filteredSongs[selectedSongIndex]);
-        setNextSong(filteredSongs[selectedSongIndex + 1]);
+        const sel = selectedSongIndex;
+        setSelectedSongIndex(sel + 1);
+        setSelectedSong(filteredSongs[sel + 1]);
+        setNextSong(filteredSongs[sel + 2]);
     };
 
     const goToPrevSong = () => {
-        setSelectedSongIndex(selectedSongIndex - 1);
-        setSelectedSong(filteredSongs[selectedSongIndex]);
-        setNextSong(filteredSongs[selectedSongIndex + 1]);
+        const sel = selectedSongIndex;
+        setSelectedSongIndex(sel - 1);
+        setSelectedSong(filteredSongs[sel - 1]);
+        setNextSong(filteredSongs[sel - 2]);
     };
 
     const homeClass = useMemo(
         () =>
             classnames('home', {
-                'home--pushed': filtersPanelState,
+                'home--pushed': filtersPanelState || presetsPanelState,
             }),
-        [filtersPanelState]
+        [filtersPanelState, presetsPanelState]
     );
 
     return (
@@ -99,16 +102,19 @@ const _filterSongs = (songs, filters) => {
         if (_isInRange(song.speed, filters.duration)) {
             similar += 1;
         }
-        if (filters.flow.includes(song.arc.toLowerCase())) {
+        if (filters.flow && filters.flow.includes(song.arc.toLowerCase())) {
             similar += 1;
         }
-        return similar > 0;
+        return similar === Object.keys(filters).length;
     });
 };
 
 const _isInRange = (value, range) => {
-    if (value > 0 && range[0] === 0 && (![10, 20].includes(value) && [10, 20].includes(range[1]))) {
-        return false;
+    if (range) {
+        if (value > 0 && range[0] === 0 && (![10, 20].includes(value) && [10, 20].includes(range[1]))) {
+            return false;
+        }
+        return value >= range[0] && value <= range[1];
     }
-    return value >= range[0] && value <= range[1];
+    return false;
 };

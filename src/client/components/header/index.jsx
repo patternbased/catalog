@@ -29,7 +29,7 @@ function Header() {
     const [filtersOpened, setFiltersOpened] = useState(false);
     const [presetsOpened, setPresetsOpened] = useState(false);
     const [searchOpened, setSearchOpened] = useState(false);
-    const filtersValues = useSelector(selectors.filters.getAll);
+    const filtersValues = useSelector(selectors.filters.getApplied);
 
     const dispatch = useDispatch();
 
@@ -67,6 +67,8 @@ function Header() {
         if (presetsOpened) {
             setPresetsOpened(false);
             setFiltersOpened(true);
+            dispatch(setState('presetsOpened', false));
+            dispatch(setState('filtersOpened', true));
         }
     }, [filtersValues]);
 
@@ -74,9 +76,11 @@ function Header() {
         setSearchOpened(!searchOpened);
         if (!filtersOpened) {
             setFiltersOpened(true);
+            dispatch(setState('filtersOpened', true));
         }
         if (presetsOpened) {
             setPresetsOpened(false);
+            dispatch(setState('filtersOpened', true));
         }
     };
 
@@ -86,6 +90,11 @@ function Header() {
         if (searchOpened && filtersOpened) {
             setSearchOpened(false);
         }
+    };
+
+    const openPresetsPanel = () => {
+        setPresetsOpened(!presetsOpened);
+        dispatch(setState('presetsOpened', !presetsOpened));
     };
 
     return (
@@ -99,7 +108,7 @@ function Header() {
                     />
                     <PresetSvg
                         className="header__buttons-icon"
-                        onClick={() => setPresetsOpened(!presetsOpened)}
+                        onClick={() => openPresetsPanel()}
                         fill={presetsOpened ? svgActiveFill : svgDefaultFill}
                     />
                     <SearchSvg

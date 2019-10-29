@@ -96,7 +96,7 @@ module.exports = async () => {
         dateReleased: row.datereleased,
         tools: row.tools.split(new RegExp(separators.join('|'), 'g')),
         story: row.story,
-        url: `/assets/songs/${row.catnum}/${row.id}.mp3`,
-        cover: `/assets/songs/${row.catnum}/cover.jpg`,
+        url: `https://pblibrary.s3.us-east-2.amazonaws.com/${row.catnum}/${row.id}.mp3`,
+        cover: `https://pblibrary.s3.us-east-2.amazonaws.com/${row.catnum}/cover.jpg`,
     }));
 };
