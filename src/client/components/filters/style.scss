@@ -107,7 +107,12 @@
             border: none;
             border-radius: 0;
             margin: 0;
-            transition: left 1s linear;
+            transition: all 1s linear;
+        }
+    }
+    .rc-slider.anim {
+        .rc-slider-handle {
+            transition: none;
         }
     }
 
