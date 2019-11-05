@@ -4,6 +4,8 @@ import { ACTIONS } from '../actions/general';
 const initialState = {
     filtersOpened: false,
     presetsOpened: false,
+    queueOpened: false,
+    similarOpened: false,
 };
 
 const setState = (state, action) => ({

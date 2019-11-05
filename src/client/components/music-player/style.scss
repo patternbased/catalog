@@ -11,7 +11,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-
+    z-index: 1;
     &__section {
         border-right: 1px solid #f5f4f5;
         display: flex;
@@ -153,16 +153,16 @@
                     cursor: pointer;
 
                     &--similar {
-                        background-image: url('/assets/images/player/similar.png');
+                        background-image: url('/assets/images/player/similar-off-white.svg');
                         &:hover {
-                            background-image: url('/assets/images/player/similar-on.png');
+                            background-image: url('/assets/images/player/similar-on.svg');
                         }
                     }
 
                     &--share {
-                        background-image: url('/assets/images/player/share.png');
+                        background-image: url('/assets/images/player/share-off-white.svg');
                         &:hover {
-                            background-image: url('/assets/images/player/share-on.png');
+                            background-image: url('/assets/images/player/share-on.svg');
                         }
                     }
                 }

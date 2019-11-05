@@ -13,6 +13,7 @@ import Preset from 'components/preset';
 import SearchBar from 'components/search-bar';
 
 import { setFilter, resetFilter, resetAllFilters } from 'actions/filters';
+import { clearQueue } from 'actions/library';
 import { BASIC_FILTERS, PRESETS, ARTISTS, SONGS, INSTRUMENTS } from 'utils/constants';
 
 import './style.scss';
@@ -201,6 +202,7 @@ function FiltersPanel({ visible, style, showSearch }) {
                                     onClick={() => {
                                         dispatch(resetAllFilters());
                                         setSimilarPresets([]);
+                                        dispatch(clearQueue());
                                     }}
                                 >
                                     Clear All

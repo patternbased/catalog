@@ -4,7 +4,7 @@ import selectors from 'selectors';
 import classnames from 'classnames';
 
 import MusicPlayer from 'components/music-player';
-import { getSongList } from 'actions/library';
+import { getSongList, setCurrentPlaylist, setCurrentSong, addToQueue } from 'actions/library';
 import SongsTable from 'components/songs-table';
 
 import './style.scss';
@@ -15,7 +15,6 @@ import './style.scss';
  */
 function HomePage() {
     const [selectedSong, setSelectedSong] = useState(null);
-    const [filteredSongs, setFilteredSongs] = useState([]);
     const [selectedSongIndex, setSelectedSongIndex] = useState(null);
     const [nextSong, setNextSong] = useState(null);
     const dispatch = useDispatch();
@@ -23,33 +22,37 @@ function HomePage() {
     const filtersValues = useSelector(selectors.filters.getApplied);
     const filtersPanelState = useSelector(selectors.general.get('filtersOpened'));
     const presetsPanelState = useSelector(selectors.general.get('presetsOpened'));
+    const currentPlaylist = useSelector(selectors.library.getCurrentPlaylist);
 
     useEffect(() => {
         !songList && dispatch(getSongList());
     }, []);
 
     useEffect(() => {
-        songList && setFilteredSongs(_filterSongs(songList, filtersValues));
+        dispatch(setCurrentPlaylist(_filterSongs(songList, filtersValues)));
     }, [filtersValues]);
 
     const selectSong = song => {
-        setSelectedSongIndex(filteredSongs.indexOf(song));
+        setSelectedSongIndex(currentPlaylist.indexOf(song));
         setSelectedSong(song);
-        setNextSong(filteredSongs[selectedSongIndex + 1]);
+        setNextSong(currentPlaylist[selectedSongIndex + 1]);
     };
 
     const goToNextSong = () => {
         const sel = selectedSongIndex;
         setSelectedSongIndex(sel + 1);
-        setSelectedSong(filteredSongs[sel + 1]);
-        setNextSong(filteredSongs[sel + 2]);
+        setSelectedSong(currentPlaylist[sel + 1]);
+        setNextSong(currentPlaylist[sel + 2]);
+        dispatch(setCurrentSong(currentPlaylist[sel + 1]));
+        dispatch(addToQueue(currentPlaylist[sel + 2]));
     };
 
     const goToPrevSong = () => {
         const sel = selectedSongIndex;
         setSelectedSongIndex(sel - 1);
-        setSelectedSong(filteredSongs[sel - 1]);
-        setNextSong(filteredSongs[sel - 2]);
+        setSelectedSong(currentPlaylist[sel - 1]);
+        setNextSong(currentPlaylist[sel - 2]);
+        dispatch(setCurrentSong(currentPlaylist[sel - 1]));
     };
 
     const homeClass = useMemo(
@@ -64,9 +67,9 @@ function HomePage() {
         <>
             <div className={homeClass}>
                 <main className="home">
-                    {filteredSongs.length > 0 && (
+                    {currentPlaylist && currentPlaylist.length > 0 && (
                         <SongsTable
-                            list={filteredSongs}
+                            list={currentPlaylist}
                             onSelect={val => selectSong(val)}
                             currentSongIndex={selectedSongIndex}
                         />

@@ -11,6 +11,7 @@
         &__icon {
             width: 60px;
             margin-right: 20px;
+            cursor: pointer;
         }
         &__applied {
             &__single {
@@ -109,16 +110,16 @@
                         cursor: pointer;
 
                         &--similar {
-                            background-image: url('/assets/images/player/similar.png');
+                            background-image: url('/assets/images/player/similar-off-white.svg');
                             &:hover {
-                                background-image: url('/assets/images/player/similar-on.png');
+                                background-image: url('/assets/images/player/similar-off.svg');
                             }
                         }
 
                         &--share {
-                            background-image: url('/assets/images/player/share.png');
+                            background-image: url('/assets/images/player/share-off-white.svg');
                             &:hover {
-                                background-image: url('/assets/images/player/share-on.png');
+                                background-image: url('/assets/images/player/share-off.svg');
                             }
                         }
                     }

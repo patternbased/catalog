@@ -13,10 +13,10 @@ function BackToTop() {
     const scrollHandler = () => {
         if (window.pageYOffset > 80) {
             setScrolled(true);
-            setStyle({ opacity: '0.8' });
+            setStyle({ opacity: '0.8', visibility: 'visible' });
         } else {
             setScrolled(false);
-            setStyle({ opacity: '0' });
+            setStyle({ opacity: '0', visibility: 'hidden' });
         }
     };
 

@@ -4,9 +4,10 @@
     height: 100px;
     right: 40px;
     bottom: 10px;
-    position: absolute;
+    position: fixed;
     cursor: pointer;
     opacity: 0;
+    visibility: hidden;
     transition: opacity 0.5s linear;
 
     &:hover {
