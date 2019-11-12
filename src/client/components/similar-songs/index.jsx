@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import selectors from 'selectors';
 
 import { setState } from 'actions/general';
+import { setCurrentSong } from 'actions/library';
 
 import './style.scss';
 
@@ -102,7 +103,7 @@ function SimilarSongsPanel({ visible, style, onClose }) {
                         onMouseOver={() => addToHovered(index)}
                         onMouseOut={() => removeFromHovered(index)}
                     >
-                        {_renderSimilarSong(song, checkIfHovered(index))}
+                        {_renderSimilarSong(song, checkIfHovered(index), () => dispatch(setCurrentSong(song)))}
                     </div>
                 ))}
             </div>
@@ -114,12 +115,17 @@ function SimilarSongsPanel({ visible, style, onClose }) {
  * Renders the songs in the queue
  * @param {Object} song song to render
  * @param {Boolean} hovered current song hovered
+ * @param {Function} onPlay action when cover is clicked
  * @returns {React.Component}
  */
-function _renderSimilarSong(song, hovered) {
+function _renderSimilarSong(song, hovered, onPlay) {
     return (
         <>
-            <img src={hovered ? '/assets/images/similar/song-play.png' : song.cover} className="similar__song__cover" />
+            <img
+                src={hovered ? '/assets/images/similar/song-play.png' : song.cover}
+                className="similar__song__cover"
+                onClick={onPlay}
+            />
             <div className="similar__song__wrapper">
                 <div className="similar__song__title">{song.title}</div>
                 <div className="similar__song__artist">

@@ -7,7 +7,7 @@ import selectors from 'selectors';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 import { setState } from 'actions/general';
-import { removeFromQueue, reorderQueue } from 'actions/library';
+import { removeFromQueue, reorderQueue, setCurrentSong } from 'actions/library';
 
 import './style.scss';
 
@@ -182,8 +182,12 @@ function QueuePanel({ visible, style, onClose }) {
                                                         )}
                                                     </>
                                                 ) : (
-                                                    _renderQueueSong(song, currentSong, checkIfHovered(index), () =>
-                                                        removeSongFromQueue(song)
+                                                    _renderQueueSong(
+                                                        song,
+                                                        currentSong,
+                                                        checkIfHovered(index),
+                                                        () => removeSongFromQueue(song),
+                                                        () => dispatch(setCurrentSong(song))
                                                     )
                                                 )}
                                             </div>
@@ -200,7 +204,8 @@ function QueuePanel({ visible, style, onClose }) {
                                                                 song,
                                                                 currentSong,
                                                                 checkIfHovered(`sublist-${index}`),
-                                                                () => removeSongFromQueue(song)
+                                                                () => removeSongFromQueue(song),
+                                                                () => dispatch(setCurrentSong(song))
                                                             )}
                                                         </div>
                                                     ))}
@@ -224,15 +229,18 @@ function QueuePanel({ visible, style, onClose }) {
  * @param {Object} song song to render
  * @param {Object} current current song playing
  * @param {Boolean} hovered song hovered
+ * @param {Function} onRemove action when delete icon is clicked
+ * @param {Function} playSong action when cover icon is clicked
  * @returns {React.Component}
  */
-function _renderQueueSong(song, current, hovered, onRemove) {
+function _renderQueueSong(song, current, hovered, onRemove, playSong) {
     return (
         <>
             {hovered && <img src="/assets/images/queue/handle.png" className="queue__song__handle" />}
             <img
                 src={current === song ? '/assets/images/table/play-active.svg' : song.cover}
                 className="queue__song__cover"
+                onClick={playSong}
             />
             <div className="queue__song__wrapper">
                 <div

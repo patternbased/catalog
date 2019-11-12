@@ -1,7 +1,8 @@
 import React, { memo, useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Slider from 'rc-slider';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import selectors from 'selectors';
 
 import Button from 'components/button';
 import QueuePanel from 'components/queue';
@@ -19,7 +20,7 @@ import './style.scss';
  * @param {Function} onPrev action to take when user clicks prev
  * @returns {React.Component}
  */
-function MusicPlayer({ song, nextSong, onNext, onPrev }) {
+function MusicPlayer({ nextSong, onNext, onPrev }) {
     const [isPlaying, setIsPlaying] = useState(false);
     const [songHovered, setSongHovered] = useState(false);
     const [elapsed, setElapsed] = useState(0);
@@ -27,6 +28,7 @@ function MusicPlayer({ song, nextSong, onNext, onPrev }) {
     const [queueOpened, setQueueOpened] = useState(false);
     const [similarOpened, setSimilarOpened] = useState(false);
     const dispatch = useDispatch();
+    const currentSong = useSelector(selectors.library.getCurrentSong);
 
     const musicPlayer = useRef();
 
@@ -52,7 +54,7 @@ function MusicPlayer({ song, nextSong, onNext, onPrev }) {
     };
 
     useEffect(() => {
-        musicPlayer.current.src = song.url;
+        musicPlayer.current.src = currentSong.url;
         musicPlayer.current.play();
         setIsPlaying(true);
         musicPlayer.current.addEventListener('timeupdate', e => {
@@ -65,7 +67,7 @@ function MusicPlayer({ song, nextSong, onNext, onPrev }) {
             musicPlayer.current.src = nextSong.url;
             musicPlayer.current.play();
         });
-    }, [song]);
+    }, [currentSong]);
 
     return (
         <>
@@ -98,16 +100,16 @@ function MusicPlayer({ song, nextSong, onNext, onPrev }) {
                 </div>
                 <div className="music-player__section music-player__section--content">
                     <div className="music-player__section--content__song">
-                        <img src={song.cover} className="music-player__section--content__song-image" />
+                        <img src={currentSong.cover} className="music-player__section--content__song-image" />
                         <div
                             className="music-player__section--content__song__details"
                             onMouseEnter={() => handleSongHover()}
                             onMouseLeave={() => setSongHovered(false)}
                         >
-                            <p className="music-player__section--content__song__details-title">{song.title}</p>
+                            <p className="music-player__section--content__song__details-title">{currentSong.title}</p>
                             {songHovered && (
                                 <p className="music-player__section--content__song__details-author music-player__section--content__song__details-author--inline">
-                                    by {song.artistName}
+                                    by {currentSong.artistName}
                                 </p>
                             )}
                             {!songHovered && (
@@ -178,7 +180,6 @@ function _formatTime(time) {
 }
 
 MusicPlayer.propTypes = {
-    song: PropTypes.object.isRequired,
     nextSong: PropTypes.object.isRequired,
     onNext: PropTypes.func.isRequired,
     onPrev: PropTypes.func.isRequired,

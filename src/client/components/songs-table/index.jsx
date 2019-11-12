@@ -18,13 +18,13 @@ const headers = ['SONG NAME / ARTIST NAME', 'FLOW', 'DURATION', 'KEY / BPM', 'RT
  * Songs table component
  * @param {Array} list list of song objects
  * @param {Function} onSelect action to take when selecting a song
- * @param {Number} currentSongIndex index of the current playing song
  * @returns {React.Component}
  */
-function SongsTable({ list, onSelect, currentSongIndex }) {
+function SongsTable({ list, onSelect }) {
     const [hovered, setHovered] = useState([]);
     const [similarOpened, setSimilarOpened] = useState(false);
     const appliedFilters = useSelector(selectors.filters.getApplied);
+    const currentSong = useSelector(selectors.library.getCurrentSong);
     const dispatch = useDispatch();
 
     const addToHovered = index => {
@@ -137,7 +137,7 @@ function SongsTable({ list, onSelect, currentSongIndex }) {
                                             src={
                                                 checkIfHovered(index)
                                                     ? '/assets/images/table/play-btn.png'
-                                                    : currentSongIndex === index
+                                                    : currentSong.pbId === item.pbId
                                                     ? '/assets/images/table/play-active.svg'
                                                     : item.cover
                                             }
@@ -238,7 +238,6 @@ function SongsTable({ list, onSelect, currentSongIndex }) {
 SongsTable.propTypes = {
     list: PropTypes.array.isRequired,
     onSelect: PropTypes.func.isRequired,
-    currentSongIndex: PropTypes.number,
 };
 
 SongsTable.displayName = 'SongsTable';
