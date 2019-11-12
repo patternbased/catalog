@@ -4,9 +4,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import selectors from 'selectors';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 import { setState } from 'actions/general';
-import { removeFromQueue } from 'actions/library';
+import { removeFromQueue, reorderQueue } from 'actions/library';
 
 import './style.scss';
 
@@ -80,6 +81,26 @@ function QueuePanel({ visible, style, onClose }) {
         dispatch(removeFromQueue(song));
     };
 
+    const onDragEnd = result => {
+        if (!result.destination) {
+            return;
+        }
+
+        if (result.destination.index === result.source.index) {
+            return;
+        }
+
+        reorder(songs, result.source.index, result.destination.index);
+    };
+
+    const reorder = (list, startIndex, endIndex) => {
+        const result = [...list];
+        const [removed] = result.splice(startIndex, 1);
+        result.splice(endIndex, 0, removed);
+
+        dispatch(reorderQueue(result));
+    };
+
     return (
         <div className={panelClass} style={style}>
             <div className="queue__header">
@@ -87,77 +108,113 @@ function QueuePanel({ visible, style, onClose }) {
                 <div className="queue__header__name">QUEUE</div>
                 <img src="/assets/images/more-icon.png" onClick={() => {}} />
             </div>
-            <div className="queue__content">
-                {songs.map((song, index) => (
-                    <>
-                        <div
-                            key={index}
-                            className={songWrapperClass(index)}
-                            onMouseOver={() => addToHovered(index)}
-                            onMouseLeave={() => removeFromHovered(index)}
-                        >
-                            {song.name ? (
-                                <>
-                                    {checkIfHovered(index) && (
-                                        <img src="/assets/images/queue/handle.png" className="queue__song__handle" />
-                                    )}
-                                    <img src="/assets/images/queue/stack.png" className="queue__song__cover" />
-                                    <div
-                                        className={
-                                            checkIfHovered(index)
-                                                ? 'queue__song__wrapper queue__song__wrapper--hovered'
-                                                : 'queue__song__wrapper'
-                                        }
-                                    >
+            <DragDropContext onDragEnd={onDragEnd}>
+                <Droppable droppableId="list">
+                    {provided => (
+                        <div className="queue__content" ref={provided.innerRef} {...provided.droppableProps}>
+                            {songs.map((song, index) => (
+                                <Draggable
+                                    key={song.name || song.pbId}
+                                    draggableId={song.name || song.pbId}
+                                    index={index}
+                                >
+                                    {(provided, snapshot) => (
                                         <div
-                                            className="queue__song__name"
-                                            dangerouslySetInnerHTML={{ __html: song.name }}
-                                        ></div>
-                                        <div className="queue__song__count">{song.list.length} Tracks</div>
-                                    </div>
-                                    {checkIfHovered(index) && (
-                                        <>
-                                            <img
-                                                src="/assets/images/queue/delete.png"
-                                                className="queue__song__delete"
-                                                onClick={() => removeSongFromQueue(song)}
-                                            />
-                                            <div className="queue__song__more" onClick={() => addToExpanded(index)}>
-                                                {checkIfExpanded(index) ? '' : '+'}
+                                            ref={provided.innerRef}
+                                            {...provided.draggableProps}
+                                            {...provided.dragHandleProps}
+                                        >
+                                            <div
+                                                key={index}
+                                                className={songWrapperClass(index)}
+                                                onMouseOver={() => addToHovered(index)}
+                                                onMouseLeave={() => removeFromHovered(index)}
+                                            >
+                                                {song.name ? (
+                                                    <>
+                                                        {checkIfHovered(index) && (
+                                                            <img
+                                                                src="/assets/images/queue/handle.png"
+                                                                className="queue__song__handle"
+                                                            />
+                                                        )}
+                                                        <img
+                                                            src="/assets/images/queue/stack.png"
+                                                            className="queue__song__cover"
+                                                        />
+                                                        <div
+                                                            className={
+                                                                checkIfHovered(index)
+                                                                    ? 'queue__song__wrapper queue__song__wrapper--hovered'
+                                                                    : 'queue__song__wrapper'
+                                                            }
+                                                        >
+                                                            <div
+                                                                className="queue__song__name"
+                                                                dangerouslySetInnerHTML={{ __html: song.name }}
+                                                            ></div>
+                                                            <div className="queue__song__count">
+                                                                {song.list.length} Tracks
+                                                            </div>
+                                                        </div>
+                                                        {checkIfHovered(index) && (
+                                                            <>
+                                                                <img
+                                                                    src="/assets/images/queue/delete.png"
+                                                                    className="queue__song__delete"
+                                                                    onClick={() => removeSongFromQueue(song)}
+                                                                />
+                                                                <div
+                                                                    className="queue__song__more"
+                                                                    onClick={() => addToExpanded(index)}
+                                                                >
+                                                                    {checkIfExpanded(index) ? '' : '+'}
+                                                                </div>
+                                                            </>
+                                                        )}
+                                                        {checkIfExpanded(index) && (
+                                                            <div
+                                                                className="queue__song__more"
+                                                                onClick={() => addToExpanded(index)}
+                                                            >
+                                                                -
+                                                            </div>
+                                                        )}
+                                                    </>
+                                                ) : (
+                                                    _renderQueueSong(song, currentSong, checkIfHovered(index), () =>
+                                                        removeSongFromQueue(song)
+                                                    )
+                                                )}
                                             </div>
-                                        </>
-                                    )}
-                                    {checkIfExpanded(index) && (
-                                        <div className="queue__song__more" onClick={() => addToExpanded(index)}>
-                                            -
+                                            {checkIfExpanded(index) && (
+                                                <div className="queue__sublist">
+                                                    {song.list.map((song, index) => (
+                                                        <div
+                                                            key={index}
+                                                            className={songWrapperClass(`sublist-${index}`)}
+                                                            onMouseOver={() => addToHovered(`sublist-${index}`)}
+                                                            onMouseLeave={() => removeFromHovered(`sublist-${index}`)}
+                                                        >
+                                                            {_renderQueueSong(
+                                                                song,
+                                                                currentSong,
+                                                                checkIfHovered(`sublist-${index}`),
+                                                                () => removeSongFromQueue(song)
+                                                            )}
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            )}
                                         </div>
                                     )}
-                                </>
-                            ) : (
-                                _renderQueueSong(song, currentSong, checkIfHovered(index), () =>
-                                    removeSongFromQueue(song)
-                                )
-                            )}
+                                </Draggable>
+                            ))}
+                            {provided.placeholder}
                         </div>
-                        {checkIfExpanded(index) && (
-                            <div className="queue__sublist">
-                                {song.list.map((song, index) => (
-                                    <div
-                                        key={index}
-                                        className={songWrapperClass(`sublist-${index}`)}
-                                        onMouseOver={() => addToHovered(`sublist-${index}`)}
-                                        onMouseLeave={() => removeFromHovered(`sublist-${index}`)}
-                                    >
-                                        {_renderQueueSong(song, currentSong, checkIfHovered(`sublist-${index}`), () =>
-                                            removeSongFromQueue(song)
-                                        )}
-                                    </div>
-                                ))}
-                            </div>
-                        )}
-                    </>
-                ))}
-            </div>
+                    )}
+                </Droppable>
+            </DragDropContext>
         </div>
     );
 }

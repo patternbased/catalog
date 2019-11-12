@@ -8,6 +8,7 @@ export const ACTIONS = {
     SET_CURRENT_SONG: 'library.setCurrentSong',
     CLEAR_QUEUE: 'library.clearQueue',
     REMOVE_FROM_QUEUE: 'library.removeFromQueue',
+    REORDER_QUEUE: 'library.reorderQueue',
 };
 
 /**
@@ -32,6 +33,16 @@ export const getSongList = () => async dispatch => {
  */
 export const setCurrentPlaylist = value => ({
     type: ACTIONS.SET_CURRENT_PLAYLIST,
+    value,
+});
+
+/**
+ * Reorders the Queue
+ * @param {Array} value the value to set
+ * @returns {Object}
+ */
+export const reorderQueue = value => ({
+    type: ACTIONS.REORDER_QUEUE,
     value,
 });
 
