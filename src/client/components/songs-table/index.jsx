@@ -137,9 +137,11 @@ function SongsTable({ list, onSelect }) {
                                             src={
                                                 checkIfHovered(index)
                                                     ? '/assets/images/table/play-btn.png'
+                                                    : !currentSong
+                                                    ? item.cover
                                                     : currentSong.pbId === item.pbId
                                                     ? '/assets/images/table/play-active.svg'
-                                                    : item.cover
+                                                    : ''
                                             }
                                             onClick={() => playSong(item, index)}
                                         />
