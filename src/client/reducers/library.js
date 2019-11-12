@@ -45,6 +45,11 @@ const clearQueue = state => ({
     queue: [],
 });
 
+const removeFromQueue = (state, action) => ({
+    ...state,
+    queue: [...state.queue.filter(x => x !== action.value)],
+});
+
 export default createReducer(
     { queue: [] },
     {
@@ -53,5 +58,6 @@ export default createReducer(
         [ACTIONS.ADD_TO_QUEUE]: addToQueue,
         [ACTIONS.SET_CURRENT_SONG]: setCurrentSong,
         [ACTIONS.CLEAR_QUEUE]: clearQueue,
+        [ACTIONS.REMOVE_FROM_QUEUE]: removeFromQueue,
     }
 );

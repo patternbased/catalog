@@ -24,37 +24,52 @@
         justify-content: space-between;
         padding: 0 18px;
         color: white;
-        &__close {
-            font-size: 26px;
-            font-weight: 600;
-            cursor: pointer;
-        }
         &__name {
             font-weight: 600;
         }
-        &__more {
-            font-size: 26px;
-            font-weight: 600;
-            line-height: 10px;
+        img {
             cursor: pointer;
+            width: 30px;
+            height: 30px;
         }
     }
 
     &__content {
-        padding-top: 60px;
+        padding-top: 40px;
         overflow: scroll;
         height: calc(100vh - 220px);
     }
     &__song {
         display: flex;
         align-items: center;
-        justify-content: space-between;
         color: white;
-        padding: 0 30px;
-        margin-bottom: 40px;
+        padding: 20px 30px;
+        position: relative;
+        &--hovered {
+            background-color: $secondary;
+        }
+        &--expanded {
+            background-color: #808080;
+        }
+        &__handle {
+            position: absolute;
+            left: 6px;
+            cursor: pointer;
+        }
+        &__delete {
+            position: absolute;
+            right: 50px;
+            cursor: pointer;
+            &--single {
+                right: 20px;
+            }
+        }
         &__wrapper {
             width: 70%;
             text-align: left;
+            &--hovered {
+                width: 55%;
+            }
         }
         &__cover {
             width: 40px;
@@ -63,8 +78,14 @@
         }
         &__title {
             margin-bottom: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
             &--blue {
                 color: $secondary;
+            }
+            .queue__song--hovered & {
+                color: white;
             }
         }
         &__artist {
@@ -74,10 +95,15 @@
             &--blue {
                 color: $secondary;
             }
+            .queue__song--hovered & {
+                color: white;
+            }
         }
         &__more {
-            font-size: 40px;
-            font-weight: 300;
+            font-size: 38px;
+            position: absolute;
+            right: 20px;
+            cursor: pointer;
         }
         &__name {
             white-space: nowrap;

@@ -1,16 +1,16 @@
 @import '../../styles/constants';
 
 .similar {
-    height: 0;
+    height: calc(100vh - 160px);
     width: 300px;
     background-color: #f5f4f5;
     position: fixed;
-    right: 0;
+    right: -300px;
     bottom: 60px;
     visibility: hidden;
     transition: all 0.5s ease-in;
     &--visible {
-        height: calc(100vh - 160px);
+        right: 0;
         visibility: visible;
     }
     &--pushed {
@@ -27,19 +27,13 @@
         justify-content: space-between;
         padding: 0 18px;
         color: white;
-        &__close {
-            font-size: 26px;
-            font-weight: 600;
-            cursor: pointer;
-        }
         &__name {
             font-weight: 600;
         }
-        &__more {
-            font-size: 26px;
-            font-weight: 600;
-            line-height: 10px;
+        img {
             cursor: pointer;
+            width: 30px;
+            height: 30px;
         }
     }
 
@@ -51,27 +45,58 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        color: #444;
-        padding: 0 30px;
-        margin-bottom: 40px;
+        color: $text-primary;
+        padding: 20px 30px;
+        &--blue {
+            background-color: $secondary;
+        }
         &--main {
             height: 88px;
             border-bottom: 12px solid transparent;
             border-image: url('/assets/images/queue/queue-header.png') 30;
         }
+        &--main-hovered {
+            background-color: $secondary;
+        }
         &__wrapper {
-            width: 100%;
+            width: 75%;
             text-align: left;
         }
         &__cover {
+            background-image: url('/assets/images/similar/similar.png');
             width: 40px;
             height: 40px;
             margin-right: 15px;
+            position: relative;
+            img {
+                width: 28px;
+                height: 28px;
+                display: block;
+                display: block;
+                position: absolute;
+                top: 2px;
+                left: 2px;
+                .similar__song--main-hovered & {
+                    display: none;
+                }
+            }
+            .similar__song--main-hovered & {
+                background-image: url('/assets/images/similar/similar-play.png');
+            }
         }
         &__title {
             margin-bottom: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
             &--blue {
                 color: $secondary;
+            }
+            .similar__song--main-hovered & {
+                color: white;
+            }
+            .similar__song--blue & {
+                color: white;
             }
         }
         &__artist {
@@ -81,17 +106,16 @@
             &--blue {
                 color: $secondary;
             }
+            .similar__song--main-hovered & {
+                color: white;
+            }
+            .similar__song--blue & {
+                color: white;
+            }
         }
         &__more {
             font-size: 40px;
             font-weight: 300;
-        }
-    }
-    &__sublist {
-        background-color: #d8d8d8;
-        padding: 30px 0;
-        .queue__song {
-            color: #444;
         }
     }
 }

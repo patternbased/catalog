@@ -62,14 +62,33 @@ function SongsTable({ list, onSelect, currentSongIndex }) {
     };
 
     const createPlaylistName = () => {
-        return Object.keys(appliedFilters).map(filter => {
-            return (
-                filter.charAt(0).toUpperCase() +
-                filter.substring(1) +
-                appliedFilters[filter][0] +
-                appliedFilters[filter][1]
-            );
+        let label = '';
+        Object.keys(appliedFilters).map(filter => {
+            switch (filter) {
+                case 'rhythm':
+                    label += '<strong>RTM</strong>';
+                    break;
+                case 'speed':
+                    label += '<strong>SPD</strong>';
+                    break;
+                case 'experimental':
+                    label += '<strong>EXP</strong>';
+                    break;
+                case 'mood':
+                    label += '<strong>MOD</strong>';
+                    break;
+                case 'grid':
+                    label += '<strong>GRD</strong>';
+                    break;
+                case 'duration':
+                    label += '<strong>DUR</strong>';
+                    break;
+                default:
+                    break;
+            }
+            label += ` ${appliedFilters[filter][0]}-${appliedFilters[filter][1]}, `;
         });
+        return label;
     };
 
     return (

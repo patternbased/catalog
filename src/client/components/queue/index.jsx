@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import selectors from 'selectors';
 
 import { setState } from 'actions/general';
+import { removeFromQueue } from 'actions/library';
 
 import './style.scss';
 
@@ -69,43 +70,87 @@ function QueuePanel({ visible, style, onClose }) {
         onClose();
     };
 
+    const songWrapperClass = index =>
+        classnames('queue__song', {
+            'queue__song--hovered': checkIfHovered(index),
+            'queue__song--expanded': checkIfExpanded(index),
+        });
+
+    const removeSongFromQueue = song => {
+        dispatch(removeFromQueue(song));
+    };
+
     return (
         <div className={panelClass} style={style}>
             <div className="queue__header">
-                <div className="queue__header__close" onClick={() => closeQueue()}>
-                    X
-                </div>
+                <img src="/assets/images/close-icon.png" onClick={() => closeQueue()} />
                 <div className="queue__header__name">QUEUE</div>
-                <div className="queue__header__more">
-                    •<br />•<br />•
-                </div>
+                <img src="/assets/images/more-icon.png" onClick={() => {}} />
             </div>
             <div className="queue__content">
                 {songs.map((song, index) => (
                     <>
-                        <div key={index} className="queue__song" onMouseOver={() => addToHovered(index)}>
+                        <div
+                            key={index}
+                            className={songWrapperClass(index)}
+                            onMouseOver={() => addToHovered(index)}
+                            onMouseLeave={() => removeFromHovered(index)}
+                        >
                             {song.name ? (
                                 <>
-                                    <img src="/assets/images/table/results-play.png" className="queue__song__cover" />
-                                    <div className="queue__song__wrapper">
-                                        <div className="queue__song__name">{song.name}</div>
+                                    {checkIfHovered(index) && (
+                                        <img src="/assets/images/queue/handle.png" className="queue__song__handle" />
+                                    )}
+                                    <img src="/assets/images/queue/stack.png" className="queue__song__cover" />
+                                    <div
+                                        className={
+                                            checkIfHovered(index)
+                                                ? 'queue__song__wrapper queue__song__wrapper--hovered'
+                                                : 'queue__song__wrapper'
+                                        }
+                                    >
+                                        <div
+                                            className="queue__song__name"
+                                            dangerouslySetInnerHTML={{ __html: song.name }}
+                                        ></div>
                                         <div className="queue__song__count">{song.list.length} Tracks</div>
                                     </div>
                                     {checkIfHovered(index) && (
+                                        <>
+                                            <img
+                                                src="/assets/images/queue/delete.png"
+                                                className="queue__song__delete"
+                                                onClick={() => removeSongFromQueue(song)}
+                                            />
+                                            <div className="queue__song__more" onClick={() => addToExpanded(index)}>
+                                                {checkIfExpanded(index) ? '' : '+'}
+                                            </div>
+                                        </>
+                                    )}
+                                    {checkIfExpanded(index) && (
                                         <div className="queue__song__more" onClick={() => addToExpanded(index)}>
-                                            {checkIfExpanded(index) ? '-' : '+'}
+                                            -
                                         </div>
                                     )}
                                 </>
                             ) : (
-                                _renderQueueSong(song, currentSong)
+                                _renderQueueSong(song, currentSong, checkIfHovered(index), () =>
+                                    removeSongFromQueue(song)
+                                )
                             )}
                         </div>
                         {checkIfExpanded(index) && (
                             <div className="queue__sublist">
                                 {song.list.map((song, index) => (
-                                    <div className="queue__song" key={index}>
-                                        {_renderQueueSong(song, currentSong)}
+                                    <div
+                                        key={index}
+                                        className={songWrapperClass(`sublist-${index}`)}
+                                        onMouseOver={() => addToHovered(`sublist-${index}`)}
+                                        onMouseLeave={() => removeFromHovered(`sublist-${index}`)}
+                                    >
+                                        {_renderQueueSong(song, currentSong, checkIfHovered(`sublist-${index}`), () =>
+                                            removeSongFromQueue(song)
+                                        )}
                                     </div>
                                 ))}
                             </div>
@@ -121,11 +166,13 @@ function QueuePanel({ visible, style, onClose }) {
  * Renders the songs in the queue
  * @param {Object} song song to render
  * @param {Object} current current song playing
+ * @param {Boolean} hovered song hovered
  * @returns {React.Component}
  */
-function _renderQueueSong(song, current) {
+function _renderQueueSong(song, current, hovered, onRemove) {
     return (
         <>
+            {hovered && <img src="/assets/images/queue/handle.png" className="queue__song__handle" />}
             <img
                 src={current === song ? '/assets/images/table/play-active.svg' : song.cover}
                 className="queue__song__cover"
@@ -144,6 +191,13 @@ function _renderQueueSong(song, current) {
                     by {song.artistName} | {song.length}
                 </div>
             </div>
+            {hovered && (
+                <img
+                    src="/assets/images/queue/delete.png"
+                    className="queue__song__delete queue__song__delete--single"
+                    onClick={onRemove}
+                />
+            )}
         </>
     );
 }

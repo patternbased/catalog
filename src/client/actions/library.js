@@ -7,6 +7,7 @@ export const ACTIONS = {
     ADD_TO_QUEUE: 'library.addToQueue',
     SET_CURRENT_SONG: 'library.setCurrentSong',
     CLEAR_QUEUE: 'library.clearQueue',
+    REMOVE_FROM_QUEUE: 'library.removeFromQueue',
 };
 
 /**
@@ -55,10 +56,19 @@ export const setCurrentSong = value => ({
 });
 
 /**
- * Sets the current song
- * @param {Object} value the song to add
+ * Clears the entire queue
  * @returns {Object}
  */
 export const clearQueue = () => ({
     type: ACTIONS.CLEAR_QUEUE,
+});
+
+/**
+ * Removes a song from queue
+ * @param {Object} value the song to add
+ * @returns {Object}
+ */
+export const removeFromQueue = value => ({
+    type: ACTIONS.REMOVE_FROM_QUEUE,
+    value,
 });

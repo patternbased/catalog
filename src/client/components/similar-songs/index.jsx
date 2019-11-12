@@ -20,7 +20,6 @@ function SimilarSongsPanel({ visible, style, onClose }) {
     const currentSong = useSelector(selectors.library.getCurrentSong);
     const queueOpened = useSelector(selectors.general.get('queueOpened'));
     const [hovered, setHovered] = useState([]);
-    const [listExpanded, setListExpanded] = useState([]);
     const [similarSongs, setSimilarSongs] = useState([]);
     const dispatch = useDispatch();
     const panelClass = useMemo(
@@ -46,16 +45,6 @@ function SimilarSongsPanel({ visible, style, onClose }) {
         setHovered(copyHovered);
     };
 
-    const addToExpanded = index => {
-        let copyExpanded = [...listExpanded];
-        if (checkIfExpanded(index)) {
-            setListExpanded(copyExpanded.filter(x => x !== index));
-        } else {
-            copyExpanded.push(index);
-            setListExpanded(copyExpanded);
-        }
-    };
-
     const removeFromHovered = index => {
         let copyHovered = [...hovered];
         setHovered(copyHovered.filter(x => x !== index));
@@ -68,32 +57,35 @@ function SimilarSongsPanel({ visible, style, onClose }) {
         [hovered]
     );
 
-    const checkIfExpanded = useCallback(
-        index => {
-            return listExpanded.includes(index);
-        },
-        [listExpanded]
-    );
-
     const closeSimilar = () => {
         dispatch(setState('similarOpened', false));
         onClose();
     };
 
+    const mainHoverClass = useMemo(
+        () =>
+            classnames('similar__song similar__song--main', {
+                'similar__song--main-hovered': checkIfHovered('main'),
+            }),
+        [hovered]
+    );
+
     return (
         <div className={panelClass} style={style}>
             <div className="similar__header">
-                <div className="similar__header__close" onClick={() => closeSimilar()}>
-                    X
-                </div>
+                <img src="/assets/images/close-icon.png" onClick={() => closeSimilar()} />
                 <div className="similar__header__name">SIMILAR SONGS TO</div>
-                <div className="similar__header__more">
-                    •<br />•<br />•
-                </div>
+                <img src="/assets/images/more-icon.png" onClick={() => {}} />
             </div>
             {currentSong && (
-                <div className="similar__song similar__song--main">
-                    <img src={currentSong.cover} className="similar__song__cover" />
+                <div
+                    className={mainHoverClass}
+                    onMouseEnter={() => addToHovered('main')}
+                    onMouseLeave={() => removeFromHovered('main')}
+                >
+                    <div className="similar__song__cover">
+                        <img src={currentSong.cover} />
+                    </div>
                     <div className="similar__song__wrapper">
                         <div className="similar__song__title">{currentSong.title}</div>
                         <div className="similar__song__artist">
@@ -104,35 +96,14 @@ function SimilarSongsPanel({ visible, style, onClose }) {
             )}
             <div className="similar__content">
                 {similarSongs.map((song, index) => (
-                    <>
-                        <div key={index} className="similar__song" onMouseOver={() => addToHovered(index)}>
-                            {song.name ? (
-                                <>
-                                    <img src="/assets/images/table/results-play.png" className="similar__song__cover" />
-                                    <div className="similar__song__wrapper">
-                                        <div className="similar__song__name">{song.name}</div>
-                                        <div className="similar__song__count">{song.list.length} Tracks</div>
-                                    </div>
-                                    {checkIfHovered(index) && (
-                                        <div className="similar__song__more" onClick={() => addToExpanded(index)}>
-                                            {checkIfExpanded(index) ? '-' : '+'}
-                                        </div>
-                                    )}
-                                </>
-                            ) : (
-                                _renderSimilarSong(song, currentSong)
-                            )}
-                        </div>
-                        {checkIfExpanded(index) && (
-                            <div className="similar__sublist">
-                                {song.list.map((song, index) => (
-                                    <div className="similar__song" key={index}>
-                                        {_renderSimilarSong(song, currentSong)}
-                                    </div>
-                                ))}
-                            </div>
-                        )}
-                    </>
+                    <div
+                        key={index}
+                        className={checkIfHovered(index) ? 'similar__song similar__song--blue' : 'similar__song'}
+                        onMouseOver={() => addToHovered(index)}
+                        onMouseOut={() => removeFromHovered(index)}
+                    >
+                        {_renderSimilarSong(song, checkIfHovered(index))}
+                    </div>
                 ))}
             </div>
         </div>
@@ -142,29 +113,16 @@ function SimilarSongsPanel({ visible, style, onClose }) {
 /**
  * Renders the songs in the queue
  * @param {Object} song song to render
- * @param {Object} current current song playing
+ * @param {Boolean} hovered current song hovered
  * @returns {React.Component}
  */
-function _renderSimilarSong(song, current) {
+function _renderSimilarSong(song, hovered) {
     return (
         <>
-            <img
-                src={current === song ? '/assets/images/table/play-active.svg' : song.cover}
-                className="similar__song__cover"
-            />
+            <img src={hovered ? '/assets/images/similar/song-play.png' : song.cover} className="similar__song__cover" />
             <div className="similar__song__wrapper">
-                <div
-                    className={
-                        current === song ? 'similar__song__title similar__song__title--blue' : 'similar__song__title'
-                    }
-                >
-                    {song.title}
-                </div>
-                <div
-                    className={
-                        current === song ? 'similar__song__artist similar__song__artist--blue' : 'similar__song__artist'
-                    }
-                >
+                <div className="similar__song__title">{song.title}</div>
+                <div className="similar__song__artist">
                     by {song.artistName} | {song.length}
                 </div>
             </div>
