@@ -33,14 +33,14 @@ function HomePage() {
     }, []);
 
     useEffect(() => {
-        if (sharedItem && songList) {
+        if (sharedItem.ids && songList) {
             dispatch(setCurrentPlaylist([songList.find(x => x.pbId === sharedItem.ids)]));
             setWasShared(true);
         }
     }, [songList]);
 
     useEffect(() => {
-        !currentPlaylist && dispatch(setCurrentPlaylist(_filterSongs(songList, filtersValues)));
+        dispatch(setCurrentPlaylist(_filterSongs(songList, filtersValues)));
     }, [filtersValues]);
 
     const selectSong = song => {
