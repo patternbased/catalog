@@ -33,7 +33,7 @@ function HomePage() {
     }, []);
 
     useEffect(() => {
-        if (sharedItem) {
+        if (sharedItem && songList) {
             dispatch(setCurrentPlaylist([songList.find(x => x.pbId === sharedItem.ids)]));
             setWasShared(true);
         }
