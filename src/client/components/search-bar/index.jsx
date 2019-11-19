@@ -40,7 +40,7 @@ function SearchBar({ listItems, onSelect }) {
                 <ul className="search__results">
                     {searchResults.map((result, index) => (
                         <li key={index} className="search__results-item" onClick={() => selectFromList(result)}>
-                            {result.type === 'other' ? (
+                            {result.type === 'keyword' ? (
                                 <img className="search__results-item--new" src="/assets/images/search.png" />
                             ) : (
                                 <span className="search__results-item--type">{result.type}</span>
@@ -70,7 +70,7 @@ const _findMatches = (items, searchTerm) => {
         }
     });
     if (results.length === 0) {
-        results.push({ type: 'other', value: searchTerm });
+        results.push({ type: 'keyword', value: searchTerm });
     }
     return results;
 };

@@ -6,6 +6,7 @@ const initialState = {
     presetsOpened: false,
     queueOpened: false,
     similarOpened: false,
+    scrolled: false,
 };
 
 const setState = (state, action) => ({

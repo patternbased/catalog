@@ -23,14 +23,15 @@ const setCurrentPlaylist = (state, action) => ({
 
 const addToQueue = (state, action) => {
     const copy = [...state.queue];
-    if (!copy.includes(action.value)) {
+    const found = copy.find(i => i.pbId === action.value.pbId);
+    if (found) {
         return {
             ...state,
-            queue: [...state.queue, action.value],
         };
     } else {
         return {
             ...state,
+            queue: [...state.queue, action.value],
         };
     }
 };

@@ -37,9 +37,11 @@ function Header() {
         if (window.pageYOffset > 100) {
             setScrolled(true);
             setPanelStyle({ top: 60 });
+            dispatch(setState('scrolled', true));
         } else {
             setScrolled(false);
             setPanelStyle({ top: 100 });
+            dispatch(setState('scrolled', false));
         }
     };
 

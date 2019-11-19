@@ -7,6 +7,7 @@ export const INITIAL_FILTER_VALUES = {
     duration: [0, 20],
     flow: [],
     instruments: [],
+    search: [],
 };
 
 export const BASIC_FILTERS = ['rhythm', 'speed', 'experimental', 'mood', 'grid', 'duration'];

@@ -68,7 +68,12 @@ function FiltersPanel({ visible, style, showSearch }) {
         shape => {
             const flowsCopy = appliedFilters['flow'] ? [...appliedFilters['flow']] : [];
             if (flowsCopy.includes(shape)) {
-                dispatch(setFilter('flow', flowsCopy.filter(x => x !== shape)));
+                dispatch(
+                    setFilter(
+                        'flow',
+                        flowsCopy.filter(x => x !== shape)
+                    )
+                );
             } else {
                 dispatch(setFilter('flow', flowsCopy.concat(shape)));
             }
@@ -87,7 +92,12 @@ function FiltersPanel({ visible, style, showSearch }) {
     const removeInstrument = useCallback(
         instrument => {
             const instrumentsCopy = appliedFilters['instruments'] ? [...appliedFilters['instruments']] : [];
-            dispatch(setFilter('instruments', instrumentsCopy.filter(x => x !== instrument)));
+            dispatch(
+                setFilter(
+                    'instruments',
+                    instrumentsCopy.filter(x => x !== instrument)
+                )
+            );
         },
         [appliedFilters]
     );
@@ -128,12 +138,19 @@ function FiltersPanel({ visible, style, showSearch }) {
         } else {
             const selectedSearchCopy = [...selectedSearch];
             setSelectedSearch(selectedSearchCopy.concat(item));
+            dispatch(setFilter('search', selectedSearchCopy.concat(item)));
         }
     };
 
     const onCancelSelected = value => {
         const selectedSearchCopy = [...selectedSearch];
         setSelectedSearch(selectedSearchCopy.filter(x => x.value !== value));
+        dispatch(
+            setFilter(
+                'search',
+                selectedSearchCopy.filter(x => x.value !== value)
+            )
+        );
     };
 
     return (
@@ -143,12 +160,12 @@ function FiltersPanel({ visible, style, showSearch }) {
                     {showSearch && (
                         <div className="filters-panel__search">
                             <SearchBar onSelect={val => selectResult(val)} listItems={searchList} />
-                            {selectedSearch.length > 0 && (
+                            {appliedFilters.search && (
                                 <div className="filters-panel__search__selected">
-                                    {selectedSearch.map((item, index) => (
+                                    {appliedFilters.search.map((item, index) => (
                                         <div className="filters-panel__search__selected-item" key={index}>
                                             <div className="filters-panel__search__selected-item-wrapper">
-                                                {item.type === 'other' ? (
+                                                {item.type === 'keyword' ? (
                                                     <img
                                                         className="filters-panel__search__selected-item-new"
                                                         src="/assets/images/search-tag.png"

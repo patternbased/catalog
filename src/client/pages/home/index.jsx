@@ -6,6 +6,7 @@ import classnames from 'classnames';
 import MusicPlayer from 'components/music-player';
 import { getSongList, setCurrentPlaylist, setCurrentSong, addToQueue } from 'actions/library';
 import SongsTable from 'components/songs-table';
+import qs from 'query-string';
 
 import './style.scss';
 
@@ -17,6 +18,7 @@ function HomePage() {
     const [selectedSong, setSelectedSong] = useState(null);
     const [selectedSongIndex, setSelectedSongIndex] = useState(null);
     const [nextSong, setNextSong] = useState(null);
+    const [wasShared, setWasShared] = useState(false);
     const dispatch = useDispatch();
     const songList = useSelector(selectors.library.getAll);
     const filtersValues = useSelector(selectors.filters.getApplied);
@@ -24,12 +26,21 @@ function HomePage() {
     const presetsPanelState = useSelector(selectors.general.get('presetsOpened'));
     const currentPlaylist = useSelector(selectors.library.getCurrentPlaylist);
 
+    const sharedItem = qs.parse(location.search);
+
     useEffect(() => {
         !songList && dispatch(getSongList());
     }, []);
 
     useEffect(() => {
-        dispatch(setCurrentPlaylist(_filterSongs(songList, filtersValues)));
+        if (sharedItem) {
+            dispatch(setCurrentPlaylist([songList.find(x => x.pbId === sharedItem.ids)]));
+            setWasShared(true);
+        }
+    }, [songList]);
+
+    useEffect(() => {
+        !currentPlaylist && dispatch(setCurrentPlaylist(_filterSongs(songList, filtersValues)));
     }, [filtersValues]);
 
     const selectSong = song => {
@@ -117,6 +128,33 @@ const _filterSongs = (songs, filters) => {
             if (filters.flow && filters.flow.includes(song.arc.toLowerCase())) {
                 similar += 1;
             }
+            if (filters.search) {
+                filters.search.map(filter => {
+                    const filterVal = filter.value.toLowerCase();
+                    switch (filter.type) {
+                        case 'song':
+                            if (song.title.toLowerCase().includes(filterVal)) {
+                                similar += 1;
+                            }
+                            break;
+                        case 'artist':
+                            if (song.artistName.toLowerCase().includes(filterVal)) {
+                                similar += 1;
+                            }
+                            break;
+                        case 'keyword':
+                            if (
+                                song.title.toLowerCase().includes(filterVal) ||
+                                song.description.toLowerCase().includes(filterVal)
+                            ) {
+                                similar += 1;
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                });
+            }
             return similar === Object.keys(filters).length;
         });
     } else {
@@ -126,7 +164,7 @@ const _filterSongs = (songs, filters) => {
 
 const _isInRange = (value, range) => {
     if (range) {
-        if (value > 0 && range[0] === 0 && (![10, 20].includes(value) && [10, 20].includes(range[1]))) {
+        if (value > 0 && range[0] === 0 && ![10, 20].includes(value) && [10, 20].includes(range[1])) {
             return false;
         }
         return value >= range[0] && value <= range[1];

@@ -12,6 +12,7 @@ const initialState = {
         duration: [0, 20],
         flow: [],
         instruments: [],
+        search: [],
     },
     applied: {},
 };
