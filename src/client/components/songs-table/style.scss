@@ -1,8 +1,64 @@
 @import '../../styles/constants';
 
 .table {
-    margin-top: 20px;
-
+    &__sticky {
+        position: sticky;
+        background-color: #f4f5f4;
+        padding-top: 47px;
+    }
+    &__filters {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        margin-bottom: 20px;
+        &__icon {
+            width: 60px;
+            margin-right: 20px;
+            cursor: pointer;
+        }
+        &__applied {
+            &__extra {
+                display: flex;
+                align-items: center;
+                margin-top: 15px;
+            }
+            &__share {
+                width: 30px;
+                height: 30px;
+                background-image: url('/assets/images/table/share.svg');
+                margin: 0 20px;
+                cursor: pointer;
+                &:hover {
+                    background-image: url('/assets/images/table/share-active.svg');
+                }
+            }
+            &__single {
+                color: $text-primary;
+                font-size: 20px;
+                line-height: 24px;
+                display: inline-block;
+                margin-right: 5px;
+                &-bold {
+                    font-weight: 600;
+                    margin-right: 5px;
+                }
+                &:last-child {
+                    margin-right: 0;
+                }
+            }
+            &__count {
+                font-family: $font-other;
+                height: 24px;
+                width: 80px;
+                border-radius: 2px;
+                background-color: #808080;
+                color: #f5f4f5;
+                font-size: 12px;
+                line-height: 24px;
+                text-align: center;
+            }
+        }
+    }
     &__header {
         height: 30px;
         background-color: $text-primary;
@@ -76,16 +132,16 @@
                         cursor: pointer;
 
                         &--similar {
-                            background-image: url('/assets/images/player/similar.png');
+                            background-image: url('/assets/images/player/similar-off-white.svg');
                             &:hover {
-                                background-image: url('/assets/images/player/similar-on.png');
+                                background-image: url('/assets/images/player/similar-off.svg');
                             }
                         }
 
                         &--share {
-                            background-image: url('/assets/images/player/share.png');
+                            background-image: url('/assets/images/player/share-off-white.svg');
                             &:hover {
-                                background-image: url('/assets/images/player/share-on.png');
+                                background-image: url('/assets/images/player/share-off.svg');
                             }
                         }
                     }
@@ -217,6 +273,82 @@
                 }
                 .table__body__row--hovered & {
                     display: none;
+                }
+            }
+        }
+    }
+}
+
+.modal--share {
+    .modal__content {
+        top: 50%;
+        margin: 0;
+        height: 300px;
+        width: 600px;
+        border-radius: 4px;
+        background-color: #ffffff;
+        box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.5);
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        .share {
+            &__close {
+                background-color: #808080;
+                width: 36px;
+                height: 36px;
+                border-radius: 50%;
+                float: right;
+                margin: 14px 14px 0 0;
+                padding: 5px;
+                cursor: pointer;
+                &:hover {
+                    opacity: 0.7;
+                }
+            }
+            &__header {
+                color: #444444;
+                font-size: 24px;
+                font-weight: bold;
+                line-height: 29px;
+                padding-top: 40px;
+                margin-bottom: 20px;
+            }
+            &__item {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                img {
+                    width: 40px;
+                    height: 40px;
+                    margin-right: 15px;
+                }
+                &__title {
+                    color: #444444;
+                    margin-bottom: 3px;
+                    text-align: left;
+                }
+                &__artist {
+                    color: #444444;
+                    font-family: 'Open Sans';
+                    font-size: 12px;
+                    line-height: 17px;
+                    text-align: left;
+                }
+            }
+            &__button {
+                height: 41px;
+                width: 261px;
+                border: 1px solid #808080;
+                border-radius: 20px;
+                background-color: #808080;
+                margin: 25px auto 30px;
+                color: #ffffff;
+                font-size: 18px;
+                font-weight: bold;
+                line-height: 40px;
+                cursor: pointer;
+                &:hover {
+                    opacity: 0.7;
                 }
             }
         }

@@ -4,8 +4,9 @@ import selectors from 'selectors';
 import classnames from 'classnames';
 
 import MusicPlayer from 'components/music-player';
-import { getSongList } from 'actions/library';
+import { getSongList, setCurrentPlaylist, setCurrentSong, addToQueue } from 'actions/library';
 import SongsTable from 'components/songs-table';
+import qs from 'query-string';
 
 import './style.scss';
 
@@ -15,53 +16,77 @@ import './style.scss';
  */
 function HomePage() {
     const [selectedSong, setSelectedSong] = useState(null);
-    const [filteredSongs, setFilteredSongs] = useState([]);
     const [selectedSongIndex, setSelectedSongIndex] = useState(null);
     const [nextSong, setNextSong] = useState(null);
+    const [wasShared, setWasShared] = useState(false);
     const dispatch = useDispatch();
     const songList = useSelector(selectors.library.getAll);
-    const filtersValues = useSelector(selectors.filters.getAll);
+    const filtersValues = useSelector(selectors.filters.getApplied);
     const filtersPanelState = useSelector(selectors.general.get('filtersOpened'));
+    const presetsPanelState = useSelector(selectors.general.get('presetsOpened'));
+    const currentPlaylist = useSelector(selectors.library.getCurrentPlaylist);
+
+    const sharedItem = qs.parse(location.search);
 
     useEffect(() => {
         !songList && dispatch(getSongList());
     }, []);
 
     useEffect(() => {
-        songList && setFilteredSongs(_filterSongs(songList, filtersValues));
+        if (sharedItem.ids && songList) {
+            dispatch(setCurrentPlaylist([songList.find(x => x.pbId === sharedItem.ids)]));
+            setWasShared(true);
+        }
+    }, [songList]);
+
+    useEffect(() => {
+        dispatch(setCurrentPlaylist(_filterSongs(songList, filtersValues)));
     }, [filtersValues]);
 
     const selectSong = song => {
-        setSelectedSongIndex(filteredSongs.indexOf(song));
+        setSelectedSongIndex(currentPlaylist.indexOf(song));
         setSelectedSong(song);
-        setNextSong(filteredSongs[selectedSongIndex + 1]);
+        setNextSong(currentPlaylist[selectedSongIndex + 1]);
     };
 
     const goToNextSong = () => {
-        setSelectedSongIndex(selectedSongIndex + 1);
-        setSelectedSong(filteredSongs[selectedSongIndex]);
-        setNextSong(filteredSongs[selectedSongIndex + 1]);
+        const sel = selectedSongIndex;
+        setSelectedSongIndex(sel + 1);
+        setSelectedSong(currentPlaylist[sel + 1]);
+        setNextSong(currentPlaylist[sel + 2]);
+        dispatch(setCurrentSong(currentPlaylist[sel + 1]));
+        dispatch(addToQueue(currentPlaylist[sel + 2]));
     };
 
     const goToPrevSong = () => {
-        setSelectedSongIndex(selectedSongIndex - 1);
-        setSelectedSong(filteredSongs[selectedSongIndex]);
-        setNextSong(filteredSongs[selectedSongIndex + 1]);
+        const sel = selectedSongIndex;
+        setSelectedSongIndex(sel - 1);
+        setSelectedSong(currentPlaylist[sel - 1]);
+        setNextSong(currentPlaylist[sel - 2]);
+        dispatch(setCurrentSong(currentPlaylist[sel - 1]));
     };
 
     const homeClass = useMemo(
         () =>
-            classnames('home', {
-                'home--pushed': filtersPanelState,
+            classnames('app-container', {
+                'app-container--pushed': filtersPanelState || presetsPanelState,
             }),
-        [filtersPanelState]
+        [filtersPanelState, presetsPanelState]
     );
 
     return (
         <>
-            <main className={homeClass}>
-                {filteredSongs.length > 0 && <SongsTable list={filteredSongs} onSelect={val => selectSong(val)} />}
-            </main>
+            <div className={homeClass}>
+                <main className="home">
+                    {currentPlaylist && currentPlaylist.length > 0 && (
+                        <SongsTable
+                            list={currentPlaylist}
+                            onSelect={val => selectSong(val)}
+                            currentSongIndex={selectedSongIndex}
+                        />
+                    )}
+                </main>
+            </div>
             {selectedSong !== null && (
                 <MusicPlayer
                     song={selectedSong}
@@ -79,36 +104,70 @@ HomePage.displayName = 'HomePage';
 export default HomePage;
 
 const _filterSongs = (songs, filters) => {
-    return songs.filter(song => {
-        let similar = 0;
-        if (_isInRange(song.experimental, filters.experimental)) {
-            similar += 1;
-        }
-        if (_isInRange(song.grid, filters.grid)) {
-            similar += 1;
-        }
-        if (_isInRange(song.mood, filters.mood)) {
-            similar += 1;
-        }
-        if (_isInRange(song.rhythm, filters.rhythm)) {
-            similar += 1;
-        }
-        if (_isInRange(song.speed, filters.speed)) {
-            similar += 1;
-        }
-        if (_isInRange(song.speed, filters.duration)) {
-            similar += 1;
-        }
-        if (filters.flow.includes(song.arc.toLowerCase())) {
-            similar += 1;
-        }
-        return similar > 0;
-    });
+    if (Object.keys(filters).length > 0) {
+        return songs.filter(song => {
+            let similar = 0;
+            if (_isInRange(song.experimental, filters.experimental)) {
+                similar += 1;
+            }
+            if (_isInRange(song.grid, filters.grid)) {
+                similar += 1;
+            }
+            if (_isInRange(song.mood, filters.mood)) {
+                similar += 1;
+            }
+            if (_isInRange(song.rhythm, filters.rhythm)) {
+                similar += 1;
+            }
+            if (_isInRange(song.speed, filters.speed)) {
+                similar += 1;
+            }
+            if (_isInRange(song.speed, filters.duration)) {
+                similar += 1;
+            }
+            if (filters.flow && filters.flow.includes(song.arc.toLowerCase())) {
+                similar += 1;
+            }
+            if (filters.search) {
+                filters.search.map(filter => {
+                    const filterVal = filter.value.toLowerCase();
+                    switch (filter.type) {
+                        case 'song':
+                            if (song.title.toLowerCase().includes(filterVal)) {
+                                similar += 1;
+                            }
+                            break;
+                        case 'artist':
+                            if (song.artistName.toLowerCase().includes(filterVal)) {
+                                similar += 1;
+                            }
+                            break;
+                        case 'keyword':
+                            if (
+                                song.title.toLowerCase().includes(filterVal) ||
+                                song.description.toLowerCase().includes(filterVal)
+                            ) {
+                                similar += 1;
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                });
+            }
+            return similar === Object.keys(filters).length;
+        });
+    } else {
+        return [];
+    }
 };
 
 const _isInRange = (value, range) => {
-    if (value > 0 && range[0] === 0 && (![10, 20].includes(value) && [10, 20].includes(range[1]))) {
-        return false;
+    if (range) {
+        if (value > 0 && range[0] === 0 && ![10, 20].includes(value) && [10, 20].includes(range[1])) {
+            return false;
+        }
+        return value >= range[0] && value <= range[1];
     }
-    return value >= range[0] && value <= range[1];
+    return false;
 };

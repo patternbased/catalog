@@ -7,7 +7,7 @@ export const ACTIONS = {
 /**
  * Sets values for a filter
  * @param {String} label the label of the filter
- * @param {String} value the value to set
+ * @param {Array} value the value to set
  * @returns {Object}
  */
 export const setFilter = (label, value) => ({

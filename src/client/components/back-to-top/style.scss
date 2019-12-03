@@ -1,15 +1,14 @@
 .back-to-top {
-    background-image: url('/assets/images/back-to-top.png');
-    width: 100px;
-    height: 100px;
-    right: 40px;
-    bottom: 10px;
-    position: absolute;
+    background-image: url('/assets/images/table/back-to-top.svg');
+    width: 30px;
+    height: 30px;
     cursor: pointer;
     opacity: 0;
+    visibility: hidden;
     transition: opacity 0.5s linear;
 
     &:hover {
         opacity: 1 !important;
+        background-image: url('/assets/images/table/back-to-top-active.svg');
     }
 }

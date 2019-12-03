@@ -7,6 +7,7 @@ export const INITIAL_FILTER_VALUES = {
     duration: [0, 20],
     flow: [],
     instruments: [],
+    search: [],
 };
 
 export const BASIC_FILTERS = ['rhythm', 'speed', 'experimental', 'mood', 'grid', 'duration'];
@@ -58,6 +59,27 @@ export const FLOW_SHAPES = [
         name: 'meandering',
         image: '/assets/images/flow-meandering.png',
         activeImage: '/assets/images/flow-meandering-active.png',
+    },
+];
+
+export const TABLE_FLOW_SHAPES = [
+    { name: 'flat', image: '/assets/images/table/flat.svg' },
+    {
+        name: 'subtleBuild',
+        image: '/assets/images/table/subtleBuild.svg',
+    },
+    { name: 'build', image: '/assets/images/table/build.svg' },
+    {
+        name: 'descending',
+        image: '/assets/images/table/descending.svg',
+    },
+    {
+        name: 'multipleBuild',
+        image: '/assets/images/table/multipleBuild.svg',
+    },
+    {
+        name: 'meandering',
+        image: '/assets/images/table/meandering.svg',
     },
 ];
 

@@ -13,7 +13,8 @@ import Preset from 'components/preset';
 import SearchBar from 'components/search-bar';
 
 import { setFilter, resetFilter, resetAllFilters } from 'actions/filters';
-import { BASIC_FILTERS, INITIAL_FILTER_VALUES, PRESETS, ARTISTS, SONGS, INSTRUMENTS } from 'utils/constants';
+import { clearQueue } from 'actions/library';
+import { BASIC_FILTERS, PRESETS, ARTISTS, SONGS, INSTRUMENTS } from 'utils/constants';
 
 import './style.scss';
 
@@ -51,52 +52,61 @@ function FiltersPanel({ visible, style, showSearch }) {
     );
 
     const dispatch = useDispatch();
-    const filtersValues = useSelector(selectors.filters.getAll);
+    const defaultFilters = useSelector(selectors.filters.getDefault);
+    const appliedFilters = useSelector(selectors.filters.getApplied);
 
-    const wereFiltersChanged = useMemo(() => JSON.stringify(filtersValues) !== JSON.stringify(INITIAL_FILTER_VALUES), [
-        filtersValues,
-    ]);
+    const wereFiltersChanged = useMemo(() => Object.keys(appliedFilters).length > 0, [appliedFilters]);
 
     const changeSlider = useCallback(
         name => values => {
             dispatch(setFilter(name, values));
         },
-        [filtersValues]
+        [appliedFilters]
     );
 
     const toggleFlow = useCallback(
         shape => {
-            const flowsCopy = [...filtersValues['flow']];
+            const flowsCopy = appliedFilters['flow'] ? [...appliedFilters['flow']] : [];
             if (flowsCopy.includes(shape)) {
-                dispatch(setFilter('flow', flowsCopy.filter(x => x !== shape)));
+                dispatch(
+                    setFilter(
+                        'flow',
+                        flowsCopy.filter(x => x !== shape)
+                    )
+                );
             } else {
                 dispatch(setFilter('flow', flowsCopy.concat(shape)));
             }
         },
-        [filtersValues]
+        [appliedFilters]
     );
 
     const selectInstrument = useCallback(
         instrument => {
-            const instrumentsCopy = [...filtersValues['instruments']];
+            const instrumentsCopy = appliedFilters['instruments'] ? [...appliedFilters['instruments']] : [];
             dispatch(setFilter('instruments', instrumentsCopy.concat(instrument)));
         },
-        [filtersValues]
+        [appliedFilters]
     );
 
     const removeInstrument = useCallback(
         instrument => {
-            const instrumentsCopy = [...filtersValues['instruments']];
-            dispatch(setFilter('instruments', instrumentsCopy.filter(x => x !== instrument)));
+            const instrumentsCopy = appliedFilters['instruments'] ? [...appliedFilters['instruments']] : [];
+            dispatch(
+                setFilter(
+                    'instruments',
+                    instrumentsCopy.filter(x => x !== instrument)
+                )
+            );
         },
-        [filtersValues]
+        [appliedFilters]
     );
 
     const cancelFilter = useCallback(
         name => {
             dispatch(resetFilter(name));
         },
-        [filtersValues]
+        [appliedFilters]
     );
 
     const applyPreset = filters => {
@@ -114,26 +124,33 @@ function FiltersPanel({ visible, style, showSearch }) {
                     similarity: 0,
                 };
             });
-            const similar = _getSimilarPresets(allPresets, filtersValues);
+            const similar = _getSimilarPresets(allPresets, appliedFilters);
             setSimilarPresets(similar);
         }
-    }, [filtersValues]);
+    }, [appliedFilters]);
 
     const searchList = useMemo(() => generateSearchResults(), []);
 
     const selectResult = item => {
         if (item.type === 'instrument') {
-            const instrumentsCopy = [...filtersValues['instruments']];
+            const instrumentsCopy = [...appliedFilters['instruments']];
             dispatch(setFilter('instruments', instrumentsCopy.concat(item.value)));
         } else {
             const selectedSearchCopy = [...selectedSearch];
             setSelectedSearch(selectedSearchCopy.concat(item));
+            dispatch(setFilter('search', selectedSearchCopy.concat(item)));
         }
     };
 
     const onCancelSelected = value => {
         const selectedSearchCopy = [...selectedSearch];
         setSelectedSearch(selectedSearchCopy.filter(x => x.value !== value));
+        dispatch(
+            setFilter(
+                'search',
+                selectedSearchCopy.filter(x => x.value !== value)
+            )
+        );
     };
 
     return (
@@ -143,12 +160,12 @@ function FiltersPanel({ visible, style, showSearch }) {
                     {showSearch && (
                         <div className="filters-panel__search">
                             <SearchBar onSelect={val => selectResult(val)} listItems={searchList} />
-                            {selectedSearch.length > 0 && (
+                            {appliedFilters.search && (
                                 <div className="filters-panel__search__selected">
-                                    {selectedSearch.map((item, index) => (
+                                    {appliedFilters.search.map((item, index) => (
                                         <div className="filters-panel__search__selected-item" key={index}>
                                             <div className="filters-panel__search__selected-item-wrapper">
-                                                {item.type === 'other' ? (
+                                                {item.type === 'keyword' ? (
                                                     <img
                                                         className="filters-panel__search__selected-item-new"
                                                         src="/assets/images/search-tag.png"
@@ -179,19 +196,19 @@ function FiltersPanel({ visible, style, showSearch }) {
                                 <BasicFilter
                                     name={filter}
                                     isOpened={filter === 'duration' ? false : true}
-                                    values={filtersValues[filter]}
+                                    values={appliedFilters[filter] || defaultFilters[filter]}
                                     onRangeChange={changeSlider(filter)}
                                     onFilterCancel={() => cancelFilter(filter)}
                                 />
                             </div>
                         ))}
                         <FlowFilter
-                            values={filtersValues['flow']}
+                            values={appliedFilters['flow'] || defaultFilters['flow']}
                             onToggleFlow={toggleFlow}
                             onFilterCancel={() => cancelFilter('flow')}
                         />
                         <InstrumentsFilter
-                            values={filtersValues['instruments']}
+                            values={appliedFilters['instruments'] || defaultFilters['instruments']}
                             onSelectInstrument={selectInstrument}
                             onCancelInstrument={removeInstrument}
                             onFilterCancel={() => cancelFilter('instruments')}
@@ -202,6 +219,7 @@ function FiltersPanel({ visible, style, showSearch }) {
                                     onClick={() => {
                                         dispatch(resetAllFilters());
                                         setSimilarPresets([]);
+                                        dispatch(clearQueue());
                                     }}
                                 >
                                     Clear All
@@ -231,14 +249,16 @@ const _getSimilarPresets = (presets, filters) => {
         const pFilter = preset.filters;
         let similarCount = 0;
         Object.keys(pFilter).forEach(filterName => {
-            if (
-                pFilter[filterName][0] === filters[filterName][0] &&
-                pFilter[filterName][1] === filters[filterName][1]
-            ) {
-                similarCount += 1;
+            if (filters[filterName]) {
+                if (
+                    pFilter[filterName][0] === filters[filterName][0] &&
+                    pFilter[filterName][1] === filters[filterName][1]
+                ) {
+                    similarCount += 1;
+                }
             }
         });
-        if (similarCount >= 3) {
+        if (similarCount >= 2) {
             preset.similarity = similarCount;
             similarPresets.push(preset);
         }

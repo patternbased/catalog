@@ -21,6 +21,7 @@ import '../style.scss';
  */
 function BasicFilter({ name, isOpened, values, onRangeChange, onFilterCancel }) {
     const [openedTooltip, setOpenedTooltip] = useState(false);
+    const [animated, setAnimated] = useState(false);
     const isDuration = name === 'duration';
 
     const infoTooltipClass = useMemo(
@@ -81,10 +82,13 @@ function BasicFilter({ name, isOpened, values, onRangeChange, onFilterCancel }) 
                     min={0}
                     max={isDuration ? 20 : 10}
                     onChange={onRangeChange}
+                    onBeforeChange={() => setAnimated(true)}
+                    onAfterChange={() => setAnimated(false)}
                     value={values}
                     railStyle={{ backgroundImage: `url(${FILTERS_BACKGROUNDS[name]}` }}
                     step={0.25}
                     allowCross={false}
+                    className={animated ? 'anim' : ''}
                 />
             )}
         </div>
