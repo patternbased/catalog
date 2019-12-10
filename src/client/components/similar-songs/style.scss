@@ -1,7 +1,7 @@
 @import '../../styles/constants';
 
 .similar {
-    height: calc(100vh - 160px);
+    height: calc(100vh - 140px);
     width: 300px;
     background-color: #f5f4f5;
     position: fixed;
@@ -9,6 +9,8 @@
     bottom: 60px;
     visibility: hidden;
     transition: all 0.5s ease-in;
+    box-shadow: -1px 0 4px 0 rgba(0, 0, 0, 0.3);
+    z-index: 2;
     &--visible {
         right: 0;
         visibility: visible;

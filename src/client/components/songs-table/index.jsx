@@ -24,9 +24,10 @@ const songsToDisplay = 20;
  * @param {Function} onSelect action to take when selecting a song
  * @returns {React.Component}
  */
-function SongsTable({ list, onSelect }) {
+function SongsTable({ list, onSelect, listName, page }) {
     const [hovered, setHovered] = useState([]);
     const [similarOpened, setSimilarOpened] = useState(false);
+    const [similarTo, setSimilarTo] = useState(null);
     const [hasMore, setHasMore] = useState(true);
     const [songs, setSongs] = useState([]);
     const [shareItem, setShareItem] = useState();
@@ -53,7 +54,7 @@ function SongsTable({ list, onSelect }) {
 
     const checkIfHovered = useCallback(
         index => {
-            return hovered.includes(index);
+            return hovered.indexOf(index) > -1;
         },
         [hovered]
     );
@@ -151,16 +152,21 @@ function SongsTable({ list, onSelect }) {
     };
 
     const openShareModal = item => {
-        console.log(item);
         setShareItem(item);
         setShareOpened(true);
     };
 
+    const getTableMainClass = classnames('table__sticky', {
+        'table__sticky--big': !scrolled,
+        'table__sticky--small': scrolled,
+        'table__sticky--regular': page === 'home',
+    });
+
     return (
         <>
             <div className="table">
-                <div className="table__sticky" style={{ top: scrolled ? '60px' : '100px' }}>
-                    {Object.keys(appliedFilters).length > 0 && (
+                <div className={getTableMainClass}>
+                    {(Object.keys(appliedFilters).length > 0 || listName) && (
                         <div className="table__filters">
                             <img
                                 src="/assets/images/table/results-play.png"
@@ -168,16 +174,21 @@ function SongsTable({ list, onSelect }) {
                                 onClick={() => addListToQueue()}
                             />
                             <div className="table__filters__applied">
-                                {Object.keys(appliedFilters).map((filter, index) => (
-                                    <div className="table__filters__applied__single" key={index}>
-                                        <span className="table__filters__applied__single-bold">
-                                            {filter.charAt(0).toUpperCase() + filter.substring(1)}
-                                        </span>
+                                {listName && <div className="table__filters__applied__single">{listName}</div>}
+                                {!listName && (
+                                    <>
+                                        {Object.keys(appliedFilters).map((filter, index) => (
+                                            <div className="table__filters__applied__single" key={index}>
+                                                <span className="table__filters__applied__single-bold">
+                                                    {filter.charAt(0).toUpperCase() + filter.substring(1)}
+                                                </span>
 
-                                        {renderAppliedFilters(filter, appliedFilters[filter])}
-                                        {index < Object.keys(appliedFilters).length - 1 && ', '}
-                                    </div>
-                                ))}
+                                                {renderAppliedFilters(filter, appliedFilters[filter])}
+                                                {index < Object.keys(appliedFilters).length - 1 && ', '}
+                                            </div>
+                                        ))}
+                                    </>
+                                )}
                                 <div className="table__filters__applied__extra">
                                     <div className="table__filters__applied__count">
                                         <strong>{list.length}</strong> Tracks
@@ -243,6 +254,7 @@ function SongsTable({ list, onSelect }) {
                                                 className="table__body__row-title__actions-button table__body__row-title__actions-button--similar"
                                                 onClick={() => {
                                                     setSimilarOpened(true);
+                                                    setSimilarTo(item);
                                                     dispatch(setState('similarOpened', true));
                                                 }}
                                             />
@@ -317,7 +329,13 @@ function SongsTable({ list, onSelect }) {
                     </InfiniteScroll>
                 </div>
             </div>
-            <SimilarSongsPanel visible={similarOpened} onClose={() => setSimilarOpened(false)} />
+            {similarTo && (
+                <SimilarSongsPanel
+                    visible={similarOpened}
+                    onClose={() => setSimilarOpened(false)}
+                    similarTo={similarTo}
+                />
+            )}
             {shareOpened && (
                 <Modal opened={shareOpened} modifier="share">
                     <img
@@ -345,6 +363,8 @@ function SongsTable({ list, onSelect }) {
 SongsTable.propTypes = {
     list: PropTypes.array.isRequired,
     onSelect: PropTypes.func.isRequired,
+    listName: PropTypes.string,
+    page: PropTypes.string,
 };
 
 SongsTable.displayName = 'SongsTable';

@@ -1,3 +1,8 @@
+export const HEADER_HEIGHTS = {
+    small: 60,
+    big: 80,
+};
+
 export const INITIAL_FILTER_VALUES = {
     rhythm: [0, 10],
     speed: [0, 10],

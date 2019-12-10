@@ -8,6 +8,8 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 import { setState } from 'actions/general';
 import { removeFromQueue, reorderQueue, setCurrentSong } from 'actions/library';
+import Modal from 'components/modal';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import './style.scss';
 
@@ -22,6 +24,11 @@ function QueuePanel({ visible, style, onClose }) {
     const currentSong = useSelector(selectors.library.getCurrentSong);
     const [hovered, setHovered] = useState([]);
     const [listExpanded, setListExpanded] = useState([]);
+    const [showMore, setShowMore] = useState(false);
+    const [shareOpened, setShareOpened] = useState(false);
+    const [shareQueueName, setShareQueueName] = useState(_generateShareName());
+    const [editedName, setEditedName] = useState('');
+    const [nameEditing, setNameEditing] = useState(false);
     const dispatch = useDispatch();
     const panelClass = useMemo(
         () =>
@@ -104,9 +111,86 @@ function QueuePanel({ visible, style, onClose }) {
     return (
         <div className={panelClass} style={style}>
             <div className="queue__header">
-                <img src="/assets/images/close-icon.png" onClick={() => closeQueue()} />
+                <img
+                    src="/assets/images/close-icon.png"
+                    onClick={() => {
+                        closeQueue();
+                        setShowMore(false);
+                    }}
+                />
                 <div className="queue__header__name">QUEUE</div>
-                <img src="/assets/images/more-icon.png" onClick={() => {}} />
+                <img src="/assets/images/more-icon.png" onClick={() => setShowMore(!showMore)} />
+                {showMore && (
+                    <ul className="queue__more">
+                        <li
+                            className="queue__more__item"
+                            onClick={() => {
+                                setShareOpened(true);
+                                setShowMore(false);
+                            }}
+                        >
+                            <div className="queue__share queue__share--share" />
+                            Share This Queue
+                        </li>
+                        <li className="queue__more__item">
+                            <div className="queue__share queue__share--delete" />
+                            Delete All Tracks
+                        </li>
+                    </ul>
+                )}
+                {shareOpened && (
+                    <Modal opened={shareOpened} modifier="share queue-share">
+                        <img
+                            src="/assets/images/close-icon.png"
+                            onClick={() => setShareOpened(false)}
+                            className="share__close"
+                        />
+                        <div className="share__header">Share This Queue</div>
+                        <div className="share__item">
+                            <img src="/assets/images/table/results-play.png" />
+                            <div>
+                                {nameEditing ? (
+                                    <input
+                                        type="text"
+                                        className="share__input"
+                                        placeholder={shareQueueName}
+                                        value={editedName}
+                                        onChange={e => setEditedName(e.target.value)}
+                                    />
+                                ) : (
+                                    <div className="share__item__title" onClick={() => setNameEditing(true)}>
+                                        {shareQueueName}
+                                    </div>
+                                )}
+                                {!nameEditing && <div className="share__item__artist">{songs.length} Tracks</div>}
+                            </div>
+                        </div>
+                        {nameEditing ? (
+                            <div
+                                className={classnames('share__button', {
+                                    'share__button--disabled': editedName === '',
+                                    'share__button--active': editedName.length,
+                                })}
+                                onClick={() => {
+                                    if (editedName.length) {
+                                        setShareQueueName(editedName);
+                                        setNameEditing(false);
+                                    }
+                                }}
+                            >
+                                Done
+                            </div>
+                        ) : (
+                            <CopyToClipboard
+                                text={`http://localhost:3500/?ids=${songs.map(
+                                    s => `${s.pbId}`
+                                )}&name=${shareQueueName}`}
+                            >
+                                <div className="share__button">Copy Share Link</div>
+                            </CopyToClipboard>
+                        )}
+                    </Modal>
+                )}
             </div>
             <DragDropContext onDragEnd={onDragEnd}>
                 <Droppable droppableId="list">
@@ -265,6 +349,15 @@ function _renderQueueSong(song, current, hovered, onRemove, playSong) {
             )}
         </>
     );
+}
+
+/**
+ * Generates default random queue name for sharing
+ * @returns {String}
+ */
+function _generateShareName() {
+    const randomShareNumber = Math.floor(Math.random() * 1000000);
+    return `Queue #${randomShareNumber}`;
 }
 
 QueuePanel.displayName = 'QueuePanel';

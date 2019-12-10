@@ -1,4 +1,5 @@
 import React, { memo, useEffect, useState } from 'react';
+import { HEADER_HEIGHTS } from 'utils/constants';
 
 import './style.scss';
 
@@ -11,7 +12,7 @@ function BackToTop() {
     const [style, setStyle] = useState({});
 
     const scrollHandler = () => {
-        if (window.pageYOffset > 80) {
+        if (window.pageYOffset > HEADER_HEIGHTS.big) {
             setScrolled(true);
             setStyle({ opacity: '0.8', visibility: 'visible' });
         } else {

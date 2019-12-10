@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import classnames from 'classnames';
+import { HEADER_HEIGHTS } from 'utils/constants';
 import FilterSvg from 'assets/images/header/filter.svg';
 import PresetSvg from 'assets/images/header/preset.svg';
 import SearchSvg from 'assets/images/header/search.svg';
 import LogoSvg from 'assets/images/header/logo.svg';
+import FullLogoSvg from 'assets/images/header/PatternBased_CatalogSearch_logo.svg';
 import CartSvg from 'assets/images/header/cart.svg';
 import MenuSvg from 'assets/images/header/menu.svg';
 import selectors from 'selectors';
@@ -25,7 +27,7 @@ const svgActiveFill = '#0092C5';
  */
 function Header() {
     const [scrolled, setScrolled] = useState(false);
-    const [panelStyle, setPanelStyle] = useState({ top: 100 });
+    const [panelStyle, setPanelStyle] = useState({ top: `${HEADER_HEIGHTS.big}px` });
     const [filtersOpened, setFiltersOpened] = useState(false);
     const [presetsOpened, setPresetsOpened] = useState(false);
     const [searchOpened, setSearchOpened] = useState(false);
@@ -34,13 +36,13 @@ function Header() {
     const dispatch = useDispatch();
 
     const scrollHandler = () => {
-        if (window.pageYOffset > 100) {
+        if (window.pageYOffset > HEADER_HEIGHTS.big) {
             setScrolled(true);
-            setPanelStyle({ top: 60 });
+            setPanelStyle({ top: `${HEADER_HEIGHTS.small}px` });
             dispatch(setState('scrolled', true));
         } else {
             setScrolled(false);
-            setPanelStyle({ top: 100 });
+            setPanelStyle({ top: `${HEADER_HEIGHTS.big}px` });
             dispatch(setState('scrolled', false));
         }
     };
@@ -53,14 +55,6 @@ function Header() {
         () =>
             classnames('header flex flex--space-between', {
                 'header--small': scrolled,
-            }),
-        [scrolled]
-    );
-
-    const logoModifier = useMemo(
-        () =>
-            classnames('header__logo-icon', {
-                'header__logo-icon--small': scrolled,
             }),
         [scrolled]
     );
@@ -119,15 +113,11 @@ function Header() {
                         fill={searchOpened ? svgActiveFill : svgDefaultFill}
                     />
                 </div>
-                <div className="header__logo flex flex--space-between">
-                    <LogoSvg className={logoModifier} fill={svgActiveFill} />
-                    {!scrolled && (
-                        <div className="header__logo__text">
-                            <p className="header__logo__text-main">
-                                Pattern<span className="header__logo__text-main--colored">Based</span>
-                            </p>
-                            <p className="header__logo__text-secondary">Catalog Search</p>
-                        </div>
+                <div className="header__logo">
+                    {scrolled ? (
+                        <LogoSvg className="header__logo-icon header__logo-icon--small" fill={svgActiveFill} />
+                    ) : (
+                        <FullLogoSvg className="header__logo-icon" fill={svgActiveFill} />
                     )}
                 </div>
                 <div className="header__buttons">

@@ -16,9 +16,8 @@ import './style.scss';
  * @param {Object} style json with custom CSS styling
  * @returns {React.Component}
  */
-function SimilarSongsPanel({ visible, style, onClose }) {
+function SimilarSongsPanel({ visible, style, onClose, similarTo }) {
     const allSongs = useSelector(selectors.library.getAll);
-    const currentSong = useSelector(selectors.library.getCurrentSong);
     const queueOpened = useSelector(selectors.general.get('queueOpened'));
     const [hovered, setHovered] = useState([]);
     const [similarSongs, setSimilarSongs] = useState([]);
@@ -34,11 +33,11 @@ function SimilarSongsPanel({ visible, style, onClose }) {
 
     useEffect(() => {
         let similar = [];
-        if (allSongs && currentSong) {
-            similar = _getSimilarSongs(allSongs, currentSong);
+        if (allSongs && similarTo) {
+            similar = _getSimilarSongs(allSongs, similarTo);
         }
         setSimilarSongs(similar);
-    }, [currentSong]);
+    }, [similarTo]);
 
     const addToHovered = index => {
         let copyHovered = [...hovered];
@@ -78,19 +77,19 @@ function SimilarSongsPanel({ visible, style, onClose }) {
                 <div className="similar__header__name">SIMILAR SONGS TO</div>
                 <img src="/assets/images/more-icon.png" onClick={() => {}} />
             </div>
-            {currentSong && (
+            {similarTo && (
                 <div
                     className={mainHoverClass}
                     onMouseEnter={() => addToHovered('main')}
                     onMouseLeave={() => removeFromHovered('main')}
                 >
                     <div className="similar__song__cover">
-                        <img src={currentSong.cover} />
+                        <img src={similarTo.cover} />
                     </div>
                     <div className="similar__song__wrapper">
-                        <div className="similar__song__title">{currentSong.title}</div>
+                        <div className="similar__song__title">{similarTo.title}</div>
                         <div className="similar__song__artist">
-                            by {currentSong.artistName} | {currentSong.length}
+                            by {similarTo.artistName} | {similarTo.length}
                         </div>
                     </div>
                 </div>
@@ -154,6 +153,7 @@ SimilarSongsPanel.propTypes = {
     visible: PropTypes.bool,
     style: PropTypes.object,
     onClose: PropTypes.func,
+    similarTo: PropTypes.object.isRequired,
 };
 
 SimilarSongsPanel.defaultProps = {

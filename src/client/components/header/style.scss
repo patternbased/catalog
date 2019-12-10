@@ -2,12 +2,13 @@
 
 .header {
     position: fixed;
-    height: 100px;
+    height: 80px;
     width: 100%;
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
     padding: 12px 50px;
     background: $background;
     z-index: 999;
+    transition: all 500ms ease;
 
     &--small {
         height: 60px;
@@ -15,8 +16,8 @@
 
     &__buttons {
         &-icon {
-            width: 36px;
-            height: 36px;
+            width: 30px;
+            height: 30px;
             margin-right: 30px;
             cursor: pointer;
         }
@@ -26,10 +27,7 @@
         cursor: pointer;
 
         &-icon {
-            width: 48px;
             height: 48px;
-            margin-right: 12px;
-
             &--small {
                 width: 36px;
                 height: 36px;

@@ -258,7 +258,7 @@ const _getSimilarPresets = (presets, filters) => {
                 }
             }
         });
-        if (similarCount >= 2) {
+        if (similarCount >= 1) {
             preset.similarity = similarCount;
             similarPresets.push(preset);
         }

@@ -1,5 +1,4 @@
 import React, { memo, useState, useRef, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import Slider from 'rc-slider';
 import { useDispatch, useSelector } from 'react-redux';
 import selectors from 'selectors';
@@ -9,18 +8,16 @@ import QueuePanel from 'components/queue';
 import SimilarSongsPanel from 'components/similar-songs';
 
 import { setState } from 'actions/general';
+import { addToQueue, setCurrentSong } from 'actions/library';
 
 import './style.scss';
 
 /**
  * Music Player component
- * @param {Object} song url of the song to play
- * @param {Object} nextSong url of the next song to play
- * @param {Function} onNext action to take when user clicks next
- * @param {Function} onPrev action to take when user clicks prev
  * @returns {React.Component}
  */
-function MusicPlayer({ nextSong, onNext, onPrev }) {
+function MusicPlayer() {
+    const [currentPlaying, setCurrentPlaying] = useState([]);
     const [isPlaying, setIsPlaying] = useState(false);
     const [songHovered, setSongHovered] = useState(false);
     const [elapsed, setElapsed] = useState(0);
@@ -28,7 +25,13 @@ function MusicPlayer({ nextSong, onNext, onPrev }) {
     const [queueOpened, setQueueOpened] = useState(false);
     const [similarOpened, setSimilarOpened] = useState(false);
     const dispatch = useDispatch();
+
+    const currentPlaylist = useSelector(selectors.library.getQueue);
     const currentSong = useSelector(selectors.library.getCurrentSong);
+
+    useEffect(() => {
+        setCurrentPlaying(currentSong);
+    }, [currentSong]);
 
     const musicPlayer = useRef();
 
@@ -54,7 +57,7 @@ function MusicPlayer({ nextSong, onNext, onPrev }) {
     };
 
     useEffect(() => {
-        musicPlayer.current.src = currentSong.url;
+        musicPlayer.current.src = currentPlaying.url;
         musicPlayer.current.play();
         setIsPlaying(true);
         musicPlayer.current.addEventListener('timeupdate', e => {
@@ -64,10 +67,26 @@ function MusicPlayer({ nextSong, onNext, onPrev }) {
             setDuration(e.target.duration);
         });
         musicPlayer.current.addEventListener('ended', function() {
-            musicPlayer.current.src = nextSong.url;
-            musicPlayer.current.play();
+            const currentIndex = currentPlaylist.findIndex(x => x.pbId === currentPlaying.pbId);
+            const nextSong = currentPlaylist[currentIndex + 1];
+            dispatch(setCurrentSong(nextSong));
+            dispatch(addToQueue(nextSong));
         });
-    }, [currentSong]);
+    }, [currentPlaying]);
+
+    const onPrev = () => {
+        const currentIndex = currentPlaylist.findIndex(x => x.pbId === currentPlaying.pbId);
+        const prev = currentPlaylist[currentIndex - 1];
+        dispatch(setCurrentSong(prev));
+        dispatch(addToQueue(prev));
+    };
+
+    const onNext = () => {
+        const currentIndex = currentPlaylist.findIndex(x => x.pbId === currentPlaying.pbId);
+        const next = currentPlaylist[currentIndex + 1];
+        dispatch(setCurrentSong(next));
+        dispatch(addToQueue(next));
+    };
 
     return (
         <>
@@ -78,19 +97,11 @@ function MusicPlayer({ nextSong, onNext, onPrev }) {
                         className="music-player__section--controls-button"
                         onClick={() => onPrev()}
                     />
-                    {isPlaying ? (
-                        <img
-                            src="/assets/images/player/pause.png"
-                            className="music-player__section--controls-button"
-                            onClick={() => pauseSong()}
-                        />
-                    ) : (
-                        <img
-                            src="/assets/images/player/play.png"
-                            className="music-player__section--controls-button"
-                            onClick={() => playSong()}
-                        />
-                    )}
+                    <img
+                        src={`/assets/images/player/${isPlaying ? 'pause' : 'play'}.png`}
+                        className="music-player__section--controls-button"
+                        onClick={() => (isPlaying ? pauseSong() : playSong())}
+                    />
                     <img
                         src="/assets/images/player/next.png"
                         className="music-player__section--controls-button"
@@ -100,22 +111,24 @@ function MusicPlayer({ nextSong, onNext, onPrev }) {
                 </div>
                 <div className="music-player__section music-player__section--content">
                     <div className="music-player__section--content__song">
-                        <img src={currentSong.cover} className="music-player__section--content__song-image" />
+                        <img src={currentPlaying.cover} className="music-player__section--content__song-image" />
                         <div
                             className="music-player__section--content__song__details"
                             onMouseEnter={() => handleSongHover()}
                             onMouseLeave={() => setSongHovered(false)}
                         >
-                            <p className="music-player__section--content__song__details-title">{currentSong.title}</p>
+                            <p className="music-player__section--content__song__details-title">
+                                {currentPlaying.title}
+                            </p>
                             {songHovered && (
                                 <p className="music-player__section--content__song__details-author music-player__section--content__song__details-author--inline">
-                                    by {currentSong.artistName}
+                                    by {currentPlaying.artistName}
                                 </p>
                             )}
                             {!songHovered && (
                                 <div className="music-player__section--content__song__details">
                                     <p className="music-player__section--content__song__details-author">
-                                        by Joseph Minadeo
+                                        by {currentPlaying.artistName}
                                     </p>
                                     <p className="music-player__section--content__song__details-duration">
                                         {_formatTime(duration)}
@@ -165,7 +178,11 @@ function MusicPlayer({ nextSong, onNext, onPrev }) {
                 </div>
             </div>
             <QueuePanel visible={queueOpened} onClose={() => setQueueOpened(false)} />
-            <SimilarSongsPanel visible={similarOpened} onClose={() => setSimilarOpened(false)} />
+            <SimilarSongsPanel
+                visible={similarOpened}
+                onClose={() => setSimilarOpened(false)}
+                similarTo={currentPlaying}
+            />
         </>
     );
 }
@@ -178,12 +195,6 @@ function MusicPlayer({ nextSong, onNext, onPrev }) {
 function _formatTime(time) {
     return `${`0${Math.floor(time / 60)}`.slice(-2)}:${`0${Math.floor(time % 60)}`.slice(-2)}`;
 }
-
-MusicPlayer.propTypes = {
-    nextSong: PropTypes.object.isRequired,
-    onNext: PropTypes.func.isRequired,
-    onPrev: PropTypes.func.isRequired,
-};
 
 MusicPlayer.displayName = 'MusicPlayer';
 

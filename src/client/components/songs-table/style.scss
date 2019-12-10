@@ -5,6 +5,16 @@
         position: sticky;
         background-color: #f4f5f4;
         padding-top: 47px;
+        &--big {
+            top: 80px;
+        }
+        &--small {
+            top: 60px;
+        }
+        &--regular {
+            top: 0;
+            padding-top: 0;
+        }
     }
     &__filters {
         display: flex;
@@ -273,82 +283,6 @@
                 }
                 .table__body__row--hovered & {
                     display: none;
-                }
-            }
-        }
-    }
-}
-
-.modal--share {
-    .modal__content {
-        top: 50%;
-        margin: 0;
-        height: 300px;
-        width: 600px;
-        border-radius: 4px;
-        background-color: #ffffff;
-        box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.5);
-        left: 50%;
-        transform: translate(-50%, -50%);
-        text-align: center;
-        .share {
-            &__close {
-                background-color: #808080;
-                width: 36px;
-                height: 36px;
-                border-radius: 50%;
-                float: right;
-                margin: 14px 14px 0 0;
-                padding: 5px;
-                cursor: pointer;
-                &:hover {
-                    opacity: 0.7;
-                }
-            }
-            &__header {
-                color: #444444;
-                font-size: 24px;
-                font-weight: bold;
-                line-height: 29px;
-                padding-top: 40px;
-                margin-bottom: 20px;
-            }
-            &__item {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                img {
-                    width: 40px;
-                    height: 40px;
-                    margin-right: 15px;
-                }
-                &__title {
-                    color: #444444;
-                    margin-bottom: 3px;
-                    text-align: left;
-                }
-                &__artist {
-                    color: #444444;
-                    font-family: 'Open Sans';
-                    font-size: 12px;
-                    line-height: 17px;
-                    text-align: left;
-                }
-            }
-            &__button {
-                height: 41px;
-                width: 261px;
-                border: 1px solid #808080;
-                border-radius: 20px;
-                background-color: #808080;
-                margin: 25px auto 30px;
-                color: #ffffff;
-                font-size: 18px;
-                font-weight: bold;
-                line-height: 40px;
-                cursor: pointer;
-                &:hover {
-                    opacity: 0.7;
                 }
             }
         }

@@ -1,7 +1,7 @@
 @import '../../styles/constants';
 
 .home {
-    padding-top: 100px;
+    padding-top: 80px;
     margin: 0 auto;
     max-width: 1040px;
 }
@@ -11,4 +11,47 @@
     &--pushed {
         margin-left: 300px;
     }
+}
+.hero {
+    height: 429px;
+    border-radius: 4px;
+    background-image: url(/assets/images/presets/simon-matzinger-rydQVdwcgUQ-unsplash.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 50% 50%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin: 50px 0;
+    padding: 0px 200px;
+    &__feature {
+        text-align: center;
+    }
+    &__image {
+        width: 50px;
+        height: 50px;
+        margin-bottom: 10px;
+    }
+    &__name {
+        color: $text-secondary;
+        font-size: 18px;
+        font-weight: 600;
+    }
+}
+.popular-presets {
+    margin-bottom: 30px;
+    &__title {
+        color: $text-primary;
+        font-size: 28px;
+        margin-bottom: 20px;
+    }
+    &__presets {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+    }
+}
+.featured .table {
+    padding-bottom: 50px;
 }

@@ -9,8 +9,9 @@
     bottom: 60px;
     visibility: hidden;
     transition: all 0.5s ease-in;
+    z-index: 2;
     &--visible {
-        height: calc(100vh - 160px);
+        height: calc(100vh - 140px);
         visibility: visible;
     }
 
@@ -24,6 +25,7 @@
         justify-content: space-between;
         padding: 0 18px;
         color: white;
+        position: relative;
         &__name {
             font-weight: 600;
         }
@@ -116,6 +118,66 @@
         padding: 30px 0;
         .queue__song {
             color: #444;
+        }
+    }
+    &__more {
+        list-style: none;
+        margin: 0;
+        padding: 15px 20px 15px 15px;
+        position: absolute;
+        border: 1px solid #4a4a4a;
+        border-radius: 4px;
+        background-color: #ffffff;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+        right: 30px;
+        top: 50px;
+        z-index: 2;
+        &__item {
+            color: #808080;
+            font-size: 14px;
+            line-height: 16px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+    }
+    &__share {
+        width: 30px;
+        height: 30px;
+        margin-right: 10px;
+        &--share {
+            background-image: url('/assets/images/table/share.svg');
+        }
+        &--delete {
+            background-image: url('/assets/images/queue/delete.png');
+        }
+    }
+}
+
+.modal--share.queue-share .modal__content {
+    .share {
+        &__item__title {
+            cursor: pointer;
+        }
+        &__button {
+            &--disabled {
+                opacity: 0.5;
+                cursor: initial;
+            }
+            &--active {
+                background-color: $secondary;
+                border-color: $secondary;
+            }
+        }
+        &__input {
+            width: 240px;
+            border: none;
+            border-bottom: 2px solid #9b9b9b;
+            padding-bottom: 9px;
+            color: $secondary;
+            font-size: 16px;
+            font-weight: bold;
+            line-height: 19px;
         }
     }
 }
