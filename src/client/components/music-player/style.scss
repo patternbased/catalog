@@ -12,6 +12,7 @@
     align-items: center;
     justify-content: space-between;
     z-index: 3;
+    left: 0;
     &__section {
         border-right: 1px solid $almost-white;
         display: flex;
