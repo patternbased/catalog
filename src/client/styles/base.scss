@@ -2,7 +2,7 @@
 
 #app {
     position: relative;
-    background-color: #f5f4f5;
+    background-color: $almost-white;
 }
 
 html {
@@ -98,7 +98,7 @@ main {
     height: 15px;
     margin: 0;
     padding: 0;
-    background-color: $text-primary;
+    background-color: $primary;
     border-radius: 50%;
     color: white;
     font-size: 10px;
@@ -119,14 +119,14 @@ main {
         height: 300px;
         width: 600px;
         border-radius: 4px;
-        background-color: #ffffff;
+        background-color: white;
         box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.5);
         left: 50%;
         transform: translate(-50%, -50%);
         text-align: center;
         .share {
             &__close {
-                background-color: #808080;
+                background-color: $tertiary;
                 width: 36px;
                 height: 36px;
                 border-radius: 50%;
@@ -139,7 +139,7 @@ main {
                 }
             }
             &__header {
-                color: #444444;
+                color: $primary;
                 font-size: 24px;
                 font-weight: bold;
                 line-height: 29px;
@@ -156,12 +156,12 @@ main {
                     margin-right: 15px;
                 }
                 &__title {
-                    color: #444444;
+                    color: $primary;
                     margin-bottom: 3px;
                     text-align: left;
                 }
                 &__artist {
-                    color: #444444;
+                    color: $primary;
                     font-family: 'Open Sans';
                     font-size: 12px;
                     line-height: 17px;
@@ -171,11 +171,11 @@ main {
             &__button {
                 height: 41px;
                 width: 261px;
-                border: 1px solid #808080;
+                border: 1px solid $tertiary;
                 border-radius: 20px;
-                background-color: #808080;
+                background-color: $tertiary;
                 margin: 25px auto 30px;
-                color: #ffffff;
+                color: white;
                 font-size: 18px;
                 font-weight: bold;
                 line-height: 40px;

@@ -5,7 +5,7 @@
     width: 100%;
     position: fixed;
     bottom: 0;
-    background-color: #424242;
+    background-color: $dark-grey;
     box-shadow: 0 -1px 2px 0 rgba(0, 0, 0, 0.2);
     padding: 0 52px 0 30px;
     display: flex;
@@ -13,7 +13,7 @@
     justify-content: space-between;
     z-index: 3;
     &__section {
-        border-right: 1px solid #f5f4f5;
+        border-right: 1px solid $almost-white;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -114,7 +114,7 @@
                         vertical-align: middle;
 
                         .rc-slider-rail {
-                            background-color: #808080;
+                            background-color: $tertiary;
                             border-radius: 0;
                         }
 
@@ -172,14 +172,14 @@
                     background-color: white;
                     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
                     border: none;
-                    color: #4a4a4a;
+                    color: $dark-grey;
                     font-size: 14px;
                     line-height: 16px;
                     text-align: center;
                     margin-left: 12px;
 
                     &:hover {
-                        color: #4a4a4a;
+                        color: $dark-grey;
                     }
                 }
             }

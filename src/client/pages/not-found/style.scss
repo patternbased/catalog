@@ -6,12 +6,12 @@
     justify-content: center;
     align-items: center;
     text-align: center;
-    background-color: #f8f8f8;
+    background-color: $almost-white;
 
     &__content {
         padding: 40px;
-        border: 1px solid #ddd;
-        background-color: #fff;
+        border: 1px solid $light-grey;
+        background-color: white;
     }
 
     &__header {

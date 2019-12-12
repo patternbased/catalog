@@ -33,6 +33,15 @@
                 height: 36px;
             }
         }
+        svg {
+            path.st0,
+            circle.st0 {
+                fill: $secondary;
+            }
+            path.st2 {
+                fill: $tertiary;
+            }
+        }
 
         &__text {
             &-main {
@@ -41,12 +50,12 @@
                 margin-bottom: 7px;
 
                 &--colored {
-                    color: #3d91c0;
+                    color: $secondary;
                 }
             }
 
             &-secondary {
-                color: #808080;
+                color: $tertiary;
                 font-family: $font-alt;
                 font-size: 18px;
                 font-weight: 600;

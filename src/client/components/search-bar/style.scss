@@ -4,11 +4,11 @@
     &-input {
         height: 60px;
         width: 100%;
-        background-color: #f5f4f5;
+        background-color: $almost-white;
         box-shadow: 1px 0 2px 0 rgba(0, 0, 0, 0.3);
         border: none;
         padding: 15px 30px;
-        color: $text-primary;
+        color: $primary;
         font-family: $font-other;
         font-size: 18px;
         line-height: 24px;
@@ -33,7 +33,7 @@
             font-family: $font-other;
             font-size: 16px;
             line-height: 22px;
-            color: $text-primary;
+            color: $primary;
             cursor: pointer;
             text-overflow: ellipsis;
             white-space: nowrap;

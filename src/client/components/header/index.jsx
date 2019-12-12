@@ -117,7 +117,7 @@ function Header() {
                     {scrolled ? (
                         <LogoSvg className="header__logo-icon header__logo-icon--small" fill={svgActiveFill} />
                     ) : (
-                        <FullLogoSvg className="header__logo-icon" fill={svgActiveFill} />
+                        <FullLogoSvg className="header__logo-icon" />
                     )}
                 </div>
                 <div className="header__buttons">

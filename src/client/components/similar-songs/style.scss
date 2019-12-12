@@ -3,7 +3,7 @@
 .similar {
     height: calc(100vh - 140px);
     width: 300px;
-    background-color: #f5f4f5;
+    background-color: $almost-white;
     position: fixed;
     right: -300px;
     bottom: 60px;
@@ -47,7 +47,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        color: $text-primary;
+        color: $primary;
         padding: 20px 30px;
         &--blue {
             background-color: $secondary;

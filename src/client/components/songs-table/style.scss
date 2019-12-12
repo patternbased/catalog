@@ -3,7 +3,7 @@
 .table {
     &__sticky {
         position: sticky;
-        background-color: #f4f5f4;
+        background-color: $almost-white;
         padding-top: 47px;
         &--big {
             top: 80px;
@@ -43,7 +43,7 @@
                 }
             }
             &__single {
-                color: $text-primary;
+                color: $primary;
                 font-size: 20px;
                 line-height: 24px;
                 display: inline-block;
@@ -61,8 +61,8 @@
                 height: 24px;
                 width: 80px;
                 border-radius: 2px;
-                background-color: #808080;
-                color: #f5f4f5;
+                background-color: $tertiary;
+                color: $almost-white;
                 font-size: 12px;
                 line-height: 24px;
                 text-align: center;
@@ -71,7 +71,7 @@
     }
     &__header {
         height: 30px;
-        background-color: $text-primary;
+        background-color: $primary;
         box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
         display: flex;
         align-items: center;
@@ -161,7 +161,7 @@
                         background-color: white;
                         box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
                         border: none;
-                        color: #3d91c0;
+                        color: $secondary;
                         font-size: 14px;
                         line-height: 16px;
                         text-align: center;
@@ -183,7 +183,7 @@
                 &__wrapper {
                     max-width: 470px;
                     &-song-title {
-                        color: $text-primary;
+                        color: $primary;
                         font-family: $font-main;
                         font-size: 16px;
                         line-height: 19px;
@@ -204,7 +204,7 @@
                         }
                     }
                     &-song-artist {
-                        color: $text-primary;
+                        color: $primary;
                         font-family: $font-other;
                         font-size: 12px;
                         line-height: 20px;
@@ -244,7 +244,7 @@
                 width: 100px;
                 text-align: center;
                 p {
-                    color: $text-primary;
+                    color: $primary;
                     font-family: $font-other;
                     font-size: 16px;
                     line-height: 22px;

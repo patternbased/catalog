@@ -27,7 +27,7 @@
         padding: 30px;
 
         &-title {
-            color: $text-primary;
+            color: $primary;
             text-transform: uppercase;
             margin-bottom: 10px;
         }
@@ -72,7 +72,7 @@
                 }
 
                 &-name {
-                    color: $text-primary;
+                    color: $primary;
                     font-family: $font-other;
                     font-size: 14px;
                     padding: 6px 10px;
