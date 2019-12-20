@@ -166,7 +166,7 @@ function SongsTable({ list, onSelect, listName, page }) {
         <>
             <div className="table">
                 <div className={getTableMainClass}>
-                    {(Object.keys(appliedFilters).length > 0 || listName) && (
+                    {!page && (Object.keys(appliedFilters).length > 0 || listName) && (
                         <div className="table__filters">
                             <img
                                 src="/assets/images/table/results-play.png"

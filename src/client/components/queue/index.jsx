@@ -13,6 +13,9 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import './style.scss';
 
+const baseUrl =
+    process.env.NODE_ENV === 'development' ? 'http://localhost:3500/' : 'https://patternbased.herokuapp.com/';
+
 /**
  * Queue panel component
  * @param {Boolean} visible boolean to determine if the panel is opened or not
@@ -182,9 +185,7 @@ function QueuePanel({ visible, style, onClose }) {
                             </div>
                         ) : (
                             <CopyToClipboard
-                                text={`http://localhost:3500/?ids=${songs.map(
-                                    s => `${s.pbId}`
-                                )}&name=${shareQueueName}`}
+                                text={`${baseUrl}?ids=${songs.map(s => `${s.pbId}`)}&name=${shareQueueName}`}
                             >
                                 <div className="share__button">Copy Share Link</div>
                             </CopyToClipboard>

@@ -78,17 +78,19 @@ function HomePage() {
                 ) : (
                     <>
                         <div className="hero">
-                            <div className="hero__feature">
-                                <img className="hero__image" src="/assets/images/feature-filters.png" />
-                                <div className="hero__name">Cool Filters</div>
-                            </div>
-                            <div className="hero__feature">
-                                <img className="hero__image" src="/assets/images/feature-presets.png" />
-                                <div className="hero__name">Handy Presets</div>
-                            </div>
-                            <div className="hero__feature">
-                                <img className="hero__image" src="/assets/images/feature-suggestion.png" />
-                                <div className="hero__name">PB Suggestion</div>
+                            <div className="hero__overlay">
+                                <div className="hero__feature">
+                                    <img className="hero__image" src="/assets/images/feature-filters.png" />
+                                    <div className="hero__name">Filters</div>
+                                </div>
+                                <div className="hero__feature">
+                                    <img className="hero__image" src="/assets/images/feature-presets.png" />
+                                    <div className="hero__name">Presets</div>
+                                </div>
+                                <div className="hero__feature">
+                                    <img className="hero__image" src="/assets/images/feature-suggestion.png" />
+                                    <div className="hero__name">Suggestions</div>
+                                </div>
                             </div>
                         </div>
                         <div className="popular-presets">

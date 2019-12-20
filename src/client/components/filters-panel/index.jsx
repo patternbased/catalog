@@ -133,7 +133,7 @@ function FiltersPanel({ visible, style, showSearch }) {
 
     const selectResult = item => {
         if (item.type === 'instrument') {
-            const instrumentsCopy = [...appliedFilters['instruments']];
+            const instrumentsCopy = appliedFilters['instruments'] ? [...appliedFilters['instruments']] : [];
             dispatch(setFilter('instruments', instrumentsCopy.concat(item.value)));
         } else {
             const selectedSearchCopy = [...selectedSearch];
@@ -157,39 +157,36 @@ function FiltersPanel({ visible, style, showSearch }) {
         <div>
             <div className={panelClass} style={style}>
                 <div className="filters-panel__container">
-                    {showSearch && (
-                        <div className="filters-panel__search">
-                            <SearchBar onSelect={val => selectResult(val)} listItems={searchList} />
-                            {appliedFilters.search && (
-                                <div className="filters-panel__search__selected">
-                                    {appliedFilters.search.map((item, index) => (
-                                        <div className="filters-panel__search__selected-item" key={index}>
-                                            <div className="filters-panel__search__selected-item-wrapper">
-                                                {item.type === 'keyword' ? (
-                                                    <img
-                                                        className="filters-panel__search__selected-item-new"
-                                                        src="/assets/images/search-tag.png"
-                                                    />
-                                                ) : (
-                                                    <span className="filters-panel__search__selected-item-type">
-                                                        {item.type}
-                                                    </span>
-                                                )}
-                                                <p className="filters-panel__search__selected-item-name">
-                                                    {item.value}
-                                                </p>
-                                            </div>
-                                            <img
-                                                className="filters-panel__search__selected-item-close"
-                                                src="/assets/images/close.png"
-                                                onClick={() => onCancelSelected(item.value)}
-                                            />
+                    <div className="filters-panel__search">
+                        {showSearch && <SearchBar onSelect={val => selectResult(val)} listItems={searchList} />}
+                        {appliedFilters.search && (
+                            <div className="filters-panel__search__selected">
+                                {appliedFilters.search.map((item, index) => (
+                                    <div className="filters-panel__search__selected-item" key={index}>
+                                        <div className="filters-panel__search__selected-item-wrapper">
+                                            {item.type === 'keyword' ? (
+                                                <img
+                                                    className="filters-panel__search__selected-item-new"
+                                                    src="/assets/images/search-tag.png"
+                                                />
+                                            ) : (
+                                                <span className="filters-panel__search__selected-item-type">
+                                                    {item.type}
+                                                </span>
+                                            )}
+                                            <p className="filters-panel__search__selected-item-name">{item.value}</p>
                                         </div>
-                                    ))}
-                                </div>
-                            )}
-                        </div>
-                    )}
+                                        <img
+                                            className="filters-panel__search__selected-item-close"
+                                            src="/assets/images/close.png"
+                                            onClick={() => onCancelSelected(item.value)}
+                                        />
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+
                     <div className="filters-panel__filters">
                         {BASIC_FILTERS.map((filter, index) => (
                             <div key={index}>
