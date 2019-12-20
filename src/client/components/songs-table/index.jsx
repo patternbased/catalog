@@ -18,6 +18,8 @@ import './style.scss';
 
 const headers = ['SONG NAME / ARTIST NAME', 'FLOW', 'DURATION', 'KEY / BPM', 'RTM', 'SPD', 'EXP', 'MOD', 'GRD'];
 const songsToDisplay = 20;
+const baseUrl =
+    process.env.NODE_ENV === 'development' ? 'http://localhost:3500/' : 'https://patternbased.herokuapp.com/';
 /**
  * Songs table component
  * @param {Array} list list of song objects
@@ -351,7 +353,7 @@ function SongsTable({ list, onSelect, listName, page }) {
                             <div className="share__item__artist">by {shareItem.artistName}</div>
                         </div>
                     </div>
-                    <CopyToClipboard text={`http://localhost:3500/?ids=${shareItem.pbId}`}>
+                    <CopyToClipboard text={`${baseUrl}?ids=${shareItem.pbId}`}>
                         <div className="share__button">Copy Share Link</div>
                     </CopyToClipboard>
                 </Modal>
