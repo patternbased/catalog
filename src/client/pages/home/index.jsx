@@ -43,12 +43,14 @@ function HomePage() {
             const pbIds = sharedItem.ids.split(',');
             setTablePlaylist(songList.filter(x => pbIds.includes(x.pbId)));
         }
-        setFeaturedTracks(
-            songList
-                .sort((a, b) => parseFloat(a.rate) - parseFloat(b.rate))
-                .reverse()
-                .slice(0, 10)
-        );
+        if (songList) {
+            setFeaturedTracks(
+                songList
+                    .sort((a, b) => parseFloat(a.rate) - parseFloat(b.rate))
+                    .reverse()
+                    .slice(0, 10)
+            );
+        }
     }, [songList]);
 
     useEffect(() => {

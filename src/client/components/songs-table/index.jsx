@@ -65,7 +65,7 @@ function SongsTable({ list, onSelect, listName, page }) {
         [hovered]
     );
 
-    const playSong = (item, index) => {
+    const playSong = item => {
         onSelect(item);
         dispatch(setCurrentSong(item));
         dispatch(addToQueue(item));
@@ -238,7 +238,7 @@ function SongsTable({ list, onSelect, listName, page }) {
                                                         ? '/assets/images/table/play-active.svg'
                                                         : item.cover
                                                 }
-                                                onClick={() => playSong(item, index)}
+                                                onClick={() => playSong(item)}
                                             />
                                             <div className="table__body__row-title__wrapper">
                                                 <p className="table__body__row-title__wrapper-song-title">
