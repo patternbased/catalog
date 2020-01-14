@@ -1,6 +1,8 @@
 @import '../../styles/constants';
 
 .table {
+    padding-bottom: 100px;
+
     &__sticky {
         position: sticky;
         background-color: $almost-white;

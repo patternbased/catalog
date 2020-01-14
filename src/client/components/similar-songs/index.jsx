@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import selectors from 'selectors';
 
 import { setState } from 'actions/general';
-import { setCurrentSong } from 'actions/library';
+import { addToQueue, setCurrentSong } from 'actions/library';
 
 import './style.scss';
 
@@ -70,6 +70,11 @@ function SimilarSongsPanel({ visible, style, onClose, similarTo }) {
         [hovered]
     );
 
+    const playSimilarSong = song => {
+        dispatch(setCurrentSong(song));
+        dispatch(addToQueue(song));
+    };
+
     return (
         <div className={panelClass} style={style}>
             <div className="similar__header">
@@ -101,8 +106,9 @@ function SimilarSongsPanel({ visible, style, onClose, similarTo }) {
                         className={checkIfHovered(index) ? 'similar__song similar__song--blue' : 'similar__song'}
                         onMouseOver={() => addToHovered(index)}
                         onMouseOut={() => removeFromHovered(index)}
+                        onClick={() => playSimilarSong(song)}
                     >
-                        {_renderSimilarSong(song, checkIfHovered(index), () => dispatch(setCurrentSong(song)))}
+                        {_renderSimilarSong(song, checkIfHovered(index))}
                     </div>
                 ))}
             </div>
@@ -114,17 +120,12 @@ function SimilarSongsPanel({ visible, style, onClose, similarTo }) {
  * Renders the songs in the queue
  * @param {Object} song song to render
  * @param {Boolean} hovered current song hovered
- * @param {Function} onPlay action when cover is clicked
  * @returns {React.Component}
  */
-function _renderSimilarSong(song, hovered, onPlay) {
+function _renderSimilarSong(song, hovered) {
     return (
         <>
-            <img
-                src={hovered ? '/assets/images/similar/song-play.png' : song.cover}
-                className="similar__song__cover"
-                onClick={onPlay}
-            />
+            <img src={hovered ? '/assets/images/similar/song-play.png' : song.cover} className="similar__song__cover" />
             <div className="similar__song__wrapper">
                 <div className="similar__song__title">{song.title}</div>
                 <div className="similar__song__artist">

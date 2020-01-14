@@ -43,6 +43,10 @@ function SongsTable({ list, onSelect, listName, page }) {
         setSongs(list.slice(0, songsToDisplay));
     }, [list]);
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [appliedFilters]);
+
     const addToHovered = index => {
         let copyHovered = [...hovered];
         copyHovered.push(index);
@@ -65,7 +69,6 @@ function SongsTable({ list, onSelect, listName, page }) {
         onSelect(item);
         dispatch(setCurrentSong(item));
         dispatch(addToQueue(item));
-        dispatch(addToQueue(list[index + 1]));
     };
 
     const getRowClass = index =>
@@ -274,10 +277,14 @@ function SongsTable({ list, onSelect, listName, page }) {
                                         </div>
                                     </div>
                                     <div className="table__body__row-flow">
-                                        {TABLE_FLOW_SHAPES[item.arc.toLowerCase()] && (
+                                        {TABLE_FLOW_SHAPES.find(
+                                            x => x.name.toLowerCase() === item.arc.toLowerCase()
+                                        ) && (
                                             <img
                                                 src={
-                                                    TABLE_FLOW_SHAPES.find(x => x.name === item.arc.toLowerCase()).image
+                                                    TABLE_FLOW_SHAPES.find(
+                                                        x => x.name.toLowerCase() === item.arc.toLowerCase()
+                                                    ).image
                                                 }
                                             />
                                         )}

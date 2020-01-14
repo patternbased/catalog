@@ -27,10 +27,10 @@ function HomePage() {
 
     const filtersPanelState = useSelector(selectors.general.get('filtersOpened'));
     const presetsPanelState = useSelector(selectors.general.get('presetsOpened'));
-    const musicPlayerState = useSelector(selectors.general.get('musicPlayerOpened'));
+    const currentSong = useSelector(selectors.library.getCurrentSong);
 
     const songList = useSelector(selectors.library.getAll);
-    const featuredTracks = useSelector(selectors.library.getFeaturedTracks);
+    const [featuredTracks, setFeaturedTracks] = useState([]);
 
     const filtersValues = useSelector(selectors.filters.getApplied);
 
@@ -43,6 +43,12 @@ function HomePage() {
             const pbIds = sharedItem.ids.split(',');
             setTablePlaylist(songList.filter(x => pbIds.includes(x.pbId)));
         }
+        setFeaturedTracks(
+            songList
+                .sort((a, b) => parseFloat(a.rate) - parseFloat(b.rate))
+                .reverse()
+                .slice(0, 10)
+        );
     }, [songList]);
 
     useEffect(() => {
@@ -63,11 +69,11 @@ function HomePage() {
         Object.keys(filters).forEach(filter => {
             dispatch(setFilter(filter, filters[filter]));
         });
+        dispatch(setState('filtersOpened', true));
     };
 
     const playSong = song => {
         dispatch(setCurrentSong(song));
-        dispatch(setState('musicPlayerOpened', true));
     };
 
     return (
@@ -79,11 +85,17 @@ function HomePage() {
                     <>
                         <div className="hero">
                             <div className="hero__overlay">
-                                <div className="hero__feature">
+                                <div
+                                    className="hero__feature hero__feature--linked"
+                                    onClick={() => dispatch(setState('filtersOpened', !filtersPanelState))}
+                                >
                                     <img className="hero__image" src="/assets/images/feature-filters.png" />
                                     <div className="hero__name">Filters</div>
                                 </div>
-                                <div className="hero__feature">
+                                <div
+                                    className="hero__feature hero__feature--linked"
+                                    onClick={() => dispatch(setState('presetsOpened', !presetsPanelState))}
+                                >
                                     <img className="hero__image" src="/assets/images/feature-presets.png" />
                                     <div className="hero__name">Presets</div>
                                 </div>
@@ -117,7 +129,7 @@ function HomePage() {
                     </>
                 )}
             </main>
-            {musicPlayerState && <MusicPlayer />}
+            {currentSong && <MusicPlayer list={tablePlaylist} />}
         </div>
     );
 }
@@ -146,8 +158,36 @@ const _filterSongs = (songs, filters) => {
                 if (_isInRange(song.speed, filters.speed)) {
                     similar += 1;
                 }
-                if (filters.flow && filters.flow.includes(song.arc.toLowerCase())) {
-                    similar += 1;
+                if (filters.flow) {
+                    filters.flow.map(f => {
+                        const filterValue = f.toLowerCase();
+                        if (filterValue === song.arc.toLowerCase()) {
+                            similar += 1;
+                        }
+                    });
+                }
+                if (filters.instruments) {
+                    filters.instruments.map(filter => {
+                        const filterVal = filter.replace(/\s/g, '').toLowerCase();
+                        const songInstr = song.instruments.filter(
+                            s => s.replace(/\s/g, '').toLowerCase() === filterVal
+                        );
+                        if (songInstr.length > 0) {
+                            similar += 1;
+                        }
+                    });
+                }
+                if (filters.duration) {
+                    const durations = song.length.split(':');
+                    if (parseInt(durations[0]) > 0) {
+                        durations.splice(1, 1);
+                    } else {
+                        durations.shift();
+                    }
+                    const songDuration = parseFloat(durations.join('.'));
+                    if (_isInRange(songDuration, filters.duration)) {
+                        similar += 1;
+                    }
                 }
                 if (filters.search) {
                     filters.search.map(filter => {

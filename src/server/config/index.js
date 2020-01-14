@@ -9,7 +9,7 @@ const config = {
     // Google spreadsheets configs
     googleSpreadsheets: {
         songs: {
-            spreadsheetId: '1AX7WSzg7TjpaRLnlBSsMjlfhwFPhkKvVJIX0Ft6IK-E',
+            spreadsheetId: '13FRGxGttHeLTmjaKSFobbolsgjq52aRnHc5AlQWhZIE',
             config: {
                 type: 'service_account',
                 project_id: 'pb-library',

@@ -139,17 +139,15 @@
             display: flex;
             align-items: center;
             cursor: pointer;
-        }
-    }
-    &__share {
-        width: 30px;
-        height: 30px;
-        margin-right: 10px;
-        &--share {
-            background-image: url('/assets/images/table/share.svg');
-        }
-        &--delete {
-            background-image: url('/assets/images/queue/delete.png');
+            margin-bottom: 10px;
+            &:last-child {
+                margin-bottom: 0;
+            }
+            svg {
+                width: 25px;
+                height: 25px;
+                margin-right: 10px;
+            }
         }
     }
 }

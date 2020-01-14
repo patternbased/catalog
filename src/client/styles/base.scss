@@ -149,7 +149,7 @@ main {
             }
             &__item {
                 display: flex;
-                align-items: center;
+                align-items: flex-end;
                 justify-content: center;
                 img {
                     width: 40px;
@@ -160,6 +160,11 @@ main {
                     color: $primary;
                     margin-bottom: 3px;
                     text-align: left;
+                    display: flex;
+                    svg {
+                        width: 22px;
+                        margin-left: 5px;
+                    }
                 }
                 &__artist {
                     color: $primary;

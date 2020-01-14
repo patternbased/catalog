@@ -1,4 +1,6 @@
+/* eslint-disable max-lines-per-function */
 import React, { memo, useState, useRef, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import Slider from 'rc-slider';
 import { useDispatch, useSelector } from 'react-redux';
 import selectors from 'selectors';
@@ -16,7 +18,7 @@ import './style.scss';
  * Music Player component
  * @returns {React.Component}
  */
-function MusicPlayer() {
+function MusicPlayer({ list }) {
     const [currentPlaying, setCurrentPlaying] = useState([]);
     const [isPlaying, setIsPlaying] = useState(false);
     const [songHovered, setSongHovered] = useState(false);
@@ -68,7 +70,16 @@ function MusicPlayer() {
         });
         musicPlayer.current.addEventListener('ended', function() {
             const currentIndex = currentPlaylist.findIndex(x => x.pbId === currentPlaying.pbId);
-            const nextSong = currentPlaylist[currentIndex + 1];
+            let nextSong = {};
+            if (currentPlaylist[currentIndex + 1]) {
+                nextSong = currentPlaylist[currentIndex + 1];
+            } else if (list) {
+                const listIndex = list.findIndex(x => x.pbId === currentPlaying.pbId);
+                nextSong = list[listIndex + 1] ? list[listIndex + 1] : list[0];
+            } else {
+                nextSong = currentPlaylist[0];
+            }
+
             dispatch(setCurrentSong(nextSong));
             dispatch(addToQueue(nextSong));
         });
@@ -83,7 +94,16 @@ function MusicPlayer() {
 
     const onNext = () => {
         const currentIndex = currentPlaylist.findIndex(x => x.pbId === currentPlaying.pbId);
-        const next = currentPlaylist[currentIndex + 1];
+        let next = {};
+        if (currentPlaylist[currentIndex + 1]) {
+            next = currentPlaylist[currentIndex + 1];
+        } else if (list) {
+            const listIndex = list.findIndex(x => x.pbId === currentPlaying.pbId);
+            next = list[listIndex + 1] ? list[listIndex + 1] : list[0];
+        } else {
+            next = currentPlaylist[0];
+        }
+
         dispatch(setCurrentSong(next));
         dispatch(addToQueue(next));
     };
@@ -195,6 +215,10 @@ function MusicPlayer() {
 function _formatTime(time) {
     return `${`0${Math.floor(time / 60)}`.slice(-2)}:${`0${Math.floor(time % 60)}`.slice(-2)}`;
 }
+
+MusicPlayer.propTypes = {
+    list: PropTypes.array,
+};
 
 MusicPlayer.displayName = 'MusicPlayer';
 

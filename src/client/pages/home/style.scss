@@ -31,6 +31,13 @@
     }
     &__feature {
         text-align: center;
+        transition: transform 0.3s;
+        &--linked {
+            cursor: pointer;
+            &:hover {
+                transform: scale(1.2);
+            }
+        }
     }
     &__image {
         width: 50px;

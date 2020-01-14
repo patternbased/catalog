@@ -28,10 +28,18 @@ const svgActiveFill = '#0092C5';
 function Header() {
     const [scrolled, setScrolled] = useState(false);
     const [panelStyle, setPanelStyle] = useState({ top: `${HEADER_HEIGHTS.big}px` });
-    const [filtersOpened, setFiltersOpened] = useState(false);
+    const [filtersOpened, setFiltersOpened] = useState(true);
     const [presetsOpened, setPresetsOpened] = useState(false);
     const [searchOpened, setSearchOpened] = useState(false);
     const filtersValues = useSelector(selectors.filters.getApplied);
+
+    const filtersPanelState = useSelector(selectors.general.get('filtersOpened'));
+    const presetsPanelState = useSelector(selectors.general.get('presetsOpened'));
+
+    useEffect(() => {
+        setFiltersOpened(filtersPanelState);
+        setPresetsOpened(presetsPanelState);
+    }, [filtersPanelState, presetsPanelState]);
 
     const dispatch = useDispatch();
 

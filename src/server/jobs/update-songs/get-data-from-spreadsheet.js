@@ -97,6 +97,8 @@ module.exports = async () => {
         tools: row.tools.split(new RegExp(separators.join('|'), 'g')),
         story: row.story,
         url: `https://pblibrary.s3.us-east-2.amazonaws.com/${row.catnum}/${row.id}.mp3`,
-        cover: `https://pblibrary.s3.us-east-2.amazonaws.com/${row.catnum}/cover.jpg`,
+        cover: ['PB26', 'PB36', 'PB37'].includes(row.catnum)
+            ? `https://pblibrary.s3.us-east-2.amazonaws.com/${row.catnum}/${row.id}-thumb.jpg`
+            : `https://pblibrary.s3.us-east-2.amazonaws.com/${row.catnum}/cover-thumb.jpg`,
     }));
 };

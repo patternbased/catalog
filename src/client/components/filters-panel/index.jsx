@@ -216,7 +216,6 @@ function FiltersPanel({ visible, style, showSearch }) {
                                     onClick={() => {
                                         dispatch(resetAllFilters());
                                         setSimilarPresets([]);
-                                        dispatch(clearQueue());
                                     }}
                                 >
                                     Clear All

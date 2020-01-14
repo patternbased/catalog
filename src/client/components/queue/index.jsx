@@ -10,6 +10,9 @@ import { setState } from 'actions/general';
 import { removeFromQueue, reorderQueue, setCurrentSong } from 'actions/library';
 import Modal from 'components/modal';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import EditIconSvg from 'assets/images/edit-icon.svg';
+import DeleteIcon from 'assets/images/delete-icon-dark.svg';
+import ShareIcon from 'assets/images/share-icon-dark.svg';
 
 import './style.scss';
 
@@ -132,11 +135,11 @@ function QueuePanel({ visible, style, onClose }) {
                                 setShowMore(false);
                             }}
                         >
-                            <div className="queue__share queue__share--share" />
+                            <ShareIcon />
                             Share This Queue
                         </li>
                         <li className="queue__more__item">
-                            <div className="queue__share queue__share--delete" />
+                            <DeleteIcon />
                             Delete All Tracks
                         </li>
                     </ul>
@@ -163,6 +166,7 @@ function QueuePanel({ visible, style, onClose }) {
                                 ) : (
                                     <div className="share__item__title" onClick={() => setNameEditing(true)}>
                                         {shareQueueName}
+                                        <EditIconSvg fill={'#0092c5'} />
                                     </div>
                                 )}
                                 {!nameEditing && <div className="share__item__artist">{songs.length} Tracks</div>}
