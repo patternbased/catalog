@@ -2,6 +2,7 @@
 import React, { memo, useState, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
+import uuid from 'react-uuid';
 import { TABLE_FLOW_SHAPES } from 'utils/constants';
 import Button from 'components/button';
 import SimilarSongsPanel from 'components/similar-songs';
@@ -13,6 +14,8 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import BackToTop from 'components/back-to-top';
 import Modal from 'components/modal';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import CopyLinkSvg from 'assets/images/copy-link.svg';
+import DoneSvg from 'assets/images/done-check.svg';
 
 import './style.scss';
 
@@ -34,6 +37,9 @@ function SongsTable({ list, onSelect, listName, page }) {
     const [songs, setSongs] = useState([]);
     const [shareItem, setShareItem] = useState();
     const [shareOpened, setShareOpened] = useState(false);
+    const [shareResultOpened, setShareResultOpened] = useState(false);
+    const [shareLinkCopied, setShareLinkCopied] = useState(false);
+    const [shareSongLinkCopied, setShareSongLinkCopied] = useState(false);
     const appliedFilters = useSelector(selectors.filters.getApplied);
     const currentSong = useSelector(selectors.library.getCurrentSong);
     const scrolled = useSelector(selectors.general.get('scrolled'));
@@ -80,27 +86,27 @@ function SongsTable({ list, onSelect, listName, page }) {
         dispatch(addToQueue({ list: list, name: createPlaylistName() }));
     };
 
-    const createPlaylistName = () => {
+    const createPlaylistName = (isShare = false) => {
         let label = '';
         Object.keys(appliedFilters).map(filter => {
             switch (filter) {
                 case 'rhythm':
-                    label += '<strong>RTM</strong>';
+                    label += isShare ? '<strong>R</strong> ' : '<strong>RTM</strong>';
                     break;
                 case 'speed':
-                    label += '<strong>SPD</strong>';
+                    label += isShare ? '<strong>S</strong> ' : '<strong>SPD</strong>';
                     break;
                 case 'experimental':
-                    label += '<strong>EXP</strong>';
+                    label += isShare ? '<strong>E</strong> ' : '<strong>EXP</strong>';
                     break;
                 case 'mood':
-                    label += '<strong>MOD</strong>';
+                    label += isShare ? '<strong>M</strong> ' : '<strong>MOD</strong>';
                     break;
                 case 'grid':
-                    label += '<strong>GRD</strong>';
+                    label += isShare ? '<strong>G</strong> ' : '<strong>GRD</strong>';
                     break;
                 case 'duration':
-                    label += '<strong>DUR</strong>';
+                    label += isShare ? '<strong>D</strong> ' : '<strong>DUR</strong>';
                     break;
                 default:
                     break;
@@ -167,6 +173,51 @@ function SongsTable({ list, onSelect, listName, page }) {
         'table__sticky--regular': page === 'home',
     });
 
+    const [shareResultsName, setShareResulsName] = useState('');
+    const shareListId = uuid();
+    const shareSongId = uuid();
+
+    useEffect(() => {
+        setShareResulsName(createPlaylistName(true));
+    }, [list]);
+
+    const copyShareLink = () => {
+        const shareData = {
+            name: shareResultsName,
+            type: 'search',
+            songs: songs.map(s => s.pbId),
+            shareId: shareListId,
+            filters: appliedFilters,
+        };
+        fetch('/api/create-share', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ data: shareData }),
+        }).then(res => {
+            setShareLinkCopied(true);
+        });
+    };
+
+    const copyShareSongLink = () => {
+        const shareData = {
+            name: shareItem.title,
+            type: 'song',
+            songs: [shareItem.pbId],
+            shareId: shareSongId,
+        };
+        fetch('/api/create-share', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ data: shareData }),
+        }).then(res => {
+            setShareSongLinkCopied(true);
+        });
+    };
+
     return (
         <>
             <div className="table">
@@ -198,7 +249,10 @@ function SongsTable({ list, onSelect, listName, page }) {
                                     <div className="table__filters__applied__count">
                                         <strong>{list.length}</strong> Tracks
                                     </div>
-                                    <div className="table__filters__applied__share"></div>
+                                    <div
+                                        className="table__filters__applied__share"
+                                        onClick={() => setShareResultOpened(true)}
+                                    ></div>
                                     <BackToTop />
                                 </div>
                             </div>
@@ -345,8 +399,42 @@ function SongsTable({ list, onSelect, listName, page }) {
                     similarTo={similarTo}
                 />
             )}
+            {shareResultOpened && (
+                <Modal opened={shareResultOpened} modifier="share queue-share">
+                    <img
+                        src="/assets/images/close-icon.png"
+                        onClick={() => setShareResultOpened(false)}
+                        className="share__close"
+                    />
+                    <div className="share__header">Share This Search</div>
+                    <div className="share__item">
+                        <img src="/assets/images/table/results-play.png" />
+                        <div>
+                            <div
+                                className="share__item__title"
+                                dangerouslySetInnerHTML={{ __html: shareResultsName }}
+                            ></div>
+                            <div className="share__item__artist">{list.length} Tracks</div>
+                        </div>
+                    </div>
+
+                    <CopyToClipboard text={`${baseUrl}?shareId=${shareListId}`} onCopy={() => copyShareLink()}>
+                        {shareLinkCopied ? (
+                            <div className="share__button share__button--copied">
+                                <DoneSvg />
+                                Copied to clipboard!
+                            </div>
+                        ) : (
+                            <div className="share__button">
+                                <CopyLinkSvg />
+                                Copy Share Link
+                            </div>
+                        )}
+                    </CopyToClipboard>
+                </Modal>
+            )}
             {shareOpened && (
-                <Modal opened={shareOpened} modifier="share">
+                <Modal opened={shareOpened} modifier="share queue-share">
                     <img
                         src="/assets/images/close-icon.png"
                         onClick={() => setShareOpened(false)}
@@ -360,8 +448,18 @@ function SongsTable({ list, onSelect, listName, page }) {
                             <div className="share__item__artist">by {shareItem.artistName}</div>
                         </div>
                     </div>
-                    <CopyToClipboard text={`${baseUrl}?ids=${shareItem.pbId}`}>
-                        <div className="share__button">Copy Share Link</div>
+                    <CopyToClipboard text={`${baseUrl}?shareId=${shareSongId}`} onCopy={() => copyShareSongLink()}>
+                        {shareSongLinkCopied ? (
+                            <div className="share__button share__button--copied">
+                                <DoneSvg />
+                                Copied to clipboard!
+                            </div>
+                        ) : (
+                            <div className="share__button">
+                                <CopyLinkSvg />
+                                Copy Share Link
+                            </div>
+                        )}
                     </CopyToClipboard>
                 </Modal>
             )}

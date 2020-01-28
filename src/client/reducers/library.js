@@ -21,6 +21,11 @@ const setCurrentPlaylist = (state, action) => ({
     current: action.value,
 });
 
+const setCurrentQueue = (state, action) => ({
+    ...state,
+    queue: action.value,
+});
+
 const addToQueue = (state, action) => {
     const copy = [...state.queue];
     const found = copy.find(i => i.pbId === action.value.pbId);
@@ -61,6 +66,7 @@ export default createReducer(
     {
         [ACTIONS.GET_SONG_LIST]: getSongList,
         [ACTIONS.SET_CURRENT_PLAYLIST]: setCurrentPlaylist,
+        [ACTIONS.SET_CURRENT_QUEUE]: setCurrentQueue,
         [ACTIONS.ADD_TO_QUEUE]: addToQueue,
         [ACTIONS.SET_CURRENT_SONG]: setCurrentSong,
         [ACTIONS.CLEAR_QUEUE]: clearQueue,

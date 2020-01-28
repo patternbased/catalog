@@ -3,12 +3,23 @@ import React, { memo, useMemo, useState, useCallback, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+import uuid from 'react-uuid';
 import selectors from 'selectors';
 
 import { setState } from 'actions/general';
 import { addToQueue, setCurrentSong } from 'actions/library';
 
+import Modal from 'components/modal';
+
+import ShareIcon from 'assets/images/share-icon-dark.svg';
+import CopyLinkSvg from 'assets/images/copy-link.svg';
+import DoneSvg from 'assets/images/done-check.svg';
+
 import './style.scss';
+
+const baseUrl =
+    process.env.NODE_ENV === 'development' ? 'http://localhost:3500/' : 'https://patternbased.herokuapp.com/';
 
 /**
  * Similar songs panel component
@@ -19,8 +30,13 @@ import './style.scss';
 function SimilarSongsPanel({ visible, style, onClose, similarTo }) {
     const allSongs = useSelector(selectors.library.getAll);
     const queueOpened = useSelector(selectors.general.get('queueOpened'));
+    const appliedFilters = useSelector(selectors.filters.getApplied);
     const [hovered, setHovered] = useState([]);
     const [similarSongs, setSimilarSongs] = useState([]);
+    const [showMore, setShowMore] = useState(false);
+    const [shareOpened, setShareOpened] = useState(false);
+    const [shareItem, setShareItem] = useState();
+    const [shareSongLinkCopied, setShareSongLinkCopied] = useState(false);
     const dispatch = useDispatch();
     const panelClass = useMemo(
         () =>
@@ -75,12 +91,52 @@ function SimilarSongsPanel({ visible, style, onClose, similarTo }) {
         dispatch(addToQueue(song));
     };
 
+    const openShareModal = () => {
+        setShareItem(similarTo);
+        setShareOpened(true);
+    };
+
+    const shareSongId = uuid();
+
+    const copyShareSongLink = () => {
+        const shareData = {
+            name: shareItem.title,
+            type: 'similar',
+            songs: similarSongs.map(s => s.pbId),
+            shareId: shareSongId,
+            filters: appliedFilters,
+        };
+        fetch('/api/create-share', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ data: shareData }),
+        }).then(res => {
+            setShareSongLinkCopied(true);
+        });
+    };
+
     return (
         <div className={panelClass} style={style}>
             <div className="similar__header">
                 <img src="/assets/images/close-icon.png" onClick={() => closeSimilar()} />
                 <div className="similar__header__name">SIMILAR SONGS TO</div>
-                <img src="/assets/images/more-icon.png" onClick={() => {}} />
+                <img src="/assets/images/more-icon.png" onClick={() => setShowMore(!showMore)} />
+                {showMore && (
+                    <ul className="queue__more">
+                        <li
+                            className="queue__more__item"
+                            onClick={() => {
+                                openShareModal();
+                                setShowMore(false);
+                            }}
+                        >
+                            <ShareIcon />
+                            Share This List
+                        </li>
+                    </ul>
+                )}
             </div>
             {similarTo && (
                 <div
@@ -112,6 +168,39 @@ function SimilarSongsPanel({ visible, style, onClose, similarTo }) {
                     </div>
                 ))}
             </div>
+            {shareOpened && (
+                <Modal opened={shareOpened} modifier="share queue-share">
+                    <img
+                        src="/assets/images/close-icon.png"
+                        onClick={() => setShareOpened(false)}
+                        className="share__close"
+                    />
+                    <div className="share__header">Share This List</div>
+                    <div className="share__item">
+                        <img src={shareItem.cover} />
+                        <div>
+                            <div className="share__item__title">
+                                <strong>Simialr Songs to</strong>&nbsp;
+                                {shareItem.title}
+                            </div>
+                            <div className="share__item__artist">{similarSongs.length} Tracks</div>
+                        </div>
+                    </div>
+                    <CopyToClipboard text={`${baseUrl}?shareId=${shareSongId}`} onCopy={() => copyShareSongLink()}>
+                        {shareSongLinkCopied ? (
+                            <div className="share__button share__button--copied">
+                                <DoneSvg />
+                                Copied to clipboard!
+                            </div>
+                        ) : (
+                            <div className="share__button">
+                                <CopyLinkSvg />
+                                Copy Share Link
+                            </div>
+                        )}
+                    </CopyToClipboard>
+                </Modal>
+            )}
         </div>
     );
 }

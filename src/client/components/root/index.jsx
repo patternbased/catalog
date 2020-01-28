@@ -1,6 +1,5 @@
 import React from 'react';
 import Routes from '../../routes';
-import Header from 'components/header';
 
 /**
  * Root component
@@ -9,7 +8,6 @@ import Header from 'components/header';
 function Root() {
     return (
         <>
-            <Header />
             <Routes />
         </>
     );

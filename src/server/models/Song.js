@@ -28,9 +28,10 @@ const Song = new Schema({
     similarArtists: Array,
     licenseType: String,
     artistName: String,
-    writers: String,
+    writers: Array,
     label: String,
     albumId: String,
+    albumTitle: String,
     licensedTo: String,
     dateAdded: { type: Date, default: Date.now },
     dateEdited: { type: Date, default: Date.now },
@@ -39,7 +40,9 @@ const Song = new Schema({
     dateReleased: Date,
     tools: Array,
     story: String,
+    isrcCode: String,
     url: String,
+    image: String,
     cover: String,
 });
 

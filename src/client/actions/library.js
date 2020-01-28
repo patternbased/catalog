@@ -4,6 +4,7 @@ import 'babel-polyfill';
 export const ACTIONS = {
     GET_SONG_LIST: 'library.getSongList',
     SET_CURRENT_PLAYLIST: 'library.setCurrentPlaylist',
+    SET_CURRENT_QUEUE: 'library.setCurrentQueue',
     ADD_TO_QUEUE: 'library.addToQueue',
     SET_CURRENT_SONG: 'library.setCurrentSong',
     CLEAR_QUEUE: 'library.clearQueue',
@@ -16,7 +17,7 @@ export const ACTIONS = {
  * @returns {Function}
  */
 export const getSongList = () => async dispatch => {
-    const data = await api.get('/api/get-all-songs');
+    const data = await api.get('/api/all-songs');
 
     if (!data.error) {
         dispatch({
@@ -33,6 +34,16 @@ export const getSongList = () => async dispatch => {
  */
 export const setCurrentPlaylist = value => ({
     type: ACTIONS.SET_CURRENT_PLAYLIST,
+    value,
+});
+
+/**
+ * Sets the current queue
+ * @param {Array} value the value to set
+ * @returns {Object}
+ */
+export const setCurrentQueue = value => ({
+    type: ACTIONS.SET_CURRENT_QUEUE,
     value,
 });
 

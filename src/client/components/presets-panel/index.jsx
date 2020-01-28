@@ -30,9 +30,16 @@ function PresetsPanel({ visible, style }) {
     );
     const dispatch = useDispatch();
 
-    const applyPreset = filters => {
+    const applyPreset = (filters, name) => {
         Object.keys(filters).forEach(filter => {
             dispatch(setFilter(filter, filters[filter]));
+        });
+        fetch('/api/increment-preset', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ preset: name }),
         });
     };
 
@@ -42,7 +49,7 @@ function PresetsPanel({ visible, style }) {
                 <div className="presets-panel__container">
                     <div className="presets-panel__presets">
                         {Object.keys(PRESETS).map((preset, index) => (
-                            <div key={index} onClick={() => applyPreset(PRESETS[preset].filters)}>
+                            <div key={index} onClick={() => applyPreset(PRESETS[preset].filters, preset)}>
                                 <Preset name={preset} />
                                 {(index + 1) % 8 === 0 && (
                                     <div className="presets-panel__cta">

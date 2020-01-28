@@ -158,11 +158,27 @@
             cursor: pointer;
         }
         &__button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            svg {
+                width: 30px;
+                height: 30px;
+                margin-right: 13px;
+                path {
+                    fill: white;
+                }
+            }
             &--disabled {
                 opacity: 0.5;
                 cursor: initial;
             }
             &--active {
+                background-color: $secondary;
+                border-color: $secondary;
+            }
+            &--copied {
                 background-color: $secondary;
                 border-color: $secondary;
             }

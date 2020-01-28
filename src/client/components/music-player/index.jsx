@@ -1,18 +1,27 @@
 /* eslint-disable max-lines-per-function */
 import React, { memo, useState, useRef, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import Slider from 'rc-slider';
-import { useDispatch, useSelector } from 'react-redux';
+import uuid from 'react-uuid';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import selectors from 'selectors';
 
 import Button from 'components/button';
 import QueuePanel from 'components/queue';
 import SimilarSongsPanel from 'components/similar-songs';
+import Modal from 'components/modal';
 
 import { setState } from 'actions/general';
 import { addToQueue, setCurrentSong } from 'actions/library';
 
+import CopyLinkSvg from 'assets/images/copy-link.svg';
+import DoneSvg from 'assets/images/done-check.svg';
+
 import './style.scss';
+
+const baseUrl =
+    process.env.NODE_ENV === 'development' ? 'http://localhost:3500/' : 'https://patternbased.herokuapp.com/';
 
 /**
  * Music Player component
@@ -26,6 +35,9 @@ function MusicPlayer({ list }) {
     const [duration, setDuration] = useState(null);
     const [queueOpened, setQueueOpened] = useState(false);
     const [similarOpened, setSimilarOpened] = useState(false);
+    const [shareOpened, setShareOpened] = useState(false);
+    const [shareItem, setShareItem] = useState();
+    const [shareSongLinkCopied, setShareSongLinkCopied] = useState(false);
     const dispatch = useDispatch();
 
     const currentPlaylist = useSelector(selectors.library.getQueue);
@@ -108,6 +120,31 @@ function MusicPlayer({ list }) {
         dispatch(addToQueue(next));
     };
 
+    const shareSongId = uuid();
+
+    const openShareModal = () => {
+        setShareItem(currentPlaying);
+        setShareOpened(true);
+    };
+
+    const copyShareSongLink = () => {
+        const shareData = {
+            name: shareItem.title,
+            type: 'song',
+            songs: [shareItem.pbId],
+            shareId: shareSongId,
+        };
+        fetch('/api/create-share', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ data: shareData }),
+        }).then(res => {
+            setShareSongLinkCopied(true);
+        });
+    };
+
     return (
         <>
             <div className="music-player">
@@ -181,7 +218,10 @@ function MusicPlayer({ list }) {
                                 dispatch(setState('similarOpened', !similarOpened));
                             }}
                         />
-                        <div className="music-player__section--content__actions-button music-player__section--content__actions-button--share" />
+                        <div
+                            className="music-player__section--content__actions-button music-player__section--content__actions-button--share"
+                            onClick={() => openShareModal()}
+                        />
                         <Button className="music-player__section--content__actions-license" width={80} height={40}>
                             License
                         </Button>
@@ -203,6 +243,36 @@ function MusicPlayer({ list }) {
                 onClose={() => setSimilarOpened(false)}
                 similarTo={currentPlaying}
             />
+            {shareOpened && (
+                <Modal opened={shareOpened} modifier="share queue-share">
+                    <img
+                        src="/assets/images/close-icon.png"
+                        onClick={() => setShareOpened(false)}
+                        className="share__close"
+                    />
+                    <div className="share__header">Share This Song</div>
+                    <div className="share__item">
+                        <img src={shareItem.cover} />
+                        <div>
+                            <div className="share__item__title">{shareItem.title}</div>
+                            <div className="share__item__artist">by {shareItem.artistName}</div>
+                        </div>
+                    </div>
+                    <CopyToClipboard text={`${baseUrl}?shareId=${shareSongId}`} onCopy={() => copyShareSongLink()}>
+                        {shareSongLinkCopied ? (
+                            <div className="share__button share__button--copied">
+                                <DoneSvg />
+                                Copied to clipboard!
+                            </div>
+                        ) : (
+                            <div className="share__button">
+                                <CopyLinkSvg />
+                                Copy Share Link
+                            </div>
+                        )}
+                    </CopyToClipboard>
+                </Modal>
+            )}
         </>
     );
 }

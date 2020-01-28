@@ -8,11 +8,12 @@ import Preset from 'components/preset';
 import SongsTable from 'components/songs-table';
 import MusicPlayer from 'components/music-player';
 
-import { getSongList, setCurrentSong } from 'actions/library';
+import { getSongList, setCurrentSong, setCurrentQueue } from 'actions/library';
 import { setFilter } from 'actions/filters';
 import { setState } from 'actions/general';
 
 import qs from 'query-string';
+import { api } from '../../services';
 
 import './style.scss';
 
@@ -22,6 +23,7 @@ import './style.scss';
  */
 function HomePage() {
     const [tablePlaylist, setTablePlaylist] = useState([]);
+    const [popularPresets, setPopularPresets] = useState(null);
     const dispatch = useDispatch();
     const sharedItem = qs.parse(location.search);
 
@@ -36,12 +38,43 @@ function HomePage() {
 
     useEffect(() => {
         !songList && dispatch(getSongList());
+        if (!popularPresets) {
+            api.get('/api/popular-presets').then(res => {
+                if (res.presets) {
+                    const popular = [];
+                    res.presets.map(preset => {
+                        popular.push({ name: preset.name, details: PRESETS[preset.name] });
+                    });
+                    setPopularPresets(popular);
+                }
+            });
+        }
     }, []);
 
     useEffect(() => {
-        if (sharedItem.ids && songList) {
-            const pbIds = sharedItem.ids.split(',');
-            setTablePlaylist(songList.filter(x => pbIds.includes(x.pbId)));
+        if (sharedItem.shareId && songList) {
+            api.get(`/api/shared-list/${sharedItem.shareId}`).then(res => {
+                const shared = res.shared[0];
+                const sharedSongs = songList.filter(s => shared.songs.includes(s.pbId));
+                switch (shared.type) {
+                    case 'queue':
+                        dispatch(setCurrentQueue(sharedSongs));
+                        dispatch(setState('queueOpened', true));
+                        break;
+                    case 'search':
+                        Object.keys(shared.filters).forEach(filter => {
+                            dispatch(setFilter(filter, shared.filters[filter]));
+                        });
+                        break;
+                    case 'similar':
+                        Object.keys(shared.filters).forEach(filter => {
+                            dispatch(setFilter(filter, shared.filters[filter]));
+                        });
+                        break;
+                    default:
+                        break;
+                }
+            });
         }
         if (songList) {
             setFeaturedTracks(
@@ -67,9 +100,16 @@ function HomePage() {
         [filtersPanelState, presetsPanelState]
     );
 
-    const applyPreset = filters => {
+    const applyPreset = (filters, name) => {
         Object.keys(filters).forEach(filter => {
             dispatch(setFilter(filter, filters[filter]));
+        });
+        fetch('/api/increment-preset', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ preset: name }),
         });
         dispatch(setState('filtersOpened', true));
     };
@@ -107,18 +147,21 @@ function HomePage() {
                                 </div>
                             </div>
                         </div>
-                        <div className="popular-presets">
-                            <div className="popular-presets__title">Popular Search Presets</div>
-                            <div className="popular-presets__presets">
-                                {Object.keys(PRESETS)
-                                    .slice(0, 8)
-                                    .map((preset, index) => (
-                                        <div key={index} onClick={() => applyPreset(PRESETS[preset].filters)}>
-                                            <Preset name={preset} width={253} height={105} />
+                        {popularPresets && (
+                            <div className="popular-presets">
+                                <div className="popular-presets__title">Popular Search Presets</div>
+                                <div className="popular-presets__presets">
+                                    {popularPresets.map((preset, index) => (
+                                        <div
+                                            key={index}
+                                            onClick={() => applyPreset(preset.details.filters, preset.name)}
+                                        >
+                                            <Preset name={preset.name} width={253} height={105} />
                                         </div>
                                     ))}
+                                </div>
                             </div>
-                        </div>
+                        )}
                         <div className="featured">
                             <div className="popular-presets__title">Featured Tracks</div>
                             <SongsTable

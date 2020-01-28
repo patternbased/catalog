@@ -3,16 +3,19 @@ import React, { memo, useMemo, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
+import uuid from 'react-uuid';
 import selectors from 'selectors';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 import { setState } from 'actions/general';
-import { removeFromQueue, reorderQueue, setCurrentSong } from 'actions/library';
+import { removeFromQueue, reorderQueue, setCurrentSong, clearQueue } from 'actions/library';
 import Modal from 'components/modal';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import EditIconSvg from 'assets/images/edit-icon.svg';
 import DeleteIcon from 'assets/images/delete-icon-dark.svg';
 import ShareIcon from 'assets/images/share-icon-dark.svg';
+import CopyLinkSvg from 'assets/images/copy-link.svg';
+import DoneSvg from 'assets/images/done-check.svg';
 
 import './style.scss';
 
@@ -27,6 +30,7 @@ const baseUrl =
  */
 function QueuePanel({ visible, style, onClose }) {
     const songs = useSelector(selectors.library.getQueue);
+    const queueVisible = useSelector(selectors.general.get('queueOpened'));
     const currentSong = useSelector(selectors.library.getCurrentSong);
     const [hovered, setHovered] = useState([]);
     const [listExpanded, setListExpanded] = useState([]);
@@ -35,13 +39,14 @@ function QueuePanel({ visible, style, onClose }) {
     const [shareQueueName, setShareQueueName] = useState(_generateShareName());
     const [editedName, setEditedName] = useState('');
     const [nameEditing, setNameEditing] = useState(false);
+    const [shareLinkCopied, setShareLinkCopied] = useState(false);
     const dispatch = useDispatch();
     const panelClass = useMemo(
         () =>
             classnames('queue', {
-                'queue--visible': visible,
+                'queue--visible': visible || queueVisible,
             }),
-        [visible]
+        [visible, queueVisible]
     );
 
     const addToHovered = index => {
@@ -114,6 +119,26 @@ function QueuePanel({ visible, style, onClose }) {
         dispatch(reorderQueue(result));
     };
 
+    const shareListId = uuid();
+
+    const copyShareLink = () => {
+        const shareData = {
+            name: shareQueueName,
+            type: 'queue',
+            songs: songs.map(s => s.pbId),
+            shareId: shareListId,
+        };
+        fetch('/api/create-share', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ data: shareData }),
+        }).then(res => {
+            setShareLinkCopied(true);
+        });
+    };
+
     return (
         <div className={panelClass} style={style}>
             <div className="queue__header">
@@ -138,7 +163,13 @@ function QueuePanel({ visible, style, onClose }) {
                             <ShareIcon />
                             Share This Queue
                         </li>
-                        <li className="queue__more__item">
+                        <li
+                            className="queue__more__item"
+                            onClick={() => {
+                                dispatch(clearQueue());
+                                setShowMore(false);
+                            }}
+                        >
                             <DeleteIcon />
                             Delete All Tracks
                         </li>
@@ -185,13 +216,22 @@ function QueuePanel({ visible, style, onClose }) {
                                     }
                                 }}
                             >
+                                <DoneSvg />
                                 Done
                             </div>
                         ) : (
-                            <CopyToClipboard
-                                text={`${baseUrl}?ids=${songs.map(s => `${s.pbId}`)}&name=${shareQueueName}`}
-                            >
-                                <div className="share__button">Copy Share Link</div>
+                            <CopyToClipboard text={`${baseUrl}?shareId=${shareListId}`} onCopy={() => copyShareLink()}>
+                                {shareLinkCopied ? (
+                                    <div className="share__button share__button--copied">
+                                        <DoneSvg />
+                                        Copied to clipboard!
+                                    </div>
+                                ) : (
+                                    <div className="share__button">
+                                        <CopyLinkSvg />
+                                        Copy Share Link
+                                    </div>
+                                )}
                             </CopyToClipboard>
                         )}
                     </Modal>

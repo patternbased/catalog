@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { withRouter } from 'react-router';
+import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { HEADER_HEIGHTS } from 'utils/constants';
 import FilterSvg from 'assets/images/header/filter.svg';
@@ -25,7 +27,7 @@ const svgActiveFill = '#0092C5';
  * Header component
  * @returns {React.Component}
  */
-function Header() {
+function Header({ history }) {
     const [scrolled, setScrolled] = useState(false);
     const [panelStyle, setPanelStyle] = useState({ top: `${HEADER_HEIGHTS.big}px` });
     const [filtersOpened, setFiltersOpened] = useState(true);
@@ -121,7 +123,7 @@ function Header() {
                         fill={searchOpened ? svgActiveFill : svgDefaultFill}
                     />
                 </div>
-                <div className="header__logo">
+                <div className="header__logo" onClick={() => history.push('/')}>
                     {scrolled ? (
                         <LogoSvg className="header__logo-icon header__logo-icon--small" fill={svgActiveFill} />
                     ) : (
@@ -141,4 +143,8 @@ function Header() {
 
 Header.displayName = 'Header';
 
-export default Header;
+Header.propTypes = {
+    history: PropTypes.object,
+};
+
+export default withRouter(Header);
