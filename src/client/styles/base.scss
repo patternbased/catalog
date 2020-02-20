@@ -148,6 +148,7 @@ textarea {
     position: absolute;
     top: 5px;
     right: 5px;
+    z-index: 1;
 }
 .checkbox-wrap.input-error::after {
     left: 0;
@@ -185,6 +186,7 @@ textarea {
     border: 1px solid $light-grey;
     border-radius: 4px;
     vertical-align: top;
+    z-index: 2;
 }
 .check-box label {
     color: $primary;
