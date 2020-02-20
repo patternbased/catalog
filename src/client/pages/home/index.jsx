@@ -87,10 +87,10 @@ function HomePage() {
     }, [songList]);
 
     useEffect(() => {
-        if (!sharedItem.ids) {
+        if (!sharedItem.ids && songList) {
             setTablePlaylist(_filterSongs(songList, filtersValues));
         }
-    }, [filtersValues]);
+    }, [filtersValues, songList]);
 
     const homeClass = useMemo(
         () =>
@@ -141,7 +141,10 @@ function HomePage() {
                                     <img className="hero__image" src="/assets/images/feature-presets.png" />
                                     <div className="hero__name">Presets</div>
                                 </div>
-                                <div className="hero__feature">
+                                <div
+                                    className="hero__feature hero__feature--linked"
+                                    onClick={() => dispatch(setState('reqSuggestionsOpened', true))}
+                                >
                                     <img className="hero__image" src="/assets/images/feature-suggestion.png" />
                                     <div className="hero__name">Suggestions</div>
                                 </div>

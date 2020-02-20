@@ -117,6 +117,19 @@ function SimilarSongsPanel({ visible, style, onClose, similarTo }) {
         });
     };
 
+    const goToSongPage = (id, title) => {
+        const titleUrl = title.split(' ').join('-');
+        window.location = `/song/${id}-${titleUrl}`;
+    };
+
+    const goToArtistPage = name => {
+        const titleUrl = name
+            .toLowerCase()
+            .split(' ')
+            .join('-');
+        window.location = `/artist/${titleUrl}`;
+    };
+
     return (
         <div className={panelClass} style={style}>
             <div className="similar__header">
@@ -148,8 +161,13 @@ function SimilarSongsPanel({ visible, style, onClose, similarTo }) {
                         <img src={similarTo.cover} />
                     </div>
                     <div className="similar__song__wrapper">
-                        <div className="similar__song__title">{similarTo.title}</div>
-                        <div className="similar__song__artist">
+                        <div
+                            className="similar__song__title"
+                            onClick={() => goToSongPage(similarTo.pbId, similarTo.title)}
+                        >
+                            {similarTo.title}
+                        </div>
+                        <div className="similar__song__artist" onClick={() => goToArtistPage(similarSongs.artistName)}>
                             by {similarTo.artistName} | {similarTo.length}
                         </div>
                     </div>
@@ -212,12 +230,25 @@ function SimilarSongsPanel({ visible, style, onClose, similarTo }) {
  * @returns {React.Component}
  */
 function _renderSimilarSong(song, hovered) {
+    const goToSongPage = (id, title) => {
+        const titleUrl = title.split(' ').join('-');
+        window.location = `/song/${id}-${titleUrl}`;
+    };
+    const goToArtistPage = name => {
+        const titleUrl = name
+            .toLowerCase()
+            .split(' ')
+            .join('-');
+        window.location = `/artist/${titleUrl}`;
+    };
     return (
         <>
             <img src={hovered ? '/assets/images/similar/song-play.png' : song.cover} className="similar__song__cover" />
             <div className="similar__song__wrapper">
-                <div className="similar__song__title">{song.title}</div>
-                <div className="similar__song__artist">
+                <div className="similar__song__title" onClick={() => goToSongPage(song.pbId, song.title)}>
+                    {song.title}
+                </div>
+                <div className="similar__song__artist" onClick={() => goToArtistPage(song.artistName)}>
                     by {song.artistName} | {song.length}
                 </div>
             </div>

@@ -265,7 +265,7 @@ const _getSimilarPresets = (presets, filters) => {
 FiltersPanel.displayName = 'FiltersPanel';
 
 FiltersPanel.propTypes = {
-    visible: PropTypes.bool,
+    visible: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
     style: PropTypes.object,
     showSearch: PropTypes.bool,
 };

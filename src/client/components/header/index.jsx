@@ -15,6 +15,8 @@ import selectors from 'selectors';
 
 import FiltersPanel from 'components/filters-panel';
 import PresetsPanel from 'components/presets-panel';
+import MenuPanel from 'components/menu-panel';
+import ReqSuggestionsPanel from 'components/suggestions-panel';
 
 import { setState } from 'actions/general';
 
@@ -32,16 +34,22 @@ function Header({ history }) {
     const [panelStyle, setPanelStyle] = useState({ top: `${HEADER_HEIGHTS.big}px` });
     const [filtersOpened, setFiltersOpened] = useState(true);
     const [presetsOpened, setPresetsOpened] = useState(false);
+    const [menuOpened, setMenuOpened] = useState(false);
+    const [reqSuggestionsOpened, setReqSuggestionsOpened] = useState(false);
     const [searchOpened, setSearchOpened] = useState(false);
     const filtersValues = useSelector(selectors.filters.getApplied);
 
     const filtersPanelState = useSelector(selectors.general.get('filtersOpened'));
     const presetsPanelState = useSelector(selectors.general.get('presetsOpened'));
+    const menuPanelState = useSelector(selectors.general.get('menuOpened'));
+    const reqSuggestionsPanelState = useSelector(selectors.general.get('reqSuggestionsOpened'));
 
     useEffect(() => {
         setFiltersOpened(filtersPanelState);
         setPresetsOpened(presetsPanelState);
-    }, [filtersPanelState, presetsPanelState]);
+        setMenuOpened(menuPanelState);
+        setReqSuggestionsOpened(reqSuggestionsPanelState);
+    }, [filtersPanelState, presetsPanelState, menuPanelState, reqSuggestionsPanelState]);
 
     const dispatch = useDispatch();
 
@@ -103,6 +111,11 @@ function Header({ history }) {
         dispatch(setState('presetsOpened', !presetsOpened));
     };
 
+    const openMenuPanel = () => {
+        setMenuOpened(!menuOpened);
+        dispatch(setState('menuOpened', !menuOpened));
+    };
+
     return (
         <>
             <header className={headerModifier}>
@@ -132,11 +145,17 @@ function Header({ history }) {
                 </div>
                 <div className="header__buttons">
                     <CartSvg className="header__buttons-icon" fill={svgDefaultFill} />
-                    <MenuSvg className="header__buttons-icon" fill={svgDefaultFill} />
+                    <MenuSvg
+                        className="header__buttons-icon"
+                        onClick={() => openMenuPanel()}
+                        fill={menuOpened ? svgActiveFill : svgDefaultFill}
+                    />
                 </div>
             </header>
             <FiltersPanel visible={filtersOpened} style={panelStyle} showSearch={searchOpened} />
             <PresetsPanel visible={presetsOpened} style={panelStyle} />
+            <MenuPanel visible={menuOpened} style={panelStyle} />
+            <ReqSuggestionsPanel visible={reqSuggestionsOpened} style={panelStyle} />
         </>
     );
 }

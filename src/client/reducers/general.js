@@ -5,6 +5,8 @@ const initialState = {
     filtersOpened: true,
     presetsOpened: false,
     queueOpened: false,
+    menuOpened: false,
+    reqSuggestionsOpened: false,
     similarOpened: false,
     scrolled: false,
 };

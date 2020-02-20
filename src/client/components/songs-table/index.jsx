@@ -218,6 +218,19 @@ function SongsTable({ list, onSelect, listName, page }) {
         });
     };
 
+    const goToSongPage = (id, title) => {
+        const titleUrl = title.split(' ').join('-');
+        window.location = `/song/${id}-${titleUrl}`;
+    };
+
+    const goToArtistPage = name => {
+        const titleUrl = name
+            .toLowerCase()
+            .split(' ')
+            .join('-');
+        window.location = `/artist/${titleUrl}`;
+    };
+
     return (
         <>
             <div className="table">
@@ -296,7 +309,15 @@ function SongsTable({ list, onSelect, listName, page }) {
                                             />
                                             <div className="table__body__row-title__wrapper">
                                                 <p className="table__body__row-title__wrapper-song-title">
-                                                    {item.title} <span>by {item.artistName}</span>
+                                                    <span onClick={() => goToSongPage(item.pbId, item.title)}>
+                                                        {item.title}
+                                                    </span>{' '}
+                                                    <span
+                                                        className="table__body__row-title__wrapper-song-title table__body__row-title__wrapper-song-title--artist"
+                                                        onClick={() => goToArtistPage(item.artistName)}
+                                                    >
+                                                        by {item.artistName}
+                                                    </span>
                                                 </p>
                                                 <p className="table__body__row-title__wrapper-song-artist">
                                                     <span className="table__body__row-title__wrapper-song-artist--name">

@@ -113,6 +113,106 @@ main {
     }
 }
 
+input,
+textarea {
+    height: 40px;
+    width: 210px;
+    border: 1px solid $light-grey;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    color: $primary;
+    font-family: $font-other;
+    font-size: 12px;
+    line-height: 17px;
+    padding: 12px 10px;
+}
+
+textarea {
+    resize: none;
+    height: 160px;
+}
+.input-error {
+    position: relative;
+}
+.input-error input,
+.input-error textarea,
+.input-error .check-box label:before {
+    border: 1px solid $error;
+}
+.input-error:after {
+    content: '';
+    display: block;
+    background-image: url('/assets/images/error_icon.svg');
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+.checkbox-wrap.input-error::after {
+    left: 0;
+    top: 0;
+}
+.error-tooltip {
+    width: 200px;
+    border-radius: 5px;
+    background-color: #cd3542;
+    color: #ffffff;
+    font-family: 'Open Sans';
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 19px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 13px 15px;
+    position: absolute;
+    z-index: 1;
+    right: -15px;
+    bottom: 55px;
+    text-align: center;
+}
+
+// Checkbox
+.check-box {
+    position: relative;
+}
+.check-box label:before {
+    content: '';
+    display: inline-block;
+    height: 30px;
+    width: 30px;
+    border: 1px solid $light-grey;
+    border-radius: 4px;
+    vertical-align: top;
+}
+.check-box label {
+    color: $primary;
+    font-family: $font-other;
+    font-size: 12px;
+    display: inline-grid;
+    grid-template-columns: 30px 1fr;
+}
+.check-box label span {
+    margin-left: 10px;
+    line-height: 15px;
+}
+input[type='checkbox'] {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    margin-bottom: 0;
+}
+.check-box svg {
+    position: absolute;
+    width: 30px;
+    top: 0;
+    left: 0;
+}
+
 .modal--share {
     .modal__content {
         top: 50%;

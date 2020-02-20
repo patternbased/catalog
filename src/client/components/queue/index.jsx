@@ -363,6 +363,17 @@ function QueuePanel({ visible, style, onClose }) {
  * @returns {React.Component}
  */
 function _renderQueueSong(song, current, hovered, onRemove, playSong) {
+    const goToSongPage = (id, title) => {
+        const titleUrl = title.split(' ').join('-');
+        window.location = `/song/${id}-${titleUrl}`;
+    };
+    const goToArtistPage = name => {
+        const titleUrl = name
+            .toLowerCase()
+            .split(' ')
+            .join('-');
+        window.location = `/artist/${titleUrl}`;
+    };
     return (
         <>
             {hovered && <img src="/assets/images/queue/handle.png" className="queue__song__handle" />}
@@ -371,7 +382,7 @@ function _renderQueueSong(song, current, hovered, onRemove, playSong) {
                 className="queue__song__cover"
                 onClick={playSong}
             />
-            <div className="queue__song__wrapper">
+            <div className="queue__song__wrapper" onClick={() => goToSongPage(song.pbId, song.title)}>
                 <div
                     className={current === song ? 'queue__song__title queue__song__title--blue' : 'queue__song__title'}
                 >
@@ -381,6 +392,7 @@ function _renderQueueSong(song, current, hovered, onRemove, playSong) {
                     className={
                         current === song ? 'queue__song__artist queue__song__artist--blue' : 'queue__song__artist'
                     }
+                    onClick={() => goToArtistPage(song.artistName)}
                 >
                     by {song.artistName} | {song.length}
                 </div>

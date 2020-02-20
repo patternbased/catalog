@@ -24,6 +24,8 @@ import SoundCloudSvg from 'assets/images/single-song/Single-Song_SoundCloud.svg'
 import GooglePlaySvg from 'assets/images/single-song/Single-Song_GooglePlay.svg';
 import VimeoSvg from 'assets/images/single-song/Single-Song_Vimeo.svg';
 
+import { api } from '../../services';
+
 import './style.scss';
 
 /**
@@ -40,6 +42,7 @@ function SongPage(props) {
     const [songMoods, setSongMoods] = useState('');
     const [coverHover, setCoverHover] = useState(false);
     const [songClicked, setSongClicked] = useState(false);
+    const [artistInfo, setArtistInfo] = useState(null);
 
     const songList = useSelector(selectors.library.getAll);
     const filtersPanelState = useSelector(selectors.general.get('filtersOpened'));
@@ -78,8 +81,16 @@ function SongPage(props) {
                 songData.genre.length && songMoodGenre.push(songData.genre);
                 songData.primaryMood.length && songMoodGenre.push(songData.primaryMood);
                 songData.secondaryMoods.length && songData.secondaryMoods.map(mood => songMoodGenre.push(mood));
-                setSongMoods(songMoodGenre.join(', '));
+                setSongMoods(songMoodGenre);
             }
+            api.get(
+                `/api/artist/${songData.artistName
+                    .toLowerCase()
+                    .split(' ')
+                    .join('-')}`
+            ).then(res => {
+                setArtistInfo(res.artist);
+            });
         }
     }, [songId, songList]);
 
@@ -218,26 +229,36 @@ function SongPage(props) {
                                 <div className="song__instruments">
                                     <div className="song__instruments__border" />
                                     <div className="song__instruments__content">
-                                        <span>Instruments</span>
-                                        {song.instruments.join(', ')}
+                                        <span className="song__instruments__label">Instruments</span>
+                                        {song.instruments.map((s, index) => (
+                                            <span key={index} className="song__instruments__value">
+                                                <span>{s}</span>
+                                                {index < song.instruments.length - 1 ? ', ' : ''}
+                                            </span>
+                                        ))}
                                     </div>
                                 </div>
                                 <div className="song__instruments">
                                     <div className="song__instruments__border" />
                                     <div className="song__instruments__content">
-                                        <span>Genres/Mood</span>
-                                        {songMoods}
+                                        <span className="song__instruments__label">Genres/Mood</span>
+                                        {songMoods.map((s, index) => (
+                                            <span key={index} className="song__instruments__value">
+                                                <span>{s}</span>
+                                                {index < songMoods.length - 1 ? ', ' : ''}
+                                            </span>
+                                        ))}
                                     </div>
                                 </div>
                             </div>
                             <div className="song__media">
-                                <BandcampSvg />
-                                <SpotifySvg />
-                                <AppleSvg />
-                                <ITunesSvg />
-                                <SoundCloudSvg />
-                                <GooglePlaySvg />
-                                <VimeoSvg />
+                                <BandcampSvg className="song__media__bandcamp" />
+                                <SpotifySvg className="song__media__spotify" />
+                                <AppleSvg className="song__media__apple" />
+                                <ITunesSvg className="song__media__itunes" />
+                                <SoundCloudSvg className="song__media__soundcloud" />
+                                <GooglePlaySvg className="song__media__google" />
+                                <VimeoSvg className="song__media__vimeo" />
                             </div>
                         </div>
                     </div>
@@ -248,18 +269,20 @@ function SongPage(props) {
                             </div>
                         </div>
                     )}
-                    <div className="song__section song__section--banner">
-                        <div className="song__banner">
-                            <img src={song.cover} alt={song.artistName} />
-                            <div>
-                                <div className="song__banner__artist">{song.artistName}</div>
-                                <div className="song__banner__description">{song.description}</div>
-                                <Button className="song__banner__button" width={260} height={40}>
-                                    MORE FROM THIS ARTIST
-                                </Button>
+                    {artistInfo && (
+                        <div className="song__section song__section--banner">
+                            <div className="song__banner">
+                                <img src={artistInfo.image} alt={artistInfo.imageAlt} />
+                                <div>
+                                    <div className="song__banner__artist">{artistInfo.name}</div>
+                                    <div className="song__banner__description">{artistInfo.bio}</div>
+                                    <Button className="song__banner__button" width={260} height={40}>
+                                        MORE FROM THIS ARTIST
+                                    </Button>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    )}
                     {similarTracks && (
                         <div className="song__section">
                             <div className="song__table">

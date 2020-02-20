@@ -8,6 +8,7 @@ import Button from 'components/button';
 import Preset from 'components/preset';
 
 import { setFilter } from 'actions/filters';
+import { setState } from 'actions/general';
 import { PRESETS } from 'utils/constants';
 
 import './style.scss';
@@ -49,14 +50,19 @@ function PresetsPanel({ visible, style }) {
                 <div className="presets-panel__container">
                     <div className="presets-panel__presets">
                         {Object.keys(PRESETS).map((preset, index) => (
-                            <div key={index} onClick={() => applyPreset(PRESETS[preset].filters, preset)}>
-                                <Preset name={preset} />
+                            <div key={index}>
+                                <Preset name={preset} onClick={() => applyPreset(PRESETS[preset].filters, preset)} />
                                 {(index + 1) % 8 === 0 && (
                                     <div className="presets-panel__cta">
                                         <p className="presets-panel__cta-copy">
                                             {ctaCopy[parseInt((index + 1) / 8) - 1]}
                                         </p>
-                                        <Button className="presets-panel__cta-button" width={62} height={42}>
+                                        <Button
+                                            className="presets-panel__cta-button"
+                                            width={62}
+                                            height={42}
+                                            onClick={() => dispatch(setState('reqSuggestionsOpened', true))}
+                                        >
                                             Ask
                                         </Button>
                                     </div>
@@ -73,7 +79,7 @@ function PresetsPanel({ visible, style }) {
 PresetsPanel.displayName = 'PresetsPanel';
 
 PresetsPanel.propTypes = {
-    visible: PropTypes.bool,
+    visible: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
     style: PropTypes.object,
 };
 

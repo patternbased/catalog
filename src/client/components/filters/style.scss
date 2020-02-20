@@ -225,3 +225,20 @@
         }
     }
 }
+
+.rc-slider-handle-1::before,
+.rc-slider-handle-2::after {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 100%;
+    background: #ffffff;
+    opacity: 0.6;
+    width: 240px;
+}
+.rc-slider-handle-1::before {
+    right: 4px;
+}
+.rc-slider-handle-2::after {
+    left: 4px;
+}

@@ -103,7 +103,7 @@ module.exports = async () => {
             ? `https://pblibrary.s3.us-east-2.amazonaws.com/${row.catnum}/${row.id}.jpg`
             : `https://pblibrary.s3.us-east-2.amazonaws.com/${row.catnum}/cover.jpg`,
         cover: ['PB26', 'PB36', 'PB37'].includes(row.catnum)
-            ? `https://pblibrary.s3.us-east-2.amazonaws.com/${row.catnum}/${row.id}-thumb.jpg`
+            ? `https://pblibrary.s3.us-east-2.amazonaws.com/${row.catnum}/${row.id}_thumb.jpg`
             : `https://pblibrary.s3.us-east-2.amazonaws.com/${row.catnum}/cover-thumb.jpg`,
     }));
 };

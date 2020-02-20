@@ -189,7 +189,8 @@
                         font-family: $font-main;
                         font-size: 16px;
                         line-height: 19px;
-                        span {
+                        cursor: pointer;
+                        &--artist {
                             display: none;
                         }
                         .table__body__row--hovered & {

@@ -145,6 +145,19 @@ function MusicPlayer({ list }) {
         });
     };
 
+    const goToSongPage = (id, title) => {
+        const titleUrl = title.split(' ').join('-');
+        window.location = `/song/${id}-${titleUrl}`;
+    };
+
+    const goToArtistPage = name => {
+        const titleUrl = name
+            .toLowerCase()
+            .split(' ')
+            .join('-');
+        window.location = `/artist/${titleUrl}`;
+    };
+
     return (
         <>
             <div className="music-player">
@@ -174,11 +187,17 @@ function MusicPlayer({ list }) {
                             onMouseEnter={() => handleSongHover()}
                             onMouseLeave={() => setSongHovered(false)}
                         >
-                            <p className="music-player__section--content__song__details-title">
+                            <p
+                                className="music-player__section--content__song__details-title"
+                                onClick={() => goToSongPage(currentPlaying.pbId, currentPlaying.title)}
+                            >
                                 {currentPlaying.title}
                             </p>
                             {songHovered && (
-                                <p className="music-player__section--content__song__details-author music-player__section--content__song__details-author--inline">
+                                <p
+                                    className="music-player__section--content__song__details-author music-player__section--content__song__details-author--inline"
+                                    onClick={() => goToArtistPage(currentPlaying.artistName)}
+                                >
                                     by {currentPlaying.artistName}
                                 </p>
                             )}

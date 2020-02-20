@@ -128,7 +128,7 @@
             font-family: $font-other;
             font-size: 14px;
             line-height: 27px;
-            &:hover {
+            em:hover {
                 color: $secondary;
                 text-decoration: underline;
             }
@@ -231,12 +231,30 @@
             path {
                 fill: $primary;
             }
-            &:hover path {
-                fill: $secondary;
-            }
             &:last-child {
                 margin-right: 0;
             }
+        }
+        &__bandcamp:hover path {
+            fill: $bandcamp;
+        }
+        &__spotify:hover path {
+            fill: $spotify;
+        }
+        &__apple:hover path {
+            fill: $apple;
+        }
+        &__itunes:hover path {
+            fill: $itunes;
+        }
+        &__soundcloud:hover path {
+            fill: $soundcloud;
+        }
+        &__google:hover path {
+            fill: $google;
+        }
+        &__vimeo:hover path {
+            fill: $vimeo;
         }
     }
     &__others {
@@ -252,23 +270,25 @@
         position: relative;
         display: flex;
         cursor: pointer;
-        span {
+        &__label {
             font-weight: bolder;
             margin-bottom: 5px;
             display: block;
         }
         &__content {
             max-width: calc(100% - 20px);
-            &:hover {
-                color: $secondary;
-                text-decoration: underline;
-            }
         }
         &__border {
             background-color: rgba(155, 155, 155, 0.4);
             border-radius: 4px;
             width: 10px;
             margin-right: 10px;
+        }
+        &__value {
+            span:hover {
+                color: $secondary;
+                text-decoration: underline;
+            }
         }
         &:last-child {
             margin-bottom: 0;
@@ -282,7 +302,7 @@
         align-items: center;
         justify-content: center;
         padding: 50px 200px;
-        background-color: #1f1f21;
+        background-image: url('/assets/images/dark-banner.jpg');
         img {
             min-width: 270px;
             max-width: 270px;

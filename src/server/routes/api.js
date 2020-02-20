@@ -4,6 +4,7 @@ const router = express.Router();
 const SongController = require('../controllers/SongController');
 const PresetController = require('../controllers/PresetController');
 const ShareController = require('../controllers/ShareController');
+const ArtistController = require('../controllers/ArtistController');
 const memoizeFunction = require('../utils/memoize-function');
 
 const oneWeek = 7 * 24 * 60 * 60 * 1000;
@@ -46,6 +47,14 @@ router.get('/shared-list/:id', async (req, res) => {
 
     res.send({
         shared,
+    });
+});
+
+router.get('/artist/:name', async (req, res) => {
+    const artist = await ArtistController.getArtistByName(req.params.name);
+
+    res.send({
+        artist,
     });
 });
 
