@@ -46,6 +46,11 @@ const setCurrentSong = (state, action) => ({
     currentSong: action.value,
 });
 
+const setCustomWorkSong = (state, action) => ({
+    ...state,
+    customWorkSong: action.value,
+});
+
 const clearQueue = state => ({
     ...state,
     queue: [],
@@ -72,5 +77,6 @@ export default createReducer(
         [ACTIONS.CLEAR_QUEUE]: clearQueue,
         [ACTIONS.REMOVE_FROM_QUEUE]: removeFromQueue,
         [ACTIONS.REORDER_QUEUE]: reorderQueue,
+        [ACTIONS.SET_CUSTOM_WORK_SONG]: setCustomWorkSong,
     }
 );

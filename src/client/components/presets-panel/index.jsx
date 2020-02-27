@@ -52,16 +52,27 @@ function PresetsPanel({ visible, style }) {
                         {Object.keys(PRESETS).map((preset, index) => (
                             <div key={index}>
                                 <Preset name={preset} onClick={() => applyPreset(PRESETS[preset].filters, preset)} />
-                                {(index + 1) % 8 === 0 && (
+                                {index + 1 === 8 && (
                                     <div className="presets-panel__cta">
-                                        <p className="presets-panel__cta-copy">
-                                            {ctaCopy[parseInt((index + 1) / 8) - 1]}
-                                        </p>
+                                        <p className="presets-panel__cta-copy">{ctaCopy[0]}</p>
                                         <Button
                                             className="presets-panel__cta-button"
                                             width={62}
                                             height={42}
                                             onClick={() => dispatch(setState('reqSuggestionsOpened', true))}
+                                        >
+                                            Ask
+                                        </Button>
+                                    </div>
+                                )}
+                                {index + 1 === 16 && (
+                                    <div className="presets-panel__cta">
+                                        <p className="presets-panel__cta-copy">{ctaCopy[1]}</p>
+                                        <Button
+                                            className="presets-panel__cta-button"
+                                            width={62}
+                                            height={42}
+                                            onClick={() => dispatch(setState('reqComposingOpened', true))}
                                         >
                                             Ask
                                         </Button>

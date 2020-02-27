@@ -17,6 +17,10 @@
             top: 0;
             padding-top: 0;
         }
+        &--short {
+            position: relative;
+            top: 0;
+        }
     }
     &__filters {
         display: flex;
@@ -143,17 +147,13 @@
                         margin-right: 10px;
                         cursor: pointer;
 
-                        &--similar {
-                            background-image: url('/assets/images/player/similar-off-white.svg');
-                            &:hover {
-                                background-image: url('/assets/images/player/similar-off.svg');
-                            }
+                        path {
+                            fill: white;
                         }
 
-                        &--share {
-                            background-image: url('/assets/images/player/share-off-white.svg');
-                            &:hover {
-                                background-image: url('/assets/images/player/share-off.svg');
+                        &:hover {
+                            path {
+                                fill: $primary;
                             }
                         }
                     }

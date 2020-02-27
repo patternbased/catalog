@@ -7,6 +7,9 @@ const initialState = {
     queueOpened: false,
     menuOpened: false,
     reqSuggestionsOpened: false,
+    customWorkOpened: false,
+    contactOpened: false,
+    reqComposingOpened: false,
     similarOpened: false,
     scrolled: false,
 };

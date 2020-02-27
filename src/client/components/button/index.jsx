@@ -32,8 +32,8 @@ function Button({ children, width, height, className, ...props }) {
 Button.propTypes = {
     children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
     className: PropTypes.string,
-    width: PropTypes.number,
-    height: PropTypes.number,
+    width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
 Button.defaultProps = {

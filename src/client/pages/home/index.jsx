@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 import React, { useEffect, useMemo, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import selectors from 'selectors';
@@ -121,8 +122,60 @@ function HomePage() {
     return (
         <div className={homeClass}>
             <main className="home">
-                {tablePlaylist && tablePlaylist.length > 0 ? (
+                {tablePlaylist && tablePlaylist.length >= 10 ? (
                     <SongsTable list={tablePlaylist} onSelect={val => playSong(val)} listName={sharedItem.name} />
+                ) : tablePlaylist && tablePlaylist.length > 0 && tablePlaylist.length < 10 ? (
+                    <>
+                        <SongsTable
+                            list={tablePlaylist}
+                            onSelect={val => playSong(val)}
+                            listName={sharedItem.name}
+                            short={true}
+                            extraClass="table-short"
+                        />
+                        {popularPresets && (
+                            <div className="popular-presets">
+                                <div className="popular-presets__title">Popular Search Presets</div>
+                                <div className="popular-presets__presets">
+                                    {popularPresets.map((preset, index) => (
+                                        <div
+                                            key={index}
+                                            onClick={() => applyPreset(preset.details.filters, preset.name)}
+                                        >
+                                            <Preset name={preset.name} width={253} height={105} />
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                        <div className="short-search">
+                            <div className="short-search__overlay">
+                                <div className="short-search__overlay__content">
+                                    <div className="short-search__content">
+                                        Tell us about your project and let us find you the perfect music.
+                                    </div>
+                                    <div
+                                        className="short-search__feature short-search__feature--linked"
+                                        onClick={() => dispatch(setState('reqSuggestionsOpened', true))}
+                                    >
+                                        <img
+                                            className="short-search__image"
+                                            src="/assets/images/feature-suggestion.png"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="featured">
+                            <div className="popular-presets__title">Featured Tracks</div>
+                            <SongsTable
+                                list={featuredTracks}
+                                onSelect={val => playSong(val)}
+                                listName={sharedItem.name}
+                                page="home"
+                            />
+                        </div>
+                    </>
                 ) : (
                     <>
                         <div className="hero">

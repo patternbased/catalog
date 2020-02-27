@@ -1,14 +1,18 @@
 /* eslint-disable max-lines-per-function */
 import React, { useMemo, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import selectors from 'selectors';
+import uuid from 'react-uuid';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import classnames from 'classnames';
-import { setState } from 'actions/general';
-import { getSongList, setCurrentSong } from 'actions/library';
-
 import Button from 'components/button';
 import SongsTable from 'components/songs-table';
 import MusicPlayer from 'components/music-player';
+import SimilarSongsPanel from 'components/similar-songs';
+import Modal from 'components/modal';
+import selectors from 'selectors';
+
+import { setState } from 'actions/general';
+import { getSongList, setCurrentSong, setCustomWorkSong } from 'actions/library';
 
 import { TABLE_FLOW_SHAPES } from 'utils/constants';
 
@@ -23,10 +27,15 @@ import ITunesSvg from 'assets/images/single-song/Single-Song_iTunes.svg';
 import SoundCloudSvg from 'assets/images/single-song/Single-Song_SoundCloud.svg';
 import GooglePlaySvg from 'assets/images/single-song/Single-Song_GooglePlay.svg';
 import VimeoSvg from 'assets/images/single-song/Single-Song_Vimeo.svg';
+import CopyLinkSvg from 'assets/images/copy-link.svg';
+import DoneSvg from 'assets/images/done-check.svg';
 
 import { api } from '../../services';
 
 import './style.scss';
+
+const baseUrl =
+    process.env.NODE_ENV === 'development' ? 'http://localhost:3500/' : 'https://patternbased.herokuapp.com/';
 
 /**
  * Component to handle the single song page
@@ -43,6 +52,10 @@ function SongPage(props) {
     const [coverHover, setCoverHover] = useState(false);
     const [songClicked, setSongClicked] = useState(false);
     const [artistInfo, setArtistInfo] = useState(null);
+    const [shareItem, setShareItem] = useState();
+    const [shareOpened, setShareOpened] = useState(false);
+    const [shareSongLinkCopied, setShareSongLinkCopied] = useState(false);
+    const [similarOpened, setSimilarOpened] = useState(false);
 
     const songList = useSelector(selectors.library.getAll);
     const filtersPanelState = useSelector(selectors.general.get('filtersOpened'));
@@ -94,9 +107,34 @@ function SongPage(props) {
         }
     }, [songId, songList]);
 
+    const shareSongId = uuid();
+
     const playSong = (val = song) => {
         dispatch(setCurrentSong(val));
         setSongClicked(true);
+    };
+
+    const openShareModal = () => {
+        setShareItem(song);
+        setShareOpened(true);
+    };
+
+    const copyShareSongLink = () => {
+        const shareData = {
+            name: shareItem.title,
+            type: 'song',
+            songs: [shareItem.pbId],
+            shareId: shareSongId,
+        };
+        fetch('/api/create-share', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ data: shareData }),
+        }).then(res => {
+            setShareSongLinkCopied(true);
+        });
     };
 
     return (
@@ -144,9 +182,25 @@ function SongPage(props) {
                             <div className="song__title">{song.title}</div>
                             <div className="song__artist">by {song.artistName}</div>
                             <div className="song__actions">
-                                <PianoSvg />
-                                <SimilarIcon />
-                                <ShareIcon />
+                                <PianoSvg
+                                    onClick={() => {
+                                        dispatch(setState('customWorkOpened', true));
+                                        dispatch(
+                                            setCustomWorkSong({
+                                                title: song.title,
+                                                artist: song.artistName,
+                                                image: song.cover,
+                                            })
+                                        );
+                                    }}
+                                />
+                                <SimilarIcon
+                                    onClick={() => {
+                                        setSimilarOpened(!similarOpened);
+                                        dispatch(setState('similarOpened', !similarOpened));
+                                    }}
+                                />
+                                <ShareIcon onClick={() => openShareModal()} />
                                 <Button className="song__actions-license" width={100} height={36}>
                                     License
                                 </Button>
@@ -299,6 +353,37 @@ function SongPage(props) {
                 </main>
             )}
             {songClicked && currentSong && <MusicPlayer />}
+            {shareOpened && (
+                <Modal opened={shareOpened} modifier="share queue-share">
+                    <img
+                        src="/assets/images/close-icon.png"
+                        onClick={() => setShareOpened(false)}
+                        className="share__close"
+                    />
+                    <div className="share__header">Share This Song</div>
+                    <div className="share__item">
+                        <img src={shareItem.cover} />
+                        <div>
+                            <div className="share__item__title">{shareItem.title}</div>
+                            <div className="share__item__artist">by {shareItem.artistName}</div>
+                        </div>
+                    </div>
+                    <CopyToClipboard text={`${baseUrl}?shareId=${shareSongId}`} onCopy={() => copyShareSongLink()}>
+                        {shareSongLinkCopied ? (
+                            <div className="share__button share__button--copied">
+                                <DoneSvg />
+                                Copied to clipboard!
+                            </div>
+                        ) : (
+                            <div className="share__button">
+                                <CopyLinkSvg />
+                                Copy Share Link
+                            </div>
+                        )}
+                    </CopyToClipboard>
+                </Modal>
+            )}
+            <SimilarSongsPanel visible={similarOpened} onClose={() => setSimilarOpened(false)} similarTo={song} />
         </div>
     );
 }

@@ -3,19 +3,24 @@ import React, { memo, useState, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import uuid from 'react-uuid';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+import classnames from 'classnames';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import { TABLE_FLOW_SHAPES } from 'utils/constants';
 import Button from 'components/button';
 import SimilarSongsPanel from 'components/similar-songs';
-import classnames from 'classnames';
-import selectors from 'selectors';
-import { addToQueue, setCurrentSong } from 'actions/library';
-import { setState } from 'actions/general';
-import InfiniteScroll from 'react-infinite-scroll-component';
 import BackToTop from 'components/back-to-top';
 import Modal from 'components/modal';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
+import selectors from 'selectors';
+
+import { addToQueue, setCurrentSong, setCustomWorkSong } from 'actions/library';
+import { setState } from 'actions/general';
+
 import CopyLinkSvg from 'assets/images/copy-link.svg';
 import DoneSvg from 'assets/images/done-check.svg';
+import PianoSvg from 'assets/images/single-song/CustomWork_dark.svg';
+import SimilarSvg from 'assets/images/SimilarSong_Icon_dark.svg';
+import ShareSvg from 'assets/images/share-icon-dark.svg';
 
 import './style.scss';
 
@@ -29,7 +34,7 @@ const baseUrl =
  * @param {Function} onSelect action to take when selecting a song
  * @returns {React.Component}
  */
-function SongsTable({ list, onSelect, listName, page }) {
+function SongsTable({ list, onSelect, listName, page, short = false, extraClass = '' }) {
     const [hovered, setHovered] = useState([]);
     const [similarOpened, setSimilarOpened] = useState(false);
     const [similarTo, setSimilarTo] = useState(null);
@@ -171,6 +176,7 @@ function SongsTable({ list, onSelect, listName, page }) {
         'table__sticky--big': !scrolled,
         'table__sticky--small': scrolled,
         'table__sticky--regular': page === 'home',
+        'table__sticky--short': short,
     });
 
     const [shareResultsName, setShareResulsName] = useState('');
@@ -233,7 +239,11 @@ function SongsTable({ list, onSelect, listName, page }) {
 
     return (
         <>
-            <div className="table">
+            <div
+                className={classnames('table', {
+                    [extraClass]: extraClass.length > 0,
+                })}
+            >
                 <div className={getTableMainClass}>
                     {!page && (Object.keys(appliedFilters).length > 0 || listName) && (
                         <div className="table__filters">
@@ -330,16 +340,29 @@ function SongsTable({ list, onSelect, listName, page }) {
                                             </div>
                                         </div>
                                         <div className="table__body__row-title__actions">
-                                            <div
-                                                className="table__body__row-title__actions-button table__body__row-title__actions-button--similar"
+                                            <PianoSvg
+                                                className="table__body__row-title__actions-button"
+                                                onClick={() => {
+                                                    dispatch(
+                                                        setCustomWorkSong({
+                                                            title: item.title,
+                                                            artist: item.artistName,
+                                                            image: item.cover,
+                                                        })
+                                                    );
+                                                    dispatch(setState('customWorkOpened', true));
+                                                }}
+                                            />
+                                            <SimilarSvg
+                                                className="table__body__row-title__actions-button"
                                                 onClick={() => {
                                                     setSimilarOpened(true);
                                                     setSimilarTo(item);
                                                     dispatch(setState('similarOpened', true));
                                                 }}
                                             />
-                                            <div
-                                                className="table__body__row-title__actions-button table__body__row-title__actions-button--share"
+                                            <ShareSvg
+                                                className="table__body__row-title__actions-button"
                                                 onClick={() => openShareModal(item)}
                                             />
                                             <Button
@@ -493,6 +516,8 @@ SongsTable.propTypes = {
     onSelect: PropTypes.func.isRequired,
     listName: PropTypes.string,
     page: PropTypes.string,
+    short: PropTypes.bool,
+    extraClass: PropTypes.string,
 };
 
 SongsTable.displayName = 'SongsTable';

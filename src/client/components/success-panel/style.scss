@@ -1,0 +1,53 @@
+@import '../../styles/constants';
+
+.success-panel {
+    height: 100%;
+
+    &__header {
+        height: 200px;
+        position: relative;
+
+        &__image {
+            width: 100%;
+        }
+
+        svg {
+            width: 26px;
+            height: 26px;
+            position: absolute;
+            top: 18px;
+            left: 16px;
+            cursor: pointer;
+
+            path {
+                fill: white;
+            }
+        }
+    }
+
+    &__body {
+        padding-top: 39px;
+        height: calc(100% - 600px);
+
+        &__title {
+            color: $primary;
+            font-family: $font-other;
+            font-size: 16px;
+            font-weight: bold;
+            line-height: 21px;
+            text-align: center;
+            margin: 0 auto 30px;
+            max-width: 150px;
+        }
+
+        &__content {
+            max-width: 220px;
+            margin: 0 auto;
+            color: $primary;
+            font-family: $font-other;
+            font-size: 14px;
+            line-height: 21px;
+            text-align: center;
+        }
+    }
+}

@@ -3,6 +3,17 @@ export const HEADER_HEIGHTS = {
     big: 80,
 };
 
+export const LICENSE_TYPES = [
+    'Indie Film License',
+    'Small Business License',
+    'Small Non-Profit License',
+    'Individual Artist License',
+    'Personal Video License',
+    'Podcast License',
+    'Other License',
+    'I don’t know yet',
+];
+
 export const INITIAL_FILTER_VALUES = {
     rhythm: [0, 10],
     speed: [0, 10],

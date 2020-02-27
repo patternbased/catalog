@@ -17,6 +17,9 @@ import FiltersPanel from 'components/filters-panel';
 import PresetsPanel from 'components/presets-panel';
 import MenuPanel from 'components/menu-panel';
 import ReqSuggestionsPanel from 'components/suggestions-panel';
+import ReqComposingPanel from 'components/composing-panel';
+import CustomWorkPanel from 'components/custom-work-panel';
+import ContactPanel from 'components/contact-panel';
 
 import { setState } from 'actions/general';
 
@@ -36,6 +39,9 @@ function Header({ history }) {
     const [presetsOpened, setPresetsOpened] = useState(false);
     const [menuOpened, setMenuOpened] = useState(false);
     const [reqSuggestionsOpened, setReqSuggestionsOpened] = useState(false);
+    const [reqComposingOpened, setReqComposingOpened] = useState(false);
+    const [customWorkOpened, setCustomWorkOpened] = useState(false);
+    const [contactOpened, setContactOpened] = useState(false);
     const [searchOpened, setSearchOpened] = useState(false);
     const filtersValues = useSelector(selectors.filters.getApplied);
 
@@ -43,13 +49,27 @@ function Header({ history }) {
     const presetsPanelState = useSelector(selectors.general.get('presetsOpened'));
     const menuPanelState = useSelector(selectors.general.get('menuOpened'));
     const reqSuggestionsPanelState = useSelector(selectors.general.get('reqSuggestionsOpened'));
+    const reqComposingPanelState = useSelector(selectors.general.get('reqComposingOpened'));
+    const customWorkPanelState = useSelector(selectors.general.get('customWorkOpened'));
+    const contactPanelState = useSelector(selectors.general.get('contactOpened'));
 
     useEffect(() => {
         setFiltersOpened(filtersPanelState);
         setPresetsOpened(presetsPanelState);
         setMenuOpened(menuPanelState);
         setReqSuggestionsOpened(reqSuggestionsPanelState);
-    }, [filtersPanelState, presetsPanelState, menuPanelState, reqSuggestionsPanelState]);
+        setReqComposingOpened(reqComposingPanelState);
+        setCustomWorkOpened(customWorkPanelState);
+        setContactOpened(contactPanelState);
+    }, [
+        filtersPanelState,
+        presetsPanelState,
+        menuPanelState,
+        reqSuggestionsPanelState,
+        reqComposingPanelState,
+        customWorkPanelState,
+        contactPanelState,
+    ]);
 
     const dispatch = useDispatch();
 
@@ -156,6 +176,9 @@ function Header({ history }) {
             <PresetsPanel visible={presetsOpened} style={panelStyle} />
             <MenuPanel visible={menuOpened} style={panelStyle} />
             <ReqSuggestionsPanel visible={reqSuggestionsOpened} style={panelStyle} />
+            <ReqComposingPanel visible={reqComposingOpened} style={panelStyle} />
+            <CustomWorkPanel visible={customWorkOpened} style={panelStyle} />
+            <ContactPanel visible={contactOpened} style={panelStyle} />
         </>
     );
 }

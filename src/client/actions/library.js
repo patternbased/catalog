@@ -1,5 +1,6 @@
 import { api } from '../services';
 import 'babel-polyfill';
+import library from 'reducers/library';
 
 export const ACTIONS = {
     GET_SONG_LIST: 'library.getSongList',
@@ -10,6 +11,7 @@ export const ACTIONS = {
     CLEAR_QUEUE: 'library.clearQueue',
     REMOVE_FROM_QUEUE: 'library.removeFromQueue',
     REORDER_QUEUE: 'library.reorderQueue',
+    SET_CUSTOM_WORK_SONG: 'library.setCustomWorkSong',
 };
 
 /**
@@ -74,6 +76,16 @@ export const addToQueue = value => ({
  */
 export const setCurrentSong = value => ({
     type: ACTIONS.SET_CURRENT_SONG,
+    value,
+});
+
+/**
+ * Sets the current song for Request Custom Work form
+ * @param {Object} value the song to add
+ * @returns {Object}
+ */
+export const setCustomWorkSong = value => ({
+    type: ACTIONS.SET_CUSTOM_WORK_SONG,
     value,
 });
 

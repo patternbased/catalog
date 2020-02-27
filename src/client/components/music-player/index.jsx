@@ -13,10 +13,13 @@ import SimilarSongsPanel from 'components/similar-songs';
 import Modal from 'components/modal';
 
 import { setState } from 'actions/general';
-import { addToQueue, setCurrentSong } from 'actions/library';
+import { addToQueue, setCurrentSong, setCustomWorkSong } from 'actions/library';
 
 import CopyLinkSvg from 'assets/images/copy-link.svg';
 import DoneSvg from 'assets/images/done-check.svg';
+import PianoSvg from 'assets/images/single-song/CustomWork_dark.svg';
+import SimilarSvg from 'assets/images/SimilarSong_Icon_dark.svg';
+import ShareSvg from 'assets/images/share-icon-dark.svg';
 
 import './style.scss';
 
@@ -230,15 +233,28 @@ function MusicPlayer({ list }) {
                         </div>
                     </div>
                     <div className="music-player__section--content__actions">
-                        <div
-                            className="music-player__section--content__actions-button music-player__section--content__actions-button--similar"
+                        <PianoSvg
+                            className="music-player__section--content__actions-button"
+                            onClick={() => {
+                                dispatch(
+                                    setCustomWorkSong({
+                                        title: currentPlaying.title,
+                                        artist: currentPlaying.artistName,
+                                        image: currentPlaying.cover,
+                                    })
+                                );
+                                dispatch(setState('customWorkOpened', true));
+                            }}
+                        />
+                        <SimilarSvg
+                            className="music-player__section--content__actions-button"
                             onClick={() => {
                                 setSimilarOpened(!similarOpened);
                                 dispatch(setState('similarOpened', !similarOpened));
                             }}
                         />
-                        <div
-                            className="music-player__section--content__actions-button music-player__section--content__actions-button--share"
+                        <ShareSvg
+                            className="music-player__section--content__actions-button"
                             onClick={() => openShareModal()}
                         />
                         <Button className="music-player__section--content__actions-license" width={80} height={40}>

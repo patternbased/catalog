@@ -14,28 +14,28 @@ import { setState } from 'actions/general';
 import './style.scss';
 
 /**
- * Request Suggestions panel component
+ * Request Composing panel component
  * @param {Boolean} visible boolean to determine if the panel is opened or not
  * @param {Object} style json with custom CSS styling
  * @returns {React.Component}
  */
-function ReqSuggestionsPanel({ visible, style }) {
+function ReqComposingPanel({ visible, style }) {
     const [isValid, setIsValid] = useState(true);
     const [errorsHovered, setErrorsHovered] = useState([]);
     const [isSuccess, setIsSuccess] = useState(false);
 
     const panelClass = useMemo(
         () =>
-            classnames('suggestions-panel', {
-                'suggestions-panel--visible': visible,
+            classnames('composing-panel', {
+                'composing-panel--visible': visible,
             }),
         [visible]
     );
 
     const formDescriptionClass = useMemo(
         () =>
-            classnames('suggestions-panel__header__description', {
-                'suggestions-panel__header__description--error': !isValid,
+            classnames('composing-panel__header__description', {
+                'composing-panel__header__description--error': !isValid,
             }),
         [isValid]
     );
@@ -58,22 +58,22 @@ function ReqSuggestionsPanel({ visible, style }) {
                 {isSuccess ? (
                     <SuccessPanel
                         onClose={() => {
-                            dispatch(setState('reqSuggestionsOpened', false));
+                            dispatch(setState('reqComposingOpened', false));
                             setTimeout(() => {
                                 setIsSuccess(false);
                             }, 500);
                         }}
                     />
                 ) : (
-                    <div className="suggestions-panel__container">
-                        <div className="suggestions-panel__header">
-                            <div className="suggestions-panel__header__title">
-                                <CloseIcon onClick={() => dispatch(setState('reqSuggestionsOpened', false))} />
-                                Request Suggestions
+                    <div className="composing-panel__container">
+                        <div className="composing-panel__header">
+                            <div className="composing-panel__header__title">
+                                <CloseIcon onClick={() => dispatch(setState('reqComposingOpened', false))} />
+                                Request Composing
                             </div>
                             <div className={formDescriptionClass}>
                                 {isValid ? (
-                                    'We will send you a playlist of recommended tracks for your project, and it’s free!'
+                                    'We compose custom music and sound design. Send us info about your project for a quote.'
                                 ) : (
                                     <>
                                         <span>Sorry, there was a problem.</span>
@@ -82,7 +82,7 @@ function ReqSuggestionsPanel({ visible, style }) {
                                 )}
                             </div>
                         </div>
-                        <div className="suggestions-panel__form">
+                        <div className="composing-panel__form">
                             <Formik
                                 initialValues={{
                                     name: '',
@@ -186,14 +186,14 @@ function ReqSuggestionsPanel({ visible, style }) {
                                                     <div className="check-box">
                                                         {field.value && <CloseIcon />}
                                                         <input
-                                                            id="agreement"
+                                                            id="compAgreement"
                                                             type="checkbox"
                                                             checked={field.value}
                                                             onChange={() => {
                                                                 setFieldValue('agreement', !field.value);
                                                             }}
                                                         />
-                                                        <label htmlFor="agreement">
+                                                        <label htmlFor="compAgreement">
                                                             <span>
                                                                 I agree that I have read PatternBased’s{' '}
                                                                 <a
@@ -227,16 +227,16 @@ function ReqSuggestionsPanel({ visible, style }) {
     );
 }
 
-ReqSuggestionsPanel.displayName = 'ReqSuggestionsPanel';
+ReqComposingPanel.displayName = 'ReqComposingPanel';
 
-ReqSuggestionsPanel.propTypes = {
+ReqComposingPanel.propTypes = {
     visible: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
     style: PropTypes.object,
 };
 
-ReqSuggestionsPanel.defaultProps = {
+ReqComposingPanel.defaultProps = {
     visible: false,
     style: {},
 };
 
-export default memo(ReqSuggestionsPanel);
+export default memo(ReqComposingPanel);

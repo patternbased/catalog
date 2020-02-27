@@ -1,0 +1,86 @@
+@import '../../../styles/constants';
+
+.menu-footer {
+    padding: 40px 55px;
+    background-color: $light-grey;
+    height: 400px;
+
+    &__logo {
+        margin-bottom: 20px;
+
+        &:hover {
+            opacity: 0.5;
+        }
+
+        svg {
+            .st1 {
+                fill: #972041;
+            }
+            .st0 {
+                fill: #010101;
+            }
+        }
+    }
+
+    &__link {
+        color: $primary;
+        font-size: 12px;
+        font-weight: 500;
+        letter-spacing: 0.86px;
+        text-decoration: underline;
+        text-align: center;
+        margin-bottom: 15px;
+        cursor: pointer;
+
+        &:hover {
+            opacity: 0.5;
+        }
+
+        a {
+            color: inherit;
+        }
+    }
+
+    &__social {
+        margin: 30px auto 20px;
+        width: 174px;
+
+        a {
+            width: 36px;
+            height: 36px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            display: inline-block;
+
+            svg {
+                width: 100%;
+            }
+
+            &:nth-child(4n) {
+                margin-right: 0;
+            }
+
+            &:nth-child(n + 5) {
+                margin-bottom: 0;
+            }
+
+            &:hover {
+                opacity: 0.5;
+            }
+        }
+
+        svg {
+        }
+    }
+
+    &__copyright {
+        color: $primary;
+        font-size: 12px;
+        letter-spacing: 2px;
+        line-height: 20px;
+        text-align: center;
+        width: 190px;
+        margin-bottom: 40px;
+    }
+}

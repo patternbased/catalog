@@ -1,0 +1,67 @@
+@import '../../styles/constants';
+
+.dropdown {
+    margin-bottom: 10px;
+    position: relative;
+    width: 210px;
+
+    &__container {
+        height: 40px;
+        width: 100%;
+        border: 1px solid $light-grey;
+        border-radius: 4px;
+        padding: 12px 10px;
+        user-select: none;
+
+        &__selected {
+            color: $primary;
+            font-family: $font-other;
+            font-size: 12px;
+            line-height: 17px;
+
+            &--default {
+                opacity: 0.5;
+            }
+        }
+    }
+
+    &__arrow {
+        width: 15px;
+        height: 30px;
+        position: absolute;
+        top: 5px;
+        right: 10px;
+    }
+
+    &__options {
+        max-height: 265px;
+        height: auto;
+        overflow: scroll;
+        width: 100%;
+        border: 1px solid $light-grey;
+        border-bottom-left-radius: 4px;
+        background-color: white;
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.3);
+        border-bottom-right-radius: 4px;
+        position: absolute;
+        z-index: 1;
+
+        &__single {
+            color: $primary;
+            font-family: $font-other;
+            font-size: 12px;
+            line-height: 32px;
+            padding: 0 10px;
+            border-bottom: 1px solid $light-grey;
+            cursor: pointer;
+
+            &:last-child {
+                border-bottom: none;
+            }
+
+            &:hover {
+                background-color: $light-grey;
+            }
+        }
+    }
+}

@@ -14,28 +14,28 @@ import { setState } from 'actions/general';
 import './style.scss';
 
 /**
- * Request Suggestions panel component
+ * Contact Us panel component
  * @param {Boolean} visible boolean to determine if the panel is opened or not
  * @param {Object} style json with custom CSS styling
  * @returns {React.Component}
  */
-function ReqSuggestionsPanel({ visible, style }) {
+function Contact({ visible, style }) {
     const [isValid, setIsValid] = useState(true);
     const [errorsHovered, setErrorsHovered] = useState([]);
     const [isSuccess, setIsSuccess] = useState(false);
 
     const panelClass = useMemo(
         () =>
-            classnames('suggestions-panel', {
-                'suggestions-panel--visible': visible,
+            classnames('contact-panel', {
+                'contact-panel--visible': visible,
             }),
         [visible]
     );
 
     const formDescriptionClass = useMemo(
         () =>
-            classnames('suggestions-panel__header__description', {
-                'suggestions-panel__header__description--error': !isValid,
+            classnames('contact-panel__header__description', {
+                'contact-panel__header__description--error': !isValid,
             }),
         [isValid]
     );
@@ -58,39 +58,34 @@ function ReqSuggestionsPanel({ visible, style }) {
                 {isSuccess ? (
                     <SuccessPanel
                         onClose={() => {
-                            dispatch(setState('reqSuggestionsOpened', false));
+                            dispatch(setState('contactOpened', false));
                             setTimeout(() => {
                                 setIsSuccess(false);
                             }, 500);
                         }}
                     />
                 ) : (
-                    <div className="suggestions-panel__container">
-                        <div className="suggestions-panel__header">
-                            <div className="suggestions-panel__header__title">
-                                <CloseIcon onClick={() => dispatch(setState('reqSuggestionsOpened', false))} />
-                                Request Suggestions
+                    <div className="contact-panel__container">
+                        <div className="contact-panel__header">
+                            <div className="contact-panel__header__title">
+                                <CloseIcon onClick={() => dispatch(setState('contactOpened', false))} />
+                                Contact Us
                             </div>
-                            <div className={formDescriptionClass}>
-                                {isValid ? (
-                                    'We will send you a playlist of recommended tracks for your project, and it’s free!'
-                                ) : (
-                                    <>
-                                        <span>Sorry, there was a problem.</span>
-                                        Find detail highlighted below
-                                    </>
-                                )}
-                            </div>
+                            {!isValid && (
+                                <div className={formDescriptionClass}>
+                                    <span>Sorry, there was a problem.</span>
+                                    Find detail highlighted below
+                                </div>
+                            )}
                         </div>
-                        <div className="suggestions-panel__form">
+                        <div className="contact-panel__form">
                             <Formik
                                 initialValues={{
                                     name: '',
                                     email: '',
                                     company: '',
-                                    project: '',
-                                    details: '',
-                                    url: '',
+                                    subject: '',
+                                    message: '',
                                     agreement: false,
                                 }}
                                 validate={values => {
@@ -103,11 +98,11 @@ function ReqSuggestionsPanel({ visible, style }) {
                                     } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
                                         errors.email = 'Please enter a valid email address.';
                                     }
-                                    if (!values.project) {
-                                        errors.project = 'Please enter a project name.';
+                                    if (!values.subject) {
+                                        errors.subject = 'Please enter a subject.';
                                     }
-                                    if (!values.details) {
-                                        errors.details = 'Please enter a project description.';
+                                    if (!values.message) {
+                                        errors.message = 'Please enter a message.';
                                     }
                                     if (!values.agreement) {
                                         errors.agreement = 'Please check the Privacy Policy agreement.';
@@ -151,29 +146,28 @@ function ReqSuggestionsPanel({ visible, style }) {
                                         <Field type="text" name="company" placeholder="Company (Optional)" />
                                         <div
                                             className={classnames({
-                                                'input-error': errors.project,
+                                                'input-error': errors.subject,
                                             })}
-                                            onMouseOver={() => toggleErrorHovered('project')}
-                                            onMouseOut={() => toggleErrorHovered('project')}
+                                            onMouseOver={() => toggleErrorHovered('subject')}
+                                            onMouseOut={() => toggleErrorHovered('subject')}
                                         >
-                                            <Field type="text" name="project" placeholder="Project" />
-                                            {errors.project && errorsHovered.includes('project') && (
-                                                <div className="error-tooltip">{errors.project}</div>
+                                            <Field type="text" name="subject" placeholder="Subject" />
+                                            {errors.subject && errorsHovered.includes('subject') && (
+                                                <div className="error-tooltip">{errors.subject}</div>
                                             )}
                                         </div>
                                         <div
                                             className={classnames({
-                                                'input-error': errors.details,
+                                                'input-error': errors.message,
                                             })}
-                                            onMouseOver={() => toggleErrorHovered('details')}
-                                            onMouseOut={() => toggleErrorHovered('details')}
+                                            onMouseOver={() => toggleErrorHovered('message')}
+                                            onMouseOut={() => toggleErrorHovered('message')}
                                         >
-                                            <Field as="textarea" name="details" placeholder="Details" />
-                                            {errors.details && errorsHovered.includes('details') && (
-                                                <div className="error-tooltip">{errors.details}</div>
+                                            <Field as="textarea" name="message" placeholder="Message" />
+                                            {errors.message && errorsHovered.includes('message') && (
+                                                <div className="error-tooltip">{errors.message}</div>
                                             )}
                                         </div>
-                                        <Field type="text" name="url" placeholder="URL (Optional)" />
                                         <div
                                             className={classnames('checkbox-wrap', {
                                                 'input-error': errors.agreement,
@@ -186,14 +180,14 @@ function ReqSuggestionsPanel({ visible, style }) {
                                                     <div className="check-box">
                                                         {field.value && <CloseIcon />}
                                                         <input
-                                                            id="agreement"
+                                                            id="contactAgreement"
                                                             type="checkbox"
                                                             checked={field.value}
                                                             onChange={() => {
                                                                 setFieldValue('agreement', !field.value);
                                                             }}
                                                         />
-                                                        <label htmlFor="agreement">
+                                                        <label htmlFor="contactAgreement">
                                                             <span>
                                                                 I agree that I have read PatternBased’s{' '}
                                                                 <a
@@ -227,16 +221,16 @@ function ReqSuggestionsPanel({ visible, style }) {
     );
 }
 
-ReqSuggestionsPanel.displayName = 'ReqSuggestionsPanel';
+Contact.displayName = 'Contact';
 
-ReqSuggestionsPanel.propTypes = {
+Contact.propTypes = {
     visible: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
     style: PropTypes.object,
 };
 
-ReqSuggestionsPanel.defaultProps = {
+Contact.defaultProps = {
     visible: false,
     style: {},
 };
 
-export default memo(ReqSuggestionsPanel);
+export default memo(Contact);
