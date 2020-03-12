@@ -34,6 +34,14 @@ router.post('/increment-preset', async (req, res) => {
     });
 });
 
+router.post('/email/send', async (req, res) => {
+    const sent = await ShareController.sendEmail(req.body.emailData);
+
+    res.send({
+        sent,
+    });
+});
+
 router.post('/create-share', async (req, res) => {
     const share = await ShareController.create(req.body.data);
 

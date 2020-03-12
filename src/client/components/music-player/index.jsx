@@ -74,16 +74,20 @@ function MusicPlayer({ list }) {
     };
 
     useEffect(() => {
-        musicPlayer.current.src = currentPlaying.url;
-        musicPlayer.current.play();
-        setIsPlaying(true);
-        musicPlayer.current.addEventListener('timeupdate', e => {
-            setElapsed(e.target.currentTime);
-        });
-        musicPlayer.current.addEventListener('playing', e => {
+        if (songHovered) {
+            setElapsed(musicPlayer.current.currentTime);
+        }
+    }, [songHovered]);
+
+    useEffect(() => {
+        const player = musicPlayer.current;
+        player.src = currentPlaying.url;
+        player.play();
+
+        player.addEventListener('playing', e => {
             setDuration(e.target.duration);
         });
-        musicPlayer.current.addEventListener('ended', function() {
+        player.addEventListener('ended', function() {
             const currentIndex = currentPlaylist.findIndex(x => x.pbId === currentPlaying.pbId);
             let nextSong = {};
             if (currentPlaylist[currentIndex + 1]) {
@@ -97,6 +101,7 @@ function MusicPlayer({ list }) {
 
             dispatch(setCurrentSong(nextSong));
             dispatch(addToQueue(nextSong));
+            setIsPlaying(false);
         });
     }, [currentPlaying]);
 

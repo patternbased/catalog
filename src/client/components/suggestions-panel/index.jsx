@@ -116,10 +116,23 @@ function ReqSuggestionsPanel({ visible, style }) {
                                     return errors;
                                 }}
                                 onSubmit={(values, { setSubmitting }) => {
-                                    setTimeout(() => {
-                                        setIsSuccess(true);
-                                        setSubmitting(false);
-                                    }, 400);
+                                    const emailData = {
+                                        email: values.email,
+                                        subject: 'New form submission for PB Request Suggestions',
+                                        text: `Name: ${values.name}, Email: ${values.email}, Company: ${values.company}, Project: ${values.project}, Details: ${values.details}, URL: ${values.url}`,
+                                    };
+                                    fetch('/api/email/send', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                        },
+                                        body: JSON.stringify({ emailData: emailData }),
+                                    }).then(res => {
+                                        setTimeout(() => {
+                                            setIsSuccess(true);
+                                            setSubmitting(false);
+                                        }, 400);
+                                    });
                                 }}
                             >
                                 {({ isSubmitting, setFieldValue, errors }) => (

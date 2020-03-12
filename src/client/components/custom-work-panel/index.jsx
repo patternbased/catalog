@@ -135,11 +135,23 @@ function CustomWorkPanel({ visible, style }) {
                                         return errors;
                                     }}
                                     onSubmit={(values, { setSubmitting }) => {
-                                        setTimeout(() => {
-                                            setIsSuccess(true);
-                                            console.log(values);
-                                            setSubmitting(false);
-                                        }, 400);
+                                        const emailData = {
+                                            email: values.email,
+                                            subject: 'New form submission for PB Request Custom Work',
+                                            text: `For song: ${song.title} by ${song.artist}, Name: ${values.name}, Email: ${values.email}, Company: ${values.company}, Project: ${values.project}, License Type: ${values.license}, Details: ${values.details}, URL: ${values.url}`,
+                                        };
+                                        fetch('/api/email/send', {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                            },
+                                            body: JSON.stringify({ emailData: emailData }),
+                                        }).then(res => {
+                                            setTimeout(() => {
+                                                setIsSuccess(true);
+                                                setSubmitting(false);
+                                            }, 400);
+                                        });
                                     }}
                                 >
                                     {({ isSubmitting, setFieldValue, errors }) => (
@@ -183,7 +195,6 @@ function CustomWorkPanel({ visible, style }) {
                                             </div>
                                             <Field name="license">
                                                 {({ field, form, meta }) => {
-                                                    console.log(field);
                                                     return (
                                                         <Dropdown
                                                             selectedLabel={field.value}

@@ -111,10 +111,23 @@ function Contact({ visible, style }) {
                                     return errors;
                                 }}
                                 onSubmit={(values, { setSubmitting }) => {
-                                    setTimeout(() => {
-                                        setIsSuccess(true);
-                                        setSubmitting(false);
-                                    }, 400);
+                                    const emailData = {
+                                        email: values.email,
+                                        subject: `PB Contact Form - ${values.subject}`,
+                                        text: `Name: ${values.name}, Email: ${values.email}, Company: ${values.company}, Message: ${values.message}`,
+                                    };
+                                    fetch('/api/email/send', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                        },
+                                        body: JSON.stringify({ emailData: emailData }),
+                                    }).then(res => {
+                                        setTimeout(() => {
+                                            setIsSuccess(true);
+                                            setSubmitting(false);
+                                        }, 400);
+                                    });
                                 }}
                             >
                                 {({ isSubmitting, setFieldValue, errors }) => (
