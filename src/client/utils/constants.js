@@ -14,6 +14,212 @@ export const LICENSE_TYPES = [
     'I don’t know yet',
 ];
 
+export const BUY_LICENSE_TYPES = {
+    'Films & Shows': {
+        parent: true,
+        children: {
+            'Major Films': {
+                custom: true,
+                description: 'Films created within the studio system. Please contact us for custom license.',
+            },
+            'Indie Films': {
+                custom: false,
+                description: 'Films created of any length outside the studio system.',
+                details: {
+                    'Number of Uses': 'Single (1) use',
+                    Distribution: 'Film Festival, Unpaid Web',
+                    Lifespan: 'Perpetual',
+                    'Permitted Content':
+                        'You are an individual wishing to license one master recording and composition embodied thereon (“Musical Work”, as defined in the attached Standard Terms and Conditions) for the creation of an independent film, created outside of a formal film studio system, either short or feature length.',
+                    'Non-Permitted Content':
+                        'The creation of any film being funded and/or released by a formal film studio, or any commercial use relating to a business, non-profit, product or service.',
+                    Notes:
+                        'If your film should be picked up for distribution, or shown outside of the confines of a film festival, please contact license@patternbased.com.',
+                    prices: { 'Indie Film License': 250 },
+                },
+            },
+            Series: {
+                custom: true,
+                description:
+                    'Series of content produced for broadcast via national broadcast network, online streaming services, or cable. Please contact us for custom license.',
+            },
+        },
+    },
+    'Commercials & Projects': {
+        parent: true,
+        children: {
+            'National Ads': {
+                custom: true,
+                description:
+                    'Advertisements aired on any National Broadcast Network. Please contact us for custom license. ',
+            },
+            'Web Streaming Ads': {
+                custom: true,
+                description:
+                    'Advertisements aired on any major web streaming platform. Please contact us for custom license. ',
+            },
+            'Small Business': {
+                custom: false,
+                description: 'Short videos or advertisements created for and by a small business.',
+                details: {
+                    'Number of Uses': 'Single (1) use',
+                    Lifespan: 'Perpetual',
+                    'Permitted Content':
+                        'You are an individual wishing to license one master recording and composition embodied thereon (“Musical Work”, as defined in the attached Standard Terms and Conditions) for the creation of a film or slideshow that highlights an organization as a whole. Content may include company highlights, event coverage, culture highlights, and employee insights - films that give an overall sense of the spirit of the organization.',
+                    'Non-Permitted Content':
+                        'Fundraising campaign, political campaign, call to action, or any film that highlights a specific product or service of the organization. These uses require a custom license.',
+                    prices: {
+                        '1 - 20 employees': 250,
+                        '21 - 50 employees': 500,
+                        '51 - 100 employees': 750,
+                        '101 - 250 employees': 1000,
+                    },
+                },
+            },
+            'Small Non-Profit': {
+                custom: false,
+                description: 'Short videos or advertisements created for and by a small Non-profit organization.',
+                details: {
+                    'Number of Uses': 'Single (1) use',
+                    Lifespan: 'Perpetual',
+                    'Permitted Content':
+                        'You are an individual wishing to license one master recording and composition embodied thereon (“Musical Work”, as defined in the attached Standard Terms and Conditions) for the creation of a film or slideshow that highlights a registered non-profit organization as a whole. Content may include company highlights, event coverage, culture highlights, and employee insights - films that give an overall sense of the spirit of the organization. A company is considered a Non-Profit only if it is registered with the government as an eligible and official Non-Profit Organization. In the U.S.A., for example, a Non-Profit is designated by the IRS as a 501(c).',
+                    'Non-Permitted Content':
+                        'Fundraising campaign, political campaign, call to action, or any film that highlights a specific product or service of the organization. These uses require a custom license.',
+                    prices: {
+                        '1 - 20 employees': 150,
+                        '21 - 50 employees': 350,
+                        '51 - 100 employees': 500,
+                        '101 - 250 employees': 750,
+                    },
+                },
+            },
+        },
+    },
+    'Art & Experiences': {
+        parent: true,
+        children: {
+            'VR / AR Experiences': {
+                custom: true,
+                description:
+                    'VR (Virtual Reality) and AR (Augmented Reality) experiences. Please contact us for custom license.',
+            },
+            'Game / UI': {
+                custom: true,
+                description:
+                    'Games and UI (user interface) for any game and web platform. Please contact us for custom license.',
+            },
+            'Art Installation': {
+                custom: true,
+                description: 'Art installation for art exhibitions and events. Please contact us for custom license.',
+            },
+            'Individual Artist': {
+                custom: false,
+                description: 'Creations of any individual artists.',
+                details: {
+                    'Number of Uses': 'Single (1) use',
+                    Distribution: 'Hardcopy and world wide web, not including premium streaming services',
+                    Lifespan: 'Perpetual',
+                    'Permitted Content':
+                        'You are an individual wishing to license one master recording and composition embodied thereon (“Musical Work”, as defined in the attached Standard Terms and Conditions) for the artwork by an individual artist.',
+                    'Non-Permitted Content':
+                        'Content cannot be tied to any business whatsoever, including company or product highlights, by being posted on business websites, Vimeo or YouTube accounts. If you are being paid, making money, or having sponsor, these use require custom license.',
+                    prices: {
+                        'Individual Artist License': 40,
+                    },
+                },
+            },
+        },
+    },
+    Personal: {
+        parent: false,
+        description: 'Tracks for reminiscing with family and friends. (Wedding / Home video / Photo slideshow)',
+        details: {
+            'Number of Uses': 'Single (1) use',
+            Distribution: 'Hardcopy and world wide web, not including premium streaming services',
+            Lifespan: 'Perpetual',
+            'Permitted Content':
+                'You are an individual wishing to license one master recording and composition embodied thereon (“Musical Work”, as defined in the attached Standard Terms and Conditions) for the creation of a film intended for individual, personal use only of content highlighting the life and experiences of the individual.',
+            'Non-Permitted Content':
+                'Content cannot be tied to any business whatsoever, including company or product highlights, by being posted on business websites, Vimeo or YouTube accounts, or if you are being paid, making money, or anticipating growing any business from the film.',
+            prices: {
+                'Personal License': 75,
+            },
+        },
+    },
+    Podcast: {
+        parent: true,
+        children: {
+            'Personal - Single': {
+                custom: false,
+                description: 'A podcast program created by an individual.',
+                details: {
+                    'Number of Uses': 'Single (1) use',
+                    Distribution: 'Podcast',
+                    Lifespan: 'Perpetual',
+                    'Permitted Content':
+                        'You are an individual creating a podcast and wish to license one master recording and composition embodied thereon (“Musical Work”, as defined in the attached Standard Terms and Conditions) solely for use as a “bumpers,” “underscore,” “intros,” “outros,” “transitions” or “beds” within a single audio podcast episode.',
+                    'Non-Permitted Content':
+                        'This is strictly limited to a podcast of a personal nature, unrelated to any business purpose whatsoever, whether organized or unincorporated and either “for profit” or “not for profit.” The podcast will not be directly or indirectly associated with a commercial or promotional endeavor of any nature whatsoever, including without limitation, any service or product, nor will the podcast be posted on business websites, Vimeo or YouTube. You may not derive revenue or anticipate growing any business from the podcast. You are prohibited from using the Musical Work as the subject or focus of the podcast. You are prohibited from using the Musical Work in connection with visual works of any nature whatsoever.',
+                    prices: {
+                        'Podcast Personal - Single Use': 50,
+                    },
+                },
+            },
+            'Personal - Series': {
+                custom: false,
+                description: 'A series of podcast programs created by an individual.',
+                details: {
+                    'Number of Uses':
+                        'Series use (any number of episodes pertaining to one particular, identifiable podcast in a twelve month period)',
+                    Distribution: 'Podcast',
+                    Lifespan: 'Perpetual',
+                    'Permitted Content':
+                        'You are an individual creating a podcast and wish to license one Musical Work solely for use as a “bumpers,” “underscore,” “intros,” “outros,” “transitions” or “beds” in any number of episodes pertaining to one identifiable audio podcast series in a 12-month period.',
+                    'Non-Permitted Content':
+                        'This is strictly limited to a podcast of a personal nature, unrelated to any business purpose whatsoever, whether organized or unincorporated and either “for profit” or “not for profit.” The podcast will not be directly or indirectly associated with a commercial or promotional endeavor of any nature whatsoever including without limitation, any service or product, nor will the podcast be posted on business websites, Vimeo or YouTube. You may not derive revenue or anticipate growing any business from the podcast. You are prohibited from using the Musical Work as the subject or focus of the podcast. You are prohibited from using the Musical Work in connection with visual works of any nature whatsoever.',
+                    prices: {
+                        'Podcast Personal - Series Use': 100,
+                    },
+                },
+            },
+            'Business - Single': {
+                custom: false,
+                description: 'A podcast program created by a business entity.',
+                details: {
+                    'Number of Uses': 'Single (1) use',
+                    Distribution: 'Podcast',
+                    Lifespan: 'Perpetual',
+                    'Permitted Content':
+                        'You are an individual, partnership, corporation or other entity engaged in a “for profit” or “not for profit” business enterprise consisting of up to 100 employees creating a podcast and wish to license one Musical Work solely for use as a “bumpers,” “underscore,” “intros,” “outros,” “transitions” or “beds” within a single audio podcast episode. Your podcast incorporating the Musical Work is related to your business.',
+                    'Non-Permitted Content':
+                        'You are prohibited from using the Musical Work as the subject or focus of the podcast. You are prohibited from using the Musical Work in connection with visual works of any nature whatsoever.',
+                    prices: {
+                        'Podcast Business - Single Use': 75,
+                    },
+                },
+            },
+            'Business - Series': {
+                custom: false,
+                description: 'A series of podcast programs created by a business entity.',
+                details: {
+                    'Number of Uses':
+                        'Series use (any number of episodes pertaining to one particular, identifiable podcast in a twelve month period)',
+                    Distribution: 'Podcast',
+                    Lifespan: 'Perpetual',
+                    'Permitted Content':
+                        'You are an individual, partnership, corporation or other entity engaged in a “for profit” or “not for profit” business enterprise consisting of up to 100 employees creating a podcast and wish to license one Musical Work solely for use as a “bumpers,” “underscore,” “intros,” “outros,” “transitions” or “beds” in any number of episodes pertaining to one identifiable audio podcast series in a 12-month period. Your podcast incorporating the Musical Work is related to your business.',
+                    'Non-Permitted Content':
+                        'You are prohibited from using the Musical Work as the subject or focus of the podcast. You are prohibited from using the Musical Work in connection with visual works of any nature whatsoever.',
+                    prices: {
+                        'Podcast Business - Series Use': 250,
+                    },
+                },
+            },
+        },
+    },
+};
+
 export const INITIAL_FILTER_VALUES = {
     rhythm: [0, 10],
     speed: [0, 10],

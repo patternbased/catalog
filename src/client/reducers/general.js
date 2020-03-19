@@ -11,6 +11,7 @@ const initialState = {
     contactOpened: false,
     reqComposingOpened: false,
     similarOpened: false,
+    licenseOpened: false,
     scrolled: false,
 };
 

@@ -51,6 +51,11 @@ const setCustomWorkSong = (state, action) => ({
     customWorkSong: action.value,
 });
 
+const setLicenseSong = (state, action) => ({
+    ...state,
+    licenseSong: action.value,
+});
+
 const clearQueue = state => ({
     ...state,
     queue: [],
@@ -78,5 +83,6 @@ export default createReducer(
         [ACTIONS.REMOVE_FROM_QUEUE]: removeFromQueue,
         [ACTIONS.REORDER_QUEUE]: reorderQueue,
         [ACTIONS.SET_CUSTOM_WORK_SONG]: setCustomWorkSong,
+        [ACTIONS.SET_LICENSE_SONG]: setLicenseSong,
     }
 );

@@ -12,7 +12,7 @@ import Modal from 'components/modal';
 import selectors from 'selectors';
 
 import { setState } from 'actions/general';
-import { getSongList, setCurrentSong, setCustomWorkSong } from 'actions/library';
+import { getSongList, setCurrentSong, setCustomWorkSong, setLicenseSong } from 'actions/library';
 
 import { TABLE_FLOW_SHAPES } from 'utils/constants';
 
@@ -201,7 +201,21 @@ function SongPage(props) {
                                     }}
                                 />
                                 <ShareIcon onClick={() => openShareModal()} />
-                                <Button className="song__actions-license" width={100} height={36}>
+                                <Button
+                                    className="song__actions-license"
+                                    width={100}
+                                    height={36}
+                                    onClick={() => {
+                                        dispatch(
+                                            setLicenseSong({
+                                                title: song.title,
+                                                artist: song.artistName,
+                                                image: song.cover,
+                                            })
+                                        );
+                                        dispatch(setState('licenseOpened', true));
+                                    }}
+                                >
                                     License
                                 </Button>
                             </div>

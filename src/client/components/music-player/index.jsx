@@ -1,5 +1,6 @@
 /* eslint-disable max-lines-per-function */
 import React, { memo, useState, useRef, useEffect } from 'react';
+import ReactPlayer from 'react-player';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import Slider from 'rc-slider';
@@ -13,7 +14,7 @@ import SimilarSongsPanel from 'components/similar-songs';
 import Modal from 'components/modal';
 
 import { setState } from 'actions/general';
-import { addToQueue, setCurrentSong, setCustomWorkSong } from 'actions/library';
+import { addToQueue, setCurrentSong, setCustomWorkSong, setLicenseSong } from 'actions/library';
 
 import CopyLinkSvg from 'assets/images/copy-link.svg';
 import DoneSvg from 'assets/images/done-check.svg';
@@ -58,52 +59,25 @@ function MusicPlayer({ list }) {
         }
     };
 
-    const pauseSong = () => {
-        musicPlayer.current.pause();
-        setIsPlaying(false);
-    };
-
-    const playSong = () => {
-        musicPlayer.current.play();
-        setIsPlaying(true);
-    };
-
     const updateElapsedTime = val => {
-        musicPlayer.current.currentTime = val;
+        musicPlayer.current.seekTo(parseFloat(val, 'seconds'));
         setElapsed(val);
     };
 
-    useEffect(() => {
-        if (songHovered) {
-            setElapsed(musicPlayer.current.currentTime);
+    const goToNextSong = () => {
+        const currentIndex = currentPlaylist.findIndex(x => x.pbId === currentPlaying.pbId);
+        let nextSong = {};
+        if (currentPlaylist[currentIndex + 1]) {
+            nextSong = currentPlaylist[currentIndex + 1];
+        } else if (list) {
+            const listIndex = list.findIndex(x => x.pbId === currentPlaying.pbId);
+            nextSong = list[listIndex + 1] ? list[listIndex + 1] : list[0];
+        } else {
+            nextSong = currentPlaylist[0];
         }
-    }, [songHovered]);
-
-    useEffect(() => {
-        const player = musicPlayer.current;
-        player.src = currentPlaying.url;
-        player.play();
-
-        player.addEventListener('playing', e => {
-            setDuration(e.target.duration);
-        });
-        player.addEventListener('ended', function() {
-            const currentIndex = currentPlaylist.findIndex(x => x.pbId === currentPlaying.pbId);
-            let nextSong = {};
-            if (currentPlaylist[currentIndex + 1]) {
-                nextSong = currentPlaylist[currentIndex + 1];
-            } else if (list) {
-                const listIndex = list.findIndex(x => x.pbId === currentPlaying.pbId);
-                nextSong = list[listIndex + 1] ? list[listIndex + 1] : list[0];
-            } else {
-                nextSong = currentPlaylist[0];
-            }
-
-            dispatch(setCurrentSong(nextSong));
-            dispatch(addToQueue(nextSong));
-            setIsPlaying(false);
-        });
-    }, [currentPlaying]);
+        dispatch(setCurrentSong(nextSong));
+        dispatch(addToQueue(nextSong));
+    };
 
     const onPrev = () => {
         const currentIndex = currentPlaylist.findIndex(x => x.pbId === currentPlaying.pbId);
@@ -126,6 +100,7 @@ function MusicPlayer({ list }) {
 
         dispatch(setCurrentSong(next));
         dispatch(addToQueue(next));
+        setElapsed(0);
     };
 
     const shareSongId = uuid();
@@ -178,14 +153,26 @@ function MusicPlayer({ list }) {
                     <img
                         src={`/assets/images/player/${isPlaying ? 'pause' : 'play'}.png`}
                         className="music-player__section--controls-button"
-                        onClick={() => (isPlaying ? pauseSong() : playSong())}
+                        onClick={() => setIsPlaying(isPlaying ? false : true)}
                     />
                     <img
                         src="/assets/images/player/next.png"
                         className="music-player__section--controls-button"
                         onClick={() => onNext()}
                     />
-                    <audio ref={musicPlayer} />
+                    <ReactPlayer
+                        ref={musicPlayer}
+                        url={currentPlaying.url}
+                        playing={isPlaying}
+                        onReady={e => {
+                            setDuration(e.getDuration());
+                        }}
+                        onProgress={e => {
+                            setElapsed(e.playedSeconds);
+                        }}
+                        onStart={() => setIsPlaying(true)}
+                        onEnded={() => goToNextSong()}
+                    />
                 </div>
                 <div className="music-player__section music-player__section--content">
                     <div className="music-player__section--content__song">
@@ -262,7 +249,21 @@ function MusicPlayer({ list }) {
                             className="music-player__section--content__actions-button"
                             onClick={() => openShareModal()}
                         />
-                        <Button className="music-player__section--content__actions-license" width={80} height={40}>
+                        <Button
+                            className="music-player__section--content__actions-license"
+                            width={80}
+                            height={40}
+                            onClick={() => {
+                                dispatch(
+                                    setLicenseSong({
+                                        title: currentPlaying.title,
+                                        artist: currentPlaying.artistName,
+                                        image: currentPlaying.cover,
+                                    })
+                                );
+                                dispatch(setState('licenseOpened', true));
+                            }}
+                        >
                             License
                         </Button>
                     </div>

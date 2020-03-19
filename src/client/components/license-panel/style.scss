@@ -1,0 +1,171 @@
+@import '../../styles/constants';
+
+.license-panel {
+    width: 300px;
+    box-shadow: -1px 0 4px 0 rgba(0, 0, 0, 0.3);
+    position: fixed;
+    background-color: $light-grey;
+    transition: all 0.5s ease-in-out;
+    overflow: scroll;
+    height: 0;
+    z-index: 2;
+    right: -300px;
+    height: calc(100vh - 60px);
+
+    &--visible {
+        right: 0;
+    }
+
+    &__header {
+        &__title {
+            background-image: url('/assets/images/queue/queue-header.png');
+            background-repeat: no-repeat;
+            background-size: cover;
+            display: flex;
+            height: 60px;
+            align-items: center;
+            padding: 17px 15px;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: white;
+
+            svg {
+                width: 30px;
+                height: 30px;
+                margin-right: 70px;
+                cursor: pointer;
+                path {
+                    fill: white;
+                }
+            }
+        }
+
+        &__song {
+            padding: 24px 30px;
+            display: flex;
+            align-items: center;
+            background-color: white;
+
+            &__image {
+                width: 40px;
+                height: 40px;
+                margin-right: 15px;
+            }
+
+            &__details {
+                &__title {
+                    color: $primary;
+                    margin-bottom: 3px;
+                    font-size: 16px;
+                    line-height: 18px;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    max-width: 190px;
+                }
+
+                &__artist {
+                    color: $primary;
+                    font-family: $font-other;
+                    font-size: 12px;
+                    line-height: 20px;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    max-width: 190px;
+                }
+            }
+        }
+
+        &__nav {
+            min-height: 6px;
+            height: auto;
+            background-color: $primary;
+
+            &--light {
+                background-color: $light-grey;
+            }
+
+            &__section {
+                background-color: $primary;
+                height: 40px;
+                padding: 10px 16px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: relative;
+                font-size: 14px;
+                color: white;
+                font-family: $font-other;
+                line-height: 19px;
+
+                svg {
+                    width: 26px;
+                    height: 26px;
+                    cursor: pointer;
+                    position: absolute;
+                    left: 16px;
+                    path {
+                        fill: $lighter-grey;
+                    }
+                }
+
+                &:last-child {
+                    margin-top: 2px;
+                }
+            }
+        }
+    }
+
+    &__body {
+        &__content {
+            padding: 30px 45px;
+
+            &__title {
+                font-size: 14px;
+                font-family: $font-other;
+                text-align: center;
+                font-style: italic;
+                font-weight: 600;
+                color: $primary;
+                margin-bottom: 23px;
+            }
+
+            &__buttons {
+                button {
+                    margin-bottom: 10px;
+                    height: 40px;
+                    width: 100% !important;
+                    border: 2px solid $primary;
+                    border-radius: 4px;
+                    background-color: $lighter-grey;
+                    color: $primary;
+                    font-family: $font-other;
+                    font-size: 14px;
+                    line-height: 19px;
+                    text-transform: none;
+
+                    &:hover {
+                        background-color: $primary;
+                        color: white;
+                    }
+                }
+            }
+
+            &__description {
+                margin-top: 20px;
+
+                &__item {
+                    font-family: $font-other;
+                    font-size: 12px;
+                    line-height: 16px;
+
+                    span {
+                        color: white;
+                        font-weight: 600;
+                    }
+                }
+            }
+        }
+    }
+}

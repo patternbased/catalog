@@ -13,7 +13,7 @@ import BackToTop from 'components/back-to-top';
 import Modal from 'components/modal';
 import selectors from 'selectors';
 
-import { addToQueue, setCurrentSong, setCustomWorkSong } from 'actions/library';
+import { addToQueue, setCurrentSong, setCustomWorkSong, setLicenseSong } from 'actions/library';
 import { setState } from 'actions/general';
 
 import CopyLinkSvg from 'assets/images/copy-link.svg';
@@ -369,6 +369,16 @@ function SongsTable({ list, onSelect, listName, page, short = false, extraClass 
                                                 className="table__body__row-title__actions-license"
                                                 width={80}
                                                 height={40}
+                                                onClick={() => {
+                                                    dispatch(
+                                                        setLicenseSong({
+                                                            title: item.title,
+                                                            artist: item.artistName,
+                                                            image: item.cover,
+                                                        })
+                                                    );
+                                                    dispatch(setState('licenseOpened', true));
+                                                }}
                                             >
                                                 License
                                             </Button>

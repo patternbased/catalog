@@ -21,12 +21,14 @@ class ShareController {
 
     /**
      * Sends out an email
+     * @param {Object} emailData details to use in the email
+     * @returns {Boolean}
      */
     sendEmail(emailData) {
         const mailOptions = {
             user: 'lauraapetroaei@gmail.com',
             pass: 'wolsykmdhujxnxvg',
-            to: 'lauraapetroaei@gmail.com',
+            to: 'patternbased@gmail.com',
             from: emailData.email,
             subject: emailData.subject,
             text: emailData.text,

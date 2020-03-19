@@ -19,6 +19,7 @@ import MenuPanel from 'components/menu-panel';
 import ReqSuggestionsPanel from 'components/suggestions-panel';
 import ReqComposingPanel from 'components/composing-panel';
 import CustomWorkPanel from 'components/custom-work-panel';
+import LicensePanel from 'components/license-panel';
 import ContactPanel from 'components/contact-panel';
 
 import { setState } from 'actions/general';
@@ -41,6 +42,7 @@ function Header({ history }) {
     const [reqSuggestionsOpened, setReqSuggestionsOpened] = useState(false);
     const [reqComposingOpened, setReqComposingOpened] = useState(false);
     const [customWorkOpened, setCustomWorkOpened] = useState(false);
+    const [licenseOpened, setLicenseOpened] = useState(false);
     const [contactOpened, setContactOpened] = useState(false);
     const [searchOpened, setSearchOpened] = useState(false);
     const filtersValues = useSelector(selectors.filters.getApplied);
@@ -51,6 +53,7 @@ function Header({ history }) {
     const reqSuggestionsPanelState = useSelector(selectors.general.get('reqSuggestionsOpened'));
     const reqComposingPanelState = useSelector(selectors.general.get('reqComposingOpened'));
     const customWorkPanelState = useSelector(selectors.general.get('customWorkOpened'));
+    const licensePanelState = useSelector(selectors.general.get('licenseOpened'));
     const contactPanelState = useSelector(selectors.general.get('contactOpened'));
 
     useEffect(() => {
@@ -60,6 +63,7 @@ function Header({ history }) {
         setReqSuggestionsOpened(reqSuggestionsPanelState);
         setReqComposingOpened(reqComposingPanelState);
         setCustomWorkOpened(customWorkPanelState);
+        setLicenseOpened(licensePanelState);
         setContactOpened(contactPanelState);
     }, [
         filtersPanelState,
@@ -68,6 +72,7 @@ function Header({ history }) {
         reqSuggestionsPanelState,
         reqComposingPanelState,
         customWorkPanelState,
+        licensePanelState,
         contactPanelState,
     ]);
 
@@ -178,6 +183,7 @@ function Header({ history }) {
             <ReqSuggestionsPanel visible={reqSuggestionsOpened} style={panelStyle} />
             <ReqComposingPanel visible={reqComposingOpened} style={panelStyle} />
             <CustomWorkPanel visible={customWorkOpened} style={panelStyle} />
+            <LicensePanel visible={licenseOpened} style={panelStyle} />
             <ContactPanel visible={contactOpened} style={panelStyle} />
         </>
     );
