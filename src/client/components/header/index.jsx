@@ -80,12 +80,10 @@ function Header({ history }) {
 
     const scrollHandler = () => {
         if (window.pageYOffset > HEADER_HEIGHTS.big && !scrolled) {
-            console.log('heere 1');
             setScrolled(true);
             setPanelStyle({ top: `${HEADER_HEIGHTS.small}px` });
             dispatch(setState('scrolled', true));
         } else if (window.pageYOffset <= HEADER_HEIGHTS.big && scrolled) {
-            console.log('heere 2');
             setScrolled(false);
             setPanelStyle({ top: `${HEADER_HEIGHTS.big}px` });
             dispatch(setState('scrolled', false));

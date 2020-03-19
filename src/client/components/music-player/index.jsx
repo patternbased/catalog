@@ -47,11 +47,12 @@ function MusicPlayer({ list }) {
     const currentPlaylist = useSelector(selectors.library.getQueue);
     const currentSong = useSelector(selectors.library.getCurrentSong);
 
+    const musicPlayer = useRef();
+
     useEffect(() => {
         setCurrentPlaying(currentSong);
+        setIsPlaying(true);
     }, [currentSong]);
-
-    const musicPlayer = useRef();
 
     const handleSongHover = () => {
         if (isPlaying) {
