@@ -1,0 +1,78 @@
+@import '../../styles/constants';
+
+.banner {
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 50% 55%;
+    position: relative;
+
+    &--hide {
+        display: none;
+        visibility: hidden;
+    }
+
+    &--full {
+        background-image: url('/assets/images/full-license-banner.jpg');
+    }
+
+    &--special {
+        background-image: url('/assets/images/special-license-banner.jpg');
+        height: 160px;
+    }
+
+    &__overlay {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgba(68, 68, 68, 0.6);
+        z-index: 1;
+    }
+
+    &__content {
+        color: white;
+        font-family: $font-other;
+        font-size: 14px;
+        line-height: 24px;
+        width: 150px;
+        text-align: center;
+        z-index: 2;
+
+        &__bolded {
+            font-weight: bold;
+            font-size: 16px;
+            font-style: italic;
+
+            &:first-of-type {
+                margin-top: 10px;
+            }
+        }
+
+        .banner--special & {
+            width: 170px;
+        }
+    }
+
+    &__inline {
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 16px;
+        font-family: $font-other;
+        line-height: 22px;
+
+        svg {
+            width: 32px;
+            height: 32px;
+            margin-right: 10px;
+        }
+    }
+}

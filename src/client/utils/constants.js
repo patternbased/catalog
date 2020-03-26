@@ -14,6 +14,14 @@ export const LICENSE_TYPES = [
     'I don’t know yet',
 ];
 
+export const CUSTOM_LICENSE_TYPES = {
+    'Films & Shows': ['Major Films', 'Indie Films', 'Series'],
+    'Commercials & Projects': ['National Ads', 'Web Streaming Ads', 'Small Business', 'Small Non-Profit'],
+    'Art & Experiences': ['VR / AR Experiences', 'Game / UI', 'Art Installation', 'Individual Artist'],
+    Personal: [],
+    Podcast: ['Personal - Single', 'Personal - Series', 'Business - Single', 'Business - Series'],
+};
+
 export const BUY_LICENSE_TYPES = {
     'Films & Shows': {
         parent: true,
@@ -37,6 +45,7 @@ export const BUY_LICENSE_TYPES = {
                         'If your film should be picked up for distribution, or shown outside of the confines of a film festival, please contact license@patternbased.com.',
                     prices: { 'Indie Film License': 250 },
                 },
+                footerType: 'fullLicense',
             },
             Series: {
                 custom: true,
@@ -44,6 +53,7 @@ export const BUY_LICENSE_TYPES = {
                     'Series of content produced for broadcast via national broadcast network, online streaming services, or cable. Please contact us for custom license.',
             },
         },
+        footerType: 'fullLicense',
     },
     'Commercials & Projects': {
         parent: true,
@@ -93,6 +103,7 @@ export const BUY_LICENSE_TYPES = {
                         '101 - 250 employees': 750,
                     },
                 },
+                footerType: 'specialLicense',
             },
         },
     },
@@ -128,8 +139,10 @@ export const BUY_LICENSE_TYPES = {
                         'Individual Artist License': 40,
                     },
                 },
+                footerType: 'fullLicense',
             },
         },
+        footerType: 'fullLicense',
     },
     Personal: {
         parent: false,
@@ -165,6 +178,7 @@ export const BUY_LICENSE_TYPES = {
                         'Podcast Personal - Single Use': 50,
                     },
                 },
+                footerType: 'fullLicense',
             },
             'Personal - Series': {
                 custom: false,
@@ -182,6 +196,7 @@ export const BUY_LICENSE_TYPES = {
                         'Podcast Personal - Series Use': 100,
                     },
                 },
+                footerType: 'fullLicense',
             },
             'Business - Single': {
                 custom: false,
@@ -198,6 +213,7 @@ export const BUY_LICENSE_TYPES = {
                         'Podcast Business - Single Use': 75,
                     },
                 },
+                footerType: 'fullLicense',
             },
             'Business - Series': {
                 custom: false,
@@ -215,8 +231,10 @@ export const BUY_LICENSE_TYPES = {
                         'Podcast Business - Series Use': 250,
                     },
                 },
+                footerType: 'fullLicense',
             },
         },
+        footerType: 'fullLicense',
     },
 };
 

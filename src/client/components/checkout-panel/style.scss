@@ -1,0 +1,108 @@
+@import '../../styles/constants';
+
+.checkout-panel {
+    width: 300px;
+    box-shadow: -1px 0 4px 0 rgba(0, 0, 0, 0.3);
+    position: fixed;
+    background-color: white;
+    transition: all 0.5s ease-in-out;
+    overflow: scroll;
+    height: 0;
+    z-index: 2;
+    right: -300px;
+    height: calc(100vh - 60px);
+
+    &--visible {
+        right: 0;
+    }
+
+    &__container {
+        height: 100%;
+    }
+
+    &__header {
+        &__title {
+            background-image: url('/assets/images/queue/queue-header.png');
+            background-repeat: no-repeat;
+            background-size: cover;
+            display: flex;
+            height: 60px;
+            align-items: center;
+            padding: 17px 15px;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: white;
+
+            svg {
+                width: 30px;
+                height: 30px;
+                margin-right: 58px;
+                cursor: pointer;
+                path {
+                    fill: white;
+                }
+            }
+        }
+    }
+
+    &__body {
+        &__success {
+            padding: 30px 80px 20px;
+            border-bottom: 4px solid $lighter-grey;
+            padding: 30px 80px 20px;
+            font-weight: bold;
+            color: $primary;
+            font-family: $font-other;
+            line-height: 17px;
+            text-align: center;
+            font-size: 24px;
+
+            span {
+                font-family: $font-other;
+                font-weight: normal;
+                font-size: 12px;
+                display: block;
+                margin-top: 5px;
+            }
+        }
+
+        &__summary {
+            padding: 30px 30px 20px;
+            border-bottom: 4px solid $lighter-grey;
+
+            > div {
+                color: $primary;
+            }
+
+            &__title {
+                font-size: 12px;
+                line-height: 17px;
+                font-weight: bold;
+                text-align: center;
+                margin-bottom: 10px;
+                font-family: $font-other;
+            }
+
+            &__details {
+                &__item {
+                    font-size: 12px;
+                    font-family: $font-other;
+                    line-height: 20px;
+                    margin-bottom: 5px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+
+                    span {
+                        font-family: $font-other;
+                    }
+
+                    &__bolded {
+                        font-weight: bold;
+                        font-size: 18px;
+                    }
+                }
+            }
+        }
+    }
+}

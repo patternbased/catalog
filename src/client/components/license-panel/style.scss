@@ -16,6 +16,10 @@
         right: 0;
     }
 
+    &__container {
+        height: 100%;
+    }
+
     &__header {
         &__title {
             background-image: url('/assets/images/queue/queue-header.png');
@@ -118,8 +122,11 @@
     }
 
     &__body {
+        position: relative;
+
         &__content {
             padding: 30px 45px;
+            overflow: scroll;
 
             &__title {
                 font-size: 14px;
@@ -132,10 +139,10 @@
             }
 
             &__buttons {
-                button {
+                &__type {
                     margin-bottom: 10px;
                     height: 40px;
-                    width: 100% !important;
+                    width: 100%;
                     border: 2px solid $primary;
                     border-radius: 4px;
                     background-color: $lighter-grey;
@@ -143,10 +150,57 @@
                     font-family: $font-other;
                     font-size: 14px;
                     line-height: 19px;
-                    text-transform: none;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    text-align: center;
+                    cursor: pointer;
+                    position: relative;
 
                     &:hover {
                         background-color: $primary;
+                        color: white;
+                    }
+
+                    svg {
+                        width: 26px;
+                        height: 26px;
+                        position: absolute;
+                        right: 10px;
+                    }
+
+                    &--price {
+                        height: auto;
+                        padding: 12px 0;
+                        display: block;
+                        line-height: 22px;
+
+                        span {
+                            font-weight: bold;
+                        }
+
+                        svg {
+                            position: relative;
+                            right: initial;
+                            margin-right: 10px;
+                        }
+
+                        &:hover {
+                            font-weight: bold;
+                            display: flex;
+                            height: 72px;
+                        }
+                    }
+                }
+
+                &__description {
+                    font-size: 14px;
+                    font-family: 'Open Sans';
+                    line-height: 21px;
+                    margin-top: 30px;
+
+                    span {
+                        font-weight: bold;
                         color: white;
                     }
                 }
@@ -165,6 +219,18 @@
                         font-weight: 600;
                     }
                 }
+            }
+        }
+
+        &__footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: $light-grey;
+
+            &__padded {
+                padding: 30px 45px 80px;
             }
         }
     }

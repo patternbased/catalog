@@ -36,7 +36,6 @@ const baseUrl =
  */
 function SongsTable({ list, onSelect, listName, page, short = false, extraClass = '' }) {
     const [hovered, setHovered] = useState([]);
-    const [similarOpened, setSimilarOpened] = useState(false);
     const [similarTo, setSimilarTo] = useState(null);
     const [hasMore, setHasMore] = useState(true);
     const [songs, setSongs] = useState([]);
@@ -48,6 +47,7 @@ function SongsTable({ list, onSelect, listName, page, short = false, extraClass 
     const appliedFilters = useSelector(selectors.filters.getApplied);
     const currentSong = useSelector(selectors.library.getCurrentSong);
     const scrolled = useSelector(selectors.general.get('scrolled'));
+    const similarOpened = useSelector(selectors.general.get('similarOpened'));
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -356,7 +356,6 @@ function SongsTable({ list, onSelect, listName, page, short = false, extraClass 
                                             <SimilarSvg
                                                 className="table__body__row-title__actions-button"
                                                 onClick={() => {
-                                                    setSimilarOpened(true);
                                                     setSimilarTo(item);
                                                     dispatch(setState('similarOpened', true));
                                                 }}
@@ -449,7 +448,7 @@ function SongsTable({ list, onSelect, listName, page, short = false, extraClass 
             {similarTo && (
                 <SimilarSongsPanel
                     visible={similarOpened}
-                    onClose={() => setSimilarOpened(false)}
+                    onClose={() => dispatch(setState('similarOpened', false))}
                     similarTo={similarTo}
                 />
             )}

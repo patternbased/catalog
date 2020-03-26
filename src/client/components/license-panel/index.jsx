@@ -1,16 +1,20 @@
 /* eslint-disable max-lines-per-function */
-import React, { memo, useMemo, useState } from 'react';
+import React, { memo, useMemo, useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import Button from 'components/button';
 import selectors from 'selectors';
+import SpecialLicenseBanner from 'components/special-license-banner';
 import { BUY_LICENSE_TYPES } from 'utils/constants';
 
 import CloseIcon from 'assets/images/Close_Icon_Gray.svg';
 import BackIcon from 'assets/images/Back-arrow.svg';
+import FormIcon from 'assets/images/custom-license.svg';
+import AddIcon from 'assets/images/license-add.svg';
 
 import { setState } from 'actions/general';
+import { setCustomLicenseType } from 'actions/library';
+import { addToCart } from 'actions/cart';
 
 import './style.scss';
 
@@ -23,6 +27,23 @@ import './style.scss';
 function LicensePanel({ visible, style }) {
     const [parentNav, setParentNav] = useState(null);
     const [childNav, setChildNav] = useState(null);
+    const [showDescription, setShowDescription] = useState([]);
+    const [priceHovered, setPriceHovered] = useState([]);
+    const [showMainCustom, setShowMainCustom] = useState(false);
+
+    const panelHeader = useRef(null);
+    const panelFooter = useRef(null);
+    const [panelHeaderHeight, setPanelHeaderHeight] = useState(155);
+    const [panelFooterHeight, setPanelFooterHeight] = useState(200);
+
+    useEffect(() => {
+        if (parentNav || childNav) {
+            setShowDescription([]);
+            setPriceHovered([]);
+            setPanelHeaderHeight(panelHeader.current.clientHeight);
+            setPanelFooterHeight(panelFooter.current.clientHeight);
+        }
+    }, [parentNav, childNav]);
 
     const song = useSelector(selectors.library.getLicenseSong);
     const dispatch = useDispatch();
@@ -43,21 +64,77 @@ function LicensePanel({ visible, style }) {
         [childNav]
     );
 
+    const toShowDescription = idx => {
+        let descriptionCopy = [...showDescription];
+        descriptionCopy.push(idx);
+        setShowDescription(descriptionCopy);
+    };
+
+    const hideDescription = idx => {
+        let descriptionCopy = [...showDescription];
+        descriptionCopy = descriptionCopy.filter(x => x !== idx);
+        setShowDescription(descriptionCopy);
+    };
+
+    const showAddToCart = idx => {
+        let priceCopy = [...priceHovered];
+        priceCopy.push(idx);
+        setPriceHovered(priceCopy);
+    };
+
+    const hideAddToCart = idx => {
+        let priceCopy = [...priceHovered];
+        priceCopy = priceCopy.filter(x => x !== idx);
+        setPriceHovered(priceCopy);
+    };
+
     const _renderParentContent = () => {
         return (
             <div className="license-panel__body__content__buttons">
                 <div className="license-panel__body__content__title">Select a License Type</div>
+                {Object.keys(BUY_LICENSE_TYPES[parentNav].children).map((key, index) => {
+                    const isCustom = BUY_LICENSE_TYPES[parentNav].children[key].custom;
+                    const customHovered = showDescription.includes(index) && isCustom;
+                    return (
+                        <div
+                            className="license-panel__body__content__buttons__type"
+                            onClick={() => {
+                                if (isCustom) {
+                                    dispatch(setCustomLicenseType(key));
+                                    dispatch(setState('customLicenseOpened', true));
+                                } else {
+                                    setChildNav(key);
+                                }
+                            }}
+                            onMouseOverCapture={() => toShowDescription(index)}
+                            onMouseOutCapture={() => hideDescription(index)}
+                            style={{
+                                fontStyle: customHovered ? 'italic' : 'normal',
+                                fontWeight: customHovered ? 'bold' : 'normal',
+                            }}
+                            key={index}
+                        >
+                            {customHovered ? (
+                                <>
+                                    Custom License
+                                    <FormIcon />
+                                </>
+                            ) : (
+                                key
+                            )}
+                        </div>
+                    );
+                })}
                 {Object.keys(BUY_LICENSE_TYPES[parentNav].children).map((key, index) => (
-                    <Button
-                        key={index}
-                        onClick={() => {
-                            if (!BUY_LICENSE_TYPES[parentNav].children[key].custom) {
-                                setChildNav(key);
-                            }
-                        }}
-                    >
-                        {key}
-                    </Button>
+                    <span key={index}>
+                        {showDescription.includes(index) && (
+                            <div className="license-panel__body__content__buttons__description">
+                                <span>{key} License</span>
+                                <br />
+                                {BUY_LICENSE_TYPES[parentNav].children[key].description}
+                            </div>
+                        )}
+                    </span>
                 ))}
             </div>
         );
@@ -69,9 +146,24 @@ function LicensePanel({ visible, style }) {
             <>
                 <div className="license-panel__body__content__buttons">
                     {Object.keys(elem.details.prices).map((price, index) => (
-                        <Button key={index} onClick={() => console.log(price)}>
-                            {price} <br /> ${elem.details.prices[price]}
-                        </Button>
+                        <div
+                            className="license-panel__body__content__buttons__type license-panel__body__content__buttons__type--price"
+                            key={index}
+                            onClick={() => addItemToCart(price, elem.details.prices[price])}
+                            onMouseOverCapture={() => showAddToCart(index)}
+                            onMouseOutCapture={() => hideAddToCart(index)}
+                        >
+                            {priceHovered.includes(index) ? (
+                                <>
+                                    <AddIcon />
+                                    Add to Cart
+                                </>
+                            ) : (
+                                <>
+                                    {price} <br /> <span>${elem.details.prices[price]}</span>
+                                </>
+                            )}
+                        </div>
                     ))}
                 </div>
                 <div className="license-panel__body__content__description">
@@ -98,9 +190,24 @@ function LicensePanel({ visible, style }) {
                 <>
                     <div className="license-panel__body__content__buttons">
                         {Object.keys(child.details.prices).map((price, index) => (
-                            <Button key={index} onClick={() => console.log(price)}>
-                                {price} <br /> ${child.details.prices[price]}
-                            </Button>
+                            <div
+                                className="license-panel__body__content__buttons__type license-panel__body__content__buttons__type--price"
+                                key={index}
+                                onClick={() => addItemToCart(price, child.details.prices[price])}
+                                onMouseOverCapture={() => showAddToCart(index)}
+                                onMouseOutCapture={() => hideAddToCart(index)}
+                            >
+                                {priceHovered.includes(index) ? (
+                                    <>
+                                        <AddIcon />
+                                        Add to Cart
+                                    </>
+                                ) : (
+                                    <>
+                                        {price} <br /> <span>${child.details.prices[price]}</span>
+                                    </>
+                                )}
+                            </div>
                         ))}
                     </div>
                     <div className="license-panel__body__content__description">
@@ -120,12 +227,17 @@ function LicensePanel({ visible, style }) {
         }
     };
 
+    const addItemToCart = (licType, price) => {
+        dispatch(addToCart(licType, price, song));
+        dispatch(setState('cartOpened', true));
+    };
+
     return (
         <div>
             {song && (
                 <div className={panelClass} style={style}>
                     <div className="license-panel__container">
-                        <div className="license-panel__header">
+                        <div className="license-panel__header" ref={panelHeader}>
                             <div className="license-panel__header__title">
                                 <CloseIcon onClick={() => dispatch(setState('licenseOpened', false))} />
                                 License
@@ -152,8 +264,11 @@ function LicensePanel({ visible, style }) {
                                 )}
                             </div>
                         </div>
-                        <div className="license-panel__body">
-                            <div className="license-panel__body__content">
+                        <div className="license-panel__body" style={{ height: `calc(100% - ${panelHeaderHeight}px)` }}>
+                            <div
+                                className="license-panel__body__content"
+                                style={{ height: `calc(100% - ${panelFooterHeight}px)` }}
+                            >
                                 {childNav ? (
                                     _renderChildrenContent()
                                 ) : parentNav ? (
@@ -166,14 +281,44 @@ function LicensePanel({ visible, style }) {
                                     <div className="license-panel__body__content__buttons">
                                         <div className="license-panel__body__content__title">Select a License Type</div>
                                         {Object.keys(BUY_LICENSE_TYPES).map((key, index) => (
-                                            <Button key={index} onClick={() => setParentNav(key)}>
+                                            <div
+                                                className="license-panel__body__content__buttons__type"
+                                                key={index}
+                                                onClick={() => setParentNav(key)}
+                                            >
                                                 {key}
-                                            </Button>
+                                            </div>
                                         ))}
                                     </div>
                                 )}
                             </div>
-                            <div className="license-panel__body__footer"></div>
+                            <div className="license-panel__body__footer" ref={panelFooter}>
+                                <SpecialLicenseBanner
+                                    type={
+                                        childNav && BUY_LICENSE_TYPES[parentNav].children[childNav].footerType
+                                            ? BUY_LICENSE_TYPES[parentNav].children[childNav].footerType
+                                            : parentNav && BUY_LICENSE_TYPES[parentNav].footerType
+                                            ? BUY_LICENSE_TYPES[parentNav].footerType
+                                            : 'none'
+                                    }
+                                />
+                                <div className="license-panel__body__footer__padded">
+                                    <div className="license-panel__body__content__title">
+                                        Don&apos;t see the right license?
+                                    </div>
+                                    <div className="license-panel__body__content__buttons">
+                                        <div
+                                            className="license-panel__body__content__buttons__type"
+                                            onClick={() => dispatch(setState('customLicenseOpened', true))}
+                                            onMouseOverCapture={() => setShowMainCustom(true)}
+                                            onMouseOutCapture={() => setShowMainCustom(false)}
+                                        >
+                                            Custom license
+                                            {showMainCustom && <FormIcon />}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

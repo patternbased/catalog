@@ -20,6 +20,27 @@
             height: 30px;
             margin-right: 30px;
             cursor: pointer;
+            display: inline-block;
+            position: relative;
+
+            &--cart {
+                width: 36px;
+                height: 36px;
+
+                &:hover {
+                    opacity: 0.5;
+                }
+            }
+
+            span {
+                font-size: 10px;
+                color: white;
+                font-weight: bold;
+                display: block;
+                top: 9px;
+                left: 17px;
+                position: absolute;
+            }
         }
     }
 

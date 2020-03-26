@@ -56,6 +56,11 @@ const setLicenseSong = (state, action) => ({
     licenseSong: action.value,
 });
 
+const setCustomLicenseType = (state, action) => ({
+    ...state,
+    customLicenseType: action.value,
+});
+
 const clearQueue = state => ({
     ...state,
     queue: [],
@@ -84,5 +89,6 @@ export default createReducer(
         [ACTIONS.REORDER_QUEUE]: reorderQueue,
         [ACTIONS.SET_CUSTOM_WORK_SONG]: setCustomWorkSong,
         [ACTIONS.SET_LICENSE_SONG]: setLicenseSong,
+        [ACTIONS.SET_CUSTOM_LICENSE_TYPE]: setCustomLicenseType,
     }
 );

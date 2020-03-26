@@ -5,4 +5,5 @@ export default {
     getCurrentSong: state => state.library.currentSong,
     getCustomWorkSong: state => state.library.customWorkSong,
     getLicenseSong: state => state.library.licenseSong,
+    getCustomLicenseType: state => state.library.customLicenseType,
 };

@@ -37,8 +37,6 @@ function MusicPlayer({ list }) {
     const [songHovered, setSongHovered] = useState(false);
     const [elapsed, setElapsed] = useState(0);
     const [duration, setDuration] = useState(null);
-    const [queueOpened, setQueueOpened] = useState(false);
-    const [similarOpened, setSimilarOpened] = useState(false);
     const [shareOpened, setShareOpened] = useState(false);
     const [shareItem, setShareItem] = useState();
     const [shareSongLinkCopied, setShareSongLinkCopied] = useState(false);
@@ -46,6 +44,9 @@ function MusicPlayer({ list }) {
 
     const currentPlaylist = useSelector(selectors.library.getQueue);
     const currentSong = useSelector(selectors.library.getCurrentSong);
+
+    const queueOpened = useSelector(selectors.general.get('queueOpened'));
+    const similarOpened = useSelector(selectors.general.get('similarOpened'));
 
     const musicPlayer = useRef();
 
@@ -241,10 +242,7 @@ function MusicPlayer({ list }) {
                         />
                         <SimilarSvg
                             className="music-player__section--content__actions-button"
-                            onClick={() => {
-                                setSimilarOpened(!similarOpened);
-                                dispatch(setState('similarOpened', !similarOpened));
-                            }}
+                            onClick={() => dispatch(setState('similarOpened', !similarOpened))}
                         />
                         <ShareSvg
                             className="music-player__section--content__actions-button"
@@ -272,17 +270,14 @@ function MusicPlayer({ list }) {
                 <div className="music-player__section music-player__section--extra">
                     <div
                         className="music-player__section--extra-button"
-                        onClick={() => {
-                            setQueueOpened(!queueOpened);
-                            dispatch(setState('queueOpened', !queueOpened));
-                        }}
+                        onClick={() => dispatch(setState('queueOpened', !queueOpened))}
                     />
                 </div>
             </div>
-            <QueuePanel visible={queueOpened} onClose={() => setQueueOpened(false)} />
+            <QueuePanel visible={queueOpened} onClose={() => dispatch(setState('queueOpened', false))} />
             <SimilarSongsPanel
                 visible={similarOpened}
-                onClose={() => setSimilarOpened(false)}
+                onClose={() => dispatch(setState('similarOpened', false))}
                 similarTo={currentPlaying}
             />
             {shareOpened && (

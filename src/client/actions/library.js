@@ -12,6 +12,8 @@ export const ACTIONS = {
     REORDER_QUEUE: 'library.reorderQueue',
     SET_CUSTOM_WORK_SONG: 'library.setCustomWorkSong',
     SET_LICENSE_SONG: 'library.setLicenseSong',
+    SET_CUSTOM_LICENSE_SONG: 'library.setCustomLicenseSong',
+    SET_CUSTOM_LICENSE_TYPE: 'library.setCustomLicenseType',
 };
 
 /**
@@ -96,6 +98,26 @@ export const setCustomWorkSong = value => ({
  */
 export const setLicenseSong = value => ({
     type: ACTIONS.SET_LICENSE_SONG,
+    value,
+});
+
+/**
+ * Sets the current song for Custom License flow
+ * @param {Object} value the song to add
+ * @returns {Object}
+ */
+export const setCustomLicenseSong = value => ({
+    type: ACTIONS.SET_CUSTOM_LICENSE_SONG,
+    value,
+});
+
+/**
+ * Sets the selected license type for Custom License flow
+ * @param {String} value the type
+ * @returns {Object}
+ */
+export const setCustomLicenseType = value => ({
+    type: ACTIONS.SET_CUSTOM_LICENSE_TYPE,
     value,
 });
 

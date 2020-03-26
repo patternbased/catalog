@@ -55,11 +55,11 @@ function SongPage(props) {
     const [shareItem, setShareItem] = useState();
     const [shareOpened, setShareOpened] = useState(false);
     const [shareSongLinkCopied, setShareSongLinkCopied] = useState(false);
-    const [similarOpened, setSimilarOpened] = useState(false);
 
     const songList = useSelector(selectors.library.getAll);
     const filtersPanelState = useSelector(selectors.general.get('filtersOpened'));
     const presetsPanelState = useSelector(selectors.general.get('presetsOpened'));
+    const similarOpened = useSelector(selectors.general.get('similarOpened'));
     const currentSong = useSelector(selectors.library.getCurrentSong);
 
     const songClass = useMemo(
@@ -196,7 +196,6 @@ function SongPage(props) {
                                 />
                                 <SimilarIcon
                                     onClick={() => {
-                                        setSimilarOpened(!similarOpened);
                                         dispatch(setState('similarOpened', !similarOpened));
                                     }}
                                 />
@@ -397,7 +396,11 @@ function SongPage(props) {
                     </CopyToClipboard>
                 </Modal>
             )}
-            <SimilarSongsPanel visible={similarOpened} onClose={() => setSimilarOpened(false)} similarTo={song} />
+            <SimilarSongsPanel
+                visible={similarOpened}
+                onClose={() => dispatch(setState('similarOpened', false))}
+                similarTo={song}
+            />
         </div>
     );
 }
