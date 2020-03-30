@@ -114,7 +114,8 @@ main {
 }
 
 input,
-textarea {
+textarea,
+select {
     height: 40px;
     width: 210px;
     border: 1px solid $lighter-grey;
@@ -125,6 +126,7 @@ textarea {
     font-size: 12px;
     line-height: 17px;
     padding: 12px 10px;
+    background-color: transparent;
 }
 
 textarea {

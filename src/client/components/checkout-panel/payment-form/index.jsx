@@ -1,5 +1,6 @@
 /* eslint-disable max-lines-per-function */
 import React, { memo, useState } from 'react';
+import PropTypes from 'prop-types';
 import {
     SquarePaymentForm,
     CreditCardNumberInput,
@@ -8,6 +9,7 @@ import {
     CreditCardCVVInput,
     CreditCardSubmitButton,
 } from 'react-square-payment-form';
+import Button from 'components/button';
 
 import './style.scss';
 import 'react-square-payment-form/lib/default.css';
@@ -16,33 +18,55 @@ import 'react-square-payment-form/lib/default.css';
  * Payment form component
  * @returns {React.Component}
  */
-function PaymentForm() {
-    const [errors, setErrors] = useState({});
+function PaymentForm({ address, total, onSuccess, items }) {
+    const [uiErrors, setUiErrors] = useState([]);
+    const [processing, setProcessing] = useState(false);
 
-    const cardNonceResponseReceived = (errors, nonce, cardData, buyerVerificationToken) => {
+    const cardNonceResponseReceived = async (errors, nonce, cardData, buyerVerificationToken) => {
+        setProcessing(true);
         if (errors) {
-            setErrors({ errorMessages: errors.map(error => error.message) });
+            setUiErrors(errors.map(error => error.message));
+            setProcessing(false);
             return;
         }
 
-        setErrors({ errorMessages: [] });
-        alert('nonce created: ' + nonce + ', buyerVerificationToken: ' + buyerVerificationToken);
+        setUiErrors([]);
+
+        await fetch('/api/payment/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                nonce: nonce,
+                token: buyerVerificationToken,
+                amount: total,
+                items: items,
+                address: address,
+            }),
+        })
+            .then(response => {
+                return response.json();
+            })
+            .then(data => {
+                setProcessing(false);
+                onSuccess(data);
+            });
     };
 
     const createVerificationDetails = () => {
         return {
-            amount: '100.00',
+            amount: total.toString(),
             currencyCode: 'USD',
             intent: 'CHARGE',
             billingContact: {
-                familyName: 'Smith',
-                givenName: 'John',
-                email: 'jsmith@example.com',
-                country: 'GB',
-                city: 'London',
-                addressLines: ["1235 Emperor's Gate"],
-                postalCode: 'SW7 4JA',
-                phone: '020 7946 0532',
+                familyName: address.lasttName,
+                givenName: address.firstName,
+                email: address.email,
+                country: address.country,
+                city: address.city,
+                addressLines: [address.address1, address.address2],
+                postalCode: address.postalCode,
             },
         };
     };
@@ -56,23 +80,41 @@ function PaymentForm() {
                 createVerificationDetails={createVerificationDetails}
             >
                 <fieldset className="sq-fieldset">
-                    <CreditCardNumberInput />
-                    <div className="sq-form-half">
-                        <CreditCardCVVInput />
+                    <CreditCardNumberInput label="" />
+                    <div className="payment__inline">
+                        <CreditCardCVVInput label="" />
+                        <CreditCardExpirationDateInput label="" />
                     </div>
-                    <div className="sq-form-half">
-                        <CreditCardExpirationDateInput />
-                    </div>
-
-                    <CreditCardPostalCodeInput placeholder="ZIP" />
+                    <CreditCardPostalCodeInput label="" />
                 </fieldset>
-
-                <CreditCardSubmitButton>Pay with Card</CreditCardSubmitButton>
+                {uiErrors.length > 0 && (
+                    <>
+                        {uiErrors.map((err, index) => (
+                            <div className="payment__error" key={index}>
+                                {err}
+                            </div>
+                        ))}
+                    </>
+                )}
+                {processing ? (
+                    <Button disabled width="100%">
+                        Pay with Card
+                    </Button>
+                ) : (
+                    <CreditCardSubmitButton>Pay with Card</CreditCardSubmitButton>
+                )}
             </SquarePaymentForm>
         </div>
     );
 }
 
 PaymentForm.displayName = 'PaymentForm';
+
+PaymentForm.propTypes = {
+    address: PropTypes.shape().isRequired,
+    total: PropTypes.number.isRequired,
+    onSuccess: PropTypes.func.isRequired,
+    items: PropTypes.array.isRequired,
+};
 
 export default memo(PaymentForm);

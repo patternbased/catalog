@@ -4,5 +4,5 @@ const config = require('./config');
 mongoose.connect(config.mongodb.uri, {
     useNewUrlParser: true,
     useCreateIndex: true,
-    useFindAndModify: false,
+    useFindAndModify: true,
 });

@@ -64,15 +64,54 @@
                 display: block;
                 margin-top: 5px;
             }
+
+            &__results {
+                padding: 30px 30px 110px;
+
+                &__buttons {
+                    padding: 0 15px;
+
+                    button {
+                        border: none;
+                        border-radius: 4px;
+                        background-color: $primary;
+                        color: white;
+                        font-family: $font-other;
+                        font-size: 14px;
+                        font-weight: bold;
+                        line-height: 19px;
+                        text-transform: none;
+                        margin-bottom: 10px;
+                    }
+                }
+
+                &__details {
+                    text-align: center;
+                    margin-top: 20px;
+
+                    &__single {
+                        margin-bottom: 20px;
+
+                        img {
+                            width: 36px;
+                            height: 36px;
+                            margin-bottom: 10px;
+                        }
+
+                        p {
+                            color: $primary;
+                            font-size: 14px;
+                            letter-spacing: 0;
+                            line-height: 20px;
+                        }
+                    }
+                }
+            }
         }
 
         &__summary {
             padding: 30px 30px 20px;
             border-bottom: 4px solid $lighter-grey;
-
-            > div {
-                color: $primary;
-            }
 
             &__title {
                 font-size: 12px;
@@ -81,6 +120,10 @@
                 text-align: center;
                 margin-bottom: 10px;
                 font-family: $font-other;
+            }
+
+            > div {
+                color: $primary;
             }
 
             &__details {
@@ -100,6 +143,39 @@
                     &__bolded {
                         font-weight: bold;
                         font-size: 18px;
+                    }
+                }
+            }
+        }
+
+        &__payment {
+            padding: 0 45px 100px;
+
+            &__title {
+                font-size: 12px;
+                line-height: 17px;
+                font-weight: bold;
+                text-align: center;
+                margin-bottom: 10px;
+                margin-top: 30px;
+                font-family: $font-other;
+            }
+
+            &__fields {
+                &__single {
+                    font-size: 14px;
+                    font-family: $font-other;
+                    line-height: 17px;
+                    color: $primary;
+
+                    span {
+                        font-size: 12px;
+                        line-height: 17px;
+                        font-weight: bold;
+                        margin-top: 10px;
+                        margin-bottom: 5px;
+                        font-family: $font-other;
+                        display: block;
                     }
                 }
             }

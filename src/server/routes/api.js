@@ -5,6 +5,7 @@ const SongController = require('../controllers/SongController');
 const PresetController = require('../controllers/PresetController');
 const ShareController = require('../controllers/ShareController');
 const ArtistController = require('../controllers/ArtistController');
+const PaymentController = require('../controllers/PaymentController');
 const memoizeFunction = require('../utils/memoize-function');
 
 const oneWeek = 7 * 24 * 60 * 60 * 1000;
@@ -39,6 +40,20 @@ router.post('/email/send', async (req, res) => {
 
     res.send({
         sent,
+    });
+});
+
+router.post('/payment/create', async (req, res) => {
+    const sent = await PaymentController.createPayment(
+        req.body.nonce,
+        req.body.token,
+        req.body.amount,
+        req.body.items,
+        req.body.address
+    );
+
+    res.send({
+        data: sent,
     });
 });
 

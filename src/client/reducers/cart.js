@@ -41,7 +41,17 @@ const removeFromCart = (state, action) => {
     };
 };
 
+const clearCartData = state => {
+    return {
+        ...state,
+        items: [],
+        subtotal: 0,
+        total: 0,
+    };
+};
+
 export default createReducer(initialState, {
     [ACTIONS.ADD_TO_CART]: addToCart,
     [ACTIONS.REMOVE_FROM_CART]: removeFromCart,
+    [ACTIONS.CLEAR_CART]: clearCartData,
 });

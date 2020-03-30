@@ -1,7 +1,45 @@
 @import '../../../styles/constants';
 
 .payment {
-    .sq-form-half {
-        width: 50%;
+    .sq-payment-form {
+        width: 100%;
+    }
+
+    .sq-creditcard,
+    button {
+        height: 40px;
+        width: 100%;
+        border-radius: 4px;
+        background-color: $primary;
+        border: none;
+        color: white;
+        font-family: $font-other;
+        font-size: 14px;
+        font-weight: bold;
+        line-height: 19px;
+        text-transform: none;
+
+        &:hover {
+            background-color: $secondary;
+        }
+    }
+
+    &__inline {
+        display: flex;
+        margin: 5px 0;
+        align-items: center;
+        justify-content: space-between;
+
+        div {
+            width: 48%;
+        }
+    }
+
+    &__error {
+        font-size: 14px;
+        font-family: $font-other;
+        word-break: break-word;
+        margin: 5px 0;
+        color: $error;
     }
 }

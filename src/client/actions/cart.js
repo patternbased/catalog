@@ -1,6 +1,7 @@
 export const ACTIONS = {
     ADD_TO_CART: 'cart.addToCart',
     REMOVE_FROM_CART: 'cart.removeFromCart',
+    CLEAR_CART: 'cart.clearCartData',
 };
 
 /**
@@ -25,4 +26,12 @@ export const addToCart = (licType, price, song) => ({
 export const removeFromCart = songId => ({
     type: ACTIONS.REMOVE_FROM_CART,
     songId,
+});
+
+/**
+ * Clears the entire cart
+ * @returns {Object}
+ */
+export const clearCartData = () => ({
+    type: ACTIONS.CLEAR_CART,
 });
