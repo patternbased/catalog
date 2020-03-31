@@ -70,7 +70,7 @@ class PaymentController {
             method: 'post',
             url: 'https://connect.squareupsandbox.com/v2/payments',
             data: payload,
-            headers: { Authorization: 'Bearer EAAAEEpfhgANqkqBoFDpMPEib4f84jui-5bNMI7d1vLQnygJgU3Ed07dG6B8rP9s' },
+            headers: { Authorization: `Bearer ${process.env.SQUARE_ACCESS_TOKEN}` },
         })
             .then(async function(response) {
                 return await Payment.create({
