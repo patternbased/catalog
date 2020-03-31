@@ -5,6 +5,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const postcssPresetEnv = require('postcss-preset-env');
 const root = path.resolve(__dirname, './src/client/');
 const Dotenv = require('dotenv-webpack');
+require('dotenv').config()
 
 module.exports = (env = 'production') => {
     const plugins = [
