@@ -28,10 +28,31 @@ class ShareController {
         const mailOptions = {
             user: 'lauraapetroaei@gmail.com',
             pass: 'wolsykmdhujxnxvg',
-            to: 'patternbased@gmail.com',
+            to: 'lauraapetroaei@gmail.com',
             from: emailData.email,
             subject: emailData.subject,
             text: emailData.text,
+        };
+        const send = require('gmail-send')(mailOptions);
+        send(mailOptions)
+            .then(({ result, full }) => console.log(result))
+            .catch(error => console.error('ERROR', error));
+        return true;
+    }
+
+    /**
+     * Sends Order Confirmation email
+     * @param {Object} emailData details to use in the email
+     * @returns {Boolean}
+     */
+    sendOrderEmail(emailData) {
+        const mailOptions = {
+            user: 'lauraapetroaei@gmail.com',
+            pass: 'wolsykmdhujxnxvg',
+            to: emailData.email,
+            from: 'patternbased@gmail.com',
+            subject: emailData.subject,
+            html: emailData.text,
         };
         const send = require('gmail-send')(mailOptions);
         send(mailOptions)

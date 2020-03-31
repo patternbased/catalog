@@ -43,6 +43,14 @@ router.post('/email/send', async (req, res) => {
     });
 });
 
+router.post('/email/order/send', async (req, res) => {
+    const sent = await ShareController.sendOrderEmail(req.body.emailData);
+
+    res.send({
+        sent,
+    });
+});
+
 router.post('/payment/create', async (req, res) => {
     const sent = await PaymentController.createPayment(
         req.body.nonce,
