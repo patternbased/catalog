@@ -81,4 +81,12 @@ router.get('/artist/:name', async (req, res) => {
     });
 });
 
+router.get('/invoice/:id', async (req, res) => {
+    const invoice = await PaymentController.getOrderById(req.params.id);
+
+    res.send({
+        invoice,
+    });
+});
+
 module.exports = router;

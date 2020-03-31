@@ -1,5 +1,6 @@
 import React from 'react';
 import Button from '../../components/button';
+import Header from 'components/header';
 import PropTypes from 'prop-types';
 
 import './style.scss';
@@ -10,14 +11,17 @@ import './style.scss';
  */
 function NotFound({ history }) {
     return (
-        <div className="not-found-page">
-            <div className="not-found-page__content">
-                <h1 className="not-found-page__header">404</h1>
-                <h2 className="not-found-page__sub-header">Page not found</h2>
+        <>
+            <Header />
+            <div className="not-found-page">
+                <div className="not-found-page__content">
+                    <h1 className="not-found-page__header">404</h1>
+                    <h2 className="not-found-page__sub-header">Page not found</h2>
 
-                <Button onClick={() => history.push('/')}>Home</Button>
+                    <Button onClick={() => history.push('/')}>Home</Button>
+                </div>
             </div>
-        </div>
+        </>
     );
 }
 

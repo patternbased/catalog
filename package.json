@@ -25,6 +25,7 @@
     "@react-pdf/renderer": "^1.6.8",
     "array.findindex": "^1.0.4",
     "autoprefixer": "^9.6.1",
+    "aws-sdk": "^2.649.0",
     "axios": "^0.19.2",
     "babel-loader": "^8.0.6",
     "babel-polyfill": "^6.26.0",

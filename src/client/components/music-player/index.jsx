@@ -258,6 +258,7 @@ function MusicPlayer({ list }) {
                                         title: currentPlaying.title,
                                         artist: currentPlaying.artistName,
                                         image: currentPlaying.cover,
+                                        url: currentPlaying.url,
                                     })
                                 );
                                 dispatch(setState('licenseOpened', true));

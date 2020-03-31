@@ -28,6 +28,7 @@ function CheckoutPanel({ visible, style }) {
     const [total, setTotal] = useState(0);
     const [success, setSuccess] = useState(false);
     const [orderNo, setOrderNo] = useState('');
+    const [invoiceId, setInvoiceId] = useState('');
 
     const [errorsHovered, setErrorsHovered] = useState([]);
     const [userFields, setUserFields] = useState(null);
@@ -36,6 +37,7 @@ function CheckoutPanel({ visible, style }) {
     const completePurchase = val => {
         setSuccess(true);
         setOrderNo(val.data.orderNo);
+        setInvoiceId(val.data.orderId);
         dispatch(clearCartData());
     };
 
@@ -98,6 +100,10 @@ function CheckoutPanel({ visible, style }) {
         );
     };
 
+    const goToInvoice = () => {
+        window.location = `/invoice/${invoiceId}`;
+    };
+
     return (
         <div>
             <div className={panelClass} style={style}>
@@ -107,9 +113,6 @@ function CheckoutPanel({ visible, style }) {
                             <CloseIcon
                                 onClick={() => {
                                     dispatch(setState('checkoutOpened', false));
-                                    setItems([]);
-                                    setSubtotal(0);
-                                    setTotal(0);
                                 }}
                             />
                             {success ? 'Download' : 'Checkout'}
@@ -126,8 +129,16 @@ function CheckoutPanel({ visible, style }) {
                         {success ? (
                             <div className="checkout-panel__body__success__results">
                                 <div className="checkout-panel__body__success__results__buttons">
-                                    <Button width="100%">Download .mp3</Button>
-                                    <Button width="100%">Download Invoice</Button>
+                                    <Button width="100%">
+                                        <a href={`/download/${invoiceId}`} target="_blank" rel="noopener noreferrer">
+                                            Download .mp3
+                                        </a>
+                                    </Button>
+                                    <Button width="100%">
+                                        <a href={`/invoice/${invoiceId}`} target="_blank" rel="noopener noreferrer">
+                                            Download Invoice
+                                        </a>
+                                    </Button>
                                 </div>
                                 <div className="checkout-panel__body__success__results__details">
                                     <div className="checkout-panel__body__success__results__details__single">

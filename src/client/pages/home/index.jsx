@@ -5,6 +5,7 @@ import selectors from 'selectors';
 import classnames from 'classnames';
 import { PRESETS } from 'utils/constants';
 
+import Header from 'components/header';
 import Preset from 'components/preset';
 import SongsTable from 'components/songs-table';
 import MusicPlayer from 'components/music-player';
@@ -120,118 +121,121 @@ function HomePage() {
     };
 
     return (
-        <div className={homeClass}>
-            <main className="home">
-                {tablePlaylist && tablePlaylist.length >= 10 ? (
-                    <SongsTable list={tablePlaylist} onSelect={val => playSong(val)} listName={sharedItem.name} />
-                ) : tablePlaylist && tablePlaylist.length > 0 && tablePlaylist.length < 10 ? (
-                    <>
-                        <SongsTable
-                            list={tablePlaylist}
-                            onSelect={val => playSong(val)}
-                            listName={sharedItem.name}
-                            short={true}
-                            extraClass="table-short"
-                        />
-                        {popularPresets && (
-                            <div className="popular-presets">
-                                <div className="popular-presets__title">Popular Search Presets</div>
-                                <div className="popular-presets__presets">
-                                    {popularPresets.map((preset, index) => (
-                                        <div
-                                            key={index}
-                                            onClick={() => applyPreset(preset.details.filters, preset.name)}
-                                        >
-                                            <Preset name={preset.name} width={253} height={105} />
+        <>
+            <Header />
+            <div className={homeClass}>
+                <main className="home">
+                    {tablePlaylist && tablePlaylist.length >= 10 ? (
+                        <SongsTable list={tablePlaylist} onSelect={val => playSong(val)} listName={sharedItem.name} />
+                    ) : tablePlaylist && tablePlaylist.length > 0 && tablePlaylist.length < 10 ? (
+                        <>
+                            <SongsTable
+                                list={tablePlaylist}
+                                onSelect={val => playSong(val)}
+                                listName={sharedItem.name}
+                                short={true}
+                                extraClass="table-short"
+                            />
+                            {popularPresets && (
+                                <div className="popular-presets">
+                                    <div className="popular-presets__title">Popular Search Presets</div>
+                                    <div className="popular-presets__presets">
+                                        {popularPresets.map((preset, index) => (
+                                            <div
+                                                key={index}
+                                                onClick={() => applyPreset(preset.details.filters, preset.name)}
+                                            >
+                                                <Preset name={preset.name} width={253} height={105} />
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+                            <div className="short-search">
+                                <div className="short-search__overlay">
+                                    <div className="short-search__overlay__content">
+                                        <div className="short-search__content">
+                                            Tell us about your project and let us find you the perfect music.
                                         </div>
-                                    ))}
+                                        <div
+                                            className="short-search__feature short-search__feature--linked"
+                                            onClick={() => dispatch(setState('reqSuggestionsOpened', true))}
+                                        >
+                                            <img
+                                                className="short-search__image"
+                                                src="/assets/images/feature-suggestion.png"
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        )}
-                        <div className="short-search">
-                            <div className="short-search__overlay">
-                                <div className="short-search__overlay__content">
-                                    <div className="short-search__content">
-                                        Tell us about your project and let us find you the perfect music.
+                            <div className="featured">
+                                <div className="popular-presets__title">Featured Tracks</div>
+                                <SongsTable
+                                    list={featuredTracks}
+                                    onSelect={val => playSong(val)}
+                                    listName={sharedItem.name}
+                                    page="home"
+                                />
+                            </div>
+                        </>
+                    ) : (
+                        <>
+                            <div className="hero">
+                                <div className="hero__overlay">
+                                    <div
+                                        className="hero__feature hero__feature--linked"
+                                        onClick={() => dispatch(setState('filtersOpened', !filtersPanelState))}
+                                    >
+                                        <img className="hero__image" src="/assets/images/feature-filters.png" />
+                                        <div className="hero__name">Filters</div>
                                     </div>
                                     <div
-                                        className="short-search__feature short-search__feature--linked"
+                                        className="hero__feature hero__feature--linked"
+                                        onClick={() => dispatch(setState('presetsOpened', !presetsPanelState))}
+                                    >
+                                        <img className="hero__image" src="/assets/images/feature-presets.png" />
+                                        <div className="hero__name">Presets</div>
+                                    </div>
+                                    <div
+                                        className="hero__feature hero__feature--linked"
                                         onClick={() => dispatch(setState('reqSuggestionsOpened', true))}
                                     >
-                                        <img
-                                            className="short-search__image"
-                                            src="/assets/images/feature-suggestion.png"
-                                        />
+                                        <img className="hero__image" src="/assets/images/feature-suggestion.png" />
+                                        <div className="hero__name">Suggestions</div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div className="featured">
-                            <div className="popular-presets__title">Featured Tracks</div>
-                            <SongsTable
-                                list={featuredTracks}
-                                onSelect={val => playSong(val)}
-                                listName={sharedItem.name}
-                                page="home"
-                            />
-                        </div>
-                    </>
-                ) : (
-                    <>
-                        <div className="hero">
-                            <div className="hero__overlay">
-                                <div
-                                    className="hero__feature hero__feature--linked"
-                                    onClick={() => dispatch(setState('filtersOpened', !filtersPanelState))}
-                                >
-                                    <img className="hero__image" src="/assets/images/feature-filters.png" />
-                                    <div className="hero__name">Filters</div>
+                            {popularPresets && (
+                                <div className="popular-presets">
+                                    <div className="popular-presets__title">Popular Search Presets</div>
+                                    <div className="popular-presets__presets">
+                                        {popularPresets.map((preset, index) => (
+                                            <div
+                                                key={index}
+                                                onClick={() => applyPreset(preset.details.filters, preset.name)}
+                                            >
+                                                <Preset name={preset.name} width={253} height={105} />
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
-                                <div
-                                    className="hero__feature hero__feature--linked"
-                                    onClick={() => dispatch(setState('presetsOpened', !presetsPanelState))}
-                                >
-                                    <img className="hero__image" src="/assets/images/feature-presets.png" />
-                                    <div className="hero__name">Presets</div>
-                                </div>
-                                <div
-                                    className="hero__feature hero__feature--linked"
-                                    onClick={() => dispatch(setState('reqSuggestionsOpened', true))}
-                                >
-                                    <img className="hero__image" src="/assets/images/feature-suggestion.png" />
-                                    <div className="hero__name">Suggestions</div>
-                                </div>
+                            )}
+                            <div className="featured">
+                                <div className="popular-presets__title">Featured Tracks</div>
+                                <SongsTable
+                                    list={featuredTracks}
+                                    onSelect={val => playSong(val)}
+                                    listName={sharedItem.name}
+                                    page="home"
+                                />
                             </div>
-                        </div>
-                        {popularPresets && (
-                            <div className="popular-presets">
-                                <div className="popular-presets__title">Popular Search Presets</div>
-                                <div className="popular-presets__presets">
-                                    {popularPresets.map((preset, index) => (
-                                        <div
-                                            key={index}
-                                            onClick={() => applyPreset(preset.details.filters, preset.name)}
-                                        >
-                                            <Preset name={preset.name} width={253} height={105} />
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-                        <div className="featured">
-                            <div className="popular-presets__title">Featured Tracks</div>
-                            <SongsTable
-                                list={featuredTracks}
-                                onSelect={val => playSong(val)}
-                                listName={sharedItem.name}
-                                page="home"
-                            />
-                        </div>
-                    </>
-                )}
-            </main>
-            {currentSong && <MusicPlayer list={tablePlaylist} />}
-        </div>
+                        </>
+                    )}
+                </main>
+                {currentSong && <MusicPlayer list={tablePlaylist} />}
+            </div>
+        </>
     );
 }
 

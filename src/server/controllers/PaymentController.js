@@ -33,6 +33,15 @@ class PaymentController {
     }
 
     /**
+     * Returns order data
+     * @param {String} id id of the order to get
+     * @returns {Array}
+     */
+    getOrderById(id) {
+        return Payment.findOne({ orderId: id });
+    }
+
+    /**
      * Async create Square Payment
      * @param {String} nonce sq none
      * @param {String} token sq customer token

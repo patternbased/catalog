@@ -71,6 +71,15 @@
                 &__buttons {
                     padding: 0 15px;
 
+                    a {
+                        color: white;
+                        font-family: $font-other;
+                        font-size: 14px;
+                        font-weight: bold;
+                        line-height: 19px;
+                        text-decoration: none;
+                    }
+
                     button {
                         border: none;
                         border-radius: 4px;
