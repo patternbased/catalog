@@ -74,8 +74,8 @@ function PaymentForm({ address, total, onSuccess, items }) {
         <div className="payment">
             <SquarePaymentForm
                 sandbox={true}
-                applicationId={'sandbox-sq0idb-JnkDSwkHVuB9mATI6c5XDg'}
-                locationId={'P533ZVS3J0Z0M'}
+                applicationId={process.env.SQUARE_APP_ID}
+                locationId={process.env.SQUARE_LOCATION_ID}
                 cardNonceResponseReceived={cardNonceResponseReceived}
                 createVerificationDetails={createVerificationDetails}
             >

@@ -55,7 +55,7 @@ class PaymentController {
             source_id: nonce,
             verification_token: token,
             autocomplete: true,
-            location_id: 'P533ZVS3J0Z0M',
+            location_id: process.env.SQUARE_LOCATION_ID,
             amount_money: {
                 amount: amount * 100,
                 currency: 'USD',

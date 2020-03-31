@@ -3,8 +3,8 @@ const HtmlWebPackPlugin = require('html-webpack-plugin');
 const LiveReloadPlugin = require('webpack-livereload-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const postcssPresetEnv = require('postcss-preset-env');
-const autoprefixer = require('autoprefixer');
 const root = path.resolve(__dirname, './src/client/');
+const Dotenv = require('dotenv-webpack');
 
 module.exports = (env = 'production') => {
     const plugins = [
@@ -15,6 +15,7 @@ module.exports = (env = 'production') => {
                 env,
             },
         }),
+        new Dotenv(),
     ];
 
     if (env === 'development') {

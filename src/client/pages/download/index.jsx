@@ -4,9 +4,9 @@ import JSZip from 'jszip';
 import AWS from 'aws-sdk';
 
 AWS.config.update({
-    accessKeyId: 'AKIAX4JYD4QPNNFUZFD2',
-    secretAccessKey: '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',
-    region: 'us-east-2',
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    region: process.env.AWS_REGION,
 });
 
 /**
@@ -31,8 +31,6 @@ function Download(props) {
             zipFiles();
         }
     }, [items]);
-
-    console.log(items);
 
     const zipFiles = () => {
         const zip = new JSZip();
