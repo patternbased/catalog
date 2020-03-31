@@ -22,13 +22,16 @@ module.exports = (env = 'production') => {
         plugins.push(new LiveReloadPlugin());
         plugins.push(new Dotenv())
     } else {
-        const envPlugin = new webpack.DefinePlugin({           
-            SQUARE_APP_ID: JSON.stringify(process.env.SQUARE_APP_ID),      
-            SQUARE_LOCATION_ID: JSON.stringify(process.env.SQUARE_LOCATION_ID),
-            SQUARE_ACCESS_TOKEN: JSON.stringify(process.env.SQUARE_ACCESS_TOKEN),
-            AWS_SECRET_ACCESS_KEY: JSON.stringify(process.env.AWS_SECRET_ACCESS_KEY),
-            AWS_ACCESS_KEY_ID: JSON.stringify(process.env.AWS_ACCESS_KEY_ID),
-            AWS_REGION: JSON.stringify(process.env.AWS_REGION)
+        require('dotenv').config();
+        const envPlugin = new webpack.DefinePlugin({ 
+            'process.env': {          
+                SQUARE_APP_ID: JSON.stringify(process.env.SQUARE_APP_ID),      
+                SQUARE_LOCATION_ID: JSON.stringify(process.env.SQUARE_LOCATION_ID),
+                SQUARE_ACCESS_TOKEN: JSON.stringify(process.env.SQUARE_ACCESS_TOKEN),
+                AWS_SECRET_ACCESS_KEY: JSON.stringify(process.env.AWS_SECRET_ACCESS_KEY),
+                AWS_ACCESS_KEY_ID: JSON.stringify(process.env.AWS_ACCESS_KEY_ID),
+                AWS_REGION: JSON.stringify(process.env.AWS_REGION)
+            }
         })
         plugins.push(envPlugin)
     }
