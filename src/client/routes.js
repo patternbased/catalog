@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 
 import ScrollToTop from './components/scroll-to-top';
 import Home from './pages/home';
@@ -23,7 +23,8 @@ function Routes() {
                     <Route path="/artist/:name" exact component={Artist} />
                     <Route path="/invoice/:id" exact component={Invoice} />
                     <Route path="/download/:id" exact component={Download} />
-                    <Route path="*" component={NotFound} />
+                    <Route path="/not-found" exact component={NotFound} />
+                    <Redirect from="*" to="/not-found" />
                 </Switch>
             </ScrollToTop>
         </Router>

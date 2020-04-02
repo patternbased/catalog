@@ -14,6 +14,7 @@ const Artist = new Schema({
     instagram: String,
     facebook: String,
     albumsIds: Array,
+    relatedArtists: Array,
     dateAdded: { type: Date, default: Date.now },
     dateEdited: { type: Date, default: Date.now },
 });

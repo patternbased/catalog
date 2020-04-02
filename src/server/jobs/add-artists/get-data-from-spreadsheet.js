@@ -59,6 +59,8 @@ module.exports = async () => {
 
     const rows = await getRows(artistsSheet, 1, artistsSheet.rowCount);
 
+    var separators = [';', '; '];
+
     return rows.map(row => ({
         name: row.artistname,
         slug: row.artistname
@@ -66,12 +68,13 @@ module.exports = async () => {
             .split(' ')
             .join('-'),
         bio: row.bio,
-        image: `https://pblibrary.s3.us-east-2.amazonaws.com/artists/${row.artistname}.jpg`,
+        image: `https://pblibrary.s3.us-east-2.amazonaws.com/artists/${row.image}`,
         imageAlt: row.imageattribute,
         website: row.website,
         bandcamp: row.bandcamp,
         soundcloud: row.soundcloud,
         instagram: row.instagram,
         facebook: row.facebook,
+        relatedArtists: row.relatedentities.split(new RegExp(separators.join('|'), 'g'))
     }));
 };

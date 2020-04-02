@@ -341,7 +341,7 @@ export const PRESETS = {
         filters: {
             rhythm: [0, 2],
             speed: [0, 10],
-            mood: [0, 3],
+            mood: [0, 1.75],
             experimental: [0, 10],
             grid: [0, 10],
         },
@@ -396,9 +396,9 @@ export const PRESETS = {
         filters: {
             rhythm: [6.5, 10],
             speed: [2.5, 10],
-            mood: [0, 10],
-            experimental: [0, 4],
-            grid: [0, 10],
+            mood: [0, 4],
+            experimental: [0, 10],
+            grid: [0, 4],
         },
     },
     'Pure Commerce': {
@@ -408,7 +408,7 @@ export const PRESETS = {
             rhythm: [0, 10],
             speed: [0, 10],
             mood: [4, 10],
-            experimental: [0, 3],
+            experimental: [0, 2],
             grid: [0, 10],
         },
     },
@@ -429,7 +429,7 @@ export const PRESETS = {
         filters: {
             rhythm: [4.5, 10],
             speed: [3.5, 10],
-            mood: [2.5, 6],
+            mood: [2.5, 5],
             experimental: [0, 10],
             grid: [0, 7.5],
         },
@@ -483,7 +483,7 @@ export const PRESETS = {
         copyright: 'cc-0 Pawel Czerwinski unsplash.com',
         filters: {
             rhythm: [4, 9],
-            speed: [3, 9],
+            speed: [3, 10],
             mood: [0, 4],
             experimental: [0, 6],
             grid: [0, 6],
@@ -495,7 +495,7 @@ export const PRESETS = {
         filters: {
             rhythm: [0, 3],
             speed: [0, 3],
-            mood: [2.5, 5],
+            mood: [2, 4.75],
             experimental: [0, 10],
             grid: [6.5, 10],
         },
