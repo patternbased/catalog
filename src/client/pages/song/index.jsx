@@ -138,6 +138,22 @@ function SongPage(props) {
         });
     };
 
+    const goToArtistPage = name => {
+        const titleUrl = name
+            .toLowerCase().trim()
+            .split(' ')
+            .join('-');
+        window.location = `/artist/${titleUrl}`;
+    }
+
+    const goToWriterPage = name => {
+        const titleUrl = name
+            .toLowerCase().trim()
+            .split(' ')
+            .join('-');
+        window.location = `/writer/${titleUrl}`;
+    }
+
     return (
         <>
             <Header />
@@ -164,7 +180,7 @@ function SongPage(props) {
                                 </div>
                                 <div className="song__column__row-content">
                                     {song.writers.map((writer, index) => (
-                                        <div className="song__column__writer" key={index}>
+                                        <div className="song__column__writer" key={index} onClick={() => goToWriterPage(writer)}>
                                             <img src={song.cover} alt={writer} />
                                             {writer}
                                         </div>
@@ -183,7 +199,7 @@ function SongPage(props) {
                             </div>
                             <div className="song__column">
                                 <div className="song__title">{song.title}</div>
-                                <div className="song__artist">by {song.artistName}</div>
+                                <div className="song__artist" onClick={() => goToArtistPage(song.artistName)}>by {song.artistName}</div>
                                 <div className="song__actions">
                                     <PianoSvg
                                         onClick={() => {

@@ -65,7 +65,7 @@ function PaymentForm({ address, total, onSuccess, items }) {
                 email: address.email,
                 country: address.country,
                 city: address.city,
-                addressLines: [address.address1, address.address2],
+                addressLines: address.address2 && address.address2.length > 0 ? [address.address1, address.address2] : [address.address1],
                 postalCode: address.postalCode,
             },
         };

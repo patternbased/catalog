@@ -215,7 +215,7 @@ function CheckoutPanel({ visible, style }) {
                                             )}
                                             <div className="checkout-panel__body__payment__fields__single">
                                                 <span>Address:</span>
-                                                {`${userFields.address1} ${userFields.address2}`}
+                                                {userFields.address2 && userFields.address2.length > 0 ? `${userFields.address1} ${userFields.address2}` : userFields.address1}
                                                 <br />
                                                 {`${userFields.city}, ${userFields.country}`}
                                             </div>

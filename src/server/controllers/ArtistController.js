@@ -1,4 +1,5 @@
 const Artist = require('../models/Artist');
+const Writer = require('../models/Writer');
 
 class ArtistController {
     /**
@@ -27,6 +28,15 @@ class ArtistController {
      */
     async create(data) {
         return await Artist.create(data);
+    }
+
+    /**
+     * Async insert data into db
+     * @param {Object} data object with data
+     * @returns {Data}
+     */
+    async createWriter(data) {
+        return await Writer.create(data);
     }
 }
 
