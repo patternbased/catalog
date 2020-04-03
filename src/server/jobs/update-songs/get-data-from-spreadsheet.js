@@ -98,12 +98,12 @@ module.exports = async () => {
         tools: row.tools ? row.tools.split(new RegExp(separators.join('|'), 'g')) : [],
         story: row.story,
         isrcCode: row.isrccode,
-        url: `https://pblibrary.s3.us-east-2.amazonaws.com/${row.catnum === 'PBL01' || row.catnum === '' ? 'PBC01' : row.catnum}/${row.id}.mp3`,
+        url: `https://pblibrary.s3.us-east-2.amazonaws.com/${row.catnum}/${row.id}.mp3`,
         image: ['PB26', 'PB36', 'PB37'].includes(row.catnum)
-            ? `https://pblibrary.s3.us-east-2.amazonaws.com/${row.catnum === 'PBL01' || row.catnum === '' ? 'PBC01' : row.catnum}/${row.id}.jpg`
-            : `https://pblibrary.s3.us-east-2.amazonaws.com/${row.catnum === 'PBL01' || row.catnum === '' ? 'PBC01' : row.catnum}/cover.jpg`,
+            ? `https://pblibrary.s3.us-east-2.amazonaws.com/${row.catnum}/${row.id}.jpg`
+            : `https://pblibrary.s3.us-east-2.amazonaws.com/${row.catnum}/cover.jpg`,
         cover: ['PB26', 'PB36', 'PB37'].includes(row.catnum)
-            ? `https://pblibrary.s3.us-east-2.amazonaws.com/${row.catnum === 'PBL01' || row.catnum === '' ? 'PBC01' : row.catnum}/${row.id}_thumb.jpg`
-            : `https://pblibrary.s3.us-east-2.amazonaws.com/${row.catnum === 'PBL01' || row.catnum === '' ? 'PBC01' : row.catnum}/cover-thumb.jpg`,
+            ? `https://pblibrary.s3.us-east-2.amazonaws.com/${row.catnum}/${row.id}_thumb.jpg`
+            : `https://pblibrary.s3.us-east-2.amazonaws.com/${row.catnum}/cover-thumb.jpg`,
     }));
 };

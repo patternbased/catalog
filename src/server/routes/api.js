@@ -89,6 +89,14 @@ router.get('/artist/:name', async (req, res) => {
     });
 });
 
+router.get('/writer/:name', async (req, res) => {
+    const artist = await ArtistController.getWriterByName(req.params.name);
+
+    res.send({
+        artist,
+    });
+});
+
 router.get('/invoice/:id', async (req, res) => {
     const invoice = await PaymentController.getOrderById(req.params.id);
 

@@ -22,6 +22,15 @@ class ArtistController {
     }
 
     /**
+     * Returns writer data
+     * @param {String} name name of the writer to get
+     * @returns {Array}
+     */
+    getWriterByName(name) {
+        return Writer.findOne({ slug: name });
+    }
+
+    /**
      * Async insert data into db
      * @param {Object} data object with data
      * @returns {Data}

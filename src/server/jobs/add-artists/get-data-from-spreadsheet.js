@@ -75,6 +75,12 @@ module.exports = async () => {
         soundcloud: row.soundcloud,
         instagram: row.instagram,
         facebook: row.facebook,
-        relatedArtists: row.relatedentities.split(new RegExp(separators.join('|'), 'g'))
+        relatedArtists: row.relatedentities.split(new RegExp(separators.join('|'), 'g')).map(artist => {
+            const artistImg = rows.find(r => r.artistname.trim().toLowerCase() === artist.trim().toLowerCase())
+            return {
+                name: artist.trim(),
+                image: artistImg ? `https://pblibrary.s3.us-east-2.amazonaws.com/artists/${artistImg.image}` : ''
+            }
+        })
     }));
 };

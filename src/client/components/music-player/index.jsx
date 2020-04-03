@@ -25,7 +25,7 @@ import ShareSvg from 'assets/images/share-icon-dark.svg';
 import './style.scss';
 
 const baseUrl =
-    process.env.NODE_ENV === 'development' ? 'http://localhost:3500/' : 'https://patternbased.herokuapp.com/';
+    process.env.NODE_ENV === 'production' ? 'https://catalog.patternbased.com' : 'https://patternbased.herokuapp.com/';
 
 /**
  * Music Player component

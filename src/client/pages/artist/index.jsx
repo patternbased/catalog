@@ -54,7 +54,7 @@ function ArtistPage(props) {
         if (artistName) {
             dispatch(setState('filtersOpened', false));
 
-            api.get(`/api/artist/${artistName}`).then(res => {
+            api.get(`/api/artist/${artistName}`).then((res) => {
                 setArtist(res.artist);
             });
         }
@@ -62,7 +62,7 @@ function ArtistPage(props) {
 
     useEffect(() => {
         if (songList && artist) {
-            const artistSongs = songList.filter(s => s.artistName.toLowerCase() === artist.name.toLowerCase());
+            const artistSongs = songList.filter((s) => s.artistName.toLowerCase() === artist.name.toLowerCase());
             artistSongs.length && setAllArtistTracks(artistSongs);
             artistSongs.length &&
                 setFeaturedTracks(
@@ -74,9 +74,14 @@ function ArtistPage(props) {
         }
     }, [songList, artist]);
 
-    const playSong = song => {
+    const playSong = (song) => {
         dispatch(setCurrentSong(song));
         setSongClicked(true);
+    };
+
+    const goToArtistPage = (name) => {
+        const titleUrl = name.toLowerCase().trim().split(' ').join('-');
+        window.location = `/artist/${titleUrl}`;
     };
 
     return (
@@ -115,36 +120,33 @@ function ArtistPage(props) {
                             <div className="artist__section">
                                 <div className="artist__table">
                                     <div className="artist__table__title">Featured Tracks</div>
-                                    <SongsTable list={featuredTracks} onSelect={val => playSong(val)} page="home" />
+                                    <SongsTable list={featuredTracks} onSelect={(val) => playSong(val)} page="home" />
                                 </div>
                             </div>
                         )}
                         <div className="artist__section">
                             <div className="artist__table__title">You May Also Like</div>
                             <div className="artist__similar">
-                                <div className="artist__similar__single">
-                                    <div className="artist__similar__overlay" />
-                                    Hill Sleepers
-                                </div>
-                                <div className="artist__similar__single">
-                                    <div className="artist__similar__overlay" />
-                                    Joseph Minadeo
-                                </div>
-                                <div className="artist__similar__single">
-                                    <div className="artist__similar__overlay" />
-                                    Insect Sounds
-                                </div>
-                                <div className="artist__similar__single">
-                                    <div className="artist__similar__overlay" />
-                                    Puffy Shapes
-                                </div>
+                                {artist.relatedArtists.map((related, index) => (
+                                    <span
+                                        key={index}
+                                        className="artist__similar__single"
+                                        style={{ backgroundImage: `url(${related.image})` }}
+                                        onClick={() => goToArtistPage(related.name)}
+                                    >
+                                        <div>
+                                            <div className="artist__similar__overlay" />
+                                            {related.name}
+                                        </div>
+                                    </span>
+                                ))}
                             </div>
                         </div>
                         {allArtistTracks && (
                             <div className="artist__section">
                                 <div className="artist__table">
                                     <div className="artist__table__title">Full Songography</div>
-                                    <SongsTable list={allArtistTracks} onSelect={val => playSong(val)} page="home" />
+                                    <SongsTable list={allArtistTracks} onSelect={(val) => playSong(val)} page="home" />
                                 </div>
                             </div>
                         )}

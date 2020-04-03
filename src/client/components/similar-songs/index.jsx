@@ -19,7 +19,7 @@ import DoneSvg from 'assets/images/done-check.svg';
 import './style.scss';
 
 const baseUrl =
-    process.env.NODE_ENV === 'development' ? 'http://localhost:3500/' : 'https://patternbased.herokuapp.com/';
+    process.env.NODE_ENV === 'production' ? 'https://catalog.patternbased.com' : 'https://patternbased.herokuapp.com/';
 
 /**
  * Similar songs panel component

@@ -11,14 +11,14 @@ const spreadsheetConfig = config.googleSpreadsheets.artists;
  * @param {Object} config a google spreadsheet config
  * @returns {Promise}
  */
-const setupConfig = (doc, config) => new Promise(resolve => doc.useServiceAccountAuth(config, resolve));
+const setupConfig = (doc, config) => new Promise((resolve) => doc.useServiceAccountAuth(config, resolve));
 
 /**
  * Get the sheets of a google spreadsheet document
  * @param {GoogleSpreadsheet} doc the google spreadsheet document
  * @returns {Promise}
  */
-const getSheets = doc =>
+const getSheets = (doc) =>
     new Promise((resolve, reject) => {
         doc.getInfo((error, info) => {
             if (error) {
@@ -55,18 +55,15 @@ module.exports = async () => {
     const doc = new GoogleSpreadsheet(spreadsheetConfig.spreadsheetId);
     await setupConfig(doc, spreadsheetConfig.config);
     const sheets = await getSheets(doc);
-    const artistsSheet = sheets.find(s => s.title === 'Writers');
+    const artistsSheet = sheets.find((s) => s.title === 'Writers');
 
     const rows = await getRows(artistsSheet, 1, artistsSheet.rowCount);
 
     var separators = [';', '; '];
 
-    return rows.map(row => ({
+    return rows.map((row) => ({
         name: row.artistname,
-        slug: row.artistname
-            .toLowerCase()
-            .split(' ')
-            .join('-'),
+        slug: row.artistname.toLowerCase().split(' ').join('-'),
         bio: row.bio,
         image: `https://pblibrary.s3.us-east-2.amazonaws.com/artists/${row.image}`,
         imageAlt: row.imageattribute,
@@ -75,6 +72,12 @@ module.exports = async () => {
         soundcloud: row.soundcloud,
         instagram: row.instagram,
         facebook: row.facebook,
-        relatedArtists: row.relatedentities.split(new RegExp(separators.join('|'), 'g'))
+        relatedArtists: row.relatedentities.split(new RegExp(separators.join('|'), 'g')).map((artist) => {
+            const artistImg = rows.find((r) => r.artistname.trim().toLowerCase() === artist.trim().toLowerCase());
+            return {
+                name: artist.trim(),
+                image: artistImg ? `https://pblibrary.s3.us-east-2.amazonaws.com/artists/${artistImg.image}` : '',
+            };
+        }),
     }));
 };

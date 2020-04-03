@@ -54,7 +54,7 @@ function WriterPage(props) {
         if (artistName) {
             dispatch(setState('filtersOpened', false));
 
-            api.get(`/api/artist/${artistName}`).then(res => {
+            api.get(`/api/writer/${artistName}`).then((res) => {
                 setArtist(res.artist);
             });
         }
@@ -62,14 +62,14 @@ function WriterPage(props) {
 
     useEffect(() => {
         if (songList && artist) {
-            const artistSongs = []
-            songList.map(song => {
-                song.writers.map(writer => {
+            const artistSongs = [];
+            songList.map((song) => {
+                song.writers.map((writer) => {
                     if (writer.toLowerCase().trim() === artist.name.toLowerCase().trim()) {
-                        artistSongs.push(song)
+                        artistSongs.push(song);
                     }
-                })
-            })
+                });
+            });
             artistSongs.length && setAllArtistTracks(artistSongs);
             artistSongs.length &&
                 setFeaturedTracks(
@@ -81,9 +81,14 @@ function WriterPage(props) {
         }
     }, [songList, artist]);
 
-    const playSong = song => {
+    const playSong = (song) => {
         dispatch(setCurrentSong(song));
         setSongClicked(true);
+    };
+
+    const goToWriterPage = (name) => {
+        const titleUrl = name.toLowerCase().trim().split(' ').join('-');
+        window.location = `/writer/${titleUrl}`;
     };
 
     return (
@@ -122,36 +127,33 @@ function WriterPage(props) {
                             <div className="writer__section">
                                 <div className="writer__table">
                                     <div className="writer__table__title">Featured Tracks</div>
-                                    <SongsTable list={featuredTracks} onSelect={val => playSong(val)} page="home" />
+                                    <SongsTable list={featuredTracks} onSelect={(val) => playSong(val)} page="home" />
                                 </div>
                             </div>
                         )}
                         <div className="writer__section">
                             <div className="writer__table__title">You May Also Like</div>
                             <div className="writer__similar">
-                                <div className="writer__similar__single">
-                                    <div className="writer__similar__overlay" />
-                                    Hill Sleepers
-                                </div>
-                                <div className="writer__similar__single">
-                                    <div className="writer__similar__overlay" />
-                                    Joseph Minadeo
-                                </div>
-                                <div className="writer__similar__single">
-                                    <div className="writer__similar__overlay" />
-                                    Insect Sounds
-                                </div>
-                                <div className="writer__similar__single">
-                                    <div className="writer__similar__overlay" />
-                                    Puffy Shapes
-                                </div>
+                                {artist.relatedArtists.map((related, index) => (
+                                    <span
+                                        key={index}
+                                        className="writer__similar__single"
+                                        style={{ backgroundImage: `url(${related.image})` }}
+                                        onClick={() => goToWriterPage(related.name)}
+                                    >
+                                        <div>
+                                            <div className="writer__similar__overlay" />
+                                            {related.name}
+                                        </div>
+                                    </span>
+                                ))}
                             </div>
                         </div>
                         {allArtistTracks && (
                             <div className="writer__section">
                                 <div className="writer__table">
                                     <div className="writer__table__title">Full Songography</div>
-                                    <SongsTable list={allArtistTracks} onSelect={val => playSong(val)} page="home" />
+                                    <SongsTable list={allArtistTracks} onSelect={(val) => playSong(val)} page="home" />
                                 </div>
                             </div>
                         )}

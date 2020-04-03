@@ -85,6 +85,7 @@
     &__similar {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr 1fr;
+
         &__single {
             height: 164px;
             border-radius: 4px;
@@ -99,12 +100,19 @@
             justify-content: center;
             transition: transform 0.3s, -webkit-transform 0.3s;
             cursor: pointer;
+            background-size: cover;
+
             &:last-child {
                 margin-right: 0;
             }
 
             &:hover {
                 transform: scale(1.05);
+            }
+
+            > div {
+                max-width: 90%;
+                text-align: center;
             }
         }
         &__overlay {
@@ -114,7 +122,7 @@
             right: 0;
             top: 0;
             bottom: 0;
-            background-color: rgba(0, 0, 0, 0.4);
+            background-color: rgba(0, 0, 0, 0.3);
             z-index: -1;
         }
     }
