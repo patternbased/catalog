@@ -28,8 +28,9 @@ class ShareController {
         const mailOptions = {
             user: 'lauraapetroaei@gmail.com',
             pass: 'wolsykmdhujxnxvg',
-            to: 'lauraapetroaei@gmail.com',
+            to: 'patternbased@gmail.com',
             from: emailData.email,
+            replyTo: emailData.email,
             subject: emailData.subject,
             text: emailData.text,
         };
@@ -51,6 +52,7 @@ class ShareController {
             pass: 'wolsykmdhujxnxvg',
             to: emailData.email,
             from: 'patternbased@gmail.com',
+            replyTo: 'patternbased@gmail.com',
             subject: emailData.subject,
             html: emailData.text,
         };
