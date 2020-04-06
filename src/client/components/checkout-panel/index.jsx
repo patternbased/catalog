@@ -17,7 +17,7 @@ import { clearCartData } from 'actions/cart';
 import './style.scss';
 
 const baseUrl =
-    process.env.NODE_ENV === 'production' ? 'https://catalog.patternbased.com' : 'https://patternbased.herokuapp.com/';
+    process.env.NODE_ENV === 'production' ? 'https://catalog.patternbased.com' : 'https://patternbased.herokuapp.com';
 
 /**
  * Checkout panel component
@@ -37,7 +37,7 @@ function CheckoutPanel({ visible, style }) {
     const [userFields, setUserFields] = useState(null);
     const [formCountry, setFormCountry] = useState('');
 
-    const completePurchase = val => {
+    const completePurchase = (val) => {
         const emailData = {
             email: userFields.email,
             subject: `PatternBased Catalog - New Order# ${val.data.orderNo}`,
@@ -63,8 +63,7 @@ function CheckoutPanel({ visible, style }) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ emailData: emailOrderData }),
-        }).then(res => {
-            
+        }).then((res) => {
             fetch('/api/email/send', {
                 method: 'POST',
                 headers: {
@@ -76,14 +75,13 @@ function CheckoutPanel({ visible, style }) {
             setOrderNo(val.data.orderNo);
             setInvoiceId(val.data.orderId);
             dispatch(clearCartData());
-            
         });
     };
 
-    const toggleErrorHovered = error => {
+    const toggleErrorHovered = (error) => {
         let errorCopy = [...errorsHovered];
         if (errorCopy.includes(error)) {
-            errorCopy = errorCopy.filter(e => e !== error);
+            errorCopy = errorCopy.filter((e) => e !== error);
         } else {
             errorCopy.push(error);
         }
@@ -215,7 +213,9 @@ function CheckoutPanel({ visible, style }) {
                                             )}
                                             <div className="checkout-panel__body__payment__fields__single">
                                                 <span>Address:</span>
-                                                {userFields.address2 && userFields.address2.length > 0 ? `${userFields.address1} ${userFields.address2}` : userFields.address1}
+                                                {userFields.address2 && userFields.address2.length > 0
+                                                    ? `${userFields.address1} ${userFields.address2}`
+                                                    : userFields.address1}
                                                 <br />
                                                 {`${userFields.city}, ${userFields.country}`}
                                             </div>
@@ -225,7 +225,7 @@ function CheckoutPanel({ visible, style }) {
                                             address={userFields}
                                             total={total}
                                             items={items}
-                                            onSuccess={val => completePurchase(val)}
+                                            onSuccess={(val) => completePurchase(val)}
                                         />
                                     </>
                                 ) : (
@@ -240,7 +240,7 @@ function CheckoutPanel({ visible, style }) {
                                                 city: '',
                                                 country: '',
                                             }}
-                                            validate={values => {
+                                            validate={(values) => {
                                                 const errors = {};
                                                 if (!values.firstName) {
                                                     errors.firstName = 'Please enter your first name.';
@@ -361,7 +361,7 @@ function CheckoutPanel({ visible, style }) {
                                                                 return (
                                                                     <CountryDropdown
                                                                         value={formCountry}
-                                                                        onChange={val => {
+                                                                        onChange={(val) => {
                                                                             console.log(val);
                                                                             setFieldValue('country', val);
                                                                             setFormCountry(val);
@@ -398,68 +398,20 @@ function CheckoutPanel({ visible, style }) {
  * @returns {String}
  */
 const _getOrderConfirmationHtml = (fields, subtotal, total, pItems, orderNo, licenseId, dateAdded) => {
-
-    const getItemRows = () => {
-        pItems.map((item, index) => {return `<td class="esd-structure esdev-adapt-off es-p10t es-p10b es-p20r es-p40l" align="left">
-        <table width="540" cellpadding="0" cellspacing="0" class="esdev-mso-table">
-            <tbody>
-                <tr>
-                    <td class="esdev-mso-td" valign="top">
-                        <table cellpadding="0" cellspacing="0" class="es-left" align="left">
-                            <tbody>
-                                <tr>
-                                    <td width="368" class="esd-container-frame" align="left">
-                                        <table cellpadding="0" cellspacing="0" width="100%">
-                                            <tbody>
-                                                <tr>
-                                                    <td align="left" class="esd-block-text">
-    <p style="font-size: 14px; font-family: 'open sans', 'helvetica neue', helvetica, arial, sans-serif;">${item.type} (${item.song.title} / ${item.song.artist})</p>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                    <td width="20"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </td>
-                    <td class="esdev-mso-td" valign="top">
-                        <table cellpadding="0" cellspacing="0" class="es-right" align="right">
-                            <tbody>
-                                <tr>
-                                    <td width="152" align="left" class="esd-container-frame">
-                                        <table cellpadding="0" cellspacing="0" width="100%">
-                                            <tbody>
-                                                <tr>
-                                                    <td align="left" class="esd-block-text">
-                                                        <table style="width: 100%;" class="cke_show_border" cellspacing="1" cellpadding="1" border="0">
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td style="text-align: center; font-size: 13px; line-height: 100%;" width="15%" align="center">
-                                                                        <p style="font-family: 'open sans', 'helvetica neue', helvetica, arial, sans-serif;">1</p>
-                                                                    </td>
-                                                                    <td style="text-align: center; font-size: 13px; line-height: 100%;" width="30%">
-    <p style="font-family: 'open sans', 'helvetica neue', helvetica, arial, sans-serif;">${item.price}</p>
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </td>`})
-    }
-
+    const renderItems = () => {
+        return `<tbody>
+                ${pItems.map(
+                    (item, index) =>
+                        `<tr key={${index}}>
+                <td class="invoice__body__table__long" style="color: #444;font-size: 14px;line-height: 20px;text-align: center;padding-left: 50px;text-align: left;">
+                    ${item.type} (${item.song.title} / ${item.song.artist})
+                </td>
+                <td style="color: #444;font-size: 14px;line-height: 20px;text-align: center;">1</td>
+                <td style="color: #444;font-size: 14px;line-height: 20px;text-align: center;padding-right: 50px;">$${item.price}</td>
+            </tr>`
+                )}
+            </tbdoy>`;
+    };
     const template = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
     <html>
     
@@ -476,432 +428,199 @@ const _getOrderConfirmationHtml = (fields, subtotal, total, pItems, orderNo, lic
         </style>
         <![endif]-->
         <!--[if gte mso 9]><style>sup { font-size: 100% !important; }</style><![endif]-->
-        <!--[if !mso]><!-- -->
-        <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700,700i" rel="stylesheet">
+        <!--[if !mso]><!-- --
         <!--<![endif]-->
     </head>
     
     <body>
-        <div class="es-wrapper-color">
-            <!--[if gte mso 9]>
-                <v:background xmlns:v="urn:schemas-microsoft-com:vml" fill="t">
-                    <v:fill type="tile" color="#f6f6f6"></v:fill>
-                </v:background>
-            <![endif]-->
-            <table class="es-wrapper" width="100%" cellspacing="0" cellpadding="0">
-                <tbody>
+        <div
+        class="email"
+        style="width: 600px;margin: 0 auto;padding-top: 30px;background-color: white"
+    >
+        <div class="heading">
+            <div class="logo" style="text-align: center;">
+                <img
+                    src="https://pblibrary.s3.us-east-2.amazonaws.com/emailImages/logo.png"
+                    style="width: 36px;height: 36px;"
+                />
+            </div>
+            <div
+                class="title"
+                style="font-size: 24px;line-height: 29px;font-weight: bold;text-align: center;color: #444;margin: 10px 0 30px;"
+            >
+                ORDER CONFIRMATION
+            </div>
+            <div
+                class="subtitle"
+                style="font-size: 14px;line-height: 19px;text-align: center;color: #444;margin-bottom: 20px;"
+            >
+                Dear ${fields.firstName} ${fields.lastName},
+                <br />
+                We have received your order, thank you!
+            </div>
+            <div
+                class="orderno"
+                style="text-align: center;font-size: 16px;line-height: 22px;font-weight: bold;color: #444;font-weight: bold;"
+            >
+                Order# ${orderNo} (<a
+                    href="${baseUrl}/invoice/${licenseId}"
+                    style="text-align: center;font-size: 16px;line-height: 22px;font-weight: bold;color: #0092c5;font-weight: bold;"
+                >
+                    View Invoice
+                </a>)
+            </div>
+            <div
+                class="date"
+                style="font-size: 14px;line-height: 19px;text-align: center;color: #444;margin-bottom: 20px;"
+            >
+                Date: ${dateAdded}
+            </div>
+        </div>
+        <div class="invoice__body__table">
+            <table
+                style="width: 100%;border-collapse: collapse;"
+            >
+                <thead style="background-color: #d8d8d8;">
                     <tr>
-                        <td class="esd-email-paddings" valign="top">
-                            <table class="es-content esd-header-popover" cellspacing="0" cellpadding="0" align="center">
-                                <tbody>
-                                    <tr>
-                                        <td class="esd-stripe" align="center">
-                                            <table class="es-content-body" width="600" cellspacing="0" cellpadding="0" bgcolor="#ffffff" align="center">
-                                                <tbody>
-                                                    <tr>
-                                                        <td class="esd-structure es-p20t es-p20b es-p20r es-p20l" align="left">
-                                                            <table cellspacing="0" cellpadding="0" width="100%">
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td class="esd-container-frame" width="560" align="left">
-                                                                            <table width="100%" cellspacing="0" cellpadding="0">
-                                                                                <tbody>
-                                                                                    <tr>
-                                                                                        <td align="center" class="esd-block-image" style="font-size: 0px;"><a target="_blank" href="https://patternbased.herokuapp.com/"><img class="adapt-img" src="https://fmdjba.stripocdn.email/content/guids/CABINET_23014a4eedafcaf27f17a15d0386b971/images/25341585650046275.png" alt style="display: block;" width="37"></a></td>
-                                                                                    </tr>
-                                                                                    <tr>
-                                                                                        <td align="center" class="esd-block-text es-p10t">
-                                                                                            <p style="font-size: 24px;"><strong>ORDER CONFIRMATION</strong></p>
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                    <tr>
-                                                                                        <td align="center" class="esd-block-text es-p30t es-p20b">
-                                                                                            <p style="font-family: &quot;open sans&quot;, &quot;helvetica neue&quot;, helvetica, arial, sans-serif;">Dear ${fields.firstName} ${fields.lastName},<br>We have received your order, thank you!</p>
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                    <tr>
-                                                                                        <td align="center" class="esd-block-text es-p20b" esd-links-underline="none">
-                                                                                            <p style="font-family: 'open sans', 'helvetica neue', helvetica, arial, sans-serif; color: #444444;"><span style="font-size:16px;"><strong>Order# ${orderNo} (<a target="_blank" style="color: #0092c5; font-size: 16px; text-decoration: none;" href="${`${baseUrl}/invoice/${licenseId}`}">View Invoice</a>)</strong></span><br>Date: ${dateAdded}</p>
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                </tbody>
-                                                                            </table>
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <table cellpadding="0" cellspacing="0" class="es-content esd-footer-popover" align="center">
-                                <tbody>
-                                    <tr>
-                                        <td class="esd-stripe" align="center" esd-custom-block-id="55553">
-                                            <table bgcolor="#ffffff" class="es-content-body" align="center" cellpadding="0" cellspacing="0" width="600">
-                                                <tbody>
-                                                    <tr>
-                                                        <td class="esd-structure esdev-adapt-off es-p5t es-p5b es-p20r es-p40l" align="left" bgcolor="#D8D8D8" style="background-color: #d8d8d8;">
-                                                            <table width="540" cellpadding="0" cellspacing="0" class="esdev-mso-table">
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td class="esdev-mso-td" valign="top">
-                                                                            <table cellpadding="0" cellspacing="0" class="es-left" align="left">
-                                                                                <tbody>
-                                                                                    <tr>
-                                                                                        <td width="368" class="esd-container-frame" align="left">
-                                                                                            <table cellpadding="0" cellspacing="0" width="100%">
-                                                                                                <tbody>
-                                                                                                    <tr>
-                                                                                                        <td class="esd-block-text" align="left">
-                                                                                                            <h4 style="font-size: 12px; font-family: 'open sans', 'helvetica neue', helvetica, arial, sans-serif; color: #444444;">Description (Track title / Artist)</h4>
-                                                                                                        </td>
-                                                                                                    </tr>
-                                                                                                </tbody>
-                                                                                            </table>
-                                                                                        </td>
-                                                                                        <td width="20"></td>
-                                                                                    </tr>
-                                                                                </tbody>
-                                                                            </table>
-                                                                        </td>
-                                                                        <td class="esdev-mso-td" valign="top">
-                                                                            <table cellpadding="0" cellspacing="0" class="es-right" align="right">
-                                                                                <tbody>
-                                                                                    <tr>
-                                                                                        <td width="152" align="left" class="esd-container-frame">
-                                                                                            <table cellpadding="0" cellspacing="0" width="100%">
-                                                                                                <tbody>
-                                                                                                    <tr>
-                                                                                                        <td align="left" class="esd-block-text">
-                                                                                                            <table style="width: 100%;" class="cke_show_border" cellspacing="1" cellpadding="1" border="0">
-                                                                                                                <tbody>
-                                                                                                                    <tr>
-                                                                                                                        <td style="text-align: center; font-size: 13px; line-height: 100%;" width="60" align="center">
-                                                                                                                            <p style="font-size: 12px; font-family: 'open sans', 'helvetica neue', helvetica, arial, sans-serif;"><b>Amount</b></p>
-                                                                                                                        </td>
-                                                                                                                        <td style="text-align: center; font-size: 13px; line-height: 100%;" width="100">
-                                                                                                                            <p style="font-size: 12px; font-family: 'open sans', 'helvetica neue', helvetica, arial, sans-serif;"><strong>Price</strong></p>
-                                                                                                                        </td>
-                                                                                                                    </tr>
-                                                                                                                </tbody>
-                                                                                                            </table>
-                                                                                                        </td>
-                                                                                                    </tr>
-                                                                                                </tbody>
-                                                                                            </table>
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                </tbody>
-                                                                            </table>
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        ${getItemRows()}
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="esd-structure" align="left" style="background-position: center center;">
-                                                            <table cellpadding="0" cellspacing="0" width="100%">
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td width="600" class="esd-container-frame" align="center" valign="top">
-                                                                            <table cellpadding="0" cellspacing="0" width="100%">
-                                                                                <tbody>
-                                                                                    <tr>
-                                                                                        <td align="center" class="esd-block-spacer" style="font-size: 0px;">
-                                                                                            <table border="0" width="100%" height="100%" cellpadding="0" cellspacing="0">
-                                                                                                <tbody>
-                                                                                                    <tr>
-                                                                                                        <td style="border-bottom: 4px solid #d8d8d8; background: none; height: 1px; width: 100%; margin: 0px;"></td>
-                                                                                                    </tr>
-                                                                                                </tbody>
-                                                                                            </table>
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                </tbody>
-                                                                            </table>
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="esd-structure esdev-adapt-off es-p10t es-p10b es-p20r es-p40l" align="left">
-                                                            <table width="540" cellpadding="0" cellspacing="0" class="esdev-mso-table">
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td class="esdev-mso-td" valign="top">
-                                                                            <table cellpadding="0" cellspacing="0" class="es-left" align="left">
-                                                                                <tbody>
-                                                                                    <tr>
-                                                                                        <td width="356" class="esd-container-frame" align="left">
-                                                                                            <table cellpadding="0" cellspacing="0" width="100%">
-                                                                                                <tbody>
-                                                                                                    <tr>
-                                                                                                        <td align="left" class="esd-block-text">
-                                                                                                            <p style="font-size: 14px; font-family: 'open sans', 'helvetica neue', helvetica, arial, sans-serif;">Subtotal</p>
-                                                                                                        </td>
-                                                                                                    </tr>
-                                                                                                </tbody>
-                                                                                            </table>
-                                                                                        </td>
-                                                                                        <td width="20"></td>
-                                                                                    </tr>
-                                                                                </tbody>
-                                                                            </table>
-                                                                        </td>
-                                                                        <td class="esdev-mso-td" valign="top">
-                                                                            <table cellpadding="0" cellspacing="0" class="es-right" align="right">
-                                                                                <tbody>
-                                                                                    <tr>
-                                                                                        <td width="164" align="left" class="esd-container-frame">
-                                                                                            <table cellpadding="0" cellspacing="0" width="100%">
-                                                                                                <tbody>
-                                                                                                    <tr>
-                                                                                                        <td align="left" class="esd-block-text">
-                                                                                                            <table style="width: 100%;" class="cke_show_border" cellspacing="1" cellpadding="1" border="0">
-                                                                                                                <tbody>
-                                                                                                                    <tr>
-                                                                                                                        <td style="text-align: center; font-size: 13px; line-height: 100%;" width="15%" align="center">
-                                                                                                                            <p><br></p>
-                                                                                                                        </td>
-                                                                                                                        <td style="text-align: center; font-size: 13px; line-height: 100%;" width="30%">
-                                                                                                                            <p style="font-family: 'open sans', 'helvetica neue', helvetica, arial, sans-serif;">$${subtotal}</p>
-                                                                                                                        </td>
-                                                                                                                    </tr>
-                                                                                                                </tbody>
-                                                                                                            </table>
-                                                                                                        </td>
-                                                                                                    </tr>
-                                                                                                </tbody>
-                                                                                            </table>
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                </tbody>
-                                                                            </table>
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="esd-structure es-p5t es-p5b es-p20r es-p40l" align="left" bgcolor="#d8d8d8" style="background-color: #d8d8d8;">
-                                                            <!--[if mso]><table width="540" cellpadding="0" cellspacing="0"><tr><td width="356" valign="top"><![endif]-->
-                                                            <table cellpadding="0" cellspacing="0" class="es-left" align="left">
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td width="356" class="es-m-p0r es-m-p20b esd-container-frame" valign="top" align="center">
-                                                                            <table cellpadding="0" cellspacing="0" width="100%">
-                                                                                <tbody>
-                                                                                    <tr>
-                                                                                        <td align="left" class="esd-block-text">
-                                                                                            <p style="font-family: &quot;open sans&quot;, &quot;helvetica neue&quot;, helvetica, arial, sans-serif; color: #444444;"><strong>Total</strong></p>
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                </tbody>
-                                                                            </table>
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                            <!--[if mso]></td><td width="20"></td><td width="164" valign="top"><![endif]-->
-                                                            <table cellpadding="0" cellspacing="0" align="right">
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td width="164" align="left" class="esd-container-frame">
-                                                                            <table cellpadding="0" cellspacing="0" width="100%">
-                                                                                <tbody>
-                                                                                    <tr>
-                                                                                        <td align="left" class="esd-block-text es-p40r">
-                                                                                            <p style="font-family: &quot;open sans&quot;, &quot;helvetica neue&quot;, helvetica, arial, sans-serif; text-align: right;"><strong>$${total}</strong></p>
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                </tbody>
-                                                                            </table>
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                            <!--[if mso]></td></tr></table><![endif]-->
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                    <td width="600" class="esd-container-frame" align="center" valign="top" esdev-config="h1">
-                                                    <table cellpadding="0" cellspacing="0" width="100%">
-                                                        <tbody>
-                                                            <tr>
-                                                                <td align="center" class="esd-block-button es-p40t es-p30b">
-                                                                    <span class="es-button-border" style="border-radius: 4px; border-color: #2cb543; background: #444444; border-width: 0px;"><a href="${baseUrl}/download/${licenseId}" class="es-button" target="_blank" style="font-family: &quot;open sans&quot;, &quot;helvetica neue&quot;, helvetica, arial, sans-serif; font-size: 14px; font-weight: bold; background: #444444; border-color: #444444; border-radius: 4px; border-width: 10px 50px;">Download .mp3</a></span></td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="esd-structure es-p30b" align="left">
-                                                            <!--[if mso]><table width="600" cellpadding="0" cellspacing="0"><tr><td width="125" valign="top"><![endif]-->
-                                                            <table cellpadding="0" cellspacing="0" class="es-left" align="left">
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td width="125" class="es-m-p0r es-m-p20b esd-container-frame" valign="top" align="center">
-                                                                            <table cellpadding="0" cellspacing="0" width="100%">
-                                                                                <tbody>
-                                                                                    <tr>
-                                                                                        <td align="right" class="esd-block-image" style="font-size: 0px;"><a target="_blank"><img class="adapt-img" src="https://fmdjba.stripocdn.email/content/guids/CABINET_23014a4eedafcaf27f17a15d0386b971/images/55891585651596399.png" alt style="display: block;" width="48"></a></td>
-                                                                                    </tr>
-                                                                                </tbody>
-                                                                            </table>
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                            <!--[if mso]></td><td width="15"></td><td width="460" valign="top"><![endif]-->
-                                                            <table cellpadding="0" cellspacing="0" align="right">
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td width="460" align="left" class="esd-container-frame">
-                                                                            <table cellpadding="0" cellspacing="0" width="100%">
-                                                                                <tbody>
-                                                                                    <tr>
-                                                                                        <td align="left" class="esd-block-text es-p5t es-p40r es-p20l">
-                                                                                            <p style="font-family: 'open sans', 'helvetica neue', helvetica, arial, sans-serif;">Links will expire in 7 days. Please contact us with your Order# to re-issue download links.</p>
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                </tbody>
-                                                                            </table>
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                            <!--[if mso]></td></tr></table><![endif]-->
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="esd-structure es-p30b" align="left">
-                                                            <!--[if mso]><table width="600" cellpadding="0" cellspacing="0"><tr><td width="125" valign="top"><![endif]-->
-                                                            <table cellpadding="0" cellspacing="0" class="es-left" align="left">
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td width="125" class="es-m-p0r es-m-p20b esd-container-frame" valign="top" align="center">
-                                                                            <table cellpadding="0" cellspacing="0" width="100%">
-                                                                                <tbody>
-                                                                                    <tr>
-                                                                                        <td align="right" class="esd-block-image" style="font-size: 0px;"><a target="_blank"><img class="adapt-img" src="https://fmdjba.stripocdn.email/content/guids/CABINET_23014a4eedafcaf27f17a15d0386b971/images/14811585652007896.png" alt style="display: block;" width="48"></a></td>
-                                                                                    </tr>
-                                                                                </tbody>
-                                                                            </table>
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                            <!--[if mso]></td><td width="15"></td><td width="460" valign="top"><![endif]-->
-                                                            <table cellpadding="0" cellspacing="0" align="right">
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td width="460" align="left" class="esd-container-frame">
-                                                                            <table cellpadding="0" cellspacing="0" width="100%">
-                                                                                <tbody>
-                                                                                    <tr>
-                                                                                        <td align="left" class="esd-block-text es-p5t es-p40r es-p20l">
-                                                                                            <p style="font-family: 'open sans', 'helvetica neue', helvetica, arial, sans-serif;">Stems are available for most of our music upon request. <br>Feel free to contact us with your Order#.</p>
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                </tbody>
-                                                                            </table>
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                            <!--[if mso]></td></tr></table><![endif]-->
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="esd-structure es-p30t es-p10b" align="left" bgcolor="#d8d8d8" style="background-color: #d8d8d8;">
-                                                            <table cellpadding="0" cellspacing="0" width="100%">
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td width="600" class="esd-container-frame" align="center" valign="top">
-                                                                            <table cellpadding="0" cellspacing="0" width="100%">
-                                                                                <tbody>
-                                                                                    <tr>
-                                                                                        <td align="center" class="esd-block-image" style="font-size: 0px;"><a target="_blank"><img class="adapt-img" src="https://fmdjba.stripocdn.email/content/guids/CABINET_23014a4eedafcaf27f17a15d0386b971/images/1421585652094308.png" alt style="display: block;" width="200"></a></td>
-                                                                                    </tr>
-                                                                                </tbody>
-                                                                            </table>
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="esd-structure" align="left" bgcolor="#d8d8d8" style="background-color: #d8d8d8;">
-                                                            <table cellpadding="0" cellspacing="0" width="100%">
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td width="600" class="esd-container-frame" align="center" valign="top">
-                                                                            <table cellpadding="0" cellspacing="0" width="100%">
-                                                                                <tbody>
-                                                                                    <tr>
-                                                                                        <td align="center" class="esd-block-text" esd-links-color="#444444" esd-links-underline="underline">
-                                                                                            <p style="font-size: 12px; font-family: 'open sans', 'helvetica neue', helvetica, arial, sans-serif;"><a target="_blank" style="font-size: 12px; font-family: 'open sans', 'helvetica neue', helvetica, arial, sans-serif; text-align: center; color: #444444; text-decoration: underline;" href="https://legal.patternbased.com/privacy-policy/">Privacy Policy</a> &nbsp; &nbsp;<a target="_blank" style="font-size: 12px; font-family: 'open sans', 'helvetica neue', helvetica, arial, sans-serif; color: #444444; text-decoration: underline;" href="https://legal.patternbased.com/license-agreement/">License Agreement</a></p>
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                </tbody>
-                                                                            </table>
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="esd-structure es-p5t es-p30b" align="left" bgcolor="#d8d8d8" style="background-color: #d8d8d8;">
-                                                            <table cellpadding="0" cellspacing="0" width="100%">
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td width="600" class="esd-container-frame" align="center" valign="top">
-                                                                            <table cellpadding="0" cellspacing="0" width="100%">
-                                                                                <tbody>
-                                                                                    <tr>
-                                                                                        <td align="left" class="esd-block-text">
-                                                                                            <p style="font-size: 12px; font-family: &quot;open sans&quot;, &quot;helvetica neue&quot;, helvetica, arial, sans-serif; text-align: center;">© COPYRIGHT 2018-2020 PatternBased Corp</p>
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                </tbody>
-                                                                            </table>
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <th
+                            class="invoice__body__table__long"
+                            style="height: 30px;color: #444;font-size: 12px;font-weight: bold;line-height: 17px;text-align: center;padding-left: 50px;text-align: left;"
+                        >
+                            Description (Track title / Artist)
+                        </th>
+                        <th
+                            style="height: 30px;color: #444;font-size: 12px;font-weight: bold;line-height: 17px;text-align: center;"
+                        >
+                            Amount
+                        </th>
+                        <th
+                            style="height: 30px;color: #444;font-size: 12px;font-weight: bold;line-height: 17px;text-align: center;padding-right: 50px;"
+                        >
+                            Price
+                        </th>
+                    </tr>
+                </thead>
+                ${renderItems()}
+                <tbody>
+                    <tr class="border" style="border-top: 4px solid #d8d8d8;">
+                        <td
+                            class="invoice__body__table__long"
+                            style="padding-top: 10px;padding-bottom: 10px;color: #444;font-size: 14px;line-height: 20px;text-align: left;padding-left: 50px;"
+                        >
+                            Subtotal
+                        </td>
+                        <td
+                            style="padding-top: 10px;padding-bottom: 10px;color: #444;font-size: 14px;line-height: 20px;text-align: center;"
+                        ></td>
+                        <td style="padding-top: 10px;padding-bottom: 10px;color: #444;font-size: 14px;line-height: 20px;text-align: center;padding-right: 50px;"
+                        >
+                            $${subtotal}
                         </td>
                     </tr>
                 </tbody>
+                <thead class="footer" style="background-color: #d8d8d8;">
+                    <tr>
+                        <th class="invoice__body__table__long" style="font-size: 14px;height: 30px;color: #444;font-weight: bold;line-height: 17px;text-align: center;padding-left: 50px;text-align: left;">
+                            Total
+                        </th>
+                        <th style="font-size: 14px;height: 30px;color: #444;font-weight: bold;line-height: 17px;text-align: center;"></th>
+                        <th style="font-size: 14px;height: 30px;color: #444;font-weight: bold;line-height: 17px;text-align: center;text-align: center;padding-right: 50px;">$${total}</th>
+                    </tr>
+                </thead>
             </table>
         </div>
+        <div
+            class="download"
+            style="text-align: center;margin: 40px 0 30px;"
+        >
+            <a
+                href="${baseUrl}/download/${licenseId}}"
+                style="width: 210px;border-radius: 4px;background-color: #444444;display: block;text-align: center;padding: 10px 0;margin: 0 auto;color: white;text-decoration: none;font-size: 14px;font-weight: bold;line-height: 19px;"
+            >
+                Download .mp3
+            </a>
+        </div>
+        <div class="texts">
+            <div
+                class="texts__single"
+                style="max-width: 440px;margin: 0 auto;display: flex;align-items: center;justify-content: center;margin-bottom: 26px;"
+            >
+                <img
+                    src="https://pblibrary.s3.us-east-2.amazonaws.com/emailImages/email_icon_blue.png"
+                    style="width: 48px;height: 48px;margin-right: 15px;box-sizing: border-box;"
+                />
+                <div
+                    class="texts__text"
+                    style="font-size: 14px;line-height: 20px;color: #444;"
+                >
+                    Links will expire in 14 days. Please
+                    <a
+                        href="mailto:patternbased@gmail.com"
+                        style="color: #0092c5;font-size: 14px;line-height: 20px;"
+                    >
+                        contact us
+                    </a>
+                    with your Order# to re-issue download links.
+                </div>
+            </div>
+            <div
+                class="texts__single"
+                style="max-width: 440px;margin: 0 auto;display: flex;align-items: center;justify-content: center;margin-bottom: 26px;"
+            >
+                <img
+                    src="https://pblibrary.s3.us-east-2.amazonaws.com/emailImages/Stems_icon_blue.png"
+                    style="width: 48px;height: 48px;margin-right: 15px;box-sizing: border-box;"
+                />
+                <div
+                    class="texts__text"
+                    style="font-size: 14px;line-height: 20px;color: #444;"
+                >
+                    Stems are available for most of our music upon request. Feel free to
+                    <a
+                        href="mailto:patternbased@gmail.com"
+                        style="color: #0092c5;font-size: 14px;line-height: 20px;"
+                    >
+                        contact us
+                    </a>
+                    with your Order#.
+                </div>
+            </div>
+        </div>
+        <div
+            class="footer"
+            style="background-color: #d8d8d8;padding: 30px 175px;"
+        >
+            <img
+                src="https://pblibrary.s3.us-east-2.amazonaws.com/emailImages/PatternBased_CatalogSearch_logo_v2.png"
+                style="width: 200px;margin: 0 auto 10px;display: block;"
+            />
+            <div class="links" style="text-align: center;">
+                <a
+                    href="https://legal.patternbased.com/privacy-policy/"
+                    style="font-size: 12px;line-height: 18px;color: #444;margin-right: 20px;"
+                >
+                    Privacy Policy
+                </a>
+                <a
+                    href="https://legal.patternbased.com/license-agreement/"
+                    style="font-size: 12px;line-height: 18px;color: #444;"
+                >
+                    License agreement
+                </a>
+            </div>
+            <div
+                class="copyright"
+                style="font-size: 12px;line-height: 18px;color: #444;"
+            >
+                © COPYRIGHT 2018-2020 PatternBased Corp
+            </div>
+        </div>
+    </div>
     </body>
     
     </html>`;
     return template;
-}
+};
 
 CheckoutPanel.displayName = 'CheckoutPanel';
 

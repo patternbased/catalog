@@ -14,7 +14,7 @@ function Invoice(props) {
 
     useEffect(() => {
         if (id) {
-            api.get(`/api/invoice/${id}`).then(res => {
+            api.get(`/api/invoice/${id}`).then((res) => {
                 setInvoice(res.invoice);
             });
         }

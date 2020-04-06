@@ -9,7 +9,6 @@ import Writer from './pages/writer';
 import Invoice from './pages/invoice';
 import Download from './pages/download';
 import NotFound from './pages/not-found';
-import Email from './pages/email'
 
 /**
  * Router component
@@ -26,7 +25,6 @@ function Routes() {
                     <Route path="/writer/:name" exact component={Writer} />
                     <Route path="/invoice/:id" exact component={Invoice} />
                     <Route path="/download/:id" exact component={Download} />
-                    <Route path="/email/:id" exact component={Email} />
                     <Route path="/not-found" exact component={NotFound} />
                     <Redirect from="*" to="/not-found" />
                 </Switch>
