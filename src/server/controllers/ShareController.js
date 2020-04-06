@@ -36,7 +36,7 @@ class ShareController {
         const send = require('gmail-send')(mailOptions);
         send(mailOptions)
             .then(({ result, full }) => console.log(result))
-            .catch(error => console.error('ERROR', error));
+            .catch((error) => console.error('ERROR', error));
         return true;
     }
 
@@ -57,7 +57,7 @@ class ShareController {
         const send = require('gmail-send')(mailOptions);
         send(mailOptions)
             .then(({ result, full }) => console.log(result))
-            .catch(error => console.error('ERROR', error));
+            .catch((error) => console.error('ERROR', error));
         return true;
     }
 }

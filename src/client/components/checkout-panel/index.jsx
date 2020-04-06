@@ -41,7 +41,12 @@ function CheckoutPanel({ visible, style }) {
         const emailData = {
             email: userFields.email,
             subject: `PatternBased Catalog - New Order# ${val.data.orderNo}`,
-            text: `Name: ${userFields.firstName} ${userFields.lastName}, Email: ${userFields.email}, Company: ${userFields.company}`,
+            text: `Name: ${userFields.firstName} ${userFields.lastName}, 
+            Email: ${userFields.email}, 
+            Company: ${userFields.company},
+            Purchased Items: ${items.map((item) => {
+                return `${item.type} (${item.song.title} / ${item.song.artist})`;
+            })}`,
         };
         const emailOrderData = {
             email: userFields.email,
