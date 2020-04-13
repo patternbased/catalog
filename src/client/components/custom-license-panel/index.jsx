@@ -50,10 +50,10 @@ function CustomLicensePanel({ visible, chosenType, style }) {
 
     const dispatch = useDispatch();
 
-    const toggleErrorHovered = error => {
+    const toggleErrorHovered = (error) => {
         let errorCopy = [...errorsHovered];
         if (errorCopy.includes(error)) {
-            errorCopy = errorCopy.filter(e => e !== error);
+            errorCopy = errorCopy.filter((e) => e !== error);
         } else {
             errorCopy.push(error);
         }
@@ -120,7 +120,7 @@ function CustomLicensePanel({ visible, chosenType, style }) {
                                         url: '',
                                         agreement: false,
                                     }}
-                                    validate={values => {
+                                    validate={(values) => {
                                         const errors = {};
                                         if (!values.name) {
                                             errors.name = 'Please enter a name.';
@@ -142,6 +142,8 @@ function CustomLicensePanel({ visible, chosenType, style }) {
                                         setIsValid(Object.keys(errors).length === 0);
                                         return errors;
                                     }}
+                                    validateOnBlur={false}
+                                    validateOnChange={false}
                                     onSubmit={(values, { setSubmitting }) => {
                                         const emailData = {
                                             email: values.email,
@@ -154,7 +156,7 @@ function CustomLicensePanel({ visible, chosenType, style }) {
                                                 'Content-Type': 'application/json',
                                             },
                                             body: JSON.stringify({ emailData: emailData }),
-                                        }).then(res => {
+                                        }).then((res) => {
                                             setTimeout(() => {
                                                 setIsSuccess(true);
                                                 setSubmitting(false);

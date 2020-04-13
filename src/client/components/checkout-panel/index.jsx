@@ -271,6 +271,8 @@ function CheckoutPanel({ visible, style }) {
                                                 }
                                                 return errors;
                                             }}
+                                            validateOnBlur={false}
+                                            validateOnChange={false}
                                             onSubmit={(values, { setSubmitting }) => {
                                                 setUserFields(values);
                                                 setTimeout(() => {

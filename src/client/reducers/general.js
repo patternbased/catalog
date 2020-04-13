@@ -38,6 +38,23 @@ const setState = (state, action) => {
             checkoutOpened: false,
             [action.label]: action.value,
         };
+    } else if (action.label === 'menuOpened' && action.value) {
+        return {
+            ...state,
+            queueOpened: false,
+            similarOpened: false,
+            reqSuggestionsOpened: false,
+            customWorkOpened: false,
+            customLicenseOpened: false,
+            specialRateOpened: false,
+            fullLicenseOpened: false,
+            contactOpened: false,
+            reqComposingOpened: false,
+            cartOpened: false,
+            licenseOpened: false,
+            checkoutOpened: false,
+            [action.label]: action.value,
+        };
     } else if (action.label === 'cartOpened' && action.value) {
         return {
             ...state,
