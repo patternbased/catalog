@@ -159,7 +159,7 @@ function WriterPage(props) {
                         )}
                     </main>
                 )}
-                {songClicked && currentSong && <MusicPlayer />}
+                {songClicked && currentSong && <MusicPlayer play={songClicked} />}
             </div>
         </>
     );

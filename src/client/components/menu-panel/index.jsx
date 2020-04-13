@@ -7,6 +7,8 @@ import MenuFooter from './menu-footer';
 
 import { setState } from 'actions/general';
 
+import CloseIcon from 'assets/images/Close_Icon_Gray.svg';
+
 import './style.scss';
 
 /**
@@ -29,6 +31,7 @@ function MenuPanel({ visible, style }) {
     return (
         <div>
             <div className={panelClass} style={style}>
+                <CloseIcon onClick={() => dispatch(setState('menuOpened', false))} className="menu-panel__close" />
                 <div className="menu-panel__container">
                     <div className="menu-panel__menu">
                         <div className="menu-panel__menu__link">About</div>

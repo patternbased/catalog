@@ -58,42 +58,44 @@ function SongsTable({ list, onSelect, listName, page, short = false, extraClass 
         window.scrollTo(0, 0);
     }, [appliedFilters]);
 
-    const addToHovered = index => {
+    const addToHovered = (index) => {
         let copyHovered = [...hovered];
         copyHovered.push(index);
         setHovered(copyHovered);
     };
 
-    const removeFromHovered = index => {
+    const removeFromHovered = (index) => {
         let copyHovered = [...hovered];
-        setHovered(copyHovered.filter(x => x !== index));
+        setHovered(copyHovered.filter((x) => x !== index));
     };
 
     const checkIfHovered = useCallback(
-        index => {
+        (index) => {
             return hovered.indexOf(index) > -1;
         },
         [hovered]
     );
 
-    const playSong = item => {
+    const playSong = (item) => {
         onSelect(item);
         dispatch(setCurrentSong(item));
         dispatch(addToQueue(item));
     };
 
-    const getRowClass = index =>
+    const getRowClass = (index) =>
         classnames('table__body__row', {
             'table__body__row--hovered': checkIfHovered(index),
         });
 
     const addListToQueue = () => {
+        onSelect(list[0]);
+        dispatch(setCurrentSong(list[0]));
         dispatch(addToQueue({ list: list, name: createPlaylistName() }));
     };
 
     const createPlaylistName = (isShare = false) => {
         let label = '';
-        Object.keys(appliedFilters).map(filter => {
+        Object.keys(appliedFilters).map((filter) => {
             switch (filter) {
                 case 'rhythm':
                     label += isShare ? '<strong>R</strong> ' : '<strong>RTM</strong>';
@@ -167,7 +169,7 @@ function SongsTable({ list, onSelect, listName, page, short = false, extraClass 
         }
     };
 
-    const openShareModal = item => {
+    const openShareModal = (item) => {
         setShareItem(item);
         setShareOpened(true);
     };
@@ -191,7 +193,7 @@ function SongsTable({ list, onSelect, listName, page, short = false, extraClass 
         const shareData = {
             name: shareResultsName,
             type: 'search',
-            songs: songs.map(s => s.pbId),
+            songs: songs.map((s) => s.pbId),
             shareId: shareListId,
             filters: appliedFilters,
         };
@@ -201,7 +203,7 @@ function SongsTable({ list, onSelect, listName, page, short = false, extraClass 
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ data: shareData }),
-        }).then(res => {
+        }).then((res) => {
             setShareLinkCopied(true);
         });
     };
@@ -219,7 +221,7 @@ function SongsTable({ list, onSelect, listName, page, short = false, extraClass 
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ data: shareData }),
-        }).then(res => {
+        }).then((res) => {
             setShareSongLinkCopied(true);
         });
     };
@@ -229,11 +231,8 @@ function SongsTable({ list, onSelect, listName, page, short = false, extraClass 
         window.location = `/song/${id}-${titleUrl}`;
     };
 
-    const goToArtistPage = name => {
-        const titleUrl = name
-            .toLowerCase()
-            .split(' ')
-            .join('-');
+    const goToArtistPage = (name) => {
+        const titleUrl = name.toLowerCase().split(' ').join('-');
         window.location = `/artist/${titleUrl}`;
     };
 
@@ -386,12 +385,12 @@ function SongsTable({ list, onSelect, listName, page, short = false, extraClass 
                                     </div>
                                     <div className="table__body__row-flow">
                                         {TABLE_FLOW_SHAPES.find(
-                                            x => x.name.toLowerCase() === item.arc.toLowerCase()
+                                            (x) => x.name.toLowerCase() === item.arc.toLowerCase()
                                         ) && (
                                             <img
                                                 src={
                                                     TABLE_FLOW_SHAPES.find(
-                                                        x => x.name.toLowerCase() === item.arc.toLowerCase()
+                                                        (x) => x.name.toLowerCase() === item.arc.toLowerCase()
                                                     ).image
                                                 }
                                             />

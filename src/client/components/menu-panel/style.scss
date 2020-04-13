@@ -11,10 +11,16 @@
     z-index: 2;
     right: -300px;
     height: calc(100vh - 60px);
-    padding-top: 40px;
 
     &--visible {
         right: 0;
+    }
+
+    &__close {
+        cursor: pointer;
+        width: 25px;
+        height: 25px;
+        margin: 15px 0 13px 15px;
     }
 
     &__menu {

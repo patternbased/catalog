@@ -31,8 +31,8 @@ const baseUrl =
  * Music Player component
  * @returns {React.Component}
  */
-function MusicPlayer({ list }) {
-    const [currentPlaying, setCurrentPlaying] = useState([]);
+function MusicPlayer({ list, play }) {
+    const [currentPlaying, setCurrentPlaying] = useState({});
     const [isPlaying, setIsPlaying] = useState(false);
     const [songHovered, setSongHovered] = useState(false);
     const [elapsed, setElapsed] = useState(0);
@@ -52,7 +52,7 @@ function MusicPlayer({ list }) {
 
     useEffect(() => {
         setCurrentPlaying(currentSong);
-        setIsPlaying(true);
+        play && setIsPlaying(true);
     }, [currentSong]);
 
     const handleSongHover = () => {
@@ -61,18 +61,18 @@ function MusicPlayer({ list }) {
         }
     };
 
-    const updateElapsedTime = val => {
+    const updateElapsedTime = (val) => {
         musicPlayer.current.seekTo(parseFloat(val, 'seconds'));
         setElapsed(val);
     };
 
     const goToNextSong = () => {
-        const currentIndex = currentPlaylist.findIndex(x => x.pbId === currentPlaying.pbId);
+        const currentIndex = currentPlaylist.findIndex((x) => x.pbId === currentPlaying.pbId);
         let nextSong = {};
         if (currentPlaylist[currentIndex + 1]) {
             nextSong = currentPlaylist[currentIndex + 1];
         } else if (list) {
-            const listIndex = list.findIndex(x => x.pbId === currentPlaying.pbId);
+            const listIndex = list.findIndex((x) => x.pbId === currentPlaying.pbId);
             nextSong = list[listIndex + 1] ? list[listIndex + 1] : list[0];
         } else {
             nextSong = currentPlaylist[0];
@@ -82,19 +82,19 @@ function MusicPlayer({ list }) {
     };
 
     const onPrev = () => {
-        const currentIndex = currentPlaylist.findIndex(x => x.pbId === currentPlaying.pbId);
+        const currentIndex = currentPlaylist.findIndex((x) => x.pbId === currentPlaying.pbId);
         const prev = currentPlaylist[currentIndex - 1];
         dispatch(setCurrentSong(prev));
         dispatch(addToQueue(prev));
     };
 
     const onNext = () => {
-        const currentIndex = currentPlaylist.findIndex(x => x.pbId === currentPlaying.pbId);
+        const currentIndex = currentPlaylist.findIndex((x) => x.pbId === currentPlaying.pbId);
         let next = {};
         if (currentPlaylist[currentIndex + 1]) {
             next = currentPlaylist[currentIndex + 1];
         } else if (list) {
-            const listIndex = list.findIndex(x => x.pbId === currentPlaying.pbId);
+            const listIndex = list.findIndex((x) => x.pbId === currentPlaying.pbId);
             next = list[listIndex + 1] ? list[listIndex + 1] : list[0];
         } else {
             next = currentPlaylist[0];
@@ -125,7 +125,7 @@ function MusicPlayer({ list }) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ data: shareData }),
-        }).then(res => {
+        }).then((res) => {
             setShareSongLinkCopied(true);
         });
     };
@@ -135,11 +135,8 @@ function MusicPlayer({ list }) {
         window.location = `/song/${id}-${titleUrl}`;
     };
 
-    const goToArtistPage = name => {
-        const titleUrl = name
-            .toLowerCase()
-            .split(' ')
-            .join('-');
+    const goToArtistPage = (name) => {
+        const titleUrl = name.toLowerCase().split(' ').join('-');
         window.location = `/artist/${titleUrl}`;
     };
 
@@ -166,10 +163,10 @@ function MusicPlayer({ list }) {
                         ref={musicPlayer}
                         url={currentPlaying.url}
                         playing={isPlaying}
-                        onReady={e => {
+                        onReady={(e) => {
                             setDuration(e.getDuration());
                         }}
-                        onProgress={e => {
+                        onProgress={(e) => {
                             setElapsed(e.playedSeconds);
                         }}
                         onStart={() => setIsPlaying(true)}
@@ -216,7 +213,7 @@ function MusicPlayer({ list }) {
                                             max={duration}
                                             value={elapsed}
                                             step={0.0001}
-                                            onChange={val => updateElapsedTime(val)}
+                                            onChange={(val) => updateElapsedTime(val)}
                                         />
                                     </div>
                                     <p className="music-player__section--content__song__details-duration">
@@ -326,6 +323,11 @@ function _formatTime(time) {
 
 MusicPlayer.propTypes = {
     list: PropTypes.array,
+    play: PropTypes.bool,
+};
+
+MusicPlayer.defaultProps = {
+    play: false,
 };
 
 MusicPlayer.displayName = 'MusicPlayer';

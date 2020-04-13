@@ -152,7 +152,7 @@ function ArtistPage(props) {
                         )}
                     </main>
                 )}
-                {songClicked && currentSong && <MusicPlayer />}
+                {songClicked && currentSong && <MusicPlayer play={songClicked} />}
             </div>
         </>
     );

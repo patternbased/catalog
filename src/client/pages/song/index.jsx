@@ -13,7 +13,7 @@ import Header from 'components/header';
 import selectors from 'selectors';
 
 import { setState } from 'actions/general';
-import { getSongList, setCurrentSong, setCustomWorkSong, setLicenseSong } from 'actions/library';
+import { getSongList, setCurrentSong, setCustomWorkSong, setLicenseSong, addToQueue } from 'actions/library';
 
 import { TABLE_FLOW_SHAPES } from 'utils/constants';
 
@@ -78,13 +78,13 @@ function SongPage(props) {
     useEffect(() => {
         if (songId && songList) {
             dispatch(setState('filtersOpened', false));
-            const songData = songList.find(song => song.pbId === songId);
+            const songData = songList.find((song) => song.pbId === songId);
             if (songData) {
                 setSong(songData);
                 if (songData.altVersions) {
                     const altSongs = [];
-                    songData.altVersions.map(version => {
-                        const altSong = songList.find(song => song.pbId === version);
+                    songData.altVersions.map((version) => {
+                        const altSong = songList.find((song) => song.pbId === version);
                         altSong && altSongs.push(altSong);
                     });
                     setAltVersions(altSongs);
@@ -94,15 +94,10 @@ function SongPage(props) {
                 const songMoodGenre = [];
                 songData.genre.length && songMoodGenre.push(songData.genre);
                 songData.primaryMood.length && songMoodGenre.push(songData.primaryMood);
-                songData.secondaryMoods.length && songData.secondaryMoods.map(mood => songMoodGenre.push(mood));
+                songData.secondaryMoods.length && songData.secondaryMoods.map((mood) => songMoodGenre.push(mood));
                 setSongMoods(songMoodGenre);
             }
-            api.get(
-                `/api/artist/${songData.artistName
-                    .toLowerCase()
-                    .split(' ')
-                    .join('-')}`
-            ).then(res => {
+            api.get(`/api/artist/${songData.artistName.toLowerCase().split(' ').join('-')}`).then((res) => {
                 setArtistInfo(res.artist);
             });
         }
@@ -112,6 +107,7 @@ function SongPage(props) {
 
     const playSong = (val = song) => {
         dispatch(setCurrentSong(val));
+        dispatch(addToQueue(val));
         setSongClicked(true);
     };
 
@@ -133,26 +129,20 @@ function SongPage(props) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ data: shareData }),
-        }).then(res => {
+        }).then((res) => {
             setShareSongLinkCopied(true);
         });
     };
 
-    const goToArtistPage = name => {
-        const titleUrl = name
-            .toLowerCase().trim()
-            .split(' ')
-            .join('-');
+    const goToArtistPage = (name) => {
+        const titleUrl = name.toLowerCase().trim().split(' ').join('-');
         window.location = `/artist/${titleUrl}`;
-    }
+    };
 
-    const goToWriterPage = name => {
-        const titleUrl = name
-            .toLowerCase().trim()
-            .split(' ')
-            .join('-');
+    const goToWriterPage = (name) => {
+        const titleUrl = name.toLowerCase().trim().split(' ').join('-');
         window.location = `/writer/${titleUrl}`;
-    }
+    };
 
     return (
         <>
@@ -180,7 +170,11 @@ function SongPage(props) {
                                 </div>
                                 <div className="song__column__row-content">
                                     {song.writers.map((writer, index) => (
-                                        <div className="song__column__writer" key={index} onClick={() => goToWriterPage(writer)}>
+                                        <div
+                                            className="song__column__writer"
+                                            key={index}
+                                            onClick={() => goToWriterPage(writer)}
+                                        >
                                             <img src={song.cover} alt={writer} />
                                             {writer}
                                         </div>
@@ -193,13 +187,16 @@ function SongPage(props) {
                                 <div className="song__column__row-content">
                                     <img src={song.cover} alt={song.albumTitle} />
                                     <div className="song__column__album-title">
-                                        <em>{song.albumTitle}&nbsp;</em>({song.dateReleased.split('-')[0]})
+                                        <em>{song.albumTitle}&nbsp;</em>{' '}
+                                        {song.dateReleased && <>({song.dateReleased.split('-')[0]})</>}
                                     </div>
                                 </div>
                             </div>
                             <div className="song__column">
                                 <div className="song__title">{song.title}</div>
-                                <div className="song__artist" onClick={() => goToArtistPage(song.artistName)}>by {song.artistName}</div>
+                                <div className="song__artist" onClick={() => goToArtistPage(song.artistName)}>
+                                    by {song.artistName}
+                                </div>
                                 <div className="song__actions">
                                     <PianoSvg
                                         onClick={() => {
@@ -287,12 +284,12 @@ function SongPage(props) {
                                         <div className="song__attributes__key">Flow</div>
                                         <div className="song__attributes__value">
                                             {TABLE_FLOW_SHAPES.find(
-                                                x => x.name.toLowerCase() === song.arc.toLowerCase()
+                                                (x) => x.name.toLowerCase() === song.arc.toLowerCase()
                                             ) && (
                                                 <img
                                                     src={
                                                         TABLE_FLOW_SHAPES.find(
-                                                            x => x.name.toLowerCase() === song.arc.toLowerCase()
+                                                            (x) => x.name.toLowerCase() === song.arc.toLowerCase()
                                                         ).image
                                                     }
                                                 />
@@ -363,7 +360,12 @@ function SongPage(props) {
                                     <div>
                                         <div className="song__banner__artist">{artistInfo.name}</div>
                                         <div className="song__banner__description">{artistInfo.bio}</div>
-                                        <Button className="song__banner__button" width={260} height={40}>
+                                        <Button
+                                            className="song__banner__button"
+                                            width={260}
+                                            height={40}
+                                            onClick={() => goToArtistPage(song.artistName)}
+                                        >
                                             MORE FROM THIS ARTIST
                                         </Button>
                                     </div>
@@ -375,17 +377,21 @@ function SongPage(props) {
                                 <div className="song__table">
                                     <div className="song__table__header">
                                         <div className="song__table__title">You May Also Like</div>
-                                        <Button width={222} height={42}>
+                                        <Button
+                                            width={222}
+                                            height={42}
+                                            onClick={() => dispatch(setState('similarOpened', true))}
+                                        >
                                             SEE ALL SIMILAR TRACKS
                                         </Button>
                                     </div>
-                                    <SongsTable list={similarTracks} onSelect={val => playSong(val)} page="home" />
+                                    <SongsTable list={similarTracks} onSelect={(val) => playSong(val)} page="home" />
                                 </div>
                             </div>
                         )}
                     </main>
                 )}
-                {songClicked && currentSong && <MusicPlayer />}
+                {songClicked && currentSong && <MusicPlayer play={songClicked} />}
                 {shareOpened && (
                     <Modal opened={shareOpened} modifier="share queue-share">
                         <img
@@ -434,7 +440,7 @@ function SongPage(props) {
  */
 function _getSimilarSongs(all, current) {
     return all
-        .filter(song => song.mood >= current.mood - 2 && song.mood <= current.mood + 2 && current.pbId !== song.pbId)
+        .filter((song) => song.mood >= current.mood - 2 && song.mood <= current.mood + 2 && current.pbId !== song.pbId)
         .slice(0, 6);
 }
 

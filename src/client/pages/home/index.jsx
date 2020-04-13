@@ -26,11 +26,13 @@ import './style.scss';
 function HomePage() {
     const [tablePlaylist, setTablePlaylist] = useState([]);
     const [popularPresets, setPopularPresets] = useState(null);
+    const [songClicked, setSongClicked] = useState(false);
     const dispatch = useDispatch();
     const sharedItem = qs.parse(location.search);
 
     const filtersPanelState = useSelector(selectors.general.get('filtersOpened'));
     const presetsPanelState = useSelector(selectors.general.get('presetsOpened'));
+    const reqSuggestionsOpened = useSelector(selectors.general.get('reqSuggestionsOpened'));
     const currentSong = useSelector(selectors.library.getCurrentSong);
 
     const songList = useSelector(selectors.library.getAll);
@@ -41,10 +43,10 @@ function HomePage() {
     useEffect(() => {
         !songList && dispatch(getSongList());
         if (!popularPresets) {
-            api.get('/api/popular-presets').then(res => {
+            api.get('/api/popular-presets').then((res) => {
                 if (res.presets) {
                     const popular = [];
-                    res.presets.map(preset => {
+                    res.presets.map((preset) => {
                         popular.push({ name: preset.name, details: PRESETS[preset.name] });
                     });
                     setPopularPresets(popular);
@@ -55,21 +57,21 @@ function HomePage() {
 
     useEffect(() => {
         if (sharedItem.shareId && songList) {
-            api.get(`/api/shared-list/${sharedItem.shareId}`).then(res => {
+            api.get(`/api/shared-list/${sharedItem.shareId}`).then((res) => {
                 const shared = res.shared[0];
-                const sharedSongs = songList.filter(s => shared.songs.includes(s.pbId));
+                const sharedSongs = songList.filter((s) => shared.songs.includes(s.pbId));
                 switch (shared.type) {
                     case 'queue':
                         dispatch(setCurrentQueue(sharedSongs));
                         dispatch(setState('queueOpened', true));
                         break;
                     case 'search':
-                        Object.keys(shared.filters).forEach(filter => {
+                        Object.keys(shared.filters).forEach((filter) => {
                             dispatch(setFilter(filter, shared.filters[filter]));
                         });
                         break;
                     case 'similar':
-                        Object.keys(shared.filters).forEach(filter => {
+                        Object.keys(shared.filters).forEach((filter) => {
                             dispatch(setFilter(filter, shared.filters[filter]));
                         });
                         break;
@@ -103,7 +105,7 @@ function HomePage() {
     );
 
     const applyPreset = (filters, name) => {
-        Object.keys(filters).forEach(filter => {
+        Object.keys(filters).forEach((filter) => {
             dispatch(setFilter(filter, filters[filter]));
         });
         fetch('/api/increment-preset', {
@@ -116,8 +118,9 @@ function HomePage() {
         dispatch(setState('filtersOpened', true));
     };
 
-    const playSong = song => {
+    const playSong = (song) => {
         dispatch(setCurrentSong(song));
+        setSongClicked(true);
     };
 
     return (
@@ -126,12 +129,12 @@ function HomePage() {
             <div className={homeClass}>
                 <main className="home">
                     {tablePlaylist && tablePlaylist.length >= 10 ? (
-                        <SongsTable list={tablePlaylist} onSelect={val => playSong(val)} listName={sharedItem.name} />
+                        <SongsTable list={tablePlaylist} onSelect={(val) => playSong(val)} listName={sharedItem.name} />
                     ) : tablePlaylist && tablePlaylist.length > 0 && tablePlaylist.length < 10 ? (
                         <>
                             <SongsTable
                                 list={tablePlaylist}
-                                onSelect={val => playSong(val)}
+                                onSelect={(val) => playSong(val)}
                                 listName={sharedItem.name}
                                 short={true}
                                 extraClass="table-short"
@@ -159,7 +162,9 @@ function HomePage() {
                                         </div>
                                         <div
                                             className="short-search__feature short-search__feature--linked"
-                                            onClick={() => dispatch(setState('reqSuggestionsOpened', true))}
+                                            onClick={() =>
+                                                dispatch(setState('reqSuggestionsOpened', !reqSuggestionsOpened))
+                                            }
                                         >
                                             <img
                                                 className="short-search__image"
@@ -173,7 +178,7 @@ function HomePage() {
                                 <div className="popular-presets__title">Featured Tracks</div>
                                 <SongsTable
                                     list={featuredTracks}
-                                    onSelect={val => playSong(val)}
+                                    onSelect={(val) => playSong(val)}
                                     listName={sharedItem.name}
                                     page="home"
                                 />
@@ -199,7 +204,9 @@ function HomePage() {
                                     </div>
                                     <div
                                         className="hero__feature hero__feature--linked"
-                                        onClick={() => dispatch(setState('reqSuggestionsOpened', true))}
+                                        onClick={() =>
+                                            dispatch(setState('reqSuggestionsOpened', !reqSuggestionsOpened))
+                                        }
                                     >
                                         <img className="hero__image" src="/assets/images/feature-suggestion.png" />
                                         <div className="hero__name">Suggestions</div>
@@ -225,7 +232,7 @@ function HomePage() {
                                 <div className="popular-presets__title">Featured Tracks</div>
                                 <SongsTable
                                     list={featuredTracks}
-                                    onSelect={val => playSong(val)}
+                                    onSelect={(val) => playSong(val)}
                                     listName={sharedItem.name}
                                     page="home"
                                 />
@@ -233,7 +240,7 @@ function HomePage() {
                         </>
                     )}
                 </main>
-                {currentSong && <MusicPlayer list={tablePlaylist} />}
+                {currentSong && <MusicPlayer list={tablePlaylist} play={songClicked} />}
             </div>
         </>
     );
@@ -246,7 +253,7 @@ export default HomePage;
 const _filterSongs = (songs, filters) => {
     if (Object.keys(filters).length > 0) {
         return songs
-            .filter(song => {
+            .filter((song) => {
                 let similar = 0;
                 if (_isInRange(song.experimental, filters.experimental)) {
                     similar += 1;
@@ -264,7 +271,7 @@ const _filterSongs = (songs, filters) => {
                     similar += 1;
                 }
                 if (filters.flow) {
-                    filters.flow.map(f => {
+                    filters.flow.map((f) => {
                         const filterValue = f.toLowerCase();
                         if (filterValue === song.arc.toLowerCase()) {
                             similar += 1;
@@ -272,10 +279,10 @@ const _filterSongs = (songs, filters) => {
                     });
                 }
                 if (filters.instruments) {
-                    filters.instruments.map(filter => {
+                    filters.instruments.map((filter) => {
                         const filterVal = filter.replace(/\s/g, '').toLowerCase();
                         const songInstr = song.instruments.filter(
-                            s => s.replace(/\s/g, '').toLowerCase() === filterVal
+                            (s) => s.replace(/\s/g, '').toLowerCase() === filterVal
                         );
                         if (songInstr.length > 0) {
                             similar += 1;
@@ -295,7 +302,7 @@ const _filterSongs = (songs, filters) => {
                     }
                 }
                 if (filters.search) {
-                    filters.search.map(filter => {
+                    filters.search.map((filter) => {
                         const filterVal = filter.value.toLowerCase();
                         switch (filter.type) {
                             case 'song':

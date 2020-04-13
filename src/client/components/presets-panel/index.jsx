@@ -32,7 +32,8 @@ function PresetsPanel({ visible, style }) {
     const dispatch = useDispatch();
 
     const applyPreset = (filters, name) => {
-        Object.keys(filters).forEach(filter => {
+        console.log('here');
+        Object.keys(filters).forEach((filter) => {
             dispatch(setFilter(filter, filters[filter]));
         });
         fetch('/api/increment-preset', {
@@ -51,7 +52,9 @@ function PresetsPanel({ visible, style }) {
                     <div className="presets-panel__presets">
                         {Object.keys(PRESETS).map((preset, index) => (
                             <div key={index}>
-                                <Preset name={preset} onClick={() => applyPreset(PRESETS[preset].filters, preset)} />
+                                <div onClick={() => applyPreset(PRESETS[preset].filters, preset)}>
+                                    <Preset name={preset} />
+                                </div>
                                 {index + 1 === 8 && (
                                     <div className="presets-panel__cta">
                                         <p className="presets-panel__cta-copy">{ctaCopy[0]}</p>

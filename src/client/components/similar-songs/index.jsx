@@ -55,19 +55,19 @@ function SimilarSongsPanel({ visible, style, onClose, similarTo }) {
         setSimilarSongs(similar);
     }, [similarTo]);
 
-    const addToHovered = index => {
+    const addToHovered = (index) => {
         let copyHovered = [...hovered];
         copyHovered.push(index);
         setHovered(copyHovered);
     };
 
-    const removeFromHovered = index => {
+    const removeFromHovered = (index) => {
         let copyHovered = [...hovered];
-        setHovered(copyHovered.filter(x => x !== index));
+        setHovered(copyHovered.filter((x) => x !== index));
     };
 
     const checkIfHovered = useCallback(
-        index => {
+        (index) => {
             return hovered.includes(index);
         },
         [hovered]
@@ -86,7 +86,7 @@ function SimilarSongsPanel({ visible, style, onClose, similarTo }) {
         [hovered]
     );
 
-    const playSimilarSong = song => {
+    const playSimilarSong = (song) => {
         dispatch(setCurrentSong(song));
         dispatch(addToQueue(song));
     };
@@ -102,7 +102,7 @@ function SimilarSongsPanel({ visible, style, onClose, similarTo }) {
         const shareData = {
             name: shareItem.title,
             type: 'similar',
-            songs: similarSongs.map(s => s.pbId),
+            songs: similarSongs.map((s) => s.pbId),
             shareId: shareSongId,
             filters: appliedFilters,
         };
@@ -112,7 +112,7 @@ function SimilarSongsPanel({ visible, style, onClose, similarTo }) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ data: shareData }),
-        }).then(res => {
+        }).then((res) => {
             setShareSongLinkCopied(true);
         });
     };
@@ -122,11 +122,8 @@ function SimilarSongsPanel({ visible, style, onClose, similarTo }) {
         window.location = `/song/${id}-${titleUrl}`;
     };
 
-    const goToArtistPage = name => {
-        const titleUrl = name
-            .toLowerCase()
-            .split(' ')
-            .join('-');
+    const goToArtistPage = (name) => {
+        const titleUrl = name.toLowerCase().split(' ').join('-');
         window.location = `/artist/${titleUrl}`;
     };
 
@@ -234,11 +231,8 @@ function _renderSimilarSong(song, hovered) {
         const titleUrl = title.split(' ').join('-');
         window.location = `/song/${id}-${titleUrl}`;
     };
-    const goToArtistPage = name => {
-        const titleUrl = name
-            .toLowerCase()
-            .split(' ')
-            .join('-');
+    const goToArtistPage = (name) => {
+        const titleUrl = name.toLowerCase().split(' ').join('-');
         window.location = `/artist/${titleUrl}`;
     };
     return (
@@ -264,14 +258,14 @@ function _renderSimilarSong(song, hovered) {
  */
 function _getSimilarSongs(all, current) {
     return all.filter(
-        song => song.mood >= current.mood - 2 && song.mood <= current.mood + 2 && current.pbId !== song.pbId
+        (song) => song.mood >= current.mood - 2 && song.mood <= current.mood + 2 && current.pbId !== song.pbId
     );
 }
 
 SimilarSongsPanel.displayName = 'SimilarSongsPanel';
 
 SimilarSongsPanel.propTypes = {
-    visible: PropTypes.bool,
+    visible: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
     style: PropTypes.object,
     onClose: PropTypes.func,
     similarTo: PropTypes.object.isRequired,

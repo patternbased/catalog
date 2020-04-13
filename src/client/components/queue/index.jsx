@@ -49,36 +49,36 @@ function QueuePanel({ visible, style, onClose }) {
         [visible, queueVisible]
     );
 
-    const addToHovered = index => {
+    const addToHovered = (index) => {
         let copyHovered = [...hovered];
         copyHovered.push(index);
         setHovered(copyHovered);
     };
 
-    const addToExpanded = index => {
+    const addToExpanded = (index) => {
         let copyExpanded = [...listExpanded];
         if (checkIfExpanded(index)) {
-            setListExpanded(copyExpanded.filter(x => x !== index));
+            setListExpanded(copyExpanded.filter((x) => x !== index));
         } else {
             copyExpanded.push(index);
             setListExpanded(copyExpanded);
         }
     };
 
-    const removeFromHovered = index => {
+    const removeFromHovered = (index) => {
         let copyHovered = [...hovered];
-        setHovered(copyHovered.filter(x => x !== index));
+        setHovered(copyHovered.filter((x) => x !== index));
     };
 
     const checkIfHovered = useCallback(
-        index => {
+        (index) => {
             return hovered.includes(index);
         },
         [hovered]
     );
 
     const checkIfExpanded = useCallback(
-        index => {
+        (index) => {
             return listExpanded.includes(index);
         },
         [listExpanded]
@@ -89,17 +89,17 @@ function QueuePanel({ visible, style, onClose }) {
         onClose();
     };
 
-    const songWrapperClass = index =>
+    const songWrapperClass = (index) =>
         classnames('queue__song', {
             'queue__song--hovered': checkIfHovered(index),
             'queue__song--expanded': checkIfExpanded(index),
         });
 
-    const removeSongFromQueue = song => {
+    const removeSongFromQueue = (song) => {
         dispatch(removeFromQueue(song));
     };
 
-    const onDragEnd = result => {
+    const onDragEnd = (result) => {
         if (!result.destination) {
             return;
         }
@@ -125,7 +125,7 @@ function QueuePanel({ visible, style, onClose }) {
         const shareData = {
             name: shareQueueName,
             type: 'queue',
-            songs: songs.map(s => s.pbId),
+            songs: songs.map((s) => s.pbId),
             shareId: shareListId,
         };
         fetch('/api/create-share', {
@@ -134,7 +134,7 @@ function QueuePanel({ visible, style, onClose }) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ data: shareData }),
-        }).then(res => {
+        }).then((res) => {
             setShareLinkCopied(true);
         });
     };
@@ -192,7 +192,7 @@ function QueuePanel({ visible, style, onClose }) {
                                         className="share__input"
                                         placeholder={shareQueueName}
                                         value={editedName}
-                                        onChange={e => setEditedName(e.target.value)}
+                                        onChange={(e) => setEditedName(e.target.value)}
                                     />
                                 ) : (
                                     <div className="share__item__title" onClick={() => setNameEditing(true)}>
@@ -239,7 +239,7 @@ function QueuePanel({ visible, style, onClose }) {
             </div>
             <DragDropContext onDragEnd={onDragEnd}>
                 <Droppable droppableId="list">
-                    {provided => (
+                    {(provided) => (
                         <div className="queue__content" ref={provided.innerRef} {...provided.droppableProps}>
                             {songs.map((song, index) => (
                                 <Draggable
@@ -367,11 +367,8 @@ function _renderQueueSong(song, current, hovered, onRemove, playSong) {
         const titleUrl = title.split(' ').join('-');
         window.location = `/song/${id}-${titleUrl}`;
     };
-    const goToArtistPage = name => {
-        const titleUrl = name
-            .toLowerCase()
-            .split(' ')
-            .join('-');
+    const goToArtistPage = (name) => {
+        const titleUrl = name.toLowerCase().split(' ').join('-');
         window.location = `/artist/${titleUrl}`;
     };
     return (
@@ -420,7 +417,7 @@ function _generateShareName() {
 QueuePanel.displayName = 'QueuePanel';
 
 QueuePanel.propTypes = {
-    visible: PropTypes.bool,
+    visible: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
     style: PropTypes.object,
     onClose: PropTypes.func,
 };
