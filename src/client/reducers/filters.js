@@ -30,7 +30,7 @@ const resetFilter = (state, action) => ({
     applied: omit(state.applied, action.label),
 });
 
-const resetAllFilters = state => ({
+const resetAllFilters = (state) => ({
     ...state,
     applied: {},
 });

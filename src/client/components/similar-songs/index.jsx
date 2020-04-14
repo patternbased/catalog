@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import uuid from 'react-uuid';
 import selectors from 'selectors';
+import { HEADER_HEIGHTS } from 'utils/constants';
 
 import { setState } from 'actions/general';
 import { addToQueue, setCurrentSong } from 'actions/library';
@@ -24,12 +25,14 @@ const baseUrl =
 /**
  * Similar songs panel component
  * @param {Boolean} visible boolean to determine if the panel is opened or not
- * @param {Object} style json with custom CSS styling
+ * @param {Function} onClose action for close
+ * @param {Object} similarTo song for which to display similar list
  * @returns {React.Component}
  */
-function SimilarSongsPanel({ visible, style, onClose, similarTo }) {
+function SimilarSongsPanel({ visible, onClose, similarTo }) {
     const allSongs = useSelector(selectors.library.getAll);
     const queueOpened = useSelector(selectors.general.get('queueOpened'));
+    const scrolled = useSelector(selectors.general.get('scrolled'));
     const appliedFilters = useSelector(selectors.filters.getApplied);
     const [hovered, setHovered] = useState([]);
     const [similarSongs, setSimilarSongs] = useState([]);
@@ -37,15 +40,22 @@ function SimilarSongsPanel({ visible, style, onClose, similarTo }) {
     const [shareOpened, setShareOpened] = useState(false);
     const [shareItem, setShareItem] = useState();
     const [shareSongLinkCopied, setShareSongLinkCopied] = useState(false);
+    const [wasScrolled, setWasScrolled] = useState(scrolled);
     const dispatch = useDispatch();
     const panelClass = useMemo(
         () =>
             classnames('similar', {
                 'similar--visible': visible,
                 'similar--pushed': visible && queueOpened,
+                'similar--big-header': !wasScrolled && visible,
+                'similar--small-header': wasScrolled && visible,
             }),
-        [visible, queueOpened]
+        [visible, queueOpened, wasScrolled]
     );
+
+    useEffect(() => {
+        setWasScrolled(scrolled);
+    }, [scrolled]);
 
     useEffect(() => {
         let similar = [];
@@ -128,7 +138,7 @@ function SimilarSongsPanel({ visible, style, onClose, similarTo }) {
     };
 
     return (
-        <div className={panelClass} style={style}>
+        <div className={panelClass}>
             <div className="similar__header">
                 <img src="/assets/images/close-icon.png" onClick={() => closeSimilar()} />
                 <div className="similar__header__name">SIMILAR SONGS TO</div>
@@ -266,14 +276,12 @@ SimilarSongsPanel.displayName = 'SimilarSongsPanel';
 
 SimilarSongsPanel.propTypes = {
     visible: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
-    style: PropTypes.object,
     onClose: PropTypes.func,
     similarTo: PropTypes.object.isRequired,
 };
 
 SimilarSongsPanel.defaultProps = {
     visible: false,
-    style: {},
     onClose: () => {},
 };
 

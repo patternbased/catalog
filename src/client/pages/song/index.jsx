@@ -14,6 +14,7 @@ import selectors from 'selectors';
 
 import { setState } from 'actions/general';
 import { getSongList, setCurrentSong, setCustomWorkSong, setLicenseSong, addToQueue } from 'actions/library';
+import { setFilter } from 'actions/filters';
 
 import { TABLE_FLOW_SHAPES } from 'utils/constants';
 
@@ -62,6 +63,14 @@ function SongPage(props) {
     const presetsPanelState = useSelector(selectors.general.get('presetsOpened'));
     const similarOpened = useSelector(selectors.general.get('similarOpened'));
     const currentSong = useSelector(selectors.library.getCurrentSong);
+    const appliedFilters = useSelector(selectors.filters.getApplied);
+
+    const selectInstrument = (instrument) => {
+        const instrumentsCopy = appliedFilters['instruments'] ? [...appliedFilters['instruments']] : [];
+        !filtersPanelState && dispatch(setState('filtersOpened', true));
+        dispatch(setFilter('instruments', instrumentsCopy.concat(instrument)));
+        // window.location = '/';
+    };
 
     const songClass = useMemo(
         () =>
@@ -315,7 +324,11 @@ function SongPage(props) {
                                         <div className="song__instruments__content">
                                             <span className="song__instruments__label">Instruments</span>
                                             {song.instruments.map((s, index) => (
-                                                <span key={index} className="song__instruments__value">
+                                                <span
+                                                    key={index}
+                                                    className="song__instruments__value"
+                                                    onClick={() => selectInstrument(s)}
+                                                >
                                                     <span>{s}</span>
                                                     {index < song.instruments.length - 1 ? ', ' : ''}
                                                 </span>

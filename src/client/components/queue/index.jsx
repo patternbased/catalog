@@ -1,5 +1,5 @@
 /* eslint-disable max-lines-per-function */
-import React, { memo, useMemo, useState, useCallback } from 'react';
+import React, { memo, useMemo, useState, useCallback, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
@@ -28,9 +28,10 @@ const baseUrl =
  * @param {Object} style json with custom CSS styling
  * @returns {React.Component}
  */
-function QueuePanel({ visible, style, onClose }) {
+function QueuePanel({ visible, onClose }) {
     const songs = useSelector(selectors.library.getQueue);
     const queueVisible = useSelector(selectors.general.get('queueOpened'));
+    const scrolled = useSelector(selectors.general.get('scrolled'));
     const currentSong = useSelector(selectors.library.getCurrentSong);
     const [hovered, setHovered] = useState([]);
     const [listExpanded, setListExpanded] = useState([]);
@@ -40,14 +41,21 @@ function QueuePanel({ visible, style, onClose }) {
     const [editedName, setEditedName] = useState('');
     const [nameEditing, setNameEditing] = useState(false);
     const [shareLinkCopied, setShareLinkCopied] = useState(false);
+    const [wasScrolled, setWasScrolled] = useState(scrolled);
     const dispatch = useDispatch();
     const panelClass = useMemo(
         () =>
             classnames('queue', {
                 'queue--visible': visible || queueVisible,
+                'queue--big-header': !wasScrolled && (visible || queueVisible),
+                'queue--small-header': wasScrolled && (visible || queueVisible),
             }),
-        [visible, queueVisible]
+        [visible, queueVisible, wasScrolled]
     );
+
+    useEffect(() => {
+        setWasScrolled(scrolled);
+    }, [scrolled]);
 
     const addToHovered = (index) => {
         let copyHovered = [...hovered];
@@ -140,7 +148,7 @@ function QueuePanel({ visible, style, onClose }) {
     };
 
     return (
-        <div className={panelClass} style={style}>
+        <div className={panelClass}>
             <div className="queue__header">
                 <img
                     src="/assets/images/close-icon.png"
@@ -418,13 +426,11 @@ QueuePanel.displayName = 'QueuePanel';
 
 QueuePanel.propTypes = {
     visible: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
-    style: PropTypes.object,
     onClose: PropTypes.func,
 };
 
 QueuePanel.defaultProps = {
     visible: false,
-    style: {},
     onClose: () => {},
 };
 

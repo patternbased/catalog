@@ -19,6 +19,13 @@
         right: 300px;
     }
 
+    &--big-header {
+        height: calc(100vh - 80px);
+    }
+    &--small-header {
+        height: calc(100vh - 60px);
+    }
+
     &__header {
         background-image: url('/assets/images/queue/queue-header.png');
         height: 60px;

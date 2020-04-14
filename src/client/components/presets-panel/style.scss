@@ -13,6 +13,10 @@
         height: calc(100vh - 60px);
     }
 
+    &__container {
+        padding-bottom: 60px;
+    }
+
     &__presets {
         margin: 50px 0;
 

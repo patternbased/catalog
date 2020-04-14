@@ -11,8 +11,14 @@
     transition: all 0.5s ease-in;
     z-index: 2;
     &--visible {
-        height: calc(100vh - 140px);
         visibility: visible;
+    }
+
+    &--big-header {
+        height: calc(100vh - 140px);
+    }
+    &--small-header {
+        height: calc(100vh - 120px);
     }
 
     &__header {

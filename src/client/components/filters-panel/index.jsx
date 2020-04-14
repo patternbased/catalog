@@ -13,20 +13,19 @@ import Preset from 'components/preset';
 import SearchBar from 'components/search-bar';
 
 import { setFilter, resetFilter, resetAllFilters } from 'actions/filters';
-import { clearQueue } from 'actions/library';
 import { BASIC_FILTERS, PRESETS, ARTISTS, SONGS, INSTRUMENTS } from 'utils/constants';
 
 import './style.scss';
 
 const generateSearchResults = () => {
     let allResults = [];
-    ARTISTS.forEach(artist => {
+    ARTISTS.forEach((artist) => {
         allResults.push({ type: 'artist', value: artist });
     });
-    SONGS.forEach(song => {
+    SONGS.forEach((song) => {
         allResults.push({ type: 'song', value: song });
     });
-    INSTRUMENTS.forEach(instrument => {
+    INSTRUMENTS.forEach((instrument) => {
         allResults.push({ type: 'instrument', value: instrument });
     });
     return allResults;
@@ -58,20 +57,20 @@ function FiltersPanel({ visible, style, showSearch }) {
     const wereFiltersChanged = useMemo(() => Object.keys(appliedFilters).length > 0, [appliedFilters]);
 
     const changeSlider = useCallback(
-        name => values => {
+        (name) => (values) => {
             dispatch(setFilter(name, values));
         },
         [appliedFilters]
     );
 
     const toggleFlow = useCallback(
-        shape => {
+        (shape) => {
             const flowsCopy = appliedFilters['flow'] ? [...appliedFilters['flow']] : [];
             if (flowsCopy.includes(shape)) {
                 dispatch(
                     setFilter(
                         'flow',
-                        flowsCopy.filter(x => x !== shape)
+                        flowsCopy.filter((x) => x !== shape)
                     )
                 );
             } else {
@@ -82,7 +81,7 @@ function FiltersPanel({ visible, style, showSearch }) {
     );
 
     const selectInstrument = useCallback(
-        instrument => {
+        (instrument) => {
             const instrumentsCopy = appliedFilters['instruments'] ? [...appliedFilters['instruments']] : [];
             dispatch(setFilter('instruments', instrumentsCopy.concat(instrument)));
         },
@@ -90,34 +89,34 @@ function FiltersPanel({ visible, style, showSearch }) {
     );
 
     const removeInstrument = useCallback(
-        instrument => {
-            const instrumentsCopy = appliedFilters['instruments'] ? [...appliedFilters['instruments']] : [];
-            dispatch(
-                setFilter(
-                    'instruments',
-                    instrumentsCopy.filter(x => x !== instrument)
-                )
-            );
+        (instrument) => {
+            let instrumentsCopy = appliedFilters['instruments'] ? [...appliedFilters['instruments']] : [];
+            instrumentsCopy = instrumentsCopy.filter((x) => x !== instrument);
+            if (instrumentsCopy.length === 0) {
+                dispatch(resetFilter('instruments'));
+            } else {
+                dispatch(setFilter('instruments', instrumentsCopy));
+            }
         },
         [appliedFilters]
     );
 
     const cancelFilter = useCallback(
-        name => {
+        (name) => {
             dispatch(resetFilter(name));
         },
         [appliedFilters]
     );
 
-    const applyPreset = filters => {
-        Object.keys(filters).forEach(filter => {
+    const applyPreset = (filters) => {
+        Object.keys(filters).forEach((filter) => {
             dispatch(setFilter(filter, filters[filter]));
         });
     };
 
     useEffect(() => {
         if (wereFiltersChanged) {
-            const allPresets = Object.keys(PRESETS).map(preset => {
+            const allPresets = Object.keys(PRESETS).map((preset) => {
                 return {
                     name: preset,
                     filters: PRESETS[preset].filters,
@@ -131,7 +130,7 @@ function FiltersPanel({ visible, style, showSearch }) {
 
     const searchList = useMemo(() => generateSearchResults(), []);
 
-    const selectResult = item => {
+    const selectResult = (item) => {
         if (item.type === 'instrument') {
             const instrumentsCopy = appliedFilters['instruments'] ? [...appliedFilters['instruments']] : [];
             dispatch(setFilter('instruments', instrumentsCopy.concat(item.value)));
@@ -142,15 +141,15 @@ function FiltersPanel({ visible, style, showSearch }) {
         }
     };
 
-    const onCancelSelected = value => {
-        const selectedSearchCopy = [...selectedSearch];
-        setSelectedSearch(selectedSearchCopy.filter(x => x.value !== value));
-        dispatch(
-            setFilter(
-                'search',
-                selectedSearchCopy.filter(x => x.value !== value)
-            )
-        );
+    const onCancelSelected = (value) => {
+        let selectedSearchCopy = [...selectedSearch];
+        selectedSearchCopy = selectedSearchCopy.filter((x) => x.value !== value);
+        setSelectedSearch(selectedSearchCopy);
+        if (selectedSearchCopy.length === 0) {
+            dispatch(resetFilter('search'));
+        } else {
+            dispatch(setFilter('search', selectedSearchCopy));
+        }
     };
 
     return (
@@ -158,7 +157,7 @@ function FiltersPanel({ visible, style, showSearch }) {
             <div className={panelClass} style={style}>
                 <div className="filters-panel__container">
                     <div className="filters-panel__search">
-                        {showSearch && <SearchBar onSelect={val => selectResult(val)} listItems={searchList} />}
+                        {showSearch && <SearchBar onSelect={(val) => selectResult(val)} listItems={searchList} />}
                         {appliedFilters.search && (
                             <div className="filters-panel__search__selected">
                                 {appliedFilters.search.map((item, index) => (
@@ -241,10 +240,10 @@ function FiltersPanel({ visible, style, showSearch }) {
 
 const _getSimilarPresets = (presets, filters) => {
     const similarPresets = [];
-    presets.forEach(preset => {
+    presets.forEach((preset) => {
         const pFilter = preset.filters;
         let similarCount = 0;
-        Object.keys(pFilter).forEach(filterName => {
+        Object.keys(pFilter).forEach((filterName) => {
             if (filters[filterName]) {
                 if (
                     pFilter[filterName][0] === filters[filterName][0] &&
