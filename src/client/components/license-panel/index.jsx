@@ -30,6 +30,7 @@ function LicensePanel({ visible, style }) {
     const [showDescription, setShowDescription] = useState([]);
     const [priceHovered, setPriceHovered] = useState([]);
     const [showMainCustom, setShowMainCustom] = useState(false);
+    const [showParentDescription, setShowParentDescription] = useState('');
 
     const panelHeader = useRef(null);
     const panelFooter = useRef(null);
@@ -64,27 +65,27 @@ function LicensePanel({ visible, style }) {
         [childNav]
     );
 
-    const toShowDescription = idx => {
+    const toShowDescription = (idx) => {
         let descriptionCopy = [...showDescription];
         descriptionCopy.push(idx);
         setShowDescription(descriptionCopy);
     };
 
-    const hideDescription = idx => {
+    const hideDescription = (idx) => {
         let descriptionCopy = [...showDescription];
-        descriptionCopy = descriptionCopy.filter(x => x !== idx);
+        descriptionCopy = descriptionCopy.filter((x) => x !== idx);
         setShowDescription(descriptionCopy);
     };
 
-    const showAddToCart = idx => {
+    const showAddToCart = (idx) => {
         let priceCopy = [...priceHovered];
         priceCopy.push(idx);
         setPriceHovered(priceCopy);
     };
 
-    const hideAddToCart = idx => {
+    const hideAddToCart = (idx) => {
         let priceCopy = [...priceHovered];
-        priceCopy = priceCopy.filter(x => x !== idx);
+        priceCopy = priceCopy.filter((x) => x !== idx);
         setPriceHovered(priceCopy);
     };
 
@@ -285,10 +286,19 @@ function LicensePanel({ visible, style }) {
                                                 className="license-panel__body__content__buttons__type"
                                                 key={index}
                                                 onClick={() => setParentNav(key)}
+                                                onMouseEnter={() =>
+                                                    setShowParentDescription(!BUY_LICENSE_TYPES[key].parent ? key : '')
+                                                }
+                                                onMouseLeave={() => setShowParentDescription('')}
                                             >
                                                 {key}
                                             </div>
                                         ))}
+                                        {showParentDescription.length > 0 && (
+                                            <div className="license-panel__body__content__buttons__description">
+                                                {BUY_LICENSE_TYPES[showParentDescription].description}
+                                            </div>
+                                        )}
                                     </div>
                                 )}
                             </div>

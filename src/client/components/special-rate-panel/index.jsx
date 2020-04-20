@@ -196,7 +196,7 @@ function SpecialRatePanel({ visible, style }) {
                                                 )}
                                             </div>
                                             <div
-                                                className={classnames({
+                                                className={classnames('textarea', {
                                                     'input-error': errors.details,
                                                 })}
                                                 onMouseOver={() => toggleErrorHovered('details')}

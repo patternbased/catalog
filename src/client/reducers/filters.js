@@ -15,6 +15,7 @@ const initialState = {
         search: [],
     },
     applied: {},
+    temporary: {},
 };
 
 const setFilter = (state, action) => ({

@@ -249,7 +249,7 @@ function CustomLicensePanel({ visible, chosenType, style }) {
                                                 }}
                                             </Field>
                                             <div
-                                                className={classnames({
+                                                className={classnames('textarea', {
                                                     'input-error': errors.details,
                                                 })}
                                                 onMouseOver={() => toggleErrorHovered('details')}
