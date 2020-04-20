@@ -53,6 +53,7 @@ function SongPage(props) {
     const [songMoods, setSongMoods] = useState('');
     const [coverHover, setCoverHover] = useState(false);
     const [songClicked, setSongClicked] = useState(false);
+    const [songPlaying, setSongPlaying] = useState(false);
     const [artistInfo, setArtistInfo] = useState(null);
     const [shareItem, setShareItem] = useState();
     const [shareOpened, setShareOpened] = useState(false);
@@ -118,6 +119,7 @@ function SongPage(props) {
         dispatch(setCurrentSong(val));
         dispatch(addToQueue(val));
         setSongClicked(true);
+        setSongPlaying(!songPlaying);
     };
 
     const openShareModal = () => {
@@ -168,9 +170,14 @@ function SongPage(props) {
                                 >
                                     {coverHover && (
                                         <div className="song__cover__overlay" onClick={() => playSong()}>
-                                            <PlaySvg />
+                                            {songPlaying ? (
+                                                <img src={`/assets/images/player/pause.png`} />
+                                            ) : (
+                                                <PlaySvg />
+                                            )}
                                         </div>
                                     )}
+
                                     <img src={song.image} alt={`${song.title} by ${song.artistName}`} />
                                 </div>
                                 <div className="song__column__row-header">
@@ -404,7 +411,7 @@ function SongPage(props) {
                         )}
                     </main>
                 )}
-                {songClicked && currentSong && <MusicPlayer play={songClicked} />}
+                {songClicked && currentSong && <MusicPlayer play={songPlaying} />}
                 {shareOpened && (
                     <Modal opened={shareOpened} modifier="share queue-share">
                         <img

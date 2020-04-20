@@ -52,8 +52,11 @@ function MusicPlayer({ list, play }) {
 
     useEffect(() => {
         setCurrentPlaying(currentSong);
-        play && setIsPlaying(true);
     }, [currentSong]);
+
+    useEffect(() => {
+        setIsPlaying(play);
+    }, [play]);
 
     const handleSongHover = () => {
         if (isPlaying) {

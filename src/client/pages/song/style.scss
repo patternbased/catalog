@@ -48,6 +48,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            img {
+                width: 60px;
+                height: 60px;
+            }
         }
     }
 
@@ -70,6 +74,7 @@
             background-repeat: repeat;
             background-size: 45%;
             margin-bottom: 15px;
+            max-width: 650px;
             &__overlay {
                 background-color: rgba(34, 34, 34, 0.5);
                 position: absolute;
@@ -84,6 +89,8 @@
         &__row-content {
             display: flex;
             align-items: center;
+            max-width: 650px;
+            flex-wrap: wrap;
             margin-bottom: 20px;
             color: $primary;
             font-family: $font-other;
@@ -109,8 +116,12 @@
             font-size: 16px;
             line-height: 22px;
             cursor: pointer;
-            &:last-child {
+            width: 27%;
+            &:nth-child(3n) {
                 margin-right: 0;
+            }
+            &:nth-child(n + 4) {
+                margin-top: 10px;
             }
             img {
                 width: 40px;
