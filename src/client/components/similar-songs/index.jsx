@@ -1,12 +1,12 @@
 /* eslint-disable max-lines-per-function */
 import React, { memo, useMemo, useState, useCallback, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import classnames from 'classnames';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import uuid from 'react-uuid';
 import selectors from 'selectors';
-import { HEADER_HEIGHTS } from 'utils/constants';
 
 import { setState } from 'actions/general';
 import { addToQueue, setCurrentSong } from 'actions/library';
@@ -96,11 +96,6 @@ function SimilarSongsPanel({ visible, onClose, similarTo }) {
         [hovered]
     );
 
-    const playSimilarSong = (song) => {
-        dispatch(setCurrentSong(song));
-        dispatch(addToQueue(song));
-    };
-
     const openShareModal = () => {
         setShareItem(similarTo);
         setShareOpened(true);
@@ -127,104 +122,119 @@ function SimilarSongsPanel({ visible, onClose, similarTo }) {
         });
     };
 
-    const goToSongPage = (id, title) => {
-        const titleUrl = title.split(' ').join('-');
-        window.location = `/song/${id}-${titleUrl}`;
-    };
-
-    const goToArtistPage = (name) => {
-        const titleUrl = name.toLowerCase().split(' ').join('-');
-        window.location = `/artist/${titleUrl}`;
-    };
-
     return (
         <div className={panelClass}>
-            <div className="similar__header">
-                <img src="/assets/images/close-icon.png" onClick={() => closeSimilar()} />
-                <div className="similar__header__name">SIMILAR SONGS TO</div>
-                <img src="/assets/images/more-icon.png" onClick={() => setShowMore(!showMore)} />
-                {showMore && (
-                    <ul className="queue__more">
-                        <li
-                            className="queue__more__item"
-                            onClick={() => {
-                                openShareModal();
-                                setShowMore(false);
-                            }}
-                        >
-                            <ShareIcon />
-                            Share This List
-                        </li>
-                    </ul>
-                )}
-            </div>
             {similarTo && (
-                <div
-                    className={mainHoverClass}
-                    onMouseEnter={() => addToHovered('main')}
-                    onMouseLeave={() => removeFromHovered('main')}
-                >
-                    <div className="similar__song__cover">
-                        <img src={similarTo.cover} />
-                    </div>
-                    <div className="similar__song__wrapper">
-                        <div
-                            className="similar__song__title"
-                            onClick={() => goToSongPage(similarTo.pbId, similarTo.title)}
-                        >
-                            {similarTo.title}
-                        </div>
-                        <div className="similar__song__artist" onClick={() => goToArtistPage(similarSongs.artistName)}>
-                            by {similarTo.artistName} | {similarTo.length}
-                        </div>
-                    </div>
-                </div>
-            )}
-            <div className="similar__content">
-                {similarSongs.map((song, index) => (
-                    <div
-                        key={index}
-                        className={checkIfHovered(index) ? 'similar__song similar__song--blue' : 'similar__song'}
-                        onMouseOver={() => addToHovered(index)}
-                        onMouseOut={() => removeFromHovered(index)}
-                        onClick={() => playSimilarSong(song)}
-                    >
-                        {_renderSimilarSong(song, checkIfHovered(index))}
-                    </div>
-                ))}
-            </div>
-            {shareOpened && (
-                <Modal opened={shareOpened} modifier="share queue-share">
-                    <img
-                        src="/assets/images/close-icon.png"
-                        onClick={() => setShareOpened(false)}
-                        className="share__close"
-                    />
-                    <div className="share__header">Share This List</div>
-                    <div className="share__item">
-                        <img src={shareItem.cover} />
-                        <div>
-                            <div className="share__item__title">
-                                <strong>Simialr Songs to</strong>&nbsp;
-                                {shareItem.title}
-                            </div>
-                            <div className="share__item__artist">{similarSongs.length} Tracks</div>
-                        </div>
-                    </div>
-                    <CopyToClipboard text={`${baseUrl}?shareId=${shareSongId}`} onCopy={() => copyShareSongLink()}>
-                        {shareSongLinkCopied ? (
-                            <div className="share__button share__button--copied">
-                                <DoneSvg />
-                                Copied to clipboard!
-                            </div>
-                        ) : (
-                            <div className="share__button">
-                                <CopyLinkSvg />
-                                Copy Share Link
-                            </div>
+                <>
+                    <div className="similar__header">
+                        <img src="/assets/images/close-icon.png" onClick={() => closeSimilar()} />
+                        <div className="similar__header__name">SIMILAR SONGS TO</div>
+                        <img src="/assets/images/more-icon.png" onClick={() => setShowMore(!showMore)} />
+                        {showMore && (
+                            <ul className="queue__more">
+                                <li
+                                    className="queue__more__item"
+                                    onClick={() => {
+                                        openShareModal();
+                                        setShowMore(false);
+                                    }}
+                                >
+                                    <ShareIcon />
+                                    Share This List
+                                </li>
+                            </ul>
                         )}
-                    </CopyToClipboard>
-                </Modal>
+                    </div>
+
+                    <div
+                        className={mainHoverClass}
+                        onMouseEnter={() => addToHovered('main')}
+                        onMouseLeave={() => removeFromHovered('main')}
+                    >
+                        <div className="similar__song__cover">
+                            <img src={similarTo.cover} />
+                        </div>
+                        <div className="similar__song__wrapper">
+                            <Link
+                                to={
+                                    Object.keys(similarTo).length > 0
+                                        ? `/song/${similarTo.pbId}-${similarTo.title
+                                              .toLowerCase()
+                                              .split(' ')
+                                              .join('-')}`
+                                        : ''
+                                }
+                            >
+                                <div className="similar__song__title">{similarTo.title}</div>
+                            </Link>
+                            <Link
+                                to={
+                                    Object.keys(similarTo).length > 0
+                                        ? `/artist/${similarTo.artistName.toLowerCase().split(' ').join('-')}`
+                                        : ''
+                                }
+                            >
+                                <div className="similar__song__artist">
+                                    by {similarTo.artistName} | {similarTo.length}
+                                </div>
+                            </Link>
+                        </div>
+                    </div>
+
+                    <div className="similar__content">
+                        {similarSongs.map((song, index) => (
+                            <div
+                                key={index}
+                                className={
+                                    checkIfHovered(index) ? 'similar__song similar__song--blue' : 'similar__song'
+                                }
+                                onMouseOver={() => addToHovered(index)}
+                                onMouseOut={() => removeFromHovered(index)}
+                            >
+                                {_renderSimilarSong(song, checkIfHovered(index), () => {
+                                    dispatch(setCurrentSong(song));
+                                    dispatch(addToQueue(song));
+                                })}
+                            </div>
+                        ))}
+                    </div>
+                    {shareOpened && (
+                        <Modal opened={shareOpened} modifier="share queue-share">
+                            <img
+                                src="/assets/images/close-icon.png"
+                                onClick={() => setShareOpened(false)}
+                                className="share__close"
+                            />
+                            <div className="share__header">Share This List</div>
+                            <div className="share__item">
+                                <img src={shareItem.cover} />
+                                <div>
+                                    <div className="share__item__title">
+                                        <strong>Similar Songs to</strong>&nbsp;
+                                        {shareItem.title}
+                                    </div>
+                                    <div className="share__item__artist">{similarSongs.length} Tracks</div>
+                                </div>
+                            </div>
+                            <CopyToClipboard
+                                text={`${baseUrl}?shareId=${shareSongId}`}
+                                onCopy={() => copyShareSongLink()}
+                            >
+                                {shareSongLinkCopied ? (
+                                    <div className="share__button share__button--copied">
+                                        <DoneSvg />
+                                        Copied to clipboard!
+                                    </div>
+                                ) : (
+                                    <div className="share__button">
+                                        <CopyLinkSvg />
+                                        Copy Share Link
+                                    </div>
+                                )}
+                            </CopyToClipboard>
+                        </Modal>
+                    )}
+                </>
             )}
         </div>
     );
@@ -234,27 +244,32 @@ function SimilarSongsPanel({ visible, onClose, similarTo }) {
  * Renders the songs in the queue
  * @param {Object} song song to render
  * @param {Boolean} hovered current song hovered
+ * @param {Function} playSimilarSong action for clicking on song image
  * @returns {React.Component}
  */
-function _renderSimilarSong(song, hovered) {
-    const goToSongPage = (id, title) => {
-        const titleUrl = title.split(' ').join('-');
-        window.location = `/song/${id}-${titleUrl}`;
-    };
-    const goToArtistPage = (name) => {
-        const titleUrl = name.toLowerCase().split(' ').join('-');
-        window.location = `/artist/${titleUrl}`;
-    };
+function _renderSimilarSong(song, hovered, playSimilarSong) {
     return (
         <>
-            <img src={hovered ? '/assets/images/similar/song-play.png' : song.cover} className="similar__song__cover" />
+            <img
+                src={hovered ? '/assets/images/similar/song-play.png' : song.cover}
+                className="similar__song__cover"
+                onClick={() => playSimilarSong()}
+            />
             <div className="similar__song__wrapper">
-                <div className="similar__song__title" onClick={() => goToSongPage(song.pbId, song.title)}>
-                    {song.title}
-                </div>
-                <div className="similar__song__artist" onClick={() => goToArtistPage(song.artistName)}>
-                    by {song.artistName} | {song.length}
-                </div>
+                <Link
+                    to={
+                        Object.keys(song).length > 0
+                            ? `/song/${song.pbId}-${song.title.toLowerCase().split(' ').join('-')}`
+                            : ''
+                    }
+                >
+                    <div className="similar__song__title">{song.title}</div>
+                </Link>
+                <Link to={`/artist/${song.artistName.toLowerCase().split(' ').join('-')}`}>
+                    <div className="similar__song__artist">
+                        by {song.artistName} | {song.length}
+                    </div>
+                </Link>
             </div>
         </>
     );
@@ -277,12 +292,13 @@ SimilarSongsPanel.displayName = 'SimilarSongsPanel';
 SimilarSongsPanel.propTypes = {
     visible: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
     onClose: PropTypes.func,
-    similarTo: PropTypes.object.isRequired,
+    similarTo: PropTypes.object,
 };
 
 SimilarSongsPanel.defaultProps = {
     visible: false,
     onClose: () => {},
+    similarTo: {},
 };
 
 export default memo(SimilarSongsPanel);

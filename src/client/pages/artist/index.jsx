@@ -1,6 +1,7 @@
 /* eslint-disable max-lines-per-function */
 import React, { useMemo, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 import Header from 'components/header';
 import SongsTable from 'components/songs-table';
@@ -79,11 +80,6 @@ function ArtistPage(props) {
         setSongClicked(true);
     };
 
-    const goToArtistPage = (name) => {
-        const titleUrl = name.toLowerCase().trim().split(' ').join('-');
-        window.location = `/artist/${titleUrl}`;
-    };
-
     return (
         <>
             <Header />
@@ -128,17 +124,21 @@ function ArtistPage(props) {
                             <div className="artist__table__title">You May Also Like</div>
                             <div className="artist__similar">
                                 {artist.relatedArtists.map((related, index) => (
-                                    <span
+                                    <Link
+                                        className="artist__similar__single__url"
                                         key={index}
-                                        className="artist__similar__single"
-                                        style={{ backgroundImage: `url(${related.image})` }}
-                                        onClick={() => goToArtistPage(related.name)}
+                                        to={`/artist/${related.name.toLowerCase().split(' ').join('-')}`}
                                     >
-                                        <div>
-                                            <div className="artist__similar__overlay" />
-                                            {related.name}
-                                        </div>
-                                    </span>
+                                        <span
+                                            className="artist__similar__single"
+                                            style={{ backgroundImage: `url(${related.image})` }}
+                                        >
+                                            <div>
+                                                <div className="artist__similar__overlay" />
+                                                {related.name}
+                                            </div>
+                                        </span>
+                                    </Link>
                                 ))}
                             </div>
                         </div>

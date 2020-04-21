@@ -1,15 +1,18 @@
 /* eslint-disable max-lines-per-function */
 import React, { memo, useMemo, useState, useCallback, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import classnames from 'classnames';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import uuid from 'react-uuid';
 import selectors from 'selectors';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+
+import Modal from 'components/modal';
 
 import { setState } from 'actions/general';
 import { removeFromQueue, reorderQueue, setCurrentSong, clearQueue } from 'actions/library';
-import Modal from 'components/modal';
+
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import EditIconSvg from 'assets/images/edit-icon.svg';
 import DeleteIcon from 'assets/images/delete-icon-dark.svg';
@@ -371,14 +374,6 @@ function QueuePanel({ visible, onClose }) {
  * @returns {React.Component}
  */
 function _renderQueueSong(song, current, hovered, onRemove, playSong) {
-    const goToSongPage = (id, title) => {
-        const titleUrl = title.split(' ').join('-');
-        window.location = `/song/${id}-${titleUrl}`;
-    };
-    const goToArtistPage = (name) => {
-        const titleUrl = name.toLowerCase().split(' ').join('-');
-        window.location = `/artist/${titleUrl}`;
-    };
     return (
         <>
             {hovered && <img src="/assets/images/queue/handle.png" className="queue__song__handle" />}
@@ -387,21 +382,28 @@ function _renderQueueSong(song, current, hovered, onRemove, playSong) {
                 className="queue__song__cover"
                 onClick={playSong}
             />
-            <div className="queue__song__wrapper" onClick={() => goToSongPage(song.pbId, song.title)}>
-                <div
-                    className={current === song ? 'queue__song__title queue__song__title--blue' : 'queue__song__title'}
-                >
-                    {song.title}
-                </div>
-                <div
-                    className={
-                        current === song ? 'queue__song__artist queue__song__artist--blue' : 'queue__song__artist'
-                    }
-                    onClick={() => goToArtistPage(song.artistName)}
-                >
-                    by {song.artistName} | {song.length}
-                </div>
+
+            <div className="queue__song__wrapper">
+                <Link to={`/song/${song.pbId}-${song.title.toLowerCase().split(' ').join('-')}`}>
+                    <div
+                        className={
+                            current === song ? 'queue__song__title queue__song__title--blue' : 'queue__song__title'
+                        }
+                    >
+                        {song.title}
+                    </div>
+                </Link>
+                <Link to={`/artist/${song.artistName.toLowerCase().split(' ').join('-')}`}>
+                    <div
+                        className={
+                            current === song ? 'queue__song__artist queue__song__artist--blue' : 'queue__song__artist'
+                        }
+                    >
+                        by {song.artistName} | {song.length}
+                    </div>
+                </Link>
             </div>
+
             {hovered && (
                 <img
                     src="/assets/images/queue/delete.png"

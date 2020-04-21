@@ -1,6 +1,7 @@
 /* eslint-disable max-lines-per-function */
 import React, { useMemo, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 import Header from 'components/header';
 import SongsTable from 'components/songs-table';
@@ -86,11 +87,6 @@ function WriterPage(props) {
         setSongClicked(true);
     };
 
-    const goToWriterPage = (name) => {
-        const titleUrl = name.toLowerCase().trim().split(' ').join('-');
-        window.location = `/writer/${titleUrl}`;
-    };
-
     return (
         <>
             <Header />
@@ -135,17 +131,21 @@ function WriterPage(props) {
                             <div className="writer__table__title">You May Also Like</div>
                             <div className="writer__similar">
                                 {artist.relatedArtists.map((related, index) => (
-                                    <span
+                                    <Link
+                                        className="writer__similar__single__url"
                                         key={index}
-                                        className="writer__similar__single"
-                                        style={{ backgroundImage: `url(${related.image})` }}
-                                        onClick={() => goToWriterPage(related.name)}
+                                        to={`/artist/${related.name.toLowerCase().split(' ').join('-')}`}
                                     >
-                                        <div>
-                                            <div className="writer__similar__overlay" />
-                                            {related.name}
-                                        </div>
-                                    </span>
+                                        <span
+                                            className="writer__similar__single"
+                                            style={{ backgroundImage: `url(${related.image})` }}
+                                        >
+                                            <div>
+                                                <div className="writer__similar__overlay" />
+                                                {related.name}
+                                            </div>
+                                        </span>
+                                    </Link>
                                 ))}
                             </div>
                         </div>

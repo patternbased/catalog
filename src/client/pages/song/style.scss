@@ -337,6 +337,20 @@
         &__button {
             color: white;
             border-color: white;
+            width: 260px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid white;
+            border-radius: 2px;
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 16px;
+            text-align: center;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background-color 0.2s;
             &:hover {
                 background-color: white;
                 color: $primary;

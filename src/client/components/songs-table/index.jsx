@@ -1,7 +1,8 @@
 /* eslint-disable max-lines-per-function */
 import React, { memo, useState, useCallback, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import uuid from 'react-uuid';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import classnames from 'classnames';
@@ -226,16 +227,6 @@ function SongsTable({ list, onSelect, listName, page, short = false, extraClass 
         });
     };
 
-    const goToSongPage = (id, title) => {
-        const titleUrl = title.split(' ').join('-');
-        window.location = `/song/${id}-${titleUrl}`;
-    };
-
-    const goToArtistPage = (name) => {
-        const titleUrl = name.toLowerCase().split(' ').join('-');
-        window.location = `/artist/${titleUrl}`;
-    };
-
     return (
         <>
             <div
@@ -318,15 +309,24 @@ function SongsTable({ list, onSelect, listName, page, short = false, extraClass 
                                             />
                                             <div className="table__body__row-title__wrapper">
                                                 <p className="table__body__row-title__wrapper-song-title">
-                                                    <span onClick={() => goToSongPage(item.pbId, item.title)}>
-                                                        {item.title}
-                                                    </span>{' '}
-                                                    <span
-                                                        className="table__body__row-title__wrapper-song-title table__body__row-title__wrapper-song-title--artist"
-                                                        onClick={() => goToArtistPage(item.artistName)}
+                                                    <Link
+                                                        to={`/song/${item.pbId}-${item.title
+                                                            .toLowerCase()
+                                                            .split(' ')
+                                                            .join('-')}`}
                                                     >
-                                                        by {item.artistName}
-                                                    </span>
+                                                        <span>{item.title}</span>{' '}
+                                                    </Link>
+                                                    <Link
+                                                        to={`/artist/${item.artistName
+                                                            .toLowerCase()
+                                                            .split(' ')
+                                                            .join('-')}`}
+                                                    >
+                                                        <span className="table__body__row-title__wrapper-song-title table__body__row-title__wrapper-song-title--artist">
+                                                            by {item.artistName}
+                                                        </span>
+                                                    </Link>
                                                 </p>
                                                 <p className="table__body__row-title__wrapper-song-artist">
                                                     <span className="table__body__row-title__wrapper-song-artist--name">

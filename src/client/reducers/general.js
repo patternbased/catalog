@@ -18,6 +18,7 @@ const initialState = {
     cartOpened: false,
     checkoutOpened: false,
     scrolled: false,
+    songPlaying: false,
 };
 
 const setState = (state, action) => {

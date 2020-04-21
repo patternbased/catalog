@@ -1,7 +1,9 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 
 import ScrollToTop from './components/scroll-to-top';
+import MusicPlayer from './components/music-player';
 import Home from './pages/home';
 import Song from './pages/song';
 import Artist from './pages/artist';
@@ -10,11 +12,17 @@ import Invoice from './pages/invoice';
 import Download from './pages/download';
 import NotFound from './pages/not-found';
 
+import selectors from 'selectors';
+
 /**
  * Router component
  * @returns {React.Component}
  */
 function Routes() {
+    const currentSong = useSelector(selectors.library.getCurrentSong);
+    const playlist = useSelector(selectors.library.getCurrentPlaylist);
+    const songPlaying = useSelector(selectors.general.get('songPlaying'));
+
     return (
         <Router>
             <ScrollToTop>
@@ -28,6 +36,7 @@ function Routes() {
                     <Route path="/not-found" exact component={NotFound} />
                     <Redirect from="*" to="/not-found" />
                 </Switch>
+                {currentSong && <MusicPlayer play={songPlaying} list={playlist} />}
             </ScrollToTop>
         </Router>
     );

@@ -55,13 +55,15 @@ module.exports = async () => {
     const doc = new GoogleSpreadsheet(spreadsheetConfig.spreadsheetId);
     await setupConfig(doc, spreadsheetConfig.config);
     const sheets = await getSheets(doc);
-    const artistsSheet = sheets.find((s) => s.title === 'Writers');
+    const writersSheet = sheets.find((s) => s.title === 'Writers');
+    const artistsSheet = sheets.find((s) => s.title === 'Artists');
 
-    const rows = await getRows(artistsSheet, 1, artistsSheet.rowCount);
+    const wRows = await getRows(writersSheet, 1, writersSheet.rowCount);
+    const aRows = await getRows(artistsSheet, 1, artistsSheet.rowCount);
 
     var separators = [';', '; '];
 
-    return rows.map((row) => ({
+    return wRows.map((row) => ({
         name: row.artistname,
         slug: row.artistname.toLowerCase().split(' ').join('-'),
         bio: row.bio,
@@ -73,7 +75,7 @@ module.exports = async () => {
         instagram: row.instagram,
         facebook: row.facebook,
         relatedArtists: row.relatedentities.split(new RegExp(separators.join('|'), 'g')).map((artist) => {
-            const artistImg = rows.find((r) => r.artistname.trim().toLowerCase() === artist.trim().toLowerCase());
+            const artistImg = aRows.find((r) => r.artistname.trim().toLowerCase() === artist.trim().toLowerCase());
             return {
                 name: artist.trim(),
                 image: artistImg ? `https://pblibrary.s3.us-east-2.amazonaws.com/artists/${artistImg.image}` : '',

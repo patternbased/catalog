@@ -32,7 +32,6 @@ function PresetsPanel({ visible, style }) {
     const dispatch = useDispatch();
 
     const applyPreset = (filters, name) => {
-        console.log('here');
         Object.keys(filters).forEach((filter) => {
             dispatch(setFilter(filter, filters[filter]));
         });

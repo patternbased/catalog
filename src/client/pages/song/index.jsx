@@ -1,12 +1,12 @@
 /* eslint-disable max-lines-per-function */
 import React, { useMemo, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import uuid from 'react-uuid';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import classnames from 'classnames';
 import Button from 'components/button';
 import SongsTable from 'components/songs-table';
-import MusicPlayer from 'components/music-player';
 import SimilarSongsPanel from 'components/similar-songs';
 import Modal from 'components/modal';
 import Header from 'components/header';
@@ -52,8 +52,9 @@ function SongPage(props) {
     const [similarTracks, setSimilarTracks] = useState(null);
     const [songMoods, setSongMoods] = useState('');
     const [coverHover, setCoverHover] = useState(false);
-    const [songClicked, setSongClicked] = useState(false);
-    const [songPlaying, setSongPlaying] = useState(false);
+    // const [songClicked, setSongClicked] = useState(false);
+    // const [songPlaying, setSongPlaying] = useState(false);
+    const songIsPlaying = useSelector(selectors.general.get('songPlaying'));
     const [artistInfo, setArtistInfo] = useState(null);
     const [shareItem, setShareItem] = useState();
     const [shareOpened, setShareOpened] = useState(false);
@@ -63,7 +64,7 @@ function SongPage(props) {
     const filtersPanelState = useSelector(selectors.general.get('filtersOpened'));
     const presetsPanelState = useSelector(selectors.general.get('presetsOpened'));
     const similarOpened = useSelector(selectors.general.get('similarOpened'));
-    const currentSong = useSelector(selectors.library.getCurrentSong);
+    // const currentSong = useSelector(selectors.library.getCurrentSong);
     const appliedFilters = useSelector(selectors.filters.getApplied);
 
     const selectInstrument = (instrument) => {
@@ -118,8 +119,9 @@ function SongPage(props) {
     const playSong = (val = song) => {
         dispatch(setCurrentSong(val));
         dispatch(addToQueue(val));
-        setSongClicked(true);
-        setSongPlaying(!songPlaying);
+        // setSongClicked(true);
+        // setSongPlaying(!songPlaying);
+        dispatch(setState('songPlaying', !songIsPlaying));
     };
 
     const openShareModal = () => {
@@ -145,16 +147,6 @@ function SongPage(props) {
         });
     };
 
-    const goToArtistPage = (name) => {
-        const titleUrl = name.toLowerCase().trim().split(' ').join('-');
-        window.location = `/artist/${titleUrl}`;
-    };
-
-    const goToWriterPage = (name) => {
-        const titleUrl = name.toLowerCase().trim().split(' ').join('-');
-        window.location = `/writer/${titleUrl}`;
-    };
-
     return (
         <>
             <Header />
@@ -170,7 +162,7 @@ function SongPage(props) {
                                 >
                                     {coverHover && (
                                         <div className="song__cover__overlay" onClick={() => playSong()}>
-                                            {songPlaying ? (
+                                            {!songIsPlaying ? (
                                                 <img src={`/assets/images/player/pause.png`} />
                                             ) : (
                                                 <PlaySvg />
@@ -186,14 +178,15 @@ function SongPage(props) {
                                 </div>
                                 <div className="song__column__row-content">
                                     {song.writers.map((writer, index) => (
-                                        <div
-                                            className="song__column__writer"
+                                        <Link
                                             key={index}
-                                            onClick={() => goToWriterPage(writer)}
+                                            to={`/writer/${writer.toLowerCase().trim().split(' ').join('-')}`}
                                         >
-                                            <img src={song.cover} alt={writer} />
-                                            {writer}
-                                        </div>
+                                            <div className="song__column__writer">
+                                                <img src={song.cover} alt={writer} />
+                                                {writer}
+                                            </div>
+                                        </Link>
                                     ))}
                                 </div>
                                 <div className="song__column__row-header">
@@ -210,9 +203,9 @@ function SongPage(props) {
                             </div>
                             <div className="song__column">
                                 <div className="song__title">{song.title}</div>
-                                <div className="song__artist" onClick={() => goToArtistPage(song.artistName)}>
-                                    by {song.artistName}
-                                </div>
+                                <Link to={`/artist/${song.artistName.toLowerCase().split(' ').join('-')}`}>
+                                    <div className="song__artist">by {song.artistName}</div>
+                                </Link>
                                 <div className="song__actions">
                                     <PianoSvg
                                         onClick={() => {
@@ -380,14 +373,9 @@ function SongPage(props) {
                                     <div>
                                         <div className="song__banner__artist">{artistInfo.name}</div>
                                         <div className="song__banner__description">{artistInfo.bio}</div>
-                                        <Button
-                                            className="song__banner__button"
-                                            width={260}
-                                            height={40}
-                                            onClick={() => goToArtistPage(song.artistName)}
-                                        >
-                                            MORE FROM THIS ARTIST
-                                        </Button>
+                                        <Link to={`/artist/${song.artistName.toLowerCase().split(' ').join('-')}`}>
+                                            <div className="song__banner__button">MORE FROM THIS ARTIST</div>
+                                        </Link>
                                     </div>
                                 </div>
                             </div>
@@ -411,7 +399,7 @@ function SongPage(props) {
                         )}
                     </main>
                 )}
-                {songClicked && currentSong && <MusicPlayer play={songPlaying} />}
+                {/* {songClicked && currentSong && <MusicPlayer play={songPlaying} />} */}
                 {shareOpened && (
                     <Modal opened={shareOpened} modifier="share queue-share">
                         <img

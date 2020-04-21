@@ -8,9 +8,8 @@ import { PRESETS } from 'utils/constants';
 import Header from 'components/header';
 import Preset from 'components/preset';
 import SongsTable from 'components/songs-table';
-import MusicPlayer from 'components/music-player';
 
-import { getSongList, setCurrentSong, setCurrentQueue } from 'actions/library';
+import { getSongList, setCurrentSong, setCurrentQueue, setCurrentPlaylist } from 'actions/library';
 import { setFilter } from 'actions/filters';
 import { setState } from 'actions/general';
 
@@ -26,14 +25,12 @@ import './style.scss';
 function HomePage() {
     const [tablePlaylist, setTablePlaylist] = useState([]);
     const [popularPresets, setPopularPresets] = useState(null);
-    const [songClicked, setSongClicked] = useState(false);
     const dispatch = useDispatch();
     const sharedItem = qs.parse(location.search);
 
     const filtersPanelState = useSelector(selectors.general.get('filtersOpened'));
     const presetsPanelState = useSelector(selectors.general.get('presetsOpened'));
     const reqSuggestionsOpened = useSelector(selectors.general.get('reqSuggestionsOpened'));
-    const currentSong = useSelector(selectors.library.getCurrentSong);
 
     const songList = useSelector(selectors.library.getAll);
     const [featuredTracks, setFeaturedTracks] = useState([]);
@@ -92,7 +89,9 @@ function HomePage() {
 
     useEffect(() => {
         if (!sharedItem.ids && songList) {
-            setTablePlaylist(_filterSongs(songList, filtersValues));
+            const filtered = _filterSongs(songList, filtersValues);
+            setTablePlaylist(filtered);
+            dispatch(setCurrentPlaylist(filtered));
         }
     }, [filtersValues, songList]);
 
@@ -120,7 +119,7 @@ function HomePage() {
 
     const playSong = (song) => {
         dispatch(setCurrentSong(song));
-        setSongClicked(true);
+        dispatch(setState('songPlaying', true));
     };
 
     return (
@@ -240,7 +239,6 @@ function HomePage() {
                         </>
                     )}
                 </main>
-                {currentSong && <MusicPlayer list={tablePlaylist} play={songClicked} />}
             </div>
         </>
     );

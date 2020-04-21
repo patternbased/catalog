@@ -1,8 +1,9 @@
 /* eslint-disable max-lines-per-function */
 import React, { memo, useState, useRef, useEffect } from 'react';
-import ReactPlayer from 'react-player';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import ReactPlayer from 'react-player';
 import Slider from 'rc-slider';
 import uuid from 'react-uuid';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
@@ -133,16 +134,6 @@ function MusicPlayer({ list, play }) {
         });
     };
 
-    const goToSongPage = (id, title) => {
-        const titleUrl = title.split(' ').join('-');
-        window.location = `/song/${id}-${titleUrl}`;
-    };
-
-    const goToArtistPage = (name) => {
-        const titleUrl = name.toLowerCase().split(' ').join('-');
-        window.location = `/artist/${titleUrl}`;
-    };
-
     return (
         <>
             <div className="music-player">
@@ -155,7 +146,10 @@ function MusicPlayer({ list, play }) {
                     <img
                         src={`/assets/images/player/${isPlaying ? 'pause' : 'play'}.png`}
                         className="music-player__section--controls-button"
-                        onClick={() => setIsPlaying(isPlaying ? false : true)}
+                        onClick={() => {
+                            setIsPlaying(isPlaying ? false : true);
+                            dispatch(setState('songPlaying', isPlaying ? false : true));
+                        }}
                     />
                     <img
                         src="/assets/images/player/next.png"
@@ -172,7 +166,10 @@ function MusicPlayer({ list, play }) {
                         onProgress={(e) => {
                             setElapsed(e.playedSeconds);
                         }}
-                        onStart={() => setIsPlaying(true)}
+                        onStart={() => {
+                            setIsPlaying(true);
+                            dispatch(setState('songPlaying', true));
+                        }}
                         onEnded={() => goToNextSong()}
                     />
                 </div>
@@ -184,19 +181,26 @@ function MusicPlayer({ list, play }) {
                             onMouseEnter={() => handleSongHover()}
                             onMouseLeave={() => setSongHovered(false)}
                         >
-                            <p
-                                className="music-player__section--content__song__details-title"
-                                onClick={() => goToSongPage(currentPlaying.pbId, currentPlaying.title)}
+                            <Link
+                                to={
+                                    currentPlaying
+                                        ? `/song/${currentSong.pbId}-${currentSong.title
+                                              .toLowerCase()
+                                              .split(' ')
+                                              .join('-')}`
+                                        : ''
+                                }
                             >
-                                {currentPlaying.title}
-                            </p>
-                            {songHovered && (
-                                <p
-                                    className="music-player__section--content__song__details-author music-player__section--content__song__details-author--inline"
-                                    onClick={() => goToArtistPage(currentPlaying.artistName)}
-                                >
-                                    by {currentPlaying.artistName}
+                                <p className="music-player__section--content__song__details-title">
+                                    {currentPlaying.title}
                                 </p>
+                            </Link>
+                            {songHovered && (
+                                <Link to={`/artist/${currentPlaying.artistName.toLowerCase().split(' ').join('-')}`}>
+                                    <p className="music-player__section--content__song__details-author music-player__section--content__song__details-author--inline">
+                                        by {currentPlaying.artistName}
+                                    </p>
+                                </Link>
                             )}
                             {!songHovered && (
                                 <div className="music-player__section--content__song__details">
@@ -326,7 +330,7 @@ function _formatTime(time) {
 
 MusicPlayer.propTypes = {
     list: PropTypes.array,
-    play: PropTypes.bool,
+    play: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
 };
 
 MusicPlayer.defaultProps = {
