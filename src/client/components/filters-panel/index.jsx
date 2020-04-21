@@ -26,9 +26,11 @@ const generateSearchResults = (songList, artists) => {
             allResults.push({ type: 'artist', value: artist.name });
         });
     }
-    songList.forEach((song) => {
-        allResults.push({ type: 'song', value: song.title, id: song.pbId });
-    });
+    if (songList) {
+        songList.forEach((song) => {
+            allResults.push({ type: 'song', value: song.title, id: song.pbId });
+        });
+    }
     INSTRUMENTS.forEach((instrument) => {
         allResults.push({ type: 'inst.', value: instrument });
     });
