@@ -37,18 +37,21 @@ function SearchBar({ listItems, onSelect }) {
             />
 
             {searchResults.length > 0 && (
-                <ul className="search__results">
-                    {searchResults.map((result, index) => (
-                        <li key={index} className="search__results-item" onClick={() => selectFromList(result)}>
-                            {result.type === 'keyword' ? (
-                                <img className="search__results-item--new" src="/assets/images/search.png" />
-                            ) : (
-                                <span className="search__results-item--type">{result.type}</span>
-                            )}
-                            {result.value}
-                        </li>
-                    ))}
-                </ul>
+                <>
+                    <ul className="search__results">
+                        {searchResults.map((result, index) => (
+                            <li key={index} className="search__results-item" onClick={() => selectFromList(result)}>
+                                {result.type === 'keyword' ? (
+                                    <img className="search__results-item--new" src="/assets/images/search.png" />
+                                ) : (
+                                    <span className="search__results-item--type">{result.type}</span>
+                                )}
+                                <span dangerouslySetInnerHTML={{ __html: result.displayValue }}></span>
+                            </li>
+                        ))}
+                    </ul>
+                    <div className="search__results__overlay" />
+                </>
             )}
         </div>
     );
@@ -66,11 +69,19 @@ const _findMatches = (items, searchTerm) => {
     const lowerCaseTerm = searchTerm.toLowerCase();
     items.forEach((item) => {
         if (item.value.toLowerCase().includes(lowerCaseTerm)) {
-            results.push(item);
+            let copy = { ...item };
+            const index = item.value.toLowerCase().indexOf(lowerCaseTerm);
+            const result = `${item.value.substr(0, index)}<b>${item.value.substr(
+                index,
+                searchTerm.length
+            )}</b>${item.value.substr(index + searchTerm.length)}`;
+            copy.displayValue = result;
+            copy.value = item.value;
+            results.push(copy);
         }
     });
 
-    results.push({ type: 'keyword', value: searchTerm });
+    results.push({ type: 'keyword', displayValue: searchTerm, value: searchTerm });
 
     return results;
 };

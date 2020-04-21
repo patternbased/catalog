@@ -13,6 +13,7 @@
         font-size: 18px;
         line-height: 24px;
         caret-color: $secondary;
+        margin-bottom: 0;
     }
 
     &__results {
@@ -21,11 +22,20 @@
         padding: 0;
         position: absolute;
         background-color: white;
-        max-height: 200px;
+        max-height: calc(100vh - 190px);
         overflow: scroll;
         width: 100%;
-        z-index: 1;
+        z-index: 3;
         border-top: 1px solid #979797;
+
+        &__overlay {
+            position: absolute;
+            top: 60px;
+            bottom: 0;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.7);
+            z-index: 2;
+        }
 
         &-item {
             border-bottom: 1px solid #979797;
