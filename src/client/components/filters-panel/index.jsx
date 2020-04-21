@@ -27,10 +27,10 @@ const generateSearchResults = (songList, artists) => {
         });
     }
     songList.forEach((song) => {
-        allResults.push({ type: 'song', value: song.title });
+        allResults.push({ type: 'song', value: song.title, id: song.pbId });
     });
     INSTRUMENTS.forEach((instrument) => {
-        allResults.push({ type: 'instrument', value: instrument });
+        allResults.push({ type: 'inst.', value: instrument });
     });
     return allResults;
 };
@@ -145,9 +145,11 @@ function FiltersPanel({ visible, style, showSearch }) {
     const searchList = useMemo(() => generateSearchResults(songList, artists), [artists]);
 
     const selectResult = (item) => {
-        if (item.type === 'instrument') {
+        if (item.type === 'inst.') {
             const instrumentsCopy = appliedFilters['instruments'] ? [...appliedFilters['instruments']] : [];
             dispatch(setFilter('instruments', instrumentsCopy.concat(item.value)));
+        } else if (item.type === 'song') {
+            window.location = `/song/${item.id}-${item.value.toLowerCase().split(' ').join('-')}`;
         } else {
             const selectedSearchCopy = [...selectedSearch];
             setSelectedSearch(selectedSearchCopy.concat(item));
