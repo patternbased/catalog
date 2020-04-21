@@ -13,17 +13,21 @@ import Preset from 'components/preset';
 import SearchBar from 'components/search-bar';
 
 import { setFilter, resetFilter, resetAllFilters } from 'actions/filters';
-import { BASIC_FILTERS, PRESETS, ARTISTS, SONGS, INSTRUMENTS } from 'utils/constants';
+import { BASIC_FILTERS, PRESETS, INSTRUMENTS } from 'utils/constants';
+
+import { api } from '../../services';
 
 import './style.scss';
 
-const generateSearchResults = () => {
+const generateSearchResults = (songList, artists) => {
     let allResults = [];
-    ARTISTS.forEach((artist) => {
-        allResults.push({ type: 'artist', value: artist });
-    });
-    SONGS.forEach((song) => {
-        allResults.push({ type: 'song', value: song });
+    if (artists) {
+        artists.forEach((artist) => {
+            allResults.push({ type: 'artist', value: artist.name });
+        });
+    }
+    songList.forEach((song) => {
+        allResults.push({ type: 'song', value: song.title });
     });
     INSTRUMENTS.forEach((instrument) => {
         allResults.push({ type: 'instrument', value: instrument });
@@ -41,6 +45,7 @@ const generateSearchResults = () => {
 function FiltersPanel({ visible, style, showSearch }) {
     const [similarPresets, setSimilarPresets] = useState([]);
     const [selectedSearch, setSelectedSearch] = useState([]);
+    const [artists, setArtists] = useState([]);
 
     const panelClass = useMemo(
         () =>
@@ -50,9 +55,18 @@ function FiltersPanel({ visible, style, showSearch }) {
         [visible]
     );
 
+    useEffect(() => {
+        api.get('/api/all-artists').then((res) => {
+            if (res.artists) {
+                setArtists(res.artists);
+            }
+        });
+    }, []);
+
     const dispatch = useDispatch();
     const defaultFilters = useSelector(selectors.filters.getDefault);
     const appliedFilters = useSelector(selectors.filters.getApplied);
+    const songList = useSelector(selectors.library.getAll);
 
     const wereFiltersChanged = useMemo(() => Object.keys(appliedFilters).length > 0, [appliedFilters]);
 
@@ -128,7 +142,7 @@ function FiltersPanel({ visible, style, showSearch }) {
         }
     }, [appliedFilters]);
 
-    const searchList = useMemo(() => generateSearchResults(), []);
+    const searchList = useMemo(() => generateSearchResults(songList, artists), [artists]);
 
     const selectResult = (item) => {
         if (item.type === 'instrument') {

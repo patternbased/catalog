@@ -19,6 +19,14 @@ router.get('/all-songs', async (req, res) => {
     });
 });
 
+router.get('/all-artists', async (req, res) => {
+    const artists = await ArtistController.getAll();
+
+    res.send({
+        artists,
+    });
+});
+
 router.get('/popular-presets', async (req, res) => {
     const presets = await PresetController.getPopular();
 
