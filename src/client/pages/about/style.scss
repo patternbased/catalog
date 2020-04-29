@@ -2,7 +2,6 @@
 
 .about {
     padding-top: 130px;
-    padding-bottom: 130px;
 
     &__hero {
         background-image: url('/assets/images/about-hero.jpg');
@@ -99,8 +98,5 @@
         &:nth-child(2) {
             background-image: url('/assets/images/about-hero.jpg');
         }
-    }
-
-    &__footer {
     }
 }

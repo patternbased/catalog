@@ -44,7 +44,9 @@ function MenuPanel({ visible, style }) {
                         >
                             Contact
                         </div>
-                        <div className="menu-panel__menu__link">Artists</div>
+                        <div className="menu-panel__menu__link">
+                            <Link to="/artists">Artists</Link>
+                        </div>
                         <div
                             className="menu-panel__menu__link"
                             onClick={() => dispatch(setState('reqSuggestionsOpened', true))}

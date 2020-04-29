@@ -1,0 +1,52 @@
+@import '../../styles/constants';
+
+.artists {
+    padding-top: 130px;
+
+    &__title {
+        color: $primary;
+        font-family: $font-main;
+        letter-spacing: 0;
+        text-align: center;
+        font-size: 28px;
+        line-height: 33px;
+        margin-bottom: 15px;
+
+        &--big {
+            font-size: 36px;
+            line-height: 42px;
+            margin-top: 50px;
+            margin-bottom: 30px;
+        }
+    }
+
+    &__tile {
+        height: 140px;
+        padding: 10px 10px 15px 10px;
+        margin: 10px;
+        position: relative;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 17px;
+        color: white;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+
+        &:hover {
+            opacity: 0.6;
+            transform: scale(1.05);
+            transition-duration: 400ms;
+        }
+    }
+
+    &__tiles {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        max-width: 1040px;
+        margin: 0 auto;
+        padding-bottom: 60px;
+    }
+}

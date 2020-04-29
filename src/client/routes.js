@@ -13,6 +13,7 @@ import Download from './pages/download';
 import NotFound from './pages/not-found';
 import Album from './pages/album';
 import About from './pages/about';
+import Artists from './pages/artists';
 
 import selectors from 'selectors';
 
@@ -37,6 +38,7 @@ function Routes() {
                     <Route path="/download/:id" exact component={Download} />
                     <Route path="/album/:name/:id" exact component={Album} />
                     <Route path="/about" exact component={About} />
+                    <Route path="/artists" exact component={Artists} />
                     <Route path="/not-found" exact component={NotFound} />
                     <Redirect from="*" to="/not-found" />
                 </Switch>
