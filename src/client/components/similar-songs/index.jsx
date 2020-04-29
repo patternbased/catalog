@@ -170,7 +170,7 @@ function SimilarSongsPanel({ visible, onClose, similarTo }) {
                             <Link
                                 to={
                                     Object.keys(similarTo).length > 0
-                                        ? `/artist/${similarTo.artistName.toLowerCase().split(' ').join('-')}`
+                                        ? `/project/${similarTo.artistName.toLowerCase().split(' ').join('-')}`
                                         : ''
                                 }
                             >
@@ -265,7 +265,7 @@ function _renderSimilarSong(song, hovered, playSimilarSong) {
                 >
                     <div className="similar__song__title">{song.title}</div>
                 </Link>
-                <Link to={`/artist/${song.artistName.toLowerCase().split(' ').join('-')}`}>
+                <Link to={`/project/${song.artistName.toLowerCase().split(' ').join('-')}`}>
                     <div className="similar__song__artist">
                         by {song.artistName} | {song.length}
                     </div>

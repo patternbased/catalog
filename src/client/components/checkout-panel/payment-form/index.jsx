@@ -25,7 +25,7 @@ function PaymentForm({ address, total, onSuccess, items }) {
     const cardNonceResponseReceived = async (errors, nonce, cardData, buyerVerificationToken) => {
         setProcessing(true);
         if (errors) {
-            setUiErrors(errors.map(error => error.message));
+            setUiErrors(errors.map((error) => error.message));
             setProcessing(false);
             return;
         }
@@ -45,10 +45,10 @@ function PaymentForm({ address, total, onSuccess, items }) {
                 address: address,
             }),
         })
-            .then(response => {
+            .then((response) => {
                 return response.json();
             })
-            .then(data => {
+            .then((data) => {
                 setProcessing(false);
                 onSuccess(data);
             });
@@ -65,45 +65,83 @@ function PaymentForm({ address, total, onSuccess, items }) {
                 email: address.email,
                 country: address.country,
                 city: address.city,
-                addressLines: address.address2 && address.address2.length > 0 ? [address.address1, address.address2] : [address.address1],
+                addressLines:
+                    address.address2 && address.address2.length > 0
+                        ? [address.address1, address.address2]
+                        : [address.address1],
                 postalCode: address.postalCode,
             },
         };
     };
+    console.log(process.env.SQUARE_APP_ID);
     return (
         <div className="payment">
-            <SquarePaymentForm
-                sandbox={true}
-                applicationId={process.env.SQUARE_APP_ID}
-                locationId={process.env.SQUARE_LOCATION_ID}
-                cardNonceResponseReceived={cardNonceResponseReceived}
-                createVerificationDetails={createVerificationDetails}
-            >
-                <fieldset className="sq-fieldset">
-                    <CreditCardNumberInput label="" />
-                    <div className="payment__inline">
-                        <CreditCardCVVInput label="" />
-                        <CreditCardExpirationDateInput label="" />
-                    </div>
-                    <CreditCardPostalCodeInput label="" />
-                </fieldset>
-                {uiErrors.length > 0 && (
-                    <>
-                        {uiErrors.map((err, index) => (
-                            <div className="payment__error" key={index}>
-                                {err}
-                            </div>
-                        ))}
-                    </>
-                )}
-                {processing ? (
-                    <Button disabled width="100%">
-                        Pay with Card
-                    </Button>
-                ) : (
-                    <CreditCardSubmitButton>Pay with Card</CreditCardSubmitButton>
-                )}
-            </SquarePaymentForm>
+            {process.env.NODE_ENV === 'production' ? (
+                <SquarePaymentForm
+                    applicationId={process.env.SQUARE_APP_ID}
+                    locationId={process.env.SQUARE_LOCATION_ID}
+                    cardNonceResponseReceived={cardNonceResponseReceived}
+                    createVerificationDetails={createVerificationDetails}
+                >
+                    <fieldset className="sq-fieldset">
+                        <CreditCardNumberInput label="" />
+                        <div className="payment__inline">
+                            <CreditCardCVVInput label="" />
+                            <CreditCardExpirationDateInput label="" />
+                        </div>
+                        <CreditCardPostalCodeInput label="" />
+                    </fieldset>
+                    {uiErrors.length > 0 && (
+                        <>
+                            {uiErrors.map((err, index) => (
+                                <div className="payment__error" key={index}>
+                                    {err}
+                                </div>
+                            ))}
+                        </>
+                    )}
+                    {processing ? (
+                        <Button disabled width="100%">
+                            Pay with Card
+                        </Button>
+                    ) : (
+                        <CreditCardSubmitButton>Pay with Card</CreditCardSubmitButton>
+                    )}
+                </SquarePaymentForm>
+            ) : (
+                <SquarePaymentForm
+                    sandbox={true}
+                    applicationId={process.env.SQUARE_APP_ID}
+                    locationId={process.env.SQUARE_LOCATION_ID}
+                    cardNonceResponseReceived={cardNonceResponseReceived}
+                    createVerificationDetails={createVerificationDetails}
+                >
+                    <fieldset className="sq-fieldset">
+                        <CreditCardNumberInput label="" />
+                        <div className="payment__inline">
+                            <CreditCardCVVInput label="" />
+                            <CreditCardExpirationDateInput label="" />
+                        </div>
+                        <CreditCardPostalCodeInput label="" />
+                    </fieldset>
+                    {uiErrors.length > 0 && (
+                        <>
+                            {uiErrors.map((err, index) => (
+                                <div className="payment__error" key={index}>
+                                    {err}
+                                </div>
+                            ))}
+                        </>
+                    )}
+                    {processing ? (
+                        <Button disabled width="100%">
+                            Pay with Card
+                        </Button>
+                    ) : (
+                        <CreditCardSubmitButton>Pay with Card</CreditCardSubmitButton>
+                    )}
+                </SquarePaymentForm>
+            )}
         </div>
     );
 }

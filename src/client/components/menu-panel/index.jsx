@@ -1,6 +1,7 @@
 /* eslint-disable max-lines-per-function */
 import React, { memo, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import MenuFooter from './menu-footer';
@@ -34,7 +35,9 @@ function MenuPanel({ visible, style }) {
                 <CloseIcon onClick={() => dispatch(setState('menuOpened', false))} className="menu-panel__close" />
                 <div className="menu-panel__container">
                     <div className="menu-panel__menu">
-                        <div className="menu-panel__menu__link">About</div>
+                        <div className="menu-panel__menu__link">
+                            <Link to="/about">About</Link>
+                        </div>
                         <div
                             className="menu-panel__menu__link"
                             onClick={() => dispatch(setState('contactOpened', true))}

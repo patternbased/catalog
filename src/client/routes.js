@@ -11,6 +11,8 @@ import Writer from './pages/writer';
 import Invoice from './pages/invoice';
 import Download from './pages/download';
 import NotFound from './pages/not-found';
+import Album from './pages/album';
+import About from './pages/about';
 
 import selectors from 'selectors';
 
@@ -29,10 +31,12 @@ function Routes() {
                 <Switch>
                     <Route path="/" exact component={Home} />
                     <Route path="/song/:name" exact component={Song} />
-                    <Route path="/artist/:name" exact component={Artist} />
-                    <Route path="/writer/:name" exact component={Writer} />
+                    <Route path="/project/:name" exact component={Artist} />
+                    <Route path="/artist/:name" exact component={Writer} />
                     <Route path="/invoice/:id" exact component={Invoice} />
                     <Route path="/download/:id" exact component={Download} />
+                    <Route path="/album/:name/:id" exact component={Album} />
+                    <Route path="/about" exact component={About} />
                     <Route path="/not-found" exact component={NotFound} />
                     <Redirect from="*" to="/not-found" />
                 </Switch>

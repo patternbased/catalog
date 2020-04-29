@@ -1,6 +1,7 @@
 /* eslint-disable max-lines-per-function */
 import React, { useEffect, useMemo, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { withRouter } from 'react-router';
 import selectors from 'selectors';
 import classnames from 'classnames';
 import { PRESETS } from 'utils/constants';
@@ -22,7 +23,7 @@ import './style.scss';
  * Component to handle the home page
  * @returns {React.Component}
  */
-function HomePage() {
+function HomePage({ history }) {
     const [tablePlaylist, setTablePlaylist] = useState([]);
     const [popularPresets, setPopularPresets] = useState(null);
     const dispatch = useDispatch();
@@ -71,6 +72,11 @@ function HomePage() {
                         Object.keys(shared.filters).forEach((filter) => {
                             dispatch(setFilter(filter, shared.filters[filter]));
                         });
+                        break;
+                    case 'song':
+                        history.push(
+                            `/song/${sharedSongs[0].pbId}-${sharedSongs[0].title.toLowerCase().split(' ').join('-')}`
+                        );
                         break;
                     default:
                         break;
@@ -246,7 +252,7 @@ function HomePage() {
 
 HomePage.displayName = 'HomePage';
 
-export default HomePage;
+export default withRouter(HomePage);
 
 const _filterSongs = (songs, filters) => {
     if (Object.keys(filters).length > 0) {

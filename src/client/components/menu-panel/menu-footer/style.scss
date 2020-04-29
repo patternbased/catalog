@@ -5,8 +5,24 @@
     background-color: $lighter-grey;
     height: 400px;
 
+    &--full {
+        height: auto;
+    }
+
+    &__copy {
+        color: $primary;
+        font-family: $font-main;
+        font-size: 14px;
+        letter-spacing: 0;
+        line-height: 21px;
+        text-align: center;
+        max-width: 600px;
+        margin: 0 auto 30px;
+    }
+
     &__logo {
         margin-bottom: 20px;
+        text-align: center;
 
         &:hover {
             opacity: 0.5;
@@ -20,6 +36,14 @@
                 fill: #010101;
             }
         }
+    }
+
+    &__links {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 230px;
+        margin: 20px auto 5px;
     }
 
     &__link {
@@ -43,7 +67,8 @@
 
     &__social {
         margin: 30px auto 20px;
-        width: 174px;
+        max-width: 174px;
+        width: 100%;
 
         a {
             width: 36px;
@@ -70,7 +95,20 @@
             }
         }
 
-        svg {
+        &--full {
+            max-width: 360px;
+
+            a {
+                margin-bottom: 0;
+
+                &:nth-child(4n) {
+                    margin-right: 10px;
+                }
+
+                &:last-child {
+                    margin-right: 0;
+                }
+            }
         }
     }
 
@@ -80,7 +118,12 @@
         letter-spacing: 2px;
         line-height: 20px;
         text-align: center;
-        width: 190px;
-        margin-bottom: 40px;
+        max-width: 190px;
+        margin: 0 auto 40px;
+        width: 100%;
+
+        &--full {
+            max-width: 330px;
+        }
     }
 }

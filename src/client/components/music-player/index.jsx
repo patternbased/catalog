@@ -196,7 +196,7 @@ function MusicPlayer({ list, play }) {
                                 </p>
                             </Link>
                             {songHovered && (
-                                <Link to={`/artist/${currentPlaying.artistName.toLowerCase().split(' ').join('-')}`}>
+                                <Link to={`/project/${currentPlaying.artistName.toLowerCase().split(' ').join('-')}`}>
                                     <p className="music-player__section--content__song__details-author music-player__section--content__song__details-author--inline">
                                         by {currentPlaying.artistName}
                                     </p>

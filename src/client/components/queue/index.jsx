@@ -393,7 +393,7 @@ function _renderQueueSong(song, current, hovered, onRemove, playSong) {
                         {song.title}
                     </div>
                 </Link>
-                <Link to={`/artist/${song.artistName.toLowerCase().split(' ').join('-')}`}>
+                <Link to={`/project/${song.artistName.toLowerCase().split(' ').join('-')}`}>
                     <div
                         className={
                             current === song ? 'queue__song__artist queue__song__artist--blue' : 'queue__song__artist'

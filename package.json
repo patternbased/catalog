@@ -12,7 +12,7 @@
   },
   "scripts": {
     "start": "webpack --watch --mode development --env development",
-    "build": "webpack --mode production",
+    "build": "NODE_ENV=production webpack --mode production",
     "server": "nodemon src/server -w src/server/ -w .env"
   },
   "author": "",

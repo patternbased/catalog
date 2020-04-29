@@ -3,11 +3,21 @@ const Writer = require('../models/Writer');
 
 class ArtistController {
     /**
-     * Returns all artists
+     * Returns all artists(projects)
      * @returns {Array}
      */
     getAll() {
         return Artist.find({}).sort({
+            created: -1,
+        });
+    }
+
+    /**
+     * Returns all writers(artists)
+     * @returns {Array}
+     */
+    getAllWriters() {
+        return Writer.find({}).sort({
             created: -1,
         });
     }

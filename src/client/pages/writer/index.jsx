@@ -96,7 +96,7 @@ function WriterPage(props) {
                         <div className="writer__section">
                             <div className="writer__banner" style={{ backgroundImage: `url('${artist.image}')` }}>
                                 <div className="writer__info">
-                                    <div className="writer__pb">PB Writer</div>
+                                    <div className="writer__pb">PB Artist</div>
                                     <div className="writer__name">{artist.name}</div>
                                     <div className="writer__social">
                                         <a href={artist.website} target="_blank" rel="noopener noreferrer">
@@ -134,7 +134,7 @@ function WriterPage(props) {
                                     <Link
                                         className="writer__similar__single__url"
                                         key={index}
-                                        to={`/artist/${related.name.toLowerCase().split(' ').join('-')}`}
+                                        to={`/project/${related.name.toLowerCase().split(' ').join('-')}`}
                                     >
                                         <span
                                             className="writer__similar__single"

@@ -19,11 +19,16 @@ import { api } from '../../services';
 
 import './style.scss';
 
-const generateSearchResults = (songList, artists) => {
+const generateSearchResults = (songList, artists, writers) => {
     let allResults = [];
     if (artists) {
         artists.forEach((artist) => {
-            allResults.push({ type: 'artist', value: artist.name });
+            allResults.push({ type: 'project', value: artist.name });
+        });
+    }
+    if (writers) {
+        writers.forEach((writer) => {
+            allResults.push({ type: 'artist', value: writer.name });
         });
     }
     if (songList) {
@@ -48,6 +53,7 @@ function FiltersPanel({ visible, style, showSearch }) {
     const [similarPresets, setSimilarPresets] = useState([]);
     const [selectedSearch, setSelectedSearch] = useState([]);
     const [artists, setArtists] = useState([]);
+    const [writers, setWriters] = useState([]);
 
     const panelClass = useMemo(
         () =>
@@ -61,6 +67,11 @@ function FiltersPanel({ visible, style, showSearch }) {
         api.get('/api/all-artists').then((res) => {
             if (res.artists) {
                 setArtists(res.artists);
+            }
+        });
+        api.get('/api/all-writers').then((res) => {
+            if (res.writers) {
+                setWriters(res.writers);
             }
         });
     }, []);
@@ -144,7 +155,7 @@ function FiltersPanel({ visible, style, showSearch }) {
         }
     }, [appliedFilters]);
 
-    const searchList = useMemo(() => generateSearchResults(songList, artists), [artists]);
+    const searchList = useMemo(() => generateSearchResults(songList, artists, writers), [songList, artists, writers]);
 
     const selectResult = (item) => {
         if (item.type === 'inst.') {

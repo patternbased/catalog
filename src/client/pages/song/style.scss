@@ -217,6 +217,11 @@
             font-family: $font-other;
             font-weight: bold;
             line-height: 30px;
+            display: flex;
+            align-items: center;
+            .filter__header__tooltip {
+                margin-left: 5px;
+            }
         }
         &__value {
             font-family: $font-other;

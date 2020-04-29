@@ -1,8 +1,9 @@
 /* eslint-disable max-lines-per-function */
-import React, { useMemo, useEffect, useState } from 'react';
+import React, { useMemo, useEffect, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import uuid from 'react-uuid';
+import selectors from 'selectors';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import classnames from 'classnames';
 import Button from 'components/button';
@@ -10,13 +11,13 @@ import SongsTable from 'components/songs-table';
 import SimilarSongsPanel from 'components/similar-songs';
 import Modal from 'components/modal';
 import Header from 'components/header';
-import selectors from 'selectors';
+import Tooltip from 'components/filters/tooltip';
 
 import { setState } from 'actions/general';
 import { getSongList, setCurrentSong, setCustomWorkSong, setLicenseSong, addToQueue } from 'actions/library';
 import { setFilter } from 'actions/filters';
 
-import { TABLE_FLOW_SHAPES } from 'utils/constants';
+import { TABLE_FLOW_SHAPES, FILTERS_DESCRIPTIONS } from 'utils/constants';
 
 import ShareIcon from 'assets/images/share-icon-dark.svg';
 import SimilarIcon from 'assets/images/SimilarSong_Icon_dark.svg';
@@ -59,6 +60,8 @@ function SongPage(props) {
     const [shareItem, setShareItem] = useState();
     const [shareOpened, setShareOpened] = useState(false);
     const [shareSongLinkCopied, setShareSongLinkCopied] = useState(false);
+    const [openedTooltip, setOpenedTooltip] = useState('');
+    const [tooltipPosition, setTooltipPosition] = useState([]);
 
     const songList = useSelector(selectors.library.getAll);
     const filtersPanelState = useSelector(selectors.general.get('filtersOpened'));
@@ -66,6 +69,19 @@ function SongPage(props) {
     const similarOpened = useSelector(selectors.general.get('similarOpened'));
     // const currentSong = useSelector(selectors.library.getCurrentSong);
     const appliedFilters = useSelector(selectors.filters.getApplied);
+
+    const infoTooltipClass = useCallback(
+        (name) =>
+            classnames('info-tooltip', {
+                'info-tooltip--active': openedTooltip === name,
+            }),
+        [openedTooltip]
+    );
+
+    const placeTooltip = (e, name) => {
+        setTooltipPosition([e.clientX + 20, e.clientY - 10]);
+        setOpenedTooltip(name);
+    };
 
     const selectInstrument = (instrument) => {
         const instrumentsCopy = appliedFilters['instruments'] ? [...appliedFilters['instruments']] : [];
@@ -180,7 +196,7 @@ function SongPage(props) {
                                     {song.writers.map((writer, index) => (
                                         <Link
                                             key={index}
-                                            to={`/writer/${writer.toLowerCase().trim().split(' ').join('-')}`}
+                                            to={`/artist/${writer.toLowerCase().trim().split(' ').join('-')}`}
                                         >
                                             <div className="song__column__writer">
                                                 <img src={song.cover} alt={writer} />
@@ -195,15 +211,17 @@ function SongPage(props) {
                                 </div>
                                 <div className="song__column__row-content">
                                     <img src={song.cover} alt={song.albumTitle} />
-                                    <div className="song__column__album-title">
-                                        <em>{song.albumTitle}&nbsp;</em>{' '}
-                                        {song.dateReleased && <>({song.dateReleased.split('-')[0]})</>}
-                                    </div>
+                                    <Link to={`/album/${song.albumTitle}/${song.albumId}`}>
+                                        <div className="song__column__album-title">
+                                            <em>{song.albumTitle}&nbsp;</em>{' '}
+                                            {song.dateReleased && <>({song.dateReleased.split('-')[0]})</>}
+                                        </div>
+                                    </Link>
                                 </div>
                             </div>
                             <div className="song__column">
                                 <div className="song__title">{song.title}</div>
-                                <Link to={`/artist/${song.artistName.toLowerCase().split(' ').join('-')}`}>
+                                <Link to={`/project/${song.artistName.toLowerCase().split(' ').join('-')}`}>
                                     <div className="song__artist">by {song.artistName}</div>
                                 </Link>
                                 <div className="song__actions">
@@ -255,42 +273,151 @@ function SongPage(props) {
                                         <div className="song__attributes__value">{song.bpm}</div>
                                     </div>
                                     <div className="song__attributes__single">
-                                        <div className="song__attributes__key">Rhythm</div>
+                                        <div className="song__attributes__key">
+                                            Rhythm
+                                            <div className="filter__header__tooltip">
+                                                <div onMouseOut={() => setOpenedTooltip('')}>
+                                                    <div
+                                                        className={infoTooltipClass('rhythm')}
+                                                        onMouseOver={(e) => placeTooltip(e, 'rhythm')}
+                                                    >
+                                                        ?
+                                                    </div>
+                                                </div>
+                                                {openedTooltip === 'rhythm' && (
+                                                    <Tooltip
+                                                        text={FILTERS_DESCRIPTIONS['rhythm']}
+                                                        position={tooltipPosition}
+                                                    />
+                                                )}
+                                            </div>
+                                        </div>
+
                                         <div className="song__attributes__value">
                                             {song.rhythm}
                                             <span>/10</span>
                                         </div>
                                     </div>
                                     <div className="song__attributes__single">
-                                        <div className="song__attributes__key">Speed</div>
+                                        <div className="song__attributes__key">
+                                            Speed
+                                            <div className="filter__header__tooltip">
+                                                <div onMouseOut={() => setOpenedTooltip('')}>
+                                                    <div
+                                                        className={infoTooltipClass('speed')}
+                                                        onMouseOver={(e) => placeTooltip(e, 'speed')}
+                                                    >
+                                                        ?
+                                                    </div>
+                                                </div>
+                                                {openedTooltip === 'speed' && (
+                                                    <Tooltip
+                                                        text={FILTERS_DESCRIPTIONS['speed']}
+                                                        position={tooltipPosition}
+                                                    />
+                                                )}
+                                            </div>
+                                        </div>
                                         <div className="song__attributes__value">
                                             {song.speed}
                                             <span>/10</span>
                                         </div>
                                     </div>
                                     <div className="song__attributes__single">
-                                        <div className="song__attributes__key">Experimental</div>
+                                        <div className="song__attributes__key">
+                                            Experimental
+                                            <div className="filter__header__tooltip">
+                                                <div onMouseOut={() => setOpenedTooltip('')}>
+                                                    <div
+                                                        className={infoTooltipClass('experimental')}
+                                                        onMouseOver={(e) => placeTooltip(e, 'experimental')}
+                                                    >
+                                                        ?
+                                                    </div>
+                                                </div>
+                                                {openedTooltip === 'experimental' && (
+                                                    <Tooltip
+                                                        text={FILTERS_DESCRIPTIONS['experimental']}
+                                                        position={tooltipPosition}
+                                                    />
+                                                )}
+                                            </div>
+                                        </div>
                                         <div className="song__attributes__value">
                                             {song.experimental}
                                             <span>/10</span>
                                         </div>
                                     </div>
                                     <div className="song__attributes__single">
-                                        <div className="song__attributes__key">Mood</div>
+                                        <div className="song__attributes__key">
+                                            Mood
+                                            <div className="filter__header__tooltip">
+                                                <div onMouseOut={() => setOpenedTooltip('')}>
+                                                    <div
+                                                        className={infoTooltipClass('mood')}
+                                                        onMouseOver={(e) => placeTooltip(e, 'mood')}
+                                                    >
+                                                        ?
+                                                    </div>
+                                                </div>
+                                                {openedTooltip === 'mood' && (
+                                                    <Tooltip
+                                                        text={FILTERS_DESCRIPTIONS['mood']}
+                                                        position={tooltipPosition}
+                                                    />
+                                                )}
+                                            </div>
+                                        </div>
                                         <div className="song__attributes__value">
                                             {song.mood}
                                             <span>/10</span>
                                         </div>
                                     </div>
                                     <div className="song__attributes__single">
-                                        <div className="song__attributes__key">Grid</div>
+                                        <div className="song__attributes__key">
+                                            Grid
+                                            <div className="filter__header__tooltip">
+                                                <div onMouseOut={() => setOpenedTooltip('')}>
+                                                    <div
+                                                        className={infoTooltipClass('grid')}
+                                                        onMouseOver={(e) => placeTooltip(e, 'grid')}
+                                                    >
+                                                        ?
+                                                    </div>
+                                                </div>
+                                                {openedTooltip === 'grid' && (
+                                                    <Tooltip
+                                                        text={FILTERS_DESCRIPTIONS['grid']}
+                                                        position={tooltipPosition}
+                                                    />
+                                                )}
+                                            </div>
+                                        </div>
                                         <div className="song__attributes__value">
                                             {song.grid}
                                             <span>/10</span>
                                         </div>
                                     </div>
                                     <div className="song__attributes__single">
-                                        <div className="song__attributes__key">Flow</div>
+                                        <div className="song__attributes__key">
+                                            Flow
+                                            <div className="filter__header__tooltip">
+                                                <div onMouseOut={() => setOpenedTooltip('')}>
+                                                    <div
+                                                        className={infoTooltipClass('flow')}
+                                                        onMouseOver={(e) => placeTooltip(e, 'flow')}
+                                                    >
+                                                        ?
+                                                    </div>
+                                                </div>
+                                                {openedTooltip === 'flow' && (
+                                                    <Tooltip
+                                                        text={FILTERS_DESCRIPTIONS['flow']}
+                                                        position={tooltipPosition}
+                                                    />
+                                                )}
+                                            </div>
+                                        </div>
                                         <div className="song__attributes__value">
                                             {TABLE_FLOW_SHAPES.find(
                                                 (x) => x.name.toLowerCase() === song.arc.toLowerCase()
@@ -373,7 +500,7 @@ function SongPage(props) {
                                     <div>
                                         <div className="song__banner__artist">{artistInfo.name}</div>
                                         <div className="song__banner__description">{artistInfo.bio}</div>
-                                        <Link to={`/artist/${song.artistName.toLowerCase().split(' ').join('-')}`}>
+                                        <Link to={`/project/${song.artistName.toLowerCase().split(' ').join('-')}`}>
                                             <div className="song__banner__button">MORE FROM THIS ARTIST</div>
                                         </Link>
                                     </div>

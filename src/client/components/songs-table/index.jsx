@@ -318,7 +318,7 @@ function SongsTable({ list, onSelect, listName, page, short = false, extraClass 
                                                         <span>{item.title}</span>{' '}
                                                     </Link>
                                                     <Link
-                                                        to={`/artist/${item.artistName
+                                                        to={`/project/${item.artistName
                                                             .toLowerCase()
                                                             .split(' ')
                                                             .join('-')}`}

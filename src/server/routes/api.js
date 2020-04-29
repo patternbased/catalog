@@ -27,6 +27,14 @@ router.get('/all-artists', async (req, res) => {
     });
 });
 
+router.get('/all-writers', async (req, res) => {
+    const writers = await ArtistController.getAllWriters();
+
+    res.send({
+        writers,
+    });
+});
+
 router.get('/popular-presets', async (req, res) => {
     const presets = await PresetController.getPopular();
 
@@ -83,6 +91,14 @@ router.post('/create-share', async (req, res) => {
 
 router.get('/shared-list/:id', async (req, res) => {
     const shared = await ShareController.getShare(req.params.id);
+
+    res.send({
+        shared,
+    });
+});
+
+router.get('/album-songs/:id', async (req, res) => {
+    const shared = await SongController.getAlbumSongs(req.params.id);
 
     res.send({
         shared,

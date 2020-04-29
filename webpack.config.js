@@ -38,6 +38,7 @@ module.exports = (env = 'production') => {
     }
 
     return {
+        mode: 'production',
         context: root,
 
         entry: {

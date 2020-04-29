@@ -89,7 +89,7 @@ function ArtistPage(props) {
                         <div className="artist__section">
                             <div className="artist__banner" style={{ backgroundImage: `url('${artist.image}')` }}>
                                 <div className="artist__info">
-                                    <div className="artist__pb">PB Artist</div>
+                                    <div className="artist__pb">PB Project</div>
                                     <div className="artist__name">{artist.name}</div>
                                     <div className="artist__social">
                                         <a href={artist.website} target="_blank" rel="noopener noreferrer">
@@ -127,7 +127,7 @@ function ArtistPage(props) {
                                     <Link
                                         className="artist__similar__single__url"
                                         key={index}
-                                        to={`/artist/${related.name.toLowerCase().split(' ').join('-')}`}
+                                        to={`/project/${related.name.toLowerCase().split(' ').join('-')}`}
                                     >
                                         <span
                                             className="artist__similar__single"

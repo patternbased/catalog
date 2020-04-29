@@ -12,6 +12,15 @@ class SongController {
     }
 
     /**
+     * Returns songs from an album
+     * @param {String} id id of the album
+     * @returns {Array}
+     */
+    getAlbumSongs(id) {
+        return Song.find({ albumId: id });
+    }
+
+    /**
      * Async insert data into db
      * @param {Object} data object with data
      * @returns {Data}

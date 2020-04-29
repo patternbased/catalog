@@ -65,14 +65,16 @@ class PaymentController {
 
         await Ordercount.findByIdAndUpdate('5e820f73e7179a17e21e1d43', { $inc: { count: 1 } });
         const orderCounter = await Ordercount.findById('5e820f73e7179a17e21e1d43');
-
         return axios({
             method: 'post',
-            url: 'https://connect.squareupsandbox.com/v2/payments',
+            url:
+                process.env.NODE_ENV === 'production'
+                    ? 'https://connect.squareup.com/v2/payments'
+                    : 'https://connect.squareupsandbox.com/v2/payments',
             data: payload,
             headers: { Authorization: `Bearer ${process.env.SQUARE_ACCESS_TOKEN}` },
         })
-            .then(async function(response) {
+            .then(async function (response) {
                 return await Payment.create({
                     amount: amount,
                     customer: address,
@@ -83,7 +85,7 @@ class PaymentController {
                     orderNo: orderCounter.count,
                 });
             })
-            .catch(function(error) {
+            .catch(function (error) {
                 return error;
             });
     }
