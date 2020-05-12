@@ -13,6 +13,99 @@
     justify-content: space-between;
     z-index: 3;
     left: 0;
+
+    .desktop-hide {
+        display: none;
+    }
+
+    .mobile-control {
+        display: none;
+    }
+
+    .desktop-control {
+        display: inherit;
+    }
+
+    .actions-menu {
+        width: 200px;
+        border: 1px solid $lighter-grey;
+        border-radius: 5px;
+        background-color: white;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+        position: absolute;
+        bottom: 69px;
+        right: 200px;
+        padding: 10px 0;
+
+        @media screen and (max-width: $medium) {
+            bottom: 57px;
+            right: 100px;
+        }
+
+        div {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            color: $tertiary;
+            font-size: 14px;
+            padding: 4px 0;
+
+            svg {
+                margin: 0 10px 0 15px;
+            }
+
+            path {
+                fill: $tertiary;
+            }
+
+            &:hover {
+                background-color: $secondary;
+                color: white;
+
+                path {
+                    fill: white;
+                }
+            }
+        }
+    }
+
+    @media screen and (max-width: $small) {
+        z-index: 0;
+    }
+
+    @media screen and (max-width: $medium) {
+        height: 120px;
+        display: block;
+        padding: 0;
+
+        .mobile-control {
+            display: block;
+            height: 60px;
+
+            &:nth-child(2) {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+        }
+
+        .desktop-control {
+            display: none;
+        }
+    }
+
+    @media screen and (min-width: $medium) and (max-width: $large) {
+        z-index: 0;
+        padding: 10px 30px;
+
+        .mobile-hide {
+            display: none;
+        }
+        .desktop-hide {
+            display: block;
+        }
+    }
+
     &__section {
         border-right: 1px solid $almost-white;
         display: flex;
@@ -26,6 +119,11 @@
 
         &--controls {
             width: 136px;
+
+            @media screen and (max-width: $medium) {
+                border-right: none;
+                padding-left: 10px;
+            }
 
             &-button {
                 height: 36px;
@@ -42,6 +140,21 @@
             padding: 0 20px;
             width: 100%;
             justify-content: space-between;
+
+            @media screen and (max-width: $medium) {
+                padding: 10px 10px 8px 10px;
+                border-right: none;
+
+                &-changed {
+                    justify-content: flex-end;
+                    padding-right: 10px;
+                }
+
+                .player-mobile-link {
+                    display: flex;
+                    align-items: center;
+                }
+            }
 
             &__song {
                 display: flex;
@@ -136,6 +249,18 @@
                                 color: $secondary;
                             }
                         }
+
+                        @media screen and (max-width: $medium) {
+                            width: 100%;
+                            vertical-align: top;
+                            .rc-slider {
+                                padding: 0;
+                                height: 4px;
+                            }
+                            .rc-slider-handle {
+                                display: none;
+                            }
+                        }
                     }
                 }
             }
@@ -153,12 +278,21 @@
                     margin-right: 10px;
                     cursor: pointer;
 
-                    path {
+                    path,
+                    circle {
                         fill: white;
                     }
 
                     &:hover {
-                        path {
+                        path,
+                        circle {
+                            fill: $secondary;
+                        }
+                    }
+
+                    &--active {
+                        path,
+                        circle {
                             fill: $secondary;
                         }
                     }

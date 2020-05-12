@@ -7,6 +7,7 @@ import ReactPlayer from 'react-player';
 import Slider from 'rc-slider';
 import uuid from 'react-uuid';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import classnames from 'classnames';
 import selectors from 'selectors';
 
 import Button from 'components/button';
@@ -22,6 +23,7 @@ import DoneSvg from 'assets/images/done-check.svg';
 import PianoSvg from 'assets/images/single-song/CustomWork_dark.svg';
 import SimilarSvg from 'assets/images/SimilarSong_Icon_dark.svg';
 import ShareSvg from 'assets/images/share-icon-dark.svg';
+import ActionsSvg from 'assets/images/actions.svg';
 
 import './style.scss';
 
@@ -41,6 +43,7 @@ function MusicPlayer({ list, play }) {
     const [shareOpened, setShareOpened] = useState(false);
     const [shareItem, setShareItem] = useState();
     const [shareSongLinkCopied, setShareSongLinkCopied] = useState(false);
+    const [actionsOpened, setActionsOpened] = useState(false);
     const dispatch = useDispatch();
 
     const currentPlaylist = useSelector(selectors.library.getQueue);
@@ -137,7 +140,127 @@ function MusicPlayer({ list, play }) {
     return (
         <>
             <div className="music-player">
-                <div className="music-player__section music-player__section--controls">
+                <div className="mobile-control">
+                    <div className="music-player__section music-player__section--content">
+                        <Link
+                            to={
+                                currentPlaying
+                                    ? `/song/${currentSong.pbId}-${currentSong.title
+                                          .toLowerCase()
+                                          .split(' ')
+                                          .join('-')}`
+                                    : ''
+                            }
+                            className="player-mobile-link"
+                        >
+                            <img src={currentPlaying.cover} className="music-player__section--content__song-image" />
+                            <div className="music-player__section--content__song__details">
+                                <p className="music-player__section--content__song__details-title">
+                                    {currentPlaying.title}
+                                </p>
+                                <div className="music-player__section--content__song__details">
+                                    <p className="music-player__section--content__song__details-author">
+                                        by {currentPlaying.artistName}
+                                    </p>
+                                    <p className="music-player__section--content__song__details-duration">
+                                        {_formatTime(duration)}
+                                    </p>
+                                </div>
+                            </div>
+                        </Link>
+                        <div
+                            className="music-player__section--extra-button"
+                            onClick={() => dispatch(setState('queueOpened', !queueOpened))}
+                        />
+                    </div>
+                    <div className="music-player__section--content__song__details-progress">
+                        <Slider
+                            min={0}
+                            max={duration}
+                            value={elapsed}
+                            step={0.0001}
+                            onChange={(val) => updateElapsedTime(val)}
+                        />
+                    </div>
+                </div>
+                <div className="mobile-control">
+                    <div className="music-player__section music-player__section--controls">
+                        <img
+                            src="/assets/images/player/prev.png"
+                            className="music-player__section--controls-button"
+                            onClick={() => onPrev()}
+                        />
+                        <img
+                            src={`/assets/images/player/${isPlaying ? 'pause' : 'play'}.png`}
+                            className="music-player__section--controls-button"
+                            onClick={() => {
+                                setIsPlaying(isPlaying ? false : true);
+                                dispatch(setState('songPlaying', isPlaying ? false : true));
+                            }}
+                        />
+                        <img
+                            src="/assets/images/player/next.png"
+                            className="music-player__section--controls-button"
+                            onClick={() => onNext()}
+                        />
+                    </div>
+                    <div className="music-player__section music-player__section--content-changed">
+                        <div className="music-player__section--content__actions">
+                            <ActionsSvg
+                                className={classnames('music-player__section--content__actions-button', {
+                                    'music-player__section--content__actions-button--active': actionsOpened,
+                                })}
+                                onClick={() => setActionsOpened(!actionsOpened)}
+                            />
+                            {actionsOpened && (
+                                <div className="actions-menu">
+                                    <div
+                                        onClick={() => {
+                                            dispatch(
+                                                setCustomWorkSong({
+                                                    title: currentPlaying.title,
+                                                    artist: currentPlaying.artistName,
+                                                    image: currentPlaying.cover,
+                                                })
+                                            );
+                                            dispatch(setState('customWorkOpened', true));
+                                        }}
+                                    >
+                                        <PianoSvg className="music-player__section--content__actions-button" />
+                                        Custom Work
+                                    </div>
+                                    <div onClick={() => dispatch(setState('similarOpened', !similarOpened))}>
+                                        <SimilarSvg className="music-player__section--content__actions-button" />
+                                        Similar Songs
+                                    </div>
+                                    <div onClick={() => openShareModal()}>
+                                        <ShareSvg className="music-player__section--content__actions-button" />
+                                        Share Song
+                                    </div>
+                                </div>
+                            )}
+                            <Button
+                                className="music-player__section--content__actions-license"
+                                width={80}
+                                height={40}
+                                onClick={() => {
+                                    dispatch(
+                                        setLicenseSong({
+                                            title: currentPlaying.title,
+                                            artist: currentPlaying.artistName,
+                                            image: currentPlaying.cover,
+                                            url: currentPlaying.url,
+                                        })
+                                    );
+                                    dispatch(setState('licenseOpened', true));
+                                }}
+                            >
+                                License
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+                <div className="music-player__section music-player__section--controls desktop-control">
                     <img
                         src="/assets/images/player/prev.png"
                         className="music-player__section--controls-button"
@@ -173,7 +296,7 @@ function MusicPlayer({ list, play }) {
                         onEnded={() => goToNextSong()}
                     />
                 </div>
-                <div className="music-player__section music-player__section--content">
+                <div className="music-player__section music-player__section--content desktop-control">
                     <div className="music-player__section--content__song">
                         <img src={currentPlaying.cover} className="music-player__section--content__song-image" />
                         <div
@@ -231,27 +354,62 @@ function MusicPlayer({ list, play }) {
                         </div>
                     </div>
                     <div className="music-player__section--content__actions">
-                        <PianoSvg
-                            className="music-player__section--content__actions-button"
-                            onClick={() => {
-                                dispatch(
-                                    setCustomWorkSong({
-                                        title: currentPlaying.title,
-                                        artist: currentPlaying.artistName,
-                                        image: currentPlaying.cover,
-                                    })
-                                );
-                                dispatch(setState('customWorkOpened', true));
-                            }}
+                        <ActionsSvg
+                            className={classnames('music-player__section--content__actions-button desktop-hide', {
+                                'music-player__section--content__actions-button--active': actionsOpened,
+                            })}
+                            onClick={() => setActionsOpened(!actionsOpened)}
                         />
-                        <SimilarSvg
-                            className="music-player__section--content__actions-button"
-                            onClick={() => dispatch(setState('similarOpened', !similarOpened))}
-                        />
-                        <ShareSvg
-                            className="music-player__section--content__actions-button"
-                            onClick={() => openShareModal()}
-                        />
+                        {actionsOpened && (
+                            <div className="desktop-hide actions-menu">
+                                <div
+                                    onClick={() => {
+                                        dispatch(
+                                            setCustomWorkSong({
+                                                title: currentPlaying.title,
+                                                artist: currentPlaying.artistName,
+                                                image: currentPlaying.cover,
+                                            })
+                                        );
+                                        dispatch(setState('customWorkOpened', true));
+                                    }}
+                                >
+                                    <PianoSvg className="music-player__section--content__actions-button" />
+                                    Custom Work
+                                </div>
+                                <div onClick={() => dispatch(setState('similarOpened', !similarOpened))}>
+                                    <SimilarSvg className="music-player__section--content__actions-button" />
+                                    Similar Songs
+                                </div>
+                                <div onClick={() => openShareModal()}>
+                                    <ShareSvg className="music-player__section--content__actions-button" />
+                                    Share Song
+                                </div>
+                            </div>
+                        )}
+                        <span className="mobile-hide">
+                            <PianoSvg
+                                className="music-player__section--content__actions-button"
+                                onClick={() => {
+                                    dispatch(
+                                        setCustomWorkSong({
+                                            title: currentPlaying.title,
+                                            artist: currentPlaying.artistName,
+                                            image: currentPlaying.cover,
+                                        })
+                                    );
+                                    dispatch(setState('customWorkOpened', true));
+                                }}
+                            />
+                            <SimilarSvg
+                                className="music-player__section--content__actions-button"
+                                onClick={() => dispatch(setState('similarOpened', !similarOpened))}
+                            />
+                            <ShareSvg
+                                className="music-player__section--content__actions-button"
+                                onClick={() => openShareModal()}
+                            />
+                        </span>
                         <Button
                             className="music-player__section--content__actions-license"
                             width={80}
@@ -272,7 +430,7 @@ function MusicPlayer({ list, play }) {
                         </Button>
                     </div>
                 </div>
-                <div className="music-player__section music-player__section--extra">
+                <div className="music-player__section music-player__section--extra desktop-control">
                     <div
                         className="music-player__section--extra-button"
                         onClick={() => dispatch(setState('queueOpened', !queueOpened))}

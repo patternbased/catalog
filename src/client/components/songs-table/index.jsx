@@ -25,7 +25,17 @@ import ShareSvg from 'assets/images/share-icon-dark.svg';
 
 import './style.scss';
 
-const headers = ['SONG NAME / ARTIST NAME', 'FLOW', 'DURATION', 'KEY / BPM', 'RTM', 'SPD', 'EXP', 'MOD', 'GRD'];
+const headers = {
+    'SONG NAME / ARTIST NAME': false,
+    FLOW: false,
+    DURATION: false,
+    'KEY / BPM': false,
+    RTM: true,
+    SPD: true,
+    EXP: true,
+    MOD: true,
+    GRD: true,
+};
 const songsToDisplay = 20;
 const baseUrl =
     process.env.NODE_ENV === 'production' ? 'https://catalog.patternbased.com' : 'https://patternbased.herokuapp.com/';
@@ -49,6 +59,8 @@ function SongsTable({ list, onSelect, listName, page, short = false, extraClass 
     const currentSong = useSelector(selectors.library.getCurrentSong);
     const scrolled = useSelector(selectors.general.get('scrolled'));
     const similarOpened = useSelector(selectors.general.get('similarOpened'));
+    const filtersPanelOpened = useSelector(selectors.general.get('filtersOpened'));
+    const presetsPanelOpened = useSelector(selectors.general.get('presetsOpened'));
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -272,8 +284,17 @@ function SongsTable({ list, onSelect, listName, page, short = false, extraClass 
                         </div>
                     )}
                     <div className="table__header">
-                        {headers.map((item, index) => (
-                            <div className="table__header__label" key={index}>
+                        {Object.keys(headers).map((item, index) => (
+                            <div
+                                className={classnames('table__header__label', {
+                                    'table-hide': headers[item] && (filtersPanelOpened || presetsPanelOpened),
+                                    'mobile-hide': headers[item],
+                                    'hide-when-opened':
+                                        !item.includes('NAME') &&
+                                        (filtersPanelOpened || presetsPanelOpened || window.innerWidth < 541),
+                                })}
+                                key={index}
+                            >
                                 <p>{item}</p>
                             </div>
                         ))}
@@ -299,7 +320,7 @@ function SongsTable({ list, onSelect, listName, page, short = false, extraClass 
                                         <div className="table__body__row-title__container">
                                             <img
                                                 src={
-                                                    checkIfHovered(index)
+                                                    checkIfHovered(index) && window.innerWidth > 768
                                                         ? '/assets/images/table/play-btn.png'
                                                         : currentSong && currentSong.pbId === item.pbId
                                                         ? '/assets/images/table/play-active.svg'
@@ -383,7 +404,12 @@ function SongsTable({ list, onSelect, listName, page, short = false, extraClass 
                                             </Button>
                                         </div>
                                     </div>
-                                    <div className="table__body__row-flow">
+                                    <div
+                                        className={classnames('table__body__row-flow', {
+                                            'hide-when-opened':
+                                                filtersPanelOpened || presetsPanelOpened || window.innerWidth < 541,
+                                        })}
+                                    >
                                         {TABLE_FLOW_SHAPES.find(
                                             (x) => x.name.toLowerCase() === item.arc.toLowerCase()
                                         ) && (
@@ -396,12 +422,22 @@ function SongsTable({ list, onSelect, listName, page, short = false, extraClass 
                                             />
                                         )}
                                     </div>
-                                    <div className="table__body__row-duration">
+                                    <div
+                                        className={classnames('table__body__row-duration', {
+                                            'hide-when-opened':
+                                                filtersPanelOpened || presetsPanelOpened || window.innerWidth < 541,
+                                        })}
+                                    >
                                         <strong>
-                                            <p>{item.length}</p>
+                                            <p>{item.length.split(':').slice(1).slice(-2).join(':')}</p>
                                         </strong>
                                     </div>
-                                    <div className="table__body__row-bpm">
+                                    <div
+                                        className={classnames('table__body__row-bpm', {
+                                            'hide-when-opened':
+                                                filtersPanelOpened || presetsPanelOpened || window.innerWidth < 541,
+                                        })}
+                                    >
                                         <p>
                                             <strong>Key</strong> {item.musicKey}
                                         </p>
@@ -410,31 +446,41 @@ function SongsTable({ list, onSelect, listName, page, short = false, extraClass 
                                         </p>
                                     </div>
                                     <div
-                                        className="table__body__row-filter"
+                                        className={classnames('table__body__row-filter', {
+                                            'table-hide': filtersPanelOpened || presetsPanelOpened,
+                                        })}
                                         style={{ backgroundImage: `url('/assets/images/table/rtm.png')` }}
                                     >
                                         <p>{item.rhythm}</p>
                                     </div>
                                     <div
-                                        className="table__body__row-filter"
+                                        className={classnames('table__body__row-filter', {
+                                            'table-hide': filtersPanelOpened || presetsPanelOpened,
+                                        })}
                                         style={{ backgroundImage: `url('/assets/images/table/spd.png')` }}
                                     >
                                         <p>{item.speed}</p>
                                     </div>
                                     <div
-                                        className="table__body__row-filter"
+                                        className={classnames('table__body__row-filter', {
+                                            'table-hide': filtersPanelOpened || presetsPanelOpened,
+                                        })}
                                         style={{ backgroundImage: `url('/assets/images/table/exp.png')` }}
                                     >
                                         <p>{item.experimental}</p>
                                     </div>
                                     <div
-                                        className="table__body__row-filter"
+                                        className={classnames('table__body__row-filter', {
+                                            'table-hide': filtersPanelOpened || presetsPanelOpened,
+                                        })}
                                         style={{ backgroundImage: `url('/assets/images/table/mod.png')` }}
                                     >
                                         <p>{item.mood}</p>
                                     </div>
                                     <div
-                                        className="table__body__row-filter"
+                                        className={classnames('table__body__row-filter', {
+                                            'table-hide': filtersPanelOpened || presetsPanelOpened,
+                                        })}
                                         style={{ backgroundImage: `url('/assets/images/table/grd.png')` }}
                                     >
                                         <p>{item.grid}</p>

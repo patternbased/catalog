@@ -3,6 +3,14 @@
 .about {
     padding-top: 130px;
 
+    @media screen and (max-width: $large) {
+        padding-top: 80px;
+    }
+
+    @media screen and (max-width: $medium) {
+        padding-top: 60px;
+    }
+
     &__hero {
         background-image: url('/assets/images/about-hero.jpg');
         background-repeat: no-repeat;
@@ -11,6 +19,18 @@
         height: 430px;
         max-width: 1040px;
         margin: 0 auto;
+
+        @media screen and (max-width: $large) {
+            background-position: 50% 50%;
+        }
+
+        @media screen and (max-width: $medium) {
+            height: 300px;
+        }
+
+        @media screen and (max-width: $small) {
+            height: 200px;
+        }
     }
 
     &__title {
@@ -22,11 +42,25 @@
         line-height: 33px;
         margin-bottom: 15px;
 
+        @media screen and (max-width: $large) {
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        @media screen and (max-width: $small) {
+            font-size: 21px;
+        }
+
         &--big {
             font-size: 36px;
             line-height: 42px;
             margin-top: 50px;
             margin-bottom: 30px;
+
+            @media screen and (max-width: $small) {
+                font-size: 24px;
+            }
         }
     }
 
@@ -38,6 +72,10 @@
         line-height: 21px;
         max-width: 600px;
         margin: 0 auto 15px;
+
+        @media screen and (max-width: $large) {
+            width: 80%;
+        }
 
         &--wide {
             max-width: 800px;
@@ -75,6 +113,14 @@
         justify-content: space-between;
         max-width: 1040px;
         margin: 40px auto 60px;
+
+        @media screen and (max-width: $large) {
+            width: 90%;
+        }
+
+        @media screen and (max-width: $small) {
+            display: block;
+        }
     }
 
     &__cta {
@@ -97,6 +143,13 @@
         }
         &:nth-child(2) {
             background-image: url('/assets/images/about-hero.jpg');
+        }
+
+        @media screen and (max-width: $small) {
+            width: 100%;
+            &:first-child {
+                margin-bottom: 10px;
+            }
         }
     }
 }

@@ -12,6 +12,13 @@
     right: -300px;
     height: calc(100vh - 60px);
 
+    @media screen and (max-width: $small) {
+        width: 100%;
+        box-shadow: none;
+        right: -100%;
+        transition: all 0.3s ease-in-out;
+    }
+
     &--visible {
         right: 0;
     }

@@ -5,6 +5,10 @@
     position: relative;
     width: 210px;
 
+    @media screen and (max-width: $small) {
+        width: 100%;
+    }
+
     &__container {
         height: 40px;
         width: 100%;

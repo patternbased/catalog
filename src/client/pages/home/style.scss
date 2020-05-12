@@ -4,13 +4,48 @@
     padding-top: 80px;
     margin: 0 auto;
     max-width: 1040px;
+    width: 95%;
     padding-bottom: 30px;
+
+    @media screen and (max-width: $large) {
+        .popular-presets__presets {
+            display: inline-grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            width: 100%;
+        }
+        .preset {
+            width: 95% !important;
+            &-background {
+                width: 100% !important;
+            }
+        }
+    }
+
+    @media screen and (max-width: $medium) {
+        .popular-presets__presets {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
 }
 .app-container {
     margin: 0;
     transition: all 0.7s ease-in-out;
     &--pushed {
         margin-left: 300px;
+
+        @media screen and (max-width: $small) {
+            margin-left: 0;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        @media screen and (max-width: $large) {
+            .home {
+                .popular-presets__presets {
+                    grid-template-columns: 1fr 1fr;
+                }
+            }
+        }
     }
 }
 .hero {
@@ -21,6 +56,15 @@
     background-size: cover;
     background-position: 50% 50%;
     margin: 50px 0;
+
+    @media screen and (max-width: $medium) {
+        height: 320px;
+    }
+
+    @media screen and (max-width: $small) {
+        margin: 0 0 35px 0;
+    }
+
     &__overlay {
         width: 100%;
         height: 100%;
@@ -29,6 +73,19 @@
         align-items: center;
         justify-content: space-around;
         padding: 0px 200px;
+
+        @media screen and (max-width: $large) {
+            justify-content: space-between;
+            padding: 0px 165px;
+        }
+
+        @media screen and (max-width: $medium) {
+            padding: 0px 65px;
+        }
+
+        @media screen and (max-width: $small) {
+            padding: 0px 10px;
+        }
     }
     &__feature {
         text-align: center;
@@ -110,6 +167,11 @@
         color: $primary;
         font-size: 28px;
         margin-bottom: 20px;
+
+        @media screen and (max-width: $large) {
+            font-size: 18px;
+            text-align: center;
+        }
     }
     &__presets {
         display: flex;

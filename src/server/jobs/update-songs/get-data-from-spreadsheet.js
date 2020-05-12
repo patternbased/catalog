@@ -11,14 +11,14 @@ const spreadsheetConfig = config.googleSpreadsheets.songs;
  * @param {Object} config a google spreadsheet config
  * @returns {Promise}
  */
-const setupConfig = (doc, config) => new Promise(resolve => doc.useServiceAccountAuth(config, resolve));
+const setupConfig = (doc, config) => new Promise((resolve) => doc.useServiceAccountAuth(config, resolve));
 
 /**
  * Get the sheets of a google spreadsheet document
  * @param {GoogleSpreadsheet} doc the google spreadsheet document
  * @returns {Promise}
  */
-const getSheets = doc =>
+const getSheets = (doc) =>
     new Promise((resolve, reject) => {
         doc.getInfo((error, info) => {
             if (error) {
@@ -55,12 +55,13 @@ module.exports = async () => {
     const doc = new GoogleSpreadsheet(spreadsheetConfig.spreadsheetId);
     await setupConfig(doc, spreadsheetConfig.config);
     const sheets = await getSheets(doc);
+    const songsSheet = sheets.find((s) => s.title === 'Songs');
 
-    const rows = await getRows(sheets[0], 2, sheets[0].rowCount);
+    const rows = await getRows(songsSheet, 2, songsSheet.rowCount);
 
     var separators = [',', ';', ', ', '; '];
 
-    return rows.map(row => ({
+    return rows.map((row) => ({
         pbId: row.id,
         title: row.title,
         sequence: row.seq,

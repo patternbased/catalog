@@ -9,6 +9,12 @@
     overflow: scroll;
     height: 0;
 
+    @media screen and (max-width: $small) {
+        width: 100%;
+        z-index: 2;
+        transition: all 0.3s ease-in-out;
+    }
+
     &--visible {
         height: calc(100vh - 60px);
     }
@@ -31,6 +37,10 @@
         padding: 26px 33px;
         margin: 30px 0;
         background-color: $darker;
+
+        @media screen and (max-width: $small) {
+            width: 100%;
+        }
 
         &-copy {
             font-size: 18px;

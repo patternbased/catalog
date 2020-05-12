@@ -92,13 +92,13 @@ function WriterPage(props) {
             <Header />
             <div className={artistClass}>
                 {artist && (
-                    <main className="writer">
-                        <div className="writer__section">
-                            <div className="writer__banner" style={{ backgroundImage: `url('${artist.image}')` }}>
-                                <div className="writer__info">
-                                    <div className="writer__pb">PB Artist</div>
-                                    <div className="writer__name">{artist.name}</div>
-                                    <div className="writer__social">
+                    <main className="artist">
+                        <div className="artist__section">
+                            <div className="artist__banner" style={{ backgroundImage: `url('${artist.image}')` }}>
+                                <div className="artist__info">
+                                    <div className="artist__pb">PB Artist</div>
+                                    <div className="artist__name">{artist.name}</div>
+                                    <div className="artist__social">
                                         <a href={artist.website} target="_blank" rel="noopener noreferrer">
                                             <WebsiteSvg />
                                         </a>
@@ -115,33 +115,55 @@ function WriterPage(props) {
                                             <FacebookSvg />
                                         </a>
                                     </div>
-                                    <div className="writer__bio">{artist.bio}</div>
+                                    <div className="artist__bio">{artist.bio}</div>
                                 </div>
+                            </div>
+                            <div className="artist__info desktop-hide">
+                                <div className="artist__pb">PB Project</div>
+                                <div className="artist__name">{artist.name}</div>
+                                <div className="artist__social">
+                                    <a href={artist.website} target="_blank" rel="noopener noreferrer">
+                                        <WebsiteSvg />
+                                    </a>
+                                    <a href={artist.bandcamp} target="_blank" rel="noopener noreferrer">
+                                        <BandcampSvg />
+                                    </a>
+                                    <a href={artist.soundcloud} target="_blank" rel="noopener noreferrer">
+                                        <SoundCloudSvg />
+                                    </a>
+                                    <a href={artist.instagram} target="_blank" rel="noopener noreferrer">
+                                        <InstagramSvg />
+                                    </a>
+                                    <a href={artist.facebook} target="_blank" rel="noopener noreferrer">
+                                        <FacebookSvg />
+                                    </a>
+                                </div>
+                                <div className="artist__bio">{artist.bio}</div>
                             </div>
                         </div>
                         {featuredTracks && (
-                            <div className="writer__section">
-                                <div className="writer__table">
-                                    <div className="writer__table__title">Featured Tracks</div>
+                            <div className="artist__section">
+                                <div className="artist__table">
+                                    <div className="artist__table__title">Featured Tracks</div>
                                     <SongsTable list={featuredTracks} onSelect={(val) => playSong(val)} page="home" />
                                 </div>
                             </div>
                         )}
-                        <div className="writer__section">
-                            <div className="writer__table__title">You May Also Like</div>
-                            <div className="writer__similar">
+                        <div className="artist__section">
+                            <div className="artist__table__title">You May Also Like</div>
+                            <div className="artist__similar">
                                 {artist.relatedArtists.map((related, index) => (
                                     <Link
-                                        className="writer__similar__single__url"
+                                        className="artist__similar__single__url"
                                         key={index}
                                         to={`/project/${related.name.toLowerCase().split(' ').join('-')}`}
                                     >
                                         <span
-                                            className="writer__similar__single"
+                                            className="artist__similar__single"
                                             style={{ backgroundImage: `url(${related.image})` }}
                                         >
                                             <div>
-                                                <div className="writer__similar__overlay" />
+                                                <div className="artist__similar__overlay" />
                                                 {related.name}
                                             </div>
                                         </span>
@@ -150,9 +172,9 @@ function WriterPage(props) {
                             </div>
                         </div>
                         {allArtistTracks && (
-                            <div className="writer__section">
-                                <div className="writer__table">
-                                    <div className="writer__table__title">Full Songography</div>
+                            <div className="artist__section">
+                                <div className="artist__table">
+                                    <div className="artist__table__title">Full Songography</div>
                                     <SongsTable list={allArtistTracks} onSelect={(val) => playSong(val)} page="home" />
                                 </div>
                             </div>

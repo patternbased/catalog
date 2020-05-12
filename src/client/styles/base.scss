@@ -95,7 +95,7 @@ main {
 }
 
 .hide {
-    display: none;
+    display: none !important;
 }
 
 .info-tooltip {
@@ -132,6 +132,14 @@ select {
     line-height: 17px;
     padding: 12px 10px;
     background-color: transparent;
+}
+
+@media screen and (max-width: $small) {
+    input,
+    textarea,
+    select {
+        width: 100%;
+    }
 }
 
 textarea {
@@ -204,6 +212,7 @@ textarea {
     font-size: 12px;
     display: inline-grid;
     grid-template-columns: 30px 1fr;
+    align-items: center;
 }
 .check-box label span {
     margin-left: 10px;

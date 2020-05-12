@@ -9,8 +9,16 @@
     margin-bottom: 10px;
     transition: transform 0.3s;
 
+    @media screen and (max-width: $small) {
+        width: 80% !important;
+        margin: 0 auto 10px !important;
+    }
+
     &:hover {
         transform: scale(1.05);
+        @media screen and (max-width: $small) {
+            transform: none;
+        }
     }
 
     &-background {
@@ -19,6 +27,10 @@
         align-items: center;
         background-color: rgba(0, 0, 0, 0.3);
         border-radius: 4px;
+
+        @media screen and (max-width: $small) {
+            width: 100% !important;
+        }
     }
 
     &-name {

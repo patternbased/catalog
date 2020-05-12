@@ -111,6 +111,28 @@ function ArtistPage(props) {
                                     <div className="artist__bio">{artist.bio}</div>
                                 </div>
                             </div>
+                            <div className="artist__info desktop-hide">
+                                <div className="artist__pb">PB Project</div>
+                                <div className="artist__name">{artist.name}</div>
+                                <div className="artist__social">
+                                    <a href={artist.website} target="_blank" rel="noopener noreferrer">
+                                        <WebsiteSvg />
+                                    </a>
+                                    <a href={artist.bandcamp} target="_blank" rel="noopener noreferrer">
+                                        <BandcampSvg />
+                                    </a>
+                                    <a href={artist.soundcloud} target="_blank" rel="noopener noreferrer">
+                                        <SoundCloudSvg />
+                                    </a>
+                                    <a href={artist.instagram} target="_blank" rel="noopener noreferrer">
+                                        <InstagramSvg />
+                                    </a>
+                                    <a href={artist.facebook} target="_blank" rel="noopener noreferrer">
+                                        <FacebookSvg />
+                                    </a>
+                                </div>
+                                <div className="artist__bio">{artist.bio}</div>
+                            </div>
                         </div>
                         {featuredTracks && (
                             <div className="artist__section">

@@ -10,11 +10,53 @@
     z-index: 999;
     transition: all 500ms ease;
 
+    @media screen and (max-width: $medium) {
+        height: 60px;
+        &__mobile-hide {
+            display: none !important;
+        }
+    }
+
+    @media screen and (max-width: $small) {
+        padding: 12px 10px;
+
+        &--mobile {
+            box-shadow: none;
+        }
+    }
+
+    &__desktop-hide {
+        display: none;
+
+        @media screen and (max-width: $medium) {
+            display: block;
+        }
+    }
+
     &--small {
         height: 60px;
     }
 
     &__buttons {
+        &-close {
+            width: 60px;
+            height: 60px;
+            position: absolute;
+            right: 0;
+            top: 0;
+            border-left: 1px solid $lighter-grey;
+            border-bottom: 1px solid $lighter-grey;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+
+            svg {
+                width: 30px;
+                height: 30px;
+            }
+        }
+
         &-icon {
             width: 30px;
             height: 30px;
@@ -22,6 +64,21 @@
             cursor: pointer;
             display: inline-block;
             position: relative;
+
+            @media screen and (max-width: $large) {
+                width: 36px;
+                height: 36px;
+            }
+
+            @media screen and (max-width: $small) {
+                margin-right: 10px;
+                &:last-child {
+                    margin-right: 0;
+                }
+                &--apart {
+                    margin-right: 20px;
+                }
+            }
 
             &--cart {
                 width: 36px;

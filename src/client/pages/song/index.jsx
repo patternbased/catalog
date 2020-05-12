@@ -171,6 +171,50 @@ function SongPage(props) {
                     <main className="song">
                         <div className="song__section">
                             <div className="song__column">
+                                <span className="desktop-hide">
+                                    <div className="song__title">{song.title}</div>
+                                    <Link to={`/project/${song.artistName.toLowerCase().split(' ').join('-')}`}>
+                                        <div className="song__artist">by {song.artistName}</div>
+                                    </Link>
+                                    <div className="song__actions">
+                                        <PianoSvg
+                                            onClick={() => {
+                                                dispatch(setState('customWorkOpened', true));
+                                                dispatch(
+                                                    setCustomWorkSong({
+                                                        title: song.title,
+                                                        artist: song.artistName,
+                                                        image: song.cover,
+                                                    })
+                                                );
+                                            }}
+                                        />
+                                        <SimilarIcon
+                                            onClick={() => {
+                                                dispatch(setState('similarOpened', !similarOpened));
+                                            }}
+                                        />
+                                        <ShareIcon onClick={() => openShareModal()} />
+                                        <Button
+                                            className="song__actions-license"
+                                            width={100}
+                                            height={36}
+                                            onClick={() => {
+                                                dispatch(
+                                                    setLicenseSong({
+                                                        title: song.title,
+                                                        artist: song.artistName,
+                                                        image: song.cover,
+                                                        url: song.url,
+                                                    })
+                                                );
+                                                dispatch(setState('licenseOpened', true));
+                                            }}
+                                        >
+                                            License
+                                        </Button>
+                                    </div>
+                                </span>
                                 <div
                                     className="song__cover"
                                     onMouseEnter={() => setCoverHover(true)}
@@ -188,80 +232,84 @@ function SongPage(props) {
 
                                     <img src={song.image} alt={`${song.title} by ${song.artistName}`} />
                                 </div>
-                                <div className="song__column__row-header">
-                                    <div className="song__column__row-header__overlay" />
-                                    Writers
-                                </div>
-                                <div className="song__column__row-content">
-                                    {song.writers.map((writer, index) => (
-                                        <Link
-                                            key={index}
-                                            to={`/artist/${writer.toLowerCase().trim().split(' ').join('-')}`}
-                                        >
-                                            <div className="song__column__writer">
-                                                <img src={song.cover} alt={writer} />
-                                                {writer}
+                                <span className="mobile-hide">
+                                    <div className="song__column__row-header">
+                                        <div className="song__column__row-header__overlay" />
+                                        Writers
+                                    </div>
+                                    <div className="song__column__row-content">
+                                        {song.writers.map((writer, index) => (
+                                            <Link
+                                                key={index}
+                                                to={`/artist/${writer.toLowerCase().trim().split(' ').join('-')}`}
+                                            >
+                                                <div className="song__column__writer">
+                                                    <img src={song.cover} alt={writer} />
+                                                    {writer}
+                                                </div>
+                                            </Link>
+                                        ))}
+                                    </div>
+                                    <div className="song__column__row-header">
+                                        <div className="song__column__row-header__overlay" />
+                                        Album
+                                    </div>
+                                    <div className="song__column__row-content">
+                                        <img src={song.cover} alt={song.albumTitle} />
+                                        <Link to={`/album/${song.albumTitle}/${song.albumId}`}>
+                                            <div className="song__column__album-title">
+                                                <em>{song.albumTitle}&nbsp;</em>{' '}
+                                                {song.dateReleased && <>({song.dateReleased.split('-')[0]})</>}
                                             </div>
                                         </Link>
-                                    ))}
-                                </div>
-                                <div className="song__column__row-header">
-                                    <div className="song__column__row-header__overlay" />
-                                    Album
-                                </div>
-                                <div className="song__column__row-content">
-                                    <img src={song.cover} alt={song.albumTitle} />
-                                    <Link to={`/album/${song.albumTitle}/${song.albumId}`}>
-                                        <div className="song__column__album-title">
-                                            <em>{song.albumTitle}&nbsp;</em>{' '}
-                                            {song.dateReleased && <>({song.dateReleased.split('-')[0]})</>}
-                                        </div>
-                                    </Link>
-                                </div>
+                                    </div>
+                                </span>
                             </div>
                             <div className="song__column">
-                                <div className="song__title">{song.title}</div>
-                                <Link to={`/project/${song.artistName.toLowerCase().split(' ').join('-')}`}>
-                                    <div className="song__artist">by {song.artistName}</div>
-                                </Link>
-                                <div className="song__actions">
-                                    <PianoSvg
-                                        onClick={() => {
-                                            dispatch(setState('customWorkOpened', true));
-                                            dispatch(
-                                                setCustomWorkSong({
-                                                    title: song.title,
-                                                    artist: song.artistName,
-                                                    image: song.cover,
-                                                })
-                                            );
-                                        }}
-                                    />
-                                    <SimilarIcon
-                                        onClick={() => {
-                                            dispatch(setState('similarOpened', !similarOpened));
-                                        }}
-                                    />
-                                    <ShareIcon onClick={() => openShareModal()} />
-                                    <Button
-                                        className="song__actions-license"
-                                        width={100}
-                                        height={36}
-                                        onClick={() => {
-                                            dispatch(
-                                                setLicenseSong({
-                                                    title: song.title,
-                                                    artist: song.artistName,
-                                                    image: song.cover,
-                                                    url: song.url,
-                                                })
-                                            );
-                                            dispatch(setState('licenseOpened', true));
-                                        }}
-                                    >
-                                        License
-                                    </Button>
-                                </div>
+                                <span className="mobile-hide">
+                                    <div className="song__title">{song.title}</div>
+                                    <Link to={`/project/${song.artistName.toLowerCase().split(' ').join('-')}`}>
+                                        <div className="song__artist">by {song.artistName}</div>
+                                    </Link>
+                                    <div className="song__actions">
+                                        <PianoSvg
+                                            onClick={() => {
+                                                dispatch(setState('customWorkOpened', true));
+                                                dispatch(
+                                                    setCustomWorkSong({
+                                                        title: song.title,
+                                                        artist: song.artistName,
+                                                        image: song.cover,
+                                                    })
+                                                );
+                                            }}
+                                        />
+                                        <SimilarIcon
+                                            onClick={() => {
+                                                dispatch(setState('similarOpened', !similarOpened));
+                                            }}
+                                        />
+                                        <ShareIcon onClick={() => openShareModal()} />
+                                        <Button
+                                            className="song__actions-license"
+                                            width={100}
+                                            height={36}
+                                            onClick={() => {
+                                                dispatch(
+                                                    setLicenseSong({
+                                                        title: song.title,
+                                                        artist: song.artistName,
+                                                        image: song.cover,
+                                                        url: song.url,
+                                                    })
+                                                );
+                                                dispatch(setState('licenseOpened', true));
+                                            }}
+                                        >
+                                            License
+                                        </Button>
+                                    </div>
+                                </span>
                                 <div className="song__description">{song.description}</div>
                                 <div className="song__attributes">
                                     <div className="song__attributes__single">
@@ -484,6 +532,38 @@ function SongPage(props) {
                                     <GooglePlaySvg className="song__media__google" />
                                     <VimeoSvg className="song__media__vimeo" />
                                 </div>
+                                <span className="desktop-hide">
+                                    <div className="song__column__row-header">
+                                        <div className="song__column__row-header__overlay" />
+                                        Writers
+                                    </div>
+                                    <div className="song__column__row-content">
+                                        {song.writers.map((writer, index) => (
+                                            <Link
+                                                key={index}
+                                                to={`/artist/${writer.toLowerCase().trim().split(' ').join('-')}`}
+                                            >
+                                                <div className="song__column__writer">
+                                                    <img src={song.cover} alt={writer} />
+                                                    {writer}
+                                                </div>
+                                            </Link>
+                                        ))}
+                                    </div>
+                                    <div className="song__column__row-header">
+                                        <div className="song__column__row-header__overlay" />
+                                        Album
+                                    </div>
+                                    <div className="song__column__row-content">
+                                        <img src={song.cover} alt={song.albumTitle} />
+                                        <Link to={`/album/${song.albumTitle}/${song.albumId}`}>
+                                            <div className="song__column__album-title">
+                                                <em>{song.albumTitle}&nbsp;</em>{' '}
+                                                {song.dateReleased && <>({song.dateReleased.split('-')[0]})</>}
+                                            </div>
+                                        </Link>
+                                    </div>
+                                </span>
                             </div>
                         </div>
                         {altVersions && (

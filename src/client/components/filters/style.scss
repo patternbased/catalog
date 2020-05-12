@@ -92,6 +92,10 @@
             background-size: cover;
             border-radius: 0;
             width: 101.5%;
+
+            @media screen and (max-width: $small) {
+                background-size: 99% 100%;
+            }
         }
         &-track {
             height: 38px;

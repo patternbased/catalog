@@ -10,6 +10,13 @@
     overflow: scroll;
     bottom: 0;
 
+    @media screen and (max-width: $small) {
+        width: 100%;
+        z-index: 1;
+        left: -100%;
+        transition: all 0.3s ease;
+    }
+
     &--visible {
         left: 0;
     }
@@ -34,6 +41,10 @@
             color: $primary;
             text-transform: uppercase;
             margin-bottom: 10px;
+
+            @media screen and (max-width: $small) {
+                text-align: center;
+            }
         }
     }
 

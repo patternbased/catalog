@@ -17,7 +17,6 @@ function SuccessPanel({ onClose }) {
         <div className="success-panel">
             <div className="success-panel__header">
                 <CloseIcon onClick={onClose} />
-                <img className="success-panel__header__image" src="/assets/images/thank_you_img.jpg" />
             </div>
             <div className="success-panel__body">
                 <div className="success-panel__body__title">Your request has been sent.</div>

@@ -47,7 +47,7 @@ function HomePage({ history }) {
                     res.presets.map((preset) => {
                         popular.push({ name: preset.name, details: PRESETS[preset.name] });
                     });
-                    setPopularPresets(popular);
+                    setPopularPresets(window.innerWidth < 1025 ? popular.slice(0, 6) : popular);
                 }
             });
         }

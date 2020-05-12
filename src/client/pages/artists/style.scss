@@ -3,6 +3,10 @@
 .artists {
     padding-top: 130px;
 
+    @media screen and (max-width: $medium) {
+        padding-top: 60px;
+    }
+
     &__title {
         color: $primary;
         font-family: $font-main;
@@ -48,5 +52,9 @@
         max-width: 1040px;
         margin: 0 auto;
         padding-bottom: 60px;
+
+        @media screen and (max-width: $large) {
+            width: 90%;
+        }
     }
 }

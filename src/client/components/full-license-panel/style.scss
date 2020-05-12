@@ -12,6 +12,13 @@
     right: -300px;
     height: calc(100vh - 60px);
 
+    @media screen and (max-width: $small) {
+        width: 100%;
+        box-shadow: none;
+        right: -100%;
+        transition: all 0.3s ease-in-out;
+    }
+
     &--visible {
         right: 0;
     }
@@ -29,6 +36,10 @@
             font-weight: 600;
             color: white;
 
+            @media screen and (max-width: $small) {
+                justify-content: center;
+            }
+
             svg {
                 width: 30px;
                 height: 30px;
@@ -36,6 +47,12 @@
                 cursor: pointer;
                 path {
                     fill: white;
+                }
+
+                @media screen and (max-width: $small) {
+                    position: absolute;
+                    margin-right: 0;
+                    left: 15px;
                 }
             }
         }
@@ -71,6 +88,10 @@
             padding: 14px 30px;
             display: flex;
             align-items: center;
+
+            @media screen and (max-width: $small) {
+                justify-content: center;
+            }
 
             &__image {
                 width: 40px;
@@ -110,6 +131,10 @@
         .check-box {
             margin-top: 40px;
             margin-bottom: 20px;
+
+            @media screen and (max-width: $small) {
+                margin-top: 15px;
+            }
 
             label a {
                 color: $secondary;

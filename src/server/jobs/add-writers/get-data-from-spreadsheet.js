@@ -3,7 +3,7 @@
 const config = require('../../config');
 const GoogleSpreadsheet = require('google-spreadsheet');
 
-const spreadsheetConfig = config.googleSpreadsheets.artists;
+const spreadsheetConfig = config.googleSpreadsheets.songs;
 
 /**
  * Setup the config for a google spreadsheet document
@@ -55,31 +55,39 @@ module.exports = async () => {
     const doc = new GoogleSpreadsheet(spreadsheetConfig.spreadsheetId);
     await setupConfig(doc, spreadsheetConfig.config);
     const sheets = await getSheets(doc);
-    const writersSheet = sheets.find((s) => s.title === 'Writers');
-    const artistsSheet = sheets.find((s) => s.title === 'Artists');
+    const writersSheet = sheets.find((s) => s.title === 'Artists');
 
     const wRows = await getRows(writersSheet, 1, writersSheet.rowCount);
-    const aRows = await getRows(artistsSheet, 1, artistsSheet.rowCount);
 
     var separators = [';', '; '];
 
-    return wRows.map((row) => ({
-        name: row.artistname,
-        slug: row.artistname.toLowerCase().split(' ').join('-'),
-        bio: row.bio,
-        image: `https://pblibrary.s3.us-east-2.amazonaws.com/artists/${row.image}`,
-        imageAlt: row.imageattribute,
-        website: row.website,
-        bandcamp: row.bandcamp,
-        soundcloud: row.soundcloud,
-        instagram: row.instagram,
-        facebook: row.facebook,
-        relatedArtists: row.relatedentities.split(new RegExp(separators.join('|'), 'g')).map((artist) => {
-            const artistImg = aRows.find((r) => r.artistname.trim().toLowerCase() === artist.trim().toLowerCase());
-            return {
-                name: artist.trim(),
-                image: artistImg ? `https://pblibrary.s3.us-east-2.amazonaws.com/artists/${artistImg.image}` : '',
-            };
-        }),
-    }));
+    return wRows.map((row) => {
+        if (row.relatedentities.length > 0) {
+            if (row.type === 'A') {
+                return {
+                    name: row.artistname,
+                    slug: row.artistname.toLowerCase().split(' ').join('-'),
+                    bio: row.bio,
+                    image: `https://pblibrary.s3.us-east-2.amazonaws.com/artists/${row.img}`,
+                    imageAlt: row.imgattr,
+                    website: row.url,
+                    bandcamp: row.bandcamp,
+                    soundcloud: row.soundcloud,
+                    instagram: row.instagram,
+                    facebook: row.facebook,
+                    relatedArtists: row.relatedentities.split(new RegExp(separators.join('|'), 'g')).map((artist) => {
+                        const artistImg = wRows.find(
+                            (r) => r.artistname.trim().toLowerCase() === artist.trim().toLowerCase()
+                        );
+                        return {
+                            name: artist.trim(),
+                            image: artistImg
+                                ? `https://pblibrary.s3.us-east-2.amazonaws.com/artists/${artistImg.img}`
+                                : '',
+                        };
+                    }),
+                };
+            }
+        }
+    });
 };

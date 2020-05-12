@@ -10,12 +10,22 @@
     visibility: hidden;
     transition: all 0.5s ease-in;
     z-index: 2;
+
+    @media screen and (max-width: $small) {
+        width: 100%;
+        box-shadow: none;
+        transition: all 0.3s ease-in-out;
+    }
+
     &--visible {
         visibility: visible;
     }
 
     &--big-header {
         height: calc(100vh - 140px);
+        @media screen and (max-width: $small) {
+            height: calc(100vh - 60px);
+        }
     }
     &--small-header {
         height: calc(100vh - 120px);

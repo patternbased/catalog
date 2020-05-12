@@ -5,10 +5,36 @@
     padding-bottom: 100px;
     color: $primary;
 
+    .desktop-hide {
+        display: none;
+    }
+
+    @media screen and (max-width: $small) {
+        padding-top: 60px;
+        .desktop-hide {
+            display: block;
+        }
+    }
+
     &__section {
         padding-top: 50px;
         margin: 0 auto;
         max-width: 1040px;
+
+        @media screen and (max-width: $large) {
+            width: 95%;
+
+            &:first-child {
+                width: 100%;
+            }
+        }
+
+        @media screen and (max-width: $small) {
+            padding-top: 30px;
+            &:first-child {
+                padding-top: 0;
+            }
+        }
     }
 
     &__banner {
@@ -20,6 +46,13 @@
         background-repeat: no-repeat;
         background-size: 100%;
         background-position: 50% 50%;
+
+        @media screen and (max-width: $small) {
+            height: 220px;
+            display: block;
+            position: relative;
+            border: none;
+        }
     }
 
     &__info {
@@ -29,6 +62,13 @@
         padding: 32px 50px;
         color: white;
         overflow: scroll;
+
+        @media screen and (max-width: $small) {
+            display: none;
+            height: auto;
+            width: 100%;
+            padding: 32px 20px;
+        }
     }
 
     &__social {
@@ -76,6 +116,11 @@
             font-size: 28px;
             line-height: 33px;
             margin-bottom: 17px;
+
+            @media screen and (max-width: $small) {
+                font-size: 18px;
+                text-align: center;
+            }
         }
         .table {
             padding-bottom: 0;
@@ -85,6 +130,10 @@
     &__similar {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr 1fr;
+
+        @media screen and (max-width: $large) {
+            grid-template-columns: 1fr 1fr;
+        }
 
         &__single {
             height: 164px;
@@ -113,6 +162,17 @@
             > div {
                 max-width: 90%;
                 text-align: center;
+            }
+
+            @media screen and (max-width: $large) {
+                &:first-child {
+                    margin-bottom: 20px;
+                }
+            }
+
+            @media screen and (max-width: $small) {
+                font-size: 21px;
+                height: 106px;
             }
         }
         &__overlay {

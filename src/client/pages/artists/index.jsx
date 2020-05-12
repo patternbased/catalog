@@ -42,7 +42,7 @@ function ArtistPage() {
             if (res.artists) {
                 const art = res.artists;
                 art.forEach((a) => {
-                    a.type = 'artist';
+                    a.type = 'project';
                 });
                 setArtists(art);
             }
@@ -51,7 +51,7 @@ function ArtistPage() {
             if (res.writers) {
                 const art = res.writers;
                 art.forEach((a) => {
-                    a.type = 'writer';
+                    a.type = 'artist';
                 });
                 setWriters(art);
             }
@@ -76,12 +76,7 @@ function ArtistPage() {
                     {all.map((art, index) => {
                         if (art.name !== 'Band / Project' && art.name !== 'Writers') {
                             return (
-                                <Link
-                                    key={index}
-                                    to={`/${
-                                        art.type === 'artist' ? 'project' : 'artist'
-                                    }/${art.name.toLowerCase().split(' ').join('-')}`}
-                                >
+                                <Link key={index} to={`/${art.type}/${art.name.toLowerCase().split(' ').join('-')}`}>
                                     <div
                                         className="artists__tile"
                                         style={{

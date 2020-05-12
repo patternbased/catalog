@@ -13,6 +13,7 @@ import FullLogoSvg from 'assets/images/header/PatternBased_CatalogSearch_logo.sv
 import CartSvg from 'assets/images/header/cart.svg';
 import ActiveCartSvg from 'assets/images/Cart_Icon_activated.svg';
 import MenuSvg from 'assets/images/header/menu.svg';
+import CloseIcon from 'assets/images/Close_Icon_Gray.svg';
 import selectors from 'selectors';
 
 import FiltersPanel from 'components/filters-panel';
@@ -42,7 +43,9 @@ const svgActiveFill = '#0092C5';
  */
 function Header({ history }) {
     const [scrolled, setScrolled] = useState(false);
-    const [panelStyle, setPanelStyle] = useState({ top: `${HEADER_HEIGHTS.big}px` });
+    const [panelStyle, setPanelStyle] = useState({
+        top: `${window.innerWidth > 768 ? HEADER_HEIGHTS.big : HEADER_HEIGHTS.small}px`,
+    });
     const [filtersOpened, setFiltersOpened] = useState(true);
     const [presetsOpened, setPresetsOpened] = useState(false);
     const [menuOpened, setMenuOpened] = useState(false);
@@ -111,11 +114,11 @@ function Header({ history }) {
     const dispatch = useDispatch();
 
     const scrollHandler = () => {
-        if (window.pageYOffset > HEADER_HEIGHTS.big && !scrolled) {
+        if (window.pageYOffset > HEADER_HEIGHTS.big && !scrolled && window.innerWidth > 768) {
             setScrolled(true);
             setPanelStyle({ top: `${HEADER_HEIGHTS.small}px` });
             dispatch(setState('scrolled', true));
-        } else if (window.pageYOffset <= HEADER_HEIGHTS.big && scrolled) {
+        } else if (window.pageYOffset <= HEADER_HEIGHTS.big && scrolled && window.innerWidth > 768) {
             setScrolled(false);
             setPanelStyle({ top: `${HEADER_HEIGHTS.big}px` });
             dispatch(setState('scrolled', false));
@@ -134,6 +137,7 @@ function Header({ history }) {
         () =>
             classnames('header flex flex--space-between', {
                 'header--small': scrolled,
+                'header--mobile': filtersOpened && window.innerWidth < 541,
             }),
         [scrolled]
     );
@@ -177,34 +181,66 @@ function Header({ history }) {
         dispatch(setState('menuOpened', !menuOpened));
     };
 
+    const closeMobileFilters = () => {
+        setFiltersOpened(false);
+        setPresetsOpened(false);
+        setSearchOpened(false);
+        dispatch(setState('filtersOpened', false));
+        dispatch(setState('presetsOpened', false));
+    };
+
     return (
         <>
             <header className={headerModifier}>
                 <div className="header__buttons">
                     <FilterSvg
-                        className="header__buttons-icon"
+                        className="header__buttons-icon header__buttons-icon--apart"
                         onClick={() => openFiltersPanel()}
                         fill={filtersOpened ? svgActiveFill : svgDefaultFill}
                     />
                     <PresetSvg
-                        className="header__buttons-icon"
+                        className={classnames('header__buttons-icon header__buttons-icon--apart', {
+                            'header__mobile-hide': !filtersOpened && window.innerWidth < 541,
+                        })}
                         onClick={() => openPresetsPanel()}
                         fill={presetsOpened ? svgActiveFill : svgDefaultFill}
                     />
                     <SearchSvg
-                        className="header__buttons-icon"
+                        className={classnames('header__buttons-icon header__buttons-icon--apart', {
+                            'header__mobile-hide': !filtersOpened && window.innerWidth < 541,
+                        })}
                         onClick={() => openSearchBar()}
                         fill={searchOpened ? svgActiveFill : svgDefaultFill}
                     />
-                </div>
-                <div className="header__logo" onClick={() => history.push('/')}>
-                    {scrolled ? (
-                        <LogoSvg className="header__logo-icon header__logo-icon--small" fill={svgActiveFill} />
-                    ) : (
-                        <FullLogoSvg className="header__logo-icon" />
+                    {filtersOpened && window.innerWidth < 541 && (
+                        <div className="header__buttons-close" onClick={() => closeMobileFilters()}>
+                            <CloseIcon />
+                        </div>
                     )}
                 </div>
-                <div className="header__buttons">
+                <div
+                    onClick={() => history.push('/')}
+                    className={classnames('header__logo', {
+                        'header__mobile-hide': filtersOpened && window.innerWidth < 541,
+                    })}
+                >
+                    {scrolled && window.innerHeight > 768 ? (
+                        <LogoSvg className="header__logo-icon header__logo-icon--small" fill={svgActiveFill} />
+                    ) : (
+                        <>
+                            <FullLogoSvg className="header__logo-icon header__mobile-hide" />
+                            <LogoSvg
+                                className="header__logo-icon header__logo-icon--small header__desktop-hide"
+                                fill={svgActiveFill}
+                            />
+                        </>
+                    )}
+                </div>
+                <div
+                    className={classnames('header__buttons', {
+                        'header__mobile-hide': filtersOpened && window.innerWidth < 541,
+                    })}
+                >
                     {cartItemsNo > 0 ? (
                         <div
                             className="header__buttons-icon header__buttons-icon--cart"

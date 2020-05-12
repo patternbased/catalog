@@ -9,6 +9,10 @@
         padding-top: 47px;
         &--big {
             top: 80px;
+
+            @media screen and (max-width: $medium) {
+                top: 60px;
+            }
         }
         &--small {
             top: 60px;
@@ -105,6 +109,19 @@
             &:nth-child(4) {
                 width: 100px;
             }
+
+            @media screen and (max-width: $large) {
+                &.table-hide {
+                    display: none !important;
+                }
+            }
+
+            @media screen and (max-width: $medium) {
+                &.mobile-hide,
+                &.hide-when-opened {
+                    display: none !important;
+                }
+            }
         }
     }
 
@@ -192,6 +209,9 @@
                         cursor: pointer;
                         &--artist {
                             display: none;
+                            @media screen and (max-width: $medium) {
+                                display: none !important;
+                            }
                         }
                         .table__body__row--hovered & {
                             color: white;
@@ -203,6 +223,21 @@
                                 font-size: 12px;
                                 font-weight: 600;
                                 line-height: 20px;
+                            }
+
+                            @media screen and (max-width: $medium) {
+                                color: $primary;
+                                font-weight: normal;
+                                margin-bottom: 0;
+
+                                span {
+                                    color: $primary;
+                                    font-family: $font-main;
+                                    font-size: 16px;
+                                    line-height: 19px;
+                                    display: block;
+                                    font-weight: normal;
+                                }
                             }
                         }
                     }
@@ -217,16 +252,31 @@
                         .table__body__row--hovered & {
                             &--name {
                                 display: none;
+                                @media screen and (max-width: $medium) {
+                                    display: initial;
+                                }
                             }
                             &--description {
                                 display: block;
                                 color: white;
+                                @media screen and (max-width: $medium) {
+                                    display: none;
+                                }
                             }
                         }
                     }
                 }
                 .table__body__row--hovered & {
                     width: 100%;
+                }
+
+                @media screen and (max-width: $medium) {
+                    width: 100%;
+                    .table__body__row--hovered & {
+                        .table__body__row-title__actions {
+                            display: none !important;
+                        }
+                    }
                 }
             }
 
@@ -286,6 +336,24 @@
                 }
                 .table__body__row--hovered & {
                     display: none;
+                }
+
+                @media screen and (max-width: $large) {
+                    &.table-hide {
+                        display: none !important;
+                    }
+                }
+
+                @media screen and (max-width: $medium) {
+                    display: none !important;
+                }
+            }
+
+            @media screen and (max-width: $medium) {
+                background-color: white !important;
+
+                .hide-when-opened {
+                    display: none !important;
                 }
             }
         }
