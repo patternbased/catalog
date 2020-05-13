@@ -10,6 +10,7 @@ const cookieParser = require('cookie-parser');
 const session = require('cookie-session');
 const args = require('yargs').argv;
 const passport = require('passport');
+const compression = require('compression');
 const routes = require('./routes');
 const config = require('./config');
 
@@ -40,6 +41,9 @@ app.set('view engine', '.hbs');
 
 app.use('/api', require('./routes/api'));
 app.use('/', routes);
+
+// Enable compression
+app.use(compression());
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
