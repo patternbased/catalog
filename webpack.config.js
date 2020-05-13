@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const LiveReloadPlugin = require('webpack-livereload-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const postcssPresetEnv = require('postcss-preset-env');
 const root = path.resolve(__dirname, './src/client/');
@@ -9,6 +10,7 @@ const webpack = require('webpack');
 
 module.exports = (env = 'production') => {
     const plugins = [
+        new webpack.optimize.AggressiveMergingPlugin(),
         new CleanWebpackPlugin(),
         new HtmlWebPackPlugin({
             template: path.resolve(__dirname, './src/index.html'),
@@ -38,6 +40,10 @@ module.exports = (env = 'production') => {
     }
 
     return {
+        optimization: {
+            minimize: true,
+            minimizer: [new TerserPlugin()],
+        },
         context: root,
 
         entry: {
