@@ -71,10 +71,12 @@ module.exports = async () => {
                     image: `https://pblibrary.s3.us-east-2.amazonaws.com/artists/${row.img}`,
                     imageAlt: row.imgattr,
                     website: row.url,
-                    bandcamp: row.bandcamp,
-                    soundcloud: row.soundcloud,
-                    instagram: row.instagram,
-                    facebook: row.facebook,
+                    bandcamp: row.bandcampurl,
+                    soundcloud: row.soundcloudurl,
+                    instagram: row.instagramurl,
+                    facebook: row.facebookurl,
+                    spotify: row.spotifyurl,
+                    show: row.show === 'Y' ? true : false,
                     relatedArtists: row.relatedentities.split(new RegExp(separators.join('|'), 'g')).map((artist) => {
                         const artistImg = wRows.find(
                             (r) => r.artistname.trim().toLowerCase() === artist.trim().toLowerCase()

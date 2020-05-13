@@ -7,7 +7,7 @@ class ArtistController {
      * @returns {Array}
      */
     getAll() {
-        return Artist.find({}).sort({
+        return Artist.find({ show: true }).sort({
             created: -1,
         });
     }
@@ -17,7 +17,7 @@ class ArtistController {
      * @returns {Array}
      */
     getAllWriters() {
-        return Writer.find({}).sort({
+        return Writer.find({ show: true }).sort({
             created: -1,
         });
     }

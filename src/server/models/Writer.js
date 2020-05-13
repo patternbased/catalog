@@ -13,8 +13,10 @@ const Writer = new Schema({
     soundcloud: String,
     instagram: String,
     facebook: String,
+    spotify: String,
     albumsIds: Array,
     relatedArtists: Array,
+    show: Boolean,
     dateAdded: { type: Date, default: Date.now },
     dateEdited: { type: Date, default: Date.now },
 });
