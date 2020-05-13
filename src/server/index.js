@@ -44,6 +44,11 @@ app.use('/', routes);
 
 // Enable compression
 app.use(compression());
+app.get('*.js', function (req, res, next) {
+    req.url = req.url.concat('.gz');
+    res.set('Content-Encoding', 'gzip');
+    next();
+});
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);

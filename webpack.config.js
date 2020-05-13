@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const LiveReloadPlugin = require('webpack-livereload-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
+const CompressionPlugin = require('compression-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const postcssPresetEnv = require('postcss-preset-env');
 const root = path.resolve(__dirname, './src/client/');
@@ -17,6 +18,13 @@ module.exports = (env = 'production') => {
             templateParameters: {
                 env,
             },
+        }),
+        new CompressionPlugin({
+            filename: '[path].gz[query]',
+            algorithm: 'gzip',
+            test: /\.js$|\.css$|\.html$/,
+            threshold: 10240,
+            minRatio: 0.8,
         }),
     ];
 
