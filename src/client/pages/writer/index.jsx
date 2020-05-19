@@ -12,6 +12,7 @@ import { setState } from 'actions/general';
 import { getSongList, setCurrentSong } from 'actions/library';
 
 import BandcampSvg from 'assets/images/artist/Single-Artist_BC.svg';
+import SpotifySvg from 'assets/images/artist/Single-Artist_SP.svg';
 import FacebookSvg from 'assets/images/artist/Single-Artist_FB.svg';
 import InstagramSvg from 'assets/images/artist/Single-Artist_IG.svg';
 import SoundCloudSvg from 'assets/images/artist/Single-Artist_SC.svg';
@@ -113,6 +114,9 @@ function WriterPage(props) {
                                         </a>
                                         <a href={artist.facebook} target="_blank" rel="noopener noreferrer">
                                             <FacebookSvg />
+                                        </a>
+                                        <a href={artist.spotify} target="_blank" rel="noopener noreferrer">
+                                            <SpotifySvg />
                                         </a>
                                     </div>
                                     <div className="artist__bio">{artist.bio}</div>

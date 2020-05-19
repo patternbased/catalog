@@ -314,11 +314,18 @@ const _filterSongs = (songs, filters) => {
                                     similar += 1;
                                 }
                                 break;
-                            case 'artist':
+                            case 'project':
                                 if (song.artistName.toLowerCase().includes(filterVal)) {
                                     similar += 1;
                                 }
                                 break;
+                            case 'artist': {
+                                const found = song.writers.filter((w) => w.toLowerCase().includes(filterVal));
+                                if (found.length) {
+                                    similar += 1;
+                                }
+                                break;
+                            }
                             case 'keyword':
                                 if (
                                     song.title.toLowerCase().includes(filterVal) ||

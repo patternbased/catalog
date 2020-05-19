@@ -76,16 +76,24 @@ function MusicPlayer({ list, play }) {
     const goToNextSong = () => {
         const currentIndex = currentPlaylist.findIndex((x) => x.pbId === currentPlaying.pbId);
         let nextSong = {};
-        if (currentPlaylist[currentIndex + 1]) {
-            nextSong = currentPlaylist[currentIndex + 1];
-        } else if (list) {
-            const listIndex = list.findIndex((x) => x.pbId === currentPlaying.pbId);
-            nextSong = list[listIndex + 1] ? list[listIndex + 1] : list[0];
+        const queueList = currentPlaylist.find((x) => x.list);
+        if (queueList) {
+            const qList = queueList.list;
+            const listIndex = qList.findIndex((x) => x.pbId === currentPlaying.pbId);
+            nextSong = qList[listIndex + 1] ? qList[listIndex + 1] : qList[0];
+            dispatch(setCurrentSong(nextSong));
         } else {
-            nextSong = currentPlaylist[0];
+            if (currentPlaylist[currentIndex + 1]) {
+                nextSong = currentPlaylist[currentIndex + 1];
+            } else if (list) {
+                const listIndex = list.findIndex((x) => x.pbId === currentPlaying.pbId);
+                nextSong = list[listIndex + 1] ? list[listIndex + 1] : list[0];
+            } else {
+                nextSong = currentPlaylist[0];
+            }
+            dispatch(setCurrentSong(nextSong));
+            dispatch(addToQueue(nextSong));
         }
-        dispatch(setCurrentSong(nextSong));
-        dispatch(addToQueue(nextSong));
     };
 
     const onPrev = () => {
@@ -98,17 +106,25 @@ function MusicPlayer({ list, play }) {
     const onNext = () => {
         const currentIndex = currentPlaylist.findIndex((x) => x.pbId === currentPlaying.pbId);
         let next = {};
-        if (currentPlaylist[currentIndex + 1]) {
-            next = currentPlaylist[currentIndex + 1];
-        } else if (list) {
-            const listIndex = list.findIndex((x) => x.pbId === currentPlaying.pbId);
-            next = list[listIndex + 1] ? list[listIndex + 1] : list[0];
+        const queueList = currentPlaylist.find((x) => x.list);
+        if (queueList) {
+            const qList = queueList.list;
+            const listIndex = qList.findIndex((x) => x.pbId === currentPlaying.pbId);
+            next = qList[listIndex + 1] ? qList[listIndex + 1] : qList[0];
+            dispatch(setCurrentSong(next));
         } else {
-            next = currentPlaylist[0];
+            if (currentPlaylist[currentIndex + 1]) {
+                next = currentPlaylist[currentIndex + 1];
+            } else if (list) {
+                const listIndex = list.findIndex((x) => x.pbId === currentPlaying.pbId);
+                next = list[listIndex + 1] ? list[listIndex + 1] : list[0];
+            } else {
+                next = currentPlaylist[0];
+            }
+            dispatch(setCurrentSong(next));
+            dispatch(addToQueue(next));
         }
 
-        dispatch(setCurrentSong(next));
-        dispatch(addToQueue(next));
         setElapsed(0);
     };
 

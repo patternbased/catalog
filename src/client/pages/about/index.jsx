@@ -137,8 +137,12 @@ function ArtistPage() {
                             facilities.
                         </div>
                         <div className="about__ctas">
-                            <div className="about__cta">PatternBased.com</div>
-                            <div className="about__cta">Artists</div>
+                            <a href="https://patternbased.com/" target="_blank" rel="noopener noreferrer">
+                                <div className="about__cta">PatternBased.com</div>
+                            </a>
+                            <a href="/artists" target="_blank" rel="noopener noreferrer">
+                                <div className="about__cta">Artists</div>
+                            </a>
                         </div>
                     </div>
                 </div>

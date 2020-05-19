@@ -157,12 +157,13 @@
             display: flex;
             align-items: center;
             margin-right: 30px;
+            margin-bottom: 10px;
             color: $primary;
             font-family: $font-other;
             font-size: 16px;
             line-height: 22px;
             cursor: pointer;
-            width: 27%;
+            width: 100%;
             &:nth-child(3n) {
                 margin-right: 0;
             }

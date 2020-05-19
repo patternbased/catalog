@@ -99,11 +99,11 @@
         background-size: cover;
 
         &--first {
-            background-image: url('/assets/images/about-hero.jpg');
+            background-image: url('/assets/images/about-2.jpg');
         }
 
         &--second {
-            background-image: url('/assets/images/about-hero.jpg');
+            background-image: url('/assets/images/about-1.jpg');
         }
     }
 
@@ -121,34 +121,35 @@
         @media screen and (max-width: $small) {
             display: block;
         }
-    }
 
-    &__cta {
-        background-repeat: no-repeat;
-        height: 140px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 50%;
-        color: white;
-        font-family: $font-main;
-        font-size: 28px;
-        font-weight: 300;
-        letter-spacing: 0;
-        line-height: 33px;
+        a {
+            background-repeat: no-repeat;
+            background-size: cover;
+            height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50%;
+            color: white;
+            font-family: $font-main;
+            font-size: 28px;
+            font-weight: 300;
+            letter-spacing: 0;
+            line-height: 33px;
 
-        &:first-child {
-            background-image: url('/assets/images/about-hero.jpg');
-            margin-right: 20px;
-        }
-        &:nth-child(2) {
-            background-image: url('/assets/images/about-hero.jpg');
-        }
-
-        @media screen and (max-width: $small) {
-            width: 100%;
             &:first-child {
-                margin-bottom: 10px;
+                background-image: url('/assets/images/about-4.jpg');
+                margin-right: 20px;
+            }
+            &:nth-child(2) {
+                background-image: url('/assets/images/about-3.jpg');
+            }
+
+            @media screen and (max-width: $small) {
+                width: 100%;
+                &:first-child {
+                    margin-bottom: 10px;
+                }
             }
         }
     }

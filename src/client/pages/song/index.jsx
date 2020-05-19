@@ -23,6 +23,7 @@ import ShareIcon from 'assets/images/share-icon-dark.svg';
 import SimilarIcon from 'assets/images/SimilarSong_Icon_dark.svg';
 import PianoSvg from 'assets/images/single-song/CustomWork_dark.svg';
 import PlaySvg from 'assets/images/single-song/Single-Song_Play.svg';
+import PauseSvg from 'assets/images/Single-Song_Pause.svg';
 import BandcampSvg from 'assets/images/single-song/Single-Song_Bandcamp.svg';
 import SpotifySvg from 'assets/images/single-song/Single-Song_Spotify.svg';
 import AppleSvg from 'assets/images/single-song/Single-Song_Apple.svg';
@@ -222,11 +223,7 @@ function SongPage(props) {
                                 >
                                     {coverHover && (
                                         <div className="song__cover__overlay" onClick={() => playSong()}>
-                                            {!songIsPlaying ? (
-                                                <img src={`/assets/images/player/pause.png`} />
-                                            ) : (
-                                                <PlaySvg />
-                                            )}
+                                            {!songIsPlaying ? <PlaySvg /> : <PauseSvg />}
                                         </div>
                                     )}
 
@@ -235,7 +232,7 @@ function SongPage(props) {
                                 <span className="mobile-hide">
                                     <div className="song__column__row-header">
                                         <div className="song__column__row-header__overlay" />
-                                        Writers
+                                        Artists
                                     </div>
                                     <div className="song__column__row-content">
                                         {song.writers.map((writer, index) => (

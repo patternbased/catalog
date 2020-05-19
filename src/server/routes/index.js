@@ -9,11 +9,8 @@ router.use(express.static(path.join(__dirname, '../../../dist'), { maxAge: 30 * 
 
 router.get('*', (req, res) => {
     // Force redirect to HTTPS
-    if (req.header('x-forwarded-proto') !== 'https') {
-        res.redirect(`https://${req.header('host')}${req.url}`);
-    } else {
-        res.sendFile(path.join(__dirname, '../../../dist/index.html'));
-    }
+
+    res.sendFile(path.join(__dirname, '../../../dist/index.html'));
 });
 
 module.exports = router;
