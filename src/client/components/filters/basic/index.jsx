@@ -38,7 +38,7 @@ function BasicFilter({ name, isOpened, values, onRangeChange, onFilterCancel }) 
     const [opened, setOpened] = useState(openedForValues);
     const [tooltipPosition, setTooltipPosition] = useState([]);
 
-    const placeTooltip = e => {
+    const placeTooltip = (e) => {
         setTooltipPosition([e.clientX + 20, e.clientY - 10]);
         setOpenedTooltip(true);
     };
@@ -51,7 +51,7 @@ function BasicFilter({ name, isOpened, values, onRangeChange, onFilterCancel }) 
                     {FILTERS_DESCRIPTIONS[name].length > 0 && (
                         <div className="filter__header__tooltip">
                             <div onMouseOut={() => setOpenedTooltip(false)}>
-                                <div className={infoTooltipClass} onMouseOver={e => placeTooltip(e)}>
+                                <div className={infoTooltipClass} onMouseOver={(e) => placeTooltip(e)}>
                                     ?
                                 </div>
                             </div>
@@ -88,6 +88,7 @@ function BasicFilter({ name, isOpened, values, onRangeChange, onFilterCancel }) 
                     railStyle={{ backgroundImage: `url(${FILTERS_BACKGROUNDS[name]}` }}
                     step={isDuration ? 0.5 : 0.25}
                     allowCross={false}
+                    pushable={true}
                     className={animated ? 'anim' : ''}
                 />
             )}

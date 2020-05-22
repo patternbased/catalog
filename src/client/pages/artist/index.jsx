@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 import Header from 'components/header';
 import SongsTable from 'components/songs-table';
-import MusicPlayer from 'components/music-player';
 import selectors from 'selectors';
 
 import { setState } from 'actions/general';
@@ -178,7 +177,6 @@ function ArtistPage(props) {
                         )}
                     </main>
                 )}
-                {songClicked && currentSong && <MusicPlayer play={songClicked} />}
             </div>
         </>
     );

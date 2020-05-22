@@ -603,7 +603,6 @@ function SongPage(props) {
                         )}
                     </main>
                 )}
-                {/* {songClicked && currentSong && <MusicPlayer play={songPlaying} />} */}
                 {shareOpened && (
                     <Modal opened={shareOpened} modifier="share queue-share">
                         <img
