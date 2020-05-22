@@ -87,8 +87,8 @@ function BasicFilter({ name, isOpened, values, onRangeChange, onFilterCancel }) 
                     value={values}
                     railStyle={{ backgroundImage: `url(${FILTERS_BACKGROUNDS[name]}` }}
                     step={isDuration ? 0.5 : 0.25}
-                    allowCross={false}
-                    pushable={true}
+                    allowCross={true}
+                    pushable={0.25}
                     className={animated ? 'anim' : ''}
                 />
             )}
