@@ -105,6 +105,14 @@ router.get('/album-songs/:id', async (req, res) => {
     });
 });
 
+router.get('/song/:name', async (req, res) => {
+    const shared = await SongController.getSongByName(req.params.name);
+
+    res.send({
+        shared,
+    });
+});
+
 router.get('/artist/:name', async (req, res) => {
     const artist = await ArtistController.getArtistByName(req.params.name);
 

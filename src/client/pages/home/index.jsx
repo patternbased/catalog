@@ -51,6 +51,9 @@ function HomePage({ history }) {
                 }
             });
         }
+        if (sharedItem.form) {
+            dispatch(setState(sharedItem.form, true));
+        }
     }, []);
 
     useEffect(() => {

@@ -282,9 +282,45 @@ function _renderSimilarSong(song, hovered, playSimilarSong) {
  * @returns {React.Component}
  */
 function _getSimilarSongs(all, current) {
-    return all.filter(
-        (song) => song.mood >= current.mood - 2 && song.mood <= current.mood + 2 && current.pbId !== song.pbId
+    const similarSongs = [];
+    // SimilarPBTracks column in the database
+    if (current.similarTracks && current.similarTracks.length) {
+        current.similarTracks.map((song) => {
+            const found = all.find((s) => s.title.toLowerCase().trim === song.toLowerCase().trim());
+            if (found) {
+                similarSongs.push({ ...found, priority: 1 });
+            }
+        });
+    }
+    // +/- 1.5 in all 5 categories ON THE SAME ALBUM and +/- 1.5 from entire catalog
+    const catalogSimilar = all.filter(
+        (song) =>
+            current.pbId !== song.pbId &&
+            (song.mood >= current.mood - 1.5 || song.mood <= current.mood + 1.5) &&
+            (song.rhythm >= current.rhythm - 1.5 || song.rhythm <= current.rhythm + 1.5) &&
+            (song.speed >= current.speed - 1.5 || song.speed <= current.speed + 1.5) &&
+            (song.experimental >= current.experimental - 1.5 || song.experimental <= current.experimental + 1.5) &&
+            (song.grid >= current.grid - 1.5 || song.grid <= current.grid + 1.5)
     );
+    if (catalogSimilar.length) {
+        catalogSimilar.map((s) => similarSongs.push({ ...s, priority: s.albumId === current.albumId ? 2 : 3 }));
+    }
+    // +/- 3 from entire catalog
+    const catalogAlmostSimilar = all.filter(
+        (song) =>
+            current.pbId !== song.pbId &&
+            (song.mood >= current.mood - 3 || song.mood <= current.mood + 3) &&
+            (song.rhythm >= current.rhythm - 3 || song.rhythm <= current.rhythm + 3) &&
+            (song.speed >= current.speed - 3 || song.speed <= current.speed + 3) &&
+            (song.experimental >= current.experimental - 3 || song.experimental <= current.experimental + 3) &&
+            (song.grid >= current.grid - 3 || song.grid <= current.grid + 3)
+    );
+    if (catalogAlmostSimilar.length) {
+        catalogAlmostSimilar.map((s) => similarSongs.push({ ...s, priority: 4 }));
+    }
+    return similarSongs.sort(function (a, b) {
+        return a.priority - b.priority;
+    });
 }
 
 SimilarSongsPanel.displayName = 'SimilarSongsPanel';

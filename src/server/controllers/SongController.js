@@ -21,6 +21,15 @@ class SongController {
     }
 
     /**
+     * Returns songs by name
+     * @param {String} name name of the song
+     * @returns {Array}
+     */
+    getSongByName(name) {
+        return Song.find({ title: { $regex: name, options: 'i' } });
+    }
+
+    /**
      * Returns songs from an album
      * @param {String} id id of the album
      * @returns {Array}
