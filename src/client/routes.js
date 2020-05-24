@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import ReactGA from 'react-ga';
 
 import ScrollToTop from './components/scroll-to-top';
 import MusicPlayer from './components/music-player';
@@ -16,6 +17,9 @@ import About from './pages/about';
 import Artists from './pages/artists';
 
 import selectors from 'selectors';
+
+ReactGA.initialize('UA-346260-11');
+ReactGA.pageview(window.location.pathname + window.location.search);
 
 /**
  * Router component
