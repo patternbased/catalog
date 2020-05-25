@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import uuid from 'react-uuid';
+import ReactGA from 'react-ga';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import classnames from 'classnames';
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -93,6 +94,11 @@ function SongsTable({ list, onSelect, listName, page, short = false, extraClass 
         onSelect(item);
         dispatch(setCurrentSong(item));
         dispatch(addToQueue(item));
+        ReactGA.event({
+            category: 'Songs table',
+            action: 'Play song',
+            label: `Play ${item.artistName} - ${item.title}`,
+        });
     };
 
     const getRowClass = (index) =>
@@ -218,6 +224,11 @@ function SongsTable({ list, onSelect, listName, page, short = false, extraClass 
             body: JSON.stringify({ data: shareData }),
         }).then((res) => {
             setShareLinkCopied(true);
+            ReactGA.event({
+                category: 'Songs table',
+                action: 'Share song clicked',
+                label: `Share ${shareResultsName}`,
+            });
         });
     };
 
@@ -236,6 +247,11 @@ function SongsTable({ list, onSelect, listName, page, short = false, extraClass 
             body: JSON.stringify({ data: shareData }),
         }).then((res) => {
             setShareSongLinkCopied(true);
+            ReactGA.event({
+                category: 'Songs table',
+                action: 'Share song clicked',
+                label: `Share ${shareItem.title}`,
+            });
         });
     };
 
@@ -378,6 +394,11 @@ function SongsTable({ list, onSelect, listName, page, short = false, extraClass 
                                                 onClick={() => {
                                                     setSimilarTo(item);
                                                     dispatch(setState('similarOpened', true));
+                                                    ReactGA.event({
+                                                        category: 'Songs table',
+                                                        action: 'Similar songs clicked',
+                                                        label: `Similar to ${item.artistName} - ${item.title}`,
+                                                    });
                                                 }}
                                             />
                                             <ShareSvg
@@ -398,6 +419,11 @@ function SongsTable({ list, onSelect, listName, page, short = false, extraClass 
                                                         })
                                                     );
                                                     dispatch(setState('licenseOpened', true));
+                                                    ReactGA.event({
+                                                        category: 'Songs table',
+                                                        action: 'License clicked',
+                                                        label: `License for ${item.artistName} - ${item.title}`,
+                                                    });
                                                 }}
                                             >
                                                 License

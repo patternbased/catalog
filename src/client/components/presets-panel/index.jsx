@@ -3,6 +3,7 @@ import React, { memo, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
+import ReactGA from 'react-ga';
 
 import Button from 'components/button';
 import Preset from 'components/preset';
@@ -41,6 +42,11 @@ function PresetsPanel({ visible, style }) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ preset: name }),
+        });
+        ReactGA.event({
+            category: 'Presets panel',
+            action: 'Preset clicked',
+            label: `Preset ${name}`,
         });
     };
 

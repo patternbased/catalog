@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router';
 import selectors from 'selectors';
 import classnames from 'classnames';
+import ReactGA from 'react-ga';
 import { PRESETS } from 'utils/constants';
 
 import Header from 'components/header';
@@ -124,6 +125,11 @@ function HomePage({ history }) {
             body: JSON.stringify({ preset: name }),
         });
         dispatch(setState('filtersOpened', true));
+        ReactGA.event({
+            category: 'Homepage',
+            action: 'Preset clicked',
+            label: `Preset ${name}`,
+        });
     };
 
     const playSong = (song) => {

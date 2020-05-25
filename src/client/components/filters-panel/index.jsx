@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import selectors from 'selectors';
+import ReactGA from 'react-ga';
 
 import BasicFilter from 'components/filters/basic';
 import FlowFilter from 'components/filters/flow';
@@ -86,6 +87,11 @@ function FiltersPanel({ visible, style, showSearch }) {
     const changeSlider = useCallback(
         (name) => (values) => {
             dispatch(setFilter(name, values));
+            ReactGA.event({
+                category: 'Filters panel',
+                action: 'Filter used',
+                label: `Filter ${name}`,
+            });
         },
         [appliedFilters]
     );
@@ -100,8 +106,18 @@ function FiltersPanel({ visible, style, showSearch }) {
                         flowsCopy.filter((x) => x !== shape)
                     )
                 );
+                ReactGA.event({
+                    category: 'Filters panel',
+                    action: 'Clear filter',
+                    label: `Filter Flow ${shape}`,
+                });
             } else {
                 dispatch(setFilter('flow', flowsCopy.concat(shape)));
+                ReactGA.event({
+                    category: 'Filters panel',
+                    action: 'Filter used',
+                    label: `Filter Flow ${shape}`,
+                });
             }
         },
         [appliedFilters]
@@ -111,6 +127,11 @@ function FiltersPanel({ visible, style, showSearch }) {
         (instrument) => {
             const instrumentsCopy = appliedFilters['instruments'] ? [...appliedFilters['instruments']] : [];
             dispatch(setFilter('instruments', instrumentsCopy.concat(instrument)));
+            ReactGA.event({
+                category: 'Filters panel',
+                action: 'Filter used',
+                label: `Filter Instrument ${instrument}`,
+            });
         },
         [appliedFilters]
     );
@@ -124,6 +145,11 @@ function FiltersPanel({ visible, style, showSearch }) {
             } else {
                 dispatch(setFilter('instruments', instrumentsCopy));
             }
+            ReactGA.event({
+                category: 'Filters panel',
+                action: 'Clear filter',
+                label: `Filter Instrument ${instrument}`,
+            });
         },
         [appliedFilters]
     );
@@ -131,13 +157,23 @@ function FiltersPanel({ visible, style, showSearch }) {
     const cancelFilter = useCallback(
         (name) => {
             dispatch(resetFilter(name));
+            ReactGA.event({
+                category: 'Filters panel',
+                action: 'Clear filter',
+                label: `Filter ${name}`,
+            });
         },
         [appliedFilters]
     );
 
-    const applyPreset = (filters) => {
+    const applyPreset = (filters, name) => {
         Object.keys(filters).forEach((filter) => {
             dispatch(setFilter(filter, filters[filter]));
+        });
+        ReactGA.event({
+            category: 'Filters panel',
+            action: 'Similar Preset clicked',
+            label: `Preset ${name}`,
         });
     };
 
@@ -161,12 +197,27 @@ function FiltersPanel({ visible, style, showSearch }) {
         if (item.type === 'inst.') {
             const instrumentsCopy = appliedFilters['instruments'] ? [...appliedFilters['instruments']] : [];
             dispatch(setFilter('instruments', instrumentsCopy.concat(item.value)));
+            ReactGA.event({
+                category: 'Search',
+                action: 'Search suggestion selected',
+                label: `Selected Instrument ${item.value}`,
+            });
         } else if (item.type === 'song') {
             window.location = `/song/${item.id}-${item.value.toLowerCase().split(' ').join('-')}`;
+            ReactGA.event({
+                category: 'Search',
+                action: 'Search suggestion selected',
+                label: `Selected song ${item.value}`,
+            });
         } else {
             const selectedSearchCopy = [...selectedSearch];
             setSelectedSearch(selectedSearchCopy.concat(item));
             dispatch(setFilter('search', selectedSearchCopy.concat(item)));
+            ReactGA.event({
+                category: 'Search',
+                action: 'Search suggestion selected',
+                label: `Selected suggestion ${item.type} - ${item.value}`,
+            });
         }
     };
 
@@ -179,6 +230,11 @@ function FiltersPanel({ visible, style, showSearch }) {
         } else {
             dispatch(setFilter('search', selectedSearchCopy));
         }
+        ReactGA.event({
+            category: 'Search',
+            action: 'Clear search',
+            label: `Clear search ${value}`,
+        });
     };
 
     return (
@@ -244,6 +300,11 @@ function FiltersPanel({ visible, style, showSearch }) {
                                     onClick={() => {
                                         dispatch(resetAllFilters());
                                         setSimilarPresets([]);
+                                        ReactGA.event({
+                                            category: 'Filter panel',
+                                            action: 'Clear filters',
+                                            label: 'Clear all',
+                                        });
                                     }}
                                 >
                                     Clear All
@@ -255,7 +316,7 @@ function FiltersPanel({ visible, style, showSearch }) {
                         <div className="filters-panel__presets">
                             <p className="filters-panel__presets-title">Similar presets</p>
                             {similarPresets.map((preset, index) => (
-                                <div key={index} onClick={() => applyPreset(preset.filters)}>
+                                <div key={index} onClick={() => applyPreset(preset.filters, preset.name)}>
                                     <Preset name={preset.name} />
                                 </div>
                             ))}
