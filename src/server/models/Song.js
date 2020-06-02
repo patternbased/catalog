@@ -44,6 +44,7 @@ const Song = new Schema({
     url: String,
     image: String,
     cover: String,
+    coverArt: Array,
 });
 
 Song.options.toJSON = Song.options.toJSON || {};

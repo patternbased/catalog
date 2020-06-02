@@ -40,7 +40,7 @@ function ArtistPage() {
         dispatch(setState('filtersOpened', false));
         api.get('/api/all-artists').then((res) => {
             if (res.artists) {
-                const art = res.artists;
+                const art = res.artists.filter((a) => a.show);
                 art.forEach((a) => {
                     a.type = 'project';
                 });
@@ -49,7 +49,7 @@ function ArtistPage() {
         });
         api.get('/api/all-writers').then((res) => {
             if (res.writers) {
-                const art = res.writers;
+                const art = res.writers.filter((a) => a.show);
                 art.forEach((a) => {
                     a.type = 'artist';
                 });

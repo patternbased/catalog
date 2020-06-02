@@ -56,55 +56,77 @@ module.exports = async () => {
     await setupConfig(doc, spreadsheetConfig.config);
     const sheets = await getSheets(doc);
     const songsSheet = sheets.find((s) => s.title === 'Songs');
+    const albumsSheet = sheets.find((s) => s.title === 'Albums');
+    const allArtistsSheet = sheets.find((s) => s.title === 'AllArtists');
 
     const rows = await getRows(songsSheet, 2, songsSheet.rowCount);
+    const albums = await getRows(albumsSheet, 1, albumsSheet.rowCount);
+    let visualArtists = await getRows(allArtistsSheet, 2, allArtistsSheet.rowCount);
+    visualArtists = visualArtists.filter((a) => a.type === 'V');
 
     var separators = [',', ';', ', ', '; '];
 
-    return rows.map((row) => ({
-        pbId: row.id,
-        title: row.title,
-        sequence: row.seq,
-        rate: row.rate,
-        length: row.length,
-        musicKey: row.musickey,
-        bpm: row.bpm,
-        rhythm: row.pbrhythm,
-        speed: row.pbspeed,
-        mood: row.pbmood,
-        experimental: row.pbexperimental,
-        grid: row.pborganic,
-        stems: row.stemsapspn,
-        description: row.description,
-        genre: row.genre,
-        subgenreA: row.subgenrea,
-        subgenreB: row.subgenreb,
-        primaryMood: row.primarymood,
-        secondaryMoods: row.secondarymoods ? row.secondarymoods.split(new RegExp(separators.join('|'), 'g')) : [],
-        instruments: row.instruments ? row.instruments.split(new RegExp(separators.join('|'), 'g')) : [],
-        tags: row.tags ? row.tags.split(new RegExp(separators.join('|'), 'g')) : [],
-        arc: row.shapearc,
-        similarTracks: row.similarpbtracks ? row.similarpbtracks.split(new RegExp(separators.join('|'), 'g')) : [],
-        similarArtists: row.similarartists ? row.similarartists.split(new RegExp(separators.join('|'), 'g')) : [],
-        licenseType: row.licensetype,
-        artistName: row.artistname,
-        writers: row.writers ? row.writers.split(new RegExp(separators.join('|'), 'g')) : [],
-        label: row.label,
-        albumId: row.catnum === 'PBL01' || row.catnum === '' ? 'PBC01' : row.catnum,
-        albumTitle: row.albumtitle,
-        licensedTo: row.licensedto,
-        dateStarted: row.datestarted,
-        dateFinished: row.datefinished,
-        dateReleased: row.datereleased.split(';')[0],
-        tools: row.tools ? row.tools.split(new RegExp(separators.join('|'), 'g')) : [],
-        story: row.story,
-        isrcCode: row.isrccode,
-        url: `https://pblibrary.s3.us-east-2.amazonaws.com/${row.catnum}/${row.id}.mp3`,
-        image: ['PB26', 'PB36', 'PB37'].includes(row.catnum)
-            ? `https://pblibrary.s3.us-east-2.amazonaws.com/${row.catnum}/${row.id}.jpg`
-            : `https://pblibrary.s3.us-east-2.amazonaws.com/${row.catnum}/cover.jpg`,
-        cover: ['PB26', 'PB36', 'PB37'].includes(row.catnum)
-            ? `https://pblibrary.s3.us-east-2.amazonaws.com/${row.catnum}/${row.id}_thumb.jpg`
-            : `https://pblibrary.s3.us-east-2.amazonaws.com/${row.catnum}/cover-thumb.jpg`,
-    }));
+    return rows.map((row) => {
+        const songArt = albums.find((a) => a.albumid === row.catnum);
+        const coverArt = [];
+        if (songArt) {
+            const albumArtArray = songArt.albumart.split(';');
+            albumArtArray.map((art) => {
+                const found = visualArtists.find((v) => v.artistname.toLowerCase().trim() === art.toLowerCase().trim());
+                if (found) {
+                    coverArt.push({
+                        name: art,
+                        url: found.url,
+                    });
+                }
+            });
+        }
+        return {
+            pbId: row.id,
+            title: row.title,
+            sequence: row.seq,
+            rate: row.rate,
+            length: row.length,
+            musicKey: row.musickey,
+            bpm: row.bpm,
+            rhythm: row.pbrhythm,
+            speed: row.pbspeed,
+            mood: row.pbmood,
+            experimental: row.pbexperimental,
+            grid: row.pborganic,
+            stems: row.stemsapspn,
+            description: row.description,
+            genre: row.genre,
+            subgenreA: row.subgenrea,
+            subgenreB: row.subgenreb,
+            primaryMood: row.primarymood,
+            secondaryMoods: row.secondarymoods ? row.secondarymoods.split(new RegExp(separators.join('|'), 'g')) : [],
+            instruments: row.instruments ? row.instruments.split(new RegExp(separators.join('|'), 'g')) : [],
+            tags: row.tags ? row.tags.split(new RegExp(separators.join('|'), 'g')) : [],
+            arc: row.shapearc,
+            similarTracks: row.similarpbtracks ? row.similarpbtracks.split(new RegExp(separators.join('|'), 'g')) : [],
+            similarArtists: row.similarartists ? row.similarartists.split(new RegExp(separators.join('|'), 'g')) : [],
+            licenseType: row.licensetype,
+            artistName: row.artistname,
+            writers: row.writers ? row.writers.split(new RegExp(separators.join('|'), 'g')) : [],
+            label: row.label,
+            albumId: row.catnum === 'PBL01' || row.catnum === '' ? 'PBC01' : row.catnum,
+            albumTitle: row.albumtitle,
+            licensedTo: row.licensedto,
+            dateStarted: row.datestarted,
+            dateFinished: row.datefinished,
+            dateReleased: row.datereleased.split(';')[0],
+            tools: row.tools ? row.tools.split(new RegExp(separators.join('|'), 'g')) : [],
+            story: row.story,
+            isrcCode: row.isrccode,
+            url: `https://pblibrary.s3.us-east-2.amazonaws.com/${row.catnum}/${row.id}.mp3`,
+            image: ['PB26', 'PB36', 'PB37'].includes(row.catnum)
+                ? `https://pblibrary.s3.us-east-2.amazonaws.com/${row.catnum}/${row.id}.jpg`
+                : `https://pblibrary.s3.us-east-2.amazonaws.com/${row.catnum}/cover.jpg`,
+            cover: ['PB26', 'PB36', 'PB37'].includes(row.catnum)
+                ? `https://pblibrary.s3.us-east-2.amazonaws.com/${row.catnum}/${row.id}_thumb.jpg`
+                : `https://pblibrary.s3.us-east-2.amazonaws.com/${row.catnum}/cover-thumb.jpg`,
+            coverArt: coverArt,
+        };
+    });
 };

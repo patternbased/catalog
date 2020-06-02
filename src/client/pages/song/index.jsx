@@ -3,6 +3,7 @@ import React, { useMemo, useEffect, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import uuid from 'react-uuid';
+import ReactGA from 'react-ga';
 import selectors from 'selectors';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import classnames from 'classnames';
@@ -139,6 +140,11 @@ function SongPage(props) {
         // setSongClicked(true);
         // setSongPlaying(!songPlaying);
         dispatch(setState('songPlaying', !songIsPlaying));
+        ReactGA.event({
+            category: 'Single song page',
+            action: 'Play button clicked',
+            label: `Play ${val.title}`,
+        });
     };
 
     const openShareModal = () => {
@@ -161,6 +167,11 @@ function SongPage(props) {
             body: JSON.stringify({ data: shareData }),
         }).then((res) => {
             setShareSongLinkCopied(true);
+            ReactGA.event({
+                category: 'Music player',
+                action: 'Share song clicked',
+                label: `Share ${shareItem.title}`,
+            });
         });
     };
 
@@ -188,11 +199,21 @@ function SongPage(props) {
                                                         image: song.cover,
                                                     })
                                                 );
+                                                ReactGA.event({
+                                                    category: 'Single song',
+                                                    action: 'Custom work clicked',
+                                                    label: `Custom work for ${song.title}`,
+                                                });
                                             }}
                                         />
                                         <SimilarIcon
                                             onClick={() => {
                                                 dispatch(setState('similarOpened', !similarOpened));
+                                                ReactGA.event({
+                                                    category: 'Single song',
+                                                    action: 'Similar songs clicked',
+                                                    label: `Similar songs for ${song.title}`,
+                                                });
                                             }}
                                         />
                                         <ShareIcon onClick={() => openShareModal()} />
@@ -210,6 +231,11 @@ function SongPage(props) {
                                                     })
                                                 );
                                                 dispatch(setState('licenseOpened', true));
+                                                ReactGA.event({
+                                                    category: 'Single song',
+                                                    action: 'License clicked',
+                                                    label: `License for ${song.title}`,
+                                                });
                                             }}
                                         >
                                             License
@@ -260,6 +286,24 @@ function SongPage(props) {
                                             </div>
                                         </Link>
                                     </div>
+                                    {song.coverArt && song.coverArt.length > 0 && (
+                                        <>
+                                            <div className="song__column__row-header">
+                                                <div className="song__column__row-header__overlay" />
+                                                Cover Art
+                                            </div>
+                                            <div className="song__column__row-content">
+                                                {song.coverArt.map((art, index) => (
+                                                    <a key={index} href={art.url}>
+                                                        <div className="song__column__writer">
+                                                            <img src={song.cover} alt={art.name} />
+                                                            {art.name}
+                                                        </div>
+                                                    </a>
+                                                ))}
+                                            </div>
+                                        </>
+                                    )}
                                 </span>
                             </div>
                             <div className="song__column">
@@ -279,11 +323,21 @@ function SongPage(props) {
                                                         image: song.cover,
                                                     })
                                                 );
+                                                ReactGA.event({
+                                                    category: 'Single song',
+                                                    action: 'Custom work clicked',
+                                                    label: `Custom work for ${song.title}`,
+                                                });
                                             }}
                                         />
                                         <SimilarIcon
                                             onClick={() => {
                                                 dispatch(setState('similarOpened', !similarOpened));
+                                                ReactGA.event({
+                                                    category: 'Single song',
+                                                    action: 'Similar songs clicked',
+                                                    label: `Similar songs for ${song.title}`,
+                                                });
                                             }}
                                         />
                                         <ShareIcon onClick={() => openShareModal()} />
@@ -301,6 +355,11 @@ function SongPage(props) {
                                                     })
                                                 );
                                                 dispatch(setState('licenseOpened', true));
+                                                ReactGA.event({
+                                                    category: 'Single song',
+                                                    action: 'License clicked',
+                                                    label: `License for ${song.title}`,
+                                                });
                                             }}
                                         >
                                             License

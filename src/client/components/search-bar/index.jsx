@@ -22,6 +22,7 @@ function SearchBar({ listItems, onSelect }) {
     }, [searchTerm]);
 
     const selectFromList = (result) => {
+        console.log(result);
         onSelect(result);
         setSearchTerm('');
     };
@@ -40,7 +41,13 @@ function SearchBar({ listItems, onSelect }) {
                 <>
                     <ul className="search__results">
                         {searchResults.map((result, index) => (
-                            <li key={index} className="search__results-item" onClick={() => selectFromList(result)}>
+                            <li
+                                key={index}
+                                className="search__results-item"
+                                onClick={() => selectFromList(result)}
+                                title={result.value}
+                                data-toggle="tooltip"
+                            >
                                 {result.type === 'keyword' ? (
                                     <img className="search__results-item--new" src="/assets/images/search.png" />
                                 ) : (

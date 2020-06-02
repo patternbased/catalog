@@ -122,7 +122,7 @@ function WriterPage(props) {
                                 </div>
                             </div>
                             <div className="artist__info desktop-hide">
-                                <div className="artist__pb">PB Project</div>
+                                <div className="artist__pb">PB Artist</div>
                                 <div className="artist__name">{artist.name}</div>
                                 <div className="artist__social">
                                     <a href={artist.website} target="_blank" rel="noopener noreferrer">

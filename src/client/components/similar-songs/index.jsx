@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import uuid from 'react-uuid';
+import ReactGA from 'react-ga';
 import selectors from 'selectors';
 
 import { setState } from 'actions/general';
@@ -119,6 +120,11 @@ function SimilarSongsPanel({ visible, onClose, similarTo }) {
             body: JSON.stringify({ data: shareData }),
         }).then((res) => {
             setShareSongLinkCopied(true);
+            ReactGA.event({
+                category: 'Similar songs panel',
+                action: 'Share song clicked',
+                label: `Share song for ${shareItem.title}`,
+            });
         });
     };
 
@@ -194,6 +200,11 @@ function SimilarSongsPanel({ visible, onClose, similarTo }) {
                                 {_renderSimilarSong(song, checkIfHovered(index), () => {
                                     dispatch(setCurrentSong(song));
                                     dispatch(addToQueue(song));
+                                    ReactGA.event({
+                                        category: 'Similar songs panel',
+                                        action: 'Play song clicked',
+                                        label: `Play ${song.title}`,
+                                    });
                                 })}
                             </div>
                         ))}

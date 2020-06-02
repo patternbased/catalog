@@ -8,6 +8,7 @@ import Slider from 'rc-slider';
 import uuid from 'react-uuid';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import classnames from 'classnames';
+import ReactGA from 'react-ga';
 import selectors from 'selectors';
 
 import Button from 'components/button';
@@ -150,6 +151,11 @@ function MusicPlayer({ list, play }) {
             body: JSON.stringify({ data: shareData }),
         }).then((res) => {
             setShareSongLinkCopied(true);
+            ReactGA.event({
+                category: 'Music player',
+                action: 'Share song clicked',
+                label: `Share ${currentPlaying.title}`,
+            });
         });
     };
 
@@ -269,6 +275,11 @@ function MusicPlayer({ list, play }) {
                                         })
                                     );
                                     dispatch(setState('licenseOpened', true));
+                                    ReactGA.event({
+                                        category: 'Music player',
+                                        action: 'Click on License',
+                                        label: `License for ${currentPlaying.title}`,
+                                    });
                                 }}
                             >
                                 License
@@ -415,11 +426,23 @@ function MusicPlayer({ list, play }) {
                                         })
                                     );
                                     dispatch(setState('customWorkOpened', true));
+                                    ReactGA.event({
+                                        category: 'Music player',
+                                        action: 'Custom work clicked',
+                                        label: `Custom work for ${currentPlaying.title}`,
+                                    });
                                 }}
                             />
                             <SimilarSvg
                                 className="music-player__section--content__actions-button"
-                                onClick={() => dispatch(setState('similarOpened', !similarOpened))}
+                                onClick={() => {
+                                    dispatch(setState('similarOpened', !similarOpened));
+                                    ReactGA.event({
+                                        category: 'Music player',
+                                        action: 'Similar songs clicked',
+                                        label: `Similar songs for ${currentPlaying.title}`,
+                                    });
+                                }}
                             />
                             <ShareSvg
                                 className="music-player__section--content__actions-button"
@@ -440,6 +463,11 @@ function MusicPlayer({ list, play }) {
                                     })
                                 );
                                 dispatch(setState('licenseOpened', true));
+                                ReactGA.event({
+                                    category: 'Music player',
+                                    action: 'License clicked',
+                                    label: `License for ${currentPlaying.title}`,
+                                });
                             }}
                         >
                             License
