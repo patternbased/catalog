@@ -149,6 +149,10 @@
             padding: 30px 45px;
             overflow: scroll;
 
+            @media screen and (max-width: $small) {
+                height: auto !important;
+            }
+
             &__title {
                 font-size: 14px;
                 font-family: $font-other;
@@ -249,6 +253,10 @@
             left: 0;
             right: 0;
             background-color: $light-grey;
+
+            @media screen and (max-width: $small) {
+                position: relative;
+            }
 
             &__padded {
                 padding: 30px 45px 80px;

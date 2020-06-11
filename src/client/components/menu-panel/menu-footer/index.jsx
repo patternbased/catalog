@@ -27,9 +27,9 @@ function MenuFooter({ full = false }) {
             {full && (
                 <div className="menu-footer__copy">
                     Created by PatternBased
-                    <br /> Directed and curated by Joseph Minadeo
-                    <br /> Designed by Siori Kitajima
-                    <br /> Coded by Lowla
+                    <br /> Music production and database by <a href="https://josephminadeo.com/">Joseph Minadeo</a>
+                    <br /> UI, UX and visual design by <a href="http://siorikitajima.com/">Siori Kitajima</a>
+                    <br /> UX and code by <a href="https://lauras.ro/">Laura Apetroaei</a>
                     <br />
                     <br />
                     Beautiful photos by amazing photographers from Unsplash.com. If you’d like to know the artist, right

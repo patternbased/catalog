@@ -32,12 +32,10 @@ function ArtistPage(props) {
     const [artist, setArtist] = useState(null);
     const [featuredTracks, setFeaturedTracks] = useState(null);
     const [allArtistTracks, setAllArtistTracks] = useState(null);
-    const [songClicked, setSongClicked] = useState(false);
 
     const songList = useSelector(selectors.library.getAll);
     const filtersPanelState = useSelector(selectors.general.get('filtersOpened'));
     const presetsPanelState = useSelector(selectors.general.get('presetsOpened'));
-    const currentSong = useSelector(selectors.library.getCurrentSong);
 
     const artistClass = useMemo(
         () =>

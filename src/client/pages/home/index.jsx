@@ -291,17 +291,6 @@ const _filterSongs = (songs, filters) => {
                         }
                     });
                 }
-                if (filters.instruments) {
-                    filters.instruments.map((filter) => {
-                        const filterVal = filter.replace(/\s/g, '').toLowerCase();
-                        const songInstr = song.instruments.filter(
-                            (s) => s.replace(/\s/g, '').toLowerCase() === filterVal
-                        );
-                        if (songInstr.length > 0) {
-                            similar += 1;
-                        }
-                    });
-                }
                 if (filters.duration) {
                     const durations = song.length.split(':');
                     if (parseInt(durations[0]) > 0) {
@@ -310,13 +299,14 @@ const _filterSongs = (songs, filters) => {
                         durations.shift();
                     }
                     const songDuration = parseFloat(durations.join('.'));
-                    if (_isInRange(songDuration, filters.duration)) {
+                    if (_isInDurationRange(songDuration, filters.duration)) {
                         similar += 1;
                     }
                 }
                 if (filters.search) {
                     filters.search.map((filter) => {
                         const filterVal = filter.value.toLowerCase();
+                        const fVal = filterVal.replace(/\s/g, '');
                         switch (filter.type) {
                             case 'song':
                                 if (song.title.toLowerCase().includes(filterVal)) {
@@ -343,6 +333,14 @@ const _filterSongs = (songs, filters) => {
                                     similar += 1;
                                 }
                                 break;
+                            case 'inst.':
+                                if (
+                                    song.instruments.filter((s) => s.replace(/\s/g, '').toLowerCase() === fVal).length >
+                                    0
+                                ) {
+                                    similar += 1;
+                                }
+                                break;
                             default:
                                 break;
                         }
@@ -362,4 +360,18 @@ const _isInRange = (value, range) => {
         return value >= range[0] && value <= range[1];
     }
     return false;
+};
+
+const _isInDurationRange = (value, durations) => {
+    let fits = false;
+    durations.map((dur) => {
+        let range = dur.split('-');
+        range = range.map((r) => {
+            return parseInt(r);
+        });
+        if (value >= range[0] && value <= range[1]) {
+            fits = true;
+        }
+    });
+    return fits;
 };

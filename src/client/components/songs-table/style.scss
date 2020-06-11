@@ -13,6 +13,11 @@
             @media screen and (max-width: $medium) {
                 top: 60px;
             }
+
+            @media screen and (max-width: $small) {
+                top: 40px;
+                padding-top: 40px;
+            }
         }
         &--small {
             top: 60px;
@@ -86,6 +91,11 @@
         display: flex;
         align-items: center;
         justify-content: flex-start;
+
+        @media screen and (max-width: $small) {
+            text-indent: -9999999px;
+            height: 4px;
+        }
 
         &__label {
             color: white;

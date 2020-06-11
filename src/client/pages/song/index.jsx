@@ -279,7 +279,11 @@ function SongPage(props) {
                                     </div>
                                     <div className="song__column__row-content">
                                         <img src={song.cover} alt={song.albumTitle} />
-                                        <Link to={`/album/${song.albumTitle}/${song.albumId}`}>
+                                        <Link
+                                            to={`/album/${song.albumTitle.toLowerCase().split(' ').join('-')}/${
+                                                song.albumId
+                                            }`}
+                                        >
                                             <div className="song__column__album-title">
                                                 <em>{song.albumTitle}&nbsp;</em>{' '}
                                                 {song.dateReleased && <>({song.dateReleased.split('-')[0]})</>}
@@ -612,7 +616,11 @@ function SongPage(props) {
                                     </div>
                                     <div className="song__column__row-content">
                                         <img src={song.cover} alt={song.albumTitle} />
-                                        <Link to={`/album/${song.albumTitle}/${song.albumId}`}>
+                                        <Link
+                                            to={`/album/${song.albumTitle.toLowerCase().split(' ').join('-')}/${
+                                                song.albumId
+                                            }`}
+                                        >
                                             <div className="song__column__album-title">
                                                 <em>{song.albumTitle}&nbsp;</em>{' '}
                                                 {song.dateReleased && <>({song.dateReleased.split('-')[0]})</>}

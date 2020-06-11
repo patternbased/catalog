@@ -57,7 +57,7 @@ module.exports = async () => {
     const sheets = await getSheets(doc);
     const songsSheet = sheets.find((s) => s.title === 'Songs');
     const albumsSheet = sheets.find((s) => s.title === 'Albums');
-    const allArtistsSheet = sheets.find((s) => s.title === 'AllArtists');
+    const allArtistsSheet = sheets.find((s) => s.title === 'Artists');
 
     const rows = await getRows(songsSheet, 2, songsSheet.rowCount);
     const albums = await getRows(albumsSheet, 1, albumsSheet.rowCount);

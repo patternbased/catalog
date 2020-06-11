@@ -73,7 +73,6 @@ function PaymentForm({ address, total, onSuccess, items }) {
             },
         };
     };
-    console.log(process.env.SQUARE_APP_ID);
     return (
         <div className="payment">
             {process.env.NODE_ENV === 'production' ? (

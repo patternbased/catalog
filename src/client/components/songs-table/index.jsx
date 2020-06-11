@@ -157,6 +157,7 @@ function SongsTable({ list, onSelect, listName, page, short = false, extraClass 
         let allFlows = '';
         let allInstruments = '';
         let allSearches = '';
+        let allDurations = '';
         let separator = ', ';
         switch (label) {
             case 'search':
@@ -183,6 +184,14 @@ function SongsTable({ list, onSelect, listName, page, short = false, extraClass 
                     return val.charAt(0).toUpperCase() + val.substring(1) + separator;
                 });
                 return allInstruments;
+            case 'duration':
+                allDurations = values.map((val, index) => {
+                    if (index === values.length - 1) {
+                        separator = '';
+                    }
+                    return `${val} min` + `${separator}`;
+                });
+                return allDurations;
             default:
                 return `${values[0]}-${values[1]}`;
         }

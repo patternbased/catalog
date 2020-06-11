@@ -8,12 +8,14 @@ import ReactGA from 'react-ga';
 
 import BasicFilter from 'components/filters/basic';
 import FlowFilter from 'components/filters/flow';
-import InstrumentsFilter from 'components/filters/instruments';
+import DurationFilter from 'components/filters/duration';
 import Button from 'components/button';
 import Preset from 'components/preset';
 import SearchBar from 'components/search-bar';
 
 import { setFilter, resetFilter, resetAllFilters } from 'actions/filters';
+import { setState } from 'actions/general';
+import { addToQueue, setCurrentSong } from 'actions/library';
 import { BASIC_FILTERS, PRESETS, INSTRUMENTS } from 'utils/constants';
 
 import { api } from '../../services';
@@ -50,7 +52,7 @@ const generateSearchResults = (songList, artists, writers) => {
  * @param {Boolean} showSearch boolean to determine if search input is opened/closed
  * @returns {React.Component}
  */
-function FiltersPanel({ visible, style, showSearch }) {
+function FiltersPanel({ visible, style, showSearch, onSearchSelected }) {
     const [similarPresets, setSimilarPresets] = useState([]);
     const [selectedSearch, setSelectedSearch] = useState([]);
     const [artists, setArtists] = useState([]);
@@ -60,8 +62,9 @@ function FiltersPanel({ visible, style, showSearch }) {
         () =>
             classnames('filters-panel', {
                 'filters-panel--visible': visible,
+                'filters-panel--searched': showSearch,
             }),
-        [visible]
+        [visible, showSearch]
     );
 
     useEffect(() => {
@@ -81,6 +84,7 @@ function FiltersPanel({ visible, style, showSearch }) {
     const defaultFilters = useSelector(selectors.filters.getDefault);
     const appliedFilters = useSelector(selectors.filters.getApplied);
     const songList = useSelector(selectors.library.getAll);
+    const playlist = useSelector(selectors.library.getCurrentPlaylist);
 
     const wereFiltersChanged = useMemo(() => Object.keys(appliedFilters).length > 0, [appliedFilters]);
 
@@ -123,33 +127,30 @@ function FiltersPanel({ visible, style, showSearch }) {
         [appliedFilters]
     );
 
-    const selectInstrument = useCallback(
-        (instrument) => {
-            const instrumentsCopy = appliedFilters['instruments'] ? [...appliedFilters['instruments']] : [];
-            dispatch(setFilter('instruments', instrumentsCopy.concat(instrument)));
-            ReactGA.event({
-                category: 'Filters panel',
-                action: 'Filter used',
-                label: `Filter Instrument ${instrument}`,
-            });
-        },
-        [appliedFilters]
-    );
-
-    const removeInstrument = useCallback(
-        (instrument) => {
-            let instrumentsCopy = appliedFilters['instruments'] ? [...appliedFilters['instruments']] : [];
-            instrumentsCopy = instrumentsCopy.filter((x) => x !== instrument);
-            if (instrumentsCopy.length === 0) {
-                dispatch(resetFilter('instruments'));
+    const toggleDuration = useCallback(
+        (shape) => {
+            const durationCopy = appliedFilters['duration'] ? [...appliedFilters['duration']] : [];
+            if (durationCopy.includes(shape)) {
+                dispatch(
+                    setFilter(
+                        'duration',
+                        durationCopy.filter((x) => x !== shape)
+                    )
+                );
+                ReactGA.event({
+                    category: 'Filters panel',
+                    action: 'Clear filter',
+                    label: `Filter Duration ${shape}`,
+                });
             } else {
-                dispatch(setFilter('instruments', instrumentsCopy));
+                durationCopy.push(shape);
+                dispatch(setFilter('duration', durationCopy));
+                ReactGA.event({
+                    category: 'Filters panel',
+                    action: 'Filter used',
+                    label: `Filter Duration ${shape}`,
+                });
             }
-            ReactGA.event({
-                category: 'Filters panel',
-                action: 'Clear filter',
-                label: `Filter Instrument ${instrument}`,
-            });
         },
         [appliedFilters]
     );
@@ -194,15 +195,7 @@ function FiltersPanel({ visible, style, showSearch }) {
     const searchList = useMemo(() => generateSearchResults(songList, artists, writers), [songList, artists, writers]);
 
     const selectResult = (item) => {
-        if (item.type === 'inst.') {
-            const instrumentsCopy = appliedFilters['instruments'] ? [...appliedFilters['instruments']] : [];
-            dispatch(setFilter('instruments', instrumentsCopy.concat(item.value)));
-            ReactGA.event({
-                category: 'Search',
-                action: 'Search suggestion selected',
-                label: `Selected Instrument ${item.value}`,
-            });
-        } else if (item.type === 'song') {
+        if (item.type === 'song') {
             window.location = `/song/${item.id}-${item.value.toLowerCase().split(' ').join('-')}`;
             ReactGA.event({
                 category: 'Search',
@@ -213,12 +206,21 @@ function FiltersPanel({ visible, style, showSearch }) {
             const selectedSearchCopy = [...selectedSearch];
             setSelectedSearch(selectedSearchCopy.concat(item));
             dispatch(setFilter('search', selectedSearchCopy.concat(item)));
-            ReactGA.event({
-                category: 'Search',
-                action: 'Search suggestion selected',
-                label: `Selected suggestion ${item.type} - ${item.value}`,
-            });
+            if (item.type === 'inst.') {
+                ReactGA.event({
+                    category: 'Search',
+                    action: 'Search suggestion selected',
+                    label: `Selected Instrument ${item.value}`,
+                });
+            } else {
+                ReactGA.event({
+                    category: 'Search',
+                    action: 'Search suggestion selected',
+                    label: `Selected suggestion ${item.type} - ${item.value}`,
+                });
+            }
         }
+        onSearchSelected();
     };
 
     const onCancelSelected = (value) => {
@@ -237,12 +239,80 @@ function FiltersPanel({ visible, style, showSearch }) {
         });
     };
 
+    const addListToQueue = () => {
+        dispatch(setState('songPlaying', true));
+        dispatch(setCurrentSong(playlist[0]));
+        dispatch(addToQueue({ list: playlist, name: createPlaylistName() }));
+    };
+
+    const createPlaylistName = () => {
+        let label = '';
+        Object.keys(appliedFilters).map((filter) => {
+            switch (filter) {
+                case 'rhythm':
+                    label += '<strong>RTM</strong>';
+                    break;
+                case 'speed':
+                    label += '<strong>SPD</strong>';
+                    break;
+                case 'experimental':
+                    label += '<strong>EXP</strong>';
+                    break;
+                case 'mood':
+                    label += '<strong>MOD</strong>';
+                    break;
+                case 'grid':
+                    label += '<strong>GRD</strong>';
+                    break;
+                case 'duration':
+                    label += '<strong>DUR</strong>';
+                    break;
+                default:
+                    break;
+            }
+            label += ` ${appliedFilters[filter][0]}-${appliedFilters[filter][1]}, `;
+        });
+        return label;
+    };
+
     return (
         <div>
             <div className={panelClass} style={style}>
                 <div className="filters-panel__container">
                     <div className="filters-panel__search">
                         {showSearch && <SearchBar onSelect={(val) => selectResult(val)} listItems={searchList} />}
+                        {wereFiltersChanged && playlist && (
+                            <div className="desktop-hide">
+                                <div className="filters-panel__results">
+                                    <div>
+                                        <img
+                                            src="/assets/images/table/results-play.png"
+                                            className="table__filters__icon"
+                                            onClick={() => addListToQueue()}
+                                        />
+
+                                        <div className="filters-panel__results__tracks">
+                                            <span>{playlist.length}</span> Tracks
+                                        </div>
+                                    </div>
+                                    <Button
+                                        width={60}
+                                        height={32}
+                                        onClick={() => {
+                                            dispatch(resetAllFilters());
+                                            setSimilarPresets([]);
+                                            ReactGA.event({
+                                                category: 'Filter panel',
+                                                action: 'Clear filters',
+                                                label: 'Mobile Clear all',
+                                            });
+                                        }}
+                                    >
+                                        Clear
+                                    </Button>
+                                </div>
+                            </div>
+                        )}
                         {appliedFilters.search && (
                             <div className="filters-panel__search__selected">
                                 {appliedFilters.search.map((item, index) => (
@@ -276,7 +346,7 @@ function FiltersPanel({ visible, style, showSearch }) {
                             <div key={index}>
                                 <BasicFilter
                                     name={filter}
-                                    isOpened={filter === 'duration' ? false : true}
+                                    isOpened={true}
                                     values={appliedFilters[filter] || defaultFilters[filter]}
                                     onRangeChange={changeSlider(filter)}
                                     onFilterCancel={() => cancelFilter(filter)}
@@ -288,11 +358,10 @@ function FiltersPanel({ visible, style, showSearch }) {
                             onToggleFlow={toggleFlow}
                             onFilterCancel={() => cancelFilter('flow')}
                         />
-                        <InstrumentsFilter
-                            values={appliedFilters['instruments'] || defaultFilters['instruments']}
-                            onSelectInstrument={selectInstrument}
-                            onCancelInstrument={removeInstrument}
-                            onFilterCancel={() => cancelFilter('instruments')}
+                        <DurationFilter
+                            values={appliedFilters['duration'] || defaultFilters['duration']}
+                            onToggleDuration={toggleDuration}
+                            onFilterCancel={() => cancelFilter('duration')}
                         />
                         {wereFiltersChanged && (
                             <div className="filters-panel__button">
@@ -357,12 +426,14 @@ FiltersPanel.propTypes = {
     visible: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
     style: PropTypes.object,
     showSearch: PropTypes.bool,
+    onSearchSelected: PropTypes.func,
 };
 
 FiltersPanel.defaultProps = {
     visible: false,
     style: {},
     showSearch: false,
+    onSearchSelected: () => {},
 };
 
 export default memo(FiltersPanel);

@@ -36,22 +36,31 @@ function MenuPanel({ visible, style }) {
                 <div className="menu-panel__container">
                     <div className="menu-panel__menu">
                         <div className="menu-panel__menu__link">
-                            <Link to="/about">About</Link>
-                        </div>
-                        <div
-                            className="menu-panel__menu__link"
-                            onClick={() => dispatch(setState('contactOpened', true))}
-                        >
-                            Contact
+                            <Link to="/artists">Projects and Artists</Link>
                         </div>
                         <div className="menu-panel__menu__link">
-                            <Link to="/artists">Artists</Link>
+                            <Link to="/albums">Albums and Collections</Link>
                         </div>
                         <div
                             className="menu-panel__menu__link"
                             onClick={() => dispatch(setState('reqSuggestionsOpened', true))}
                         >
                             Request Suggestions
+                        </div>
+                        <div
+                            className="menu-panel__menu__link"
+                            onClick={() => dispatch(setState('reqComposingOpened', true))}
+                        >
+                            Request Composing
+                        </div>
+                        <div className="menu-panel__menu__link">
+                            <Link to="/about">About PB Catalog</Link>
+                        </div>
+                        <div
+                            className="menu-panel__menu__link"
+                            onClick={() => dispatch(setState('contactOpened', true))}
+                        >
+                            Contact Us
                         </div>
                     </div>
                     <MenuFooter />

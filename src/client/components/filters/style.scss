@@ -137,6 +137,10 @@
 
                 &:nth-child(3n + 3) {
                     margin-right: 0;
+
+                    @media screen and (max-width: $small) {
+                        margin-right: 10px;
+                    }
                 }
 
                 img {
@@ -144,6 +148,35 @@
                     position: absolute;
                     bottom: 0;
                     left: 0;
+                }
+            }
+
+            &-dur {
+                cursor: pointer;
+                position: relative;
+                height: 30px;
+                width: 110px;
+                border-radius: 4px;
+                background-color: $lighter-grey;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                color: $primary;
+                margin-right: 10px;
+                margin-bottom: 10px;
+
+                &:nth-child(2n + 2) {
+                    margin-right: 0;
+                }
+
+                span {
+                    font-weight: bold;
+                    margin-right: 5px;
+                }
+
+                &--active {
+                    background-color: $secondary;
+                    color: white;
                 }
             }
         }

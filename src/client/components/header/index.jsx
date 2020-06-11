@@ -264,7 +264,12 @@ function Header({ history }) {
                     />
                 </div>
             </header>
-            <FiltersPanel visible={filtersOpened} style={panelStyle} showSearch={searchOpened} />
+            <FiltersPanel
+                visible={filtersOpened}
+                style={panelStyle}
+                showSearch={searchOpened}
+                onSearchSelected={() => setSearchOpened(false)}
+            />
             <PresetsPanel visible={presetsOpened} style={panelStyle} />
             <MenuPanel visible={menuOpened} style={panelStyle} />
             <ReqSuggestionsPanel visible={reqSuggestionsOpened} style={panelStyle} />

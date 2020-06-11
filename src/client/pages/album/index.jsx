@@ -16,7 +16,7 @@ import { setState } from 'actions/general';
  */
 function AlbumPage(props) {
     const albumId = props.match.params.id;
-    const albumName = props.match.params.name;
+    let albumName = props.match.params.name;
     const [albumList, setAlbumList] = useState([]);
     const dispatch = useDispatch();
 

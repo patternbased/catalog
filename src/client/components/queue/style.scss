@@ -25,6 +25,7 @@
         height: calc(100vh - 140px);
         @media screen and (max-width: $small) {
             height: calc(100vh - 60px);
+            bottom: 0px;
         }
     }
     &--small-header {
@@ -49,6 +50,9 @@
             cursor: pointer;
             width: 30px;
             height: 30px;
+        }
+        @media screen and (max-width: $small) {
+            height: 40px;
         }
     }
 

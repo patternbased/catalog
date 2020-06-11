@@ -244,13 +244,13 @@ export const INITIAL_FILTER_VALUES = {
     experimental: [0, 10],
     mood: [0, 10],
     grid: [0, 10],
-    duration: [0, 20],
+    duration: [],
     flow: [],
     instruments: [],
     search: [],
 };
 
-export const BASIC_FILTERS = ['rhythm', 'speed', 'experimental', 'mood', 'grid', 'duration'];
+export const BASIC_FILTERS = ['rhythm', 'speed', 'experimental', 'mood', 'grid'];
 
 export const FILTERS_BACKGROUNDS = {
     rhythm: '/assets/images/rhythm.png',
@@ -300,6 +300,15 @@ export const FLOW_SHAPES = [
         image: '/assets/images/flow-meandering.png',
         activeImage: '/assets/images/flow-meandering-active.png',
     },
+];
+
+export const DURATION_VALUES = [
+    { name: '0 - 1', value: [0, 1] },
+    { name: '1 - 2', value: [1, 2] },
+    { name: '2 - 3', value: [2, 3] },
+    { name: '3 - 5', value: [3, 5] },
+    { name: '5 - 10', value: [5, 10] },
+    { name: '10+', value: [10, 500] },
 ];
 
 export const TABLE_FLOW_SHAPES = [

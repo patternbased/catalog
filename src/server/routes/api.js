@@ -5,6 +5,7 @@ const SongController = require('../controllers/SongController');
 const PresetController = require('../controllers/PresetController');
 const ShareController = require('../controllers/ShareController');
 const ArtistController = require('../controllers/ArtistController');
+const AlbumController = require('../controllers/AlbumController');
 const PaymentController = require('../controllers/PaymentController');
 const memoizeFunction = require('../utils/memoize-function');
 
@@ -24,6 +25,14 @@ router.get('/all-artists', async (req, res) => {
 
     res.send({
         artists,
+    });
+});
+
+router.get('/all-albums', async (req, res) => {
+    const albums = await AlbumController.getAll();
+
+    res.send({
+        albums,
     });
 });
 

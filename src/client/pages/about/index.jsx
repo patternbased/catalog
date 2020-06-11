@@ -14,7 +14,7 @@ import './style.scss';
  * Component to handle the about page
  * @returns {React.Component}
  */
-function ArtistPage() {
+function AboutPage() {
     const filtersPanelState = useSelector(selectors.general.get('filtersOpened'));
     const presetsPanelState = useSelector(selectors.general.get('presetsOpened'));
     const dispatch = useDispatch();
@@ -31,7 +31,7 @@ function ArtistPage() {
         dispatch(setState('menuOpened', false));
         dispatch(setState('presetsOpened', false));
         dispatch(setState('filtersOpened', false));
-    });
+    }, []);
 
     return (
         <>
@@ -40,41 +40,41 @@ function ArtistPage() {
                 <div className="about">
                     <div className="about__hero" />
                     <div className="about__content">
-                        <div className="about__title about__title--big">A Unique Music Catalog Interface</div>
+                        <div className="about__title about__title--big">A Music Catalog UI</div>
                         <div className="about__copy about__copy--wide">
                             The PatternBased Catalog is an ever expanding collection of textural/emotive sound &amp;
-                            music that ranges from simple tones and drones to energetic and highly rhythmic works
-                            spanning a wide variety of styles and moods. Our catalog system at catalog.patternbased.com
-                            provides you a unique interface for searching and listening to our sonic catalog whether you
-                            are a director, editor or artist searching for works to license for your project or you are
-                            simply looking to enjoy a selection of music outside the mainstream(ing) services. It is
-                            also a privacy focused system where you can browse and listen to the catalog, create and
-                            share searches, playlists and tracks all without logging in.
+                            music that ranges from sparse tones and drones to rhythmic works over a variety of styles
+                            and moods. catalog.patternbased.com provides you an interface for
+                            searching/listening/sharing/licensing our music. Common users of the interface would be
+                            directors/editors/artists looking for pieces of music to license for their projects or music
+                            patrons/listeners looking to enjoy a selection of sounds outside the mainstream(ing)
+                            services. It is also a privacy focused system where the user can browse and listen, create
+                            playlists, and share searches/playlists/albums/songs without logging in or sharing their
+                            information.
                         </div>
                         <div className="about__title">Filters</div>
                         <div className="about__copy">
-                            At the heart of the catalog’s interface are five sets of sliders that will help you filter
-                            the catalog down to what you are looking for based on rhythm, speed, mood, experimental and
-                            organic traits associated with the tracks. Rather than wading through genres and tag clouds,
-                            we believe these sliders are a much more intuitive way to search, especially through the sum
-                            total of PatternBased’s sonic compositions. You can add a traditional keyword search that
-                            incorporates the more traditional searches by artist, genre, tag etc using the magnifying
-                            glass icon.
+                            Use the five sets of sliders to filter the catalog down to what you are looking for based on
+                            rhythm, speed, mood, experimental and organic traits associated with the songs. We believe
+                            these sliders are an intuitive way to search our particular set of sound &amp; music. You
+                            can add traditional keyword filters for artists, projects, instruments, genres and tags by
+                            using the magnifying glass icon.
                         </div>
                         <div className="about__title">Presets</div>
                         <div className="about__copy">
-                            For an even quicker start, click on the preset buttons such as ‘Commerce and Happiness’ or
-                            ‘Horror Drones’ which will set the filter sliders automatically. You can then refine the
-                            range of the sliders to expand or further refine your search.
+                            For the quickest start, click a preset such as ‘Commerce and Happiness’ or ‘Horror Drones’
+                            which will set the filter sliders automatically. Then click the blue stacked play icon above
+                            the search results to add the entire set of results to play queue and begin playing. You can
+                            always refine the range of the sliders or add keywords to alter your search.
                         </div>
                         <div className="about__title">Suggestions</div>
                         <div className="about__copy">
                             Feel free to contact us at any point in your searching and listening if you would like to
                             talk about your project and have us help you find or create exactly what you are looking
-                            for. We know our catalog inside and out. Additionally, we are always composing custom music
-                            from complete scores to short beats to remixes. Anything in the catalog can be thought of as
-                            a starting point for something new based on something existing. Stems for almost all pieces
-                            of music are available.
+                            for. We know our catalog inside and out (and we always have a mountain of unreleased
+                            material). Additionally, we are always composing custom music from complete scores to short
+                            beats to remixes. Anything in the catalog can be thought of as a starting point for
+                            something new. Stems for all songs are readily available.
                         </div>
                         <div className="about__banner about__banner--first">Our Music</div>
                         <div className="about__copy about__copy--wide">
@@ -88,36 +88,37 @@ function ArtistPage() {
                         </div>
                         <div className="about__title">Composing</div>
                         <div className="about__copy">
-                            The case for custom music is an easy one. Every event, every scene, every thing that needs
-                            music is different and therefore music should be too. A well done score and sound design can
-                            convey an incredibly specific mixture of ideas and emotions. A good composer can make that
-                            happen whether you are telling a story about college athletes in swampy Scooba Mississippi
-                            with uncertain futures, the future of technology in Singapore or you just need a unique
-                            bombastic build for the unveiling of your new brand.
+                            The case for custom sound/music is a strong one for just about any project. Every event,
+                            every scene, every thing that needs music is different and thus the sound of it should be as
+                            well. A well done score and sound design can convey an incredibly specific mixture of ideas
+                            and emotions. A good composer can make that happen whether you are telling a story about the
+                            struggles of college athletes in the Mississippi swamplands, the future of technology in
+                            Singapore or you just need a unique bombastic build for the unveiling of your new label.
                             <br /> We love the composing process and have created custom music for just about anything
                             one could think of from films and Netflix/streaming shows to VR and interactive
                             installations. We like working on unique original projects from around the world and are
                             open to a wide range of budgets depending on the project. We dream of working on a colorful
-                            cartoon like Adventure Time or a VR experience that increases empathy or creates meditative
-                            states or perhaps interface design for the next generation of electric vehicles. Get at us
-                            with your wildest ideas.
+                            cartoon like Tuca and Bertie or Adventure Time or a VR experience that increases empathy or
+                            creates meditative states or perhaps UI sound design for the next generation of electric
+                            vehicles. Get at us with your wildest ideas.
                         </div>
                         <div className="about__title">Customizing</div>
                         <div className="about__copy">
-                            Stems (also called splits) are the individual components of a piece of recorded music, like
-                            drums or bass or vocals. Stems for just about every track in the catalog are available. This
-                            means the music can be stripped down or easily remixed or altered for your needs. Contact us
-                            if you hear a piece of music that would make a good starting point for your project.
+                            Stems (sometimes called splits) are the individual components of a piece of recorded music,
+                            like drums or bass or vocals. Stems for just about every track in the catalog are available.
+                            This means the music can be stripped down or easily remixed/altered for your needs. Contact
+                            us if you hear a piece of music that would make a good starting point for your project.
                         </div>
                         <div className="about__banner about__banner--second">Support</div>
                         <div className="about__copy about__copy--wide">
-                            PatternBased is focused on supporting artists and ideas through a variety of means including
-                            discounted rates on licensing for creations involving environmental and animal protection,
-                            human rights and other forward thinking projects. We work to balance these notions with our
-                            best attempts to support our artists and the creatives that have contributed to building the
-                            catalog by getting them paid via licensing fees and royalties.
+                            PatternBased is focused on supporting artists such as indie filmmakers, indie game devs,
+                            non-profits and other grassroots and forward thinking entities through multiple means
+                            including discounted rates on licensing for creations focused on the environment, animal and
+                            human rights and similar projects. We work to balance these notions with our best attempts
+                            to support our recording artists and the creatives that have contributed to building this
+                            catalog by getting them paid via studio fees, licensing/placement fees and royalties.
                         </div>
-                        <div className="about__title">Non-Profits and Forward Thinking Entities</div>
+                        {/* <div className="about__title">Non-Profits and Forward Thinking Entities</div>
                         <div className="about__copy">
                             PatternBased is always interested in contributing to forward thinking projects from
                             eye-opening documentaries to mind expanding installations and just about anything else one
@@ -125,16 +126,17 @@ function ArtistPage() {
                             emphasize the connections we all share, the dignity of life as well as new ideas and
                             experiences. Please keep in mind that we are also working to get our artists paid for their
                             hard work as well.
-                        </div>
+                        </div> */}
                         <div className="about__title">Individual Artists</div>
                         <div className="about__copy">
-                            One of the key goals of PatternBased is supporting our artists and attempting to make the
-                            catalog artist-centric. All projects, artists and writers have individual pages that you can
-                            access by clicking on the artist’s name wherever they appear. From there, you can listen to
-                            all the songs that the artist has contributed to and link to the artists various pages and
-                            social media sites. Artists are given equal splits on writing credits for every track they
-                            have contributed to and all PB artists have access to PatternBased’s Mojave Desert
-                            facilities.
+                            We are attempting to make this catalog extremely artist-centric. All projects, artists and
+                            writers have individual pages that you can access by clicking on the artist’s name wherever
+                            they appear. From there, you can listen to all the songs that the artist has contributed to
+                            and link to the artists various pages and social media accounts and you are encouraged to
+                            contact them directly. All artists have equal splits on writing credits and the music is
+                            fully open sourced between the writers to do whatever they wish with. All PB artists have
+                            access to our mojave desert facilities and as well as small grants and residencies via the
+                            Tiny Arts Prize via our not for profit sister entity Bunny San Tachi.
                         </div>
                         <div className="about__ctas">
                             <a href="https://patternbased.com/" target="_blank" rel="noopener noreferrer">
@@ -154,6 +156,6 @@ function ArtistPage() {
     );
 }
 
-ArtistPage.displayName = 'ArtistPage';
+AboutPage.displayName = 'AboutPage';
 
-export default ArtistPage;
+export default AboutPage;

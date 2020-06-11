@@ -22,7 +22,6 @@ function SearchBar({ listItems, onSelect }) {
     }, [searchTerm]);
 
     const selectFromList = (result) => {
-        console.log(result);
         onSelect(result);
         setSearchTerm('');
     };
@@ -35,6 +34,7 @@ function SearchBar({ listItems, onSelect }) {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 value={searchTerm}
                 autoFocus
+                placeholder="Instruments, Artists, Songs..."
             />
 
             {searchResults.length > 0 && (

@@ -10,15 +10,68 @@
     overflow: scroll;
     bottom: 0;
 
+    .desktop-hide {
+        display: none;
+    }
+
+    &__results {
+        height: 60px;
+        background-color: $primary;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 22px;
+        position: fixed;
+        width: 100%;
+        z-index: 2;
+
+        .button {
+            border-color: white;
+            color: white;
+            font-size: 12px;
+        }
+
+        img {
+            height: 32px;
+            width: 32px;
+            margin-right: 12px;
+        }
+
+        div {
+            display: flex;
+            align-items: center;
+        }
+
+        &__tracks {
+            font-size: 16px;
+            font-family: $font-other;
+            color: white;
+
+            span {
+                font-family: $font-other;
+                font-weight: bold;
+                margin-right: 5px;
+            }
+        }
+    }
+
     @media screen and (max-width: $small) {
         width: 100%;
-        z-index: 1;
+        z-index: 2;
         left: -100%;
         transition: all 0.3s ease;
+        .desktop-hide {
+            display: block;
+        }
     }
 
     &--visible {
         left: 0;
+    }
+
+    &--searched {
+        height: 100%;
+        overflow: hidden;
     }
 
     &__container {
@@ -27,10 +80,17 @@
 
     &__filters {
         padding: 48px 30px;
+
+        @media screen and (max-width: $small) {
+            padding-top: 20px;
+        }
     }
 
     &__button {
         text-align: right;
+        @media screen and (max-width: $small) {
+            display: none;
+        }
     }
 
     &__presets {
@@ -51,6 +111,10 @@
     &__search {
         &__selected {
             padding: 45px 30px 0;
+
+            @media screen and (max-width: $small) {
+                padding-top: 80px;
+            }
 
             &-item {
                 margin-bottom: 10px;

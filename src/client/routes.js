@@ -13,6 +13,7 @@ import Invoice from './pages/invoice';
 import Download from './pages/download';
 import NotFound from './pages/not-found';
 import Album from './pages/album';
+import Albums from './pages/albums';
 import About from './pages/about';
 import Artists from './pages/artists';
 
@@ -43,6 +44,7 @@ function Routes() {
                     <Route path="/album/:name/:id" exact component={Album} />
                     <Route path="/about" exact component={About} />
                     <Route path="/artists" exact component={Artists} />
+                    <Route path="/albums" exact component={Albums} />
                     <Route path="/not-found" exact component={NotFound} />
                     <Redirect from="*" to="/not-found" />
                 </Switch>

@@ -190,8 +190,8 @@ function CheckoutPanel({ visible, style }) {
                                     <div className="checkout-panel__body__success__results__details__single">
                                         <img src="/assets/images/Stems_icon_blue.png" />
                                         <p>
-                                            Stems are available for most of our music upon request. Feel free to contact
-                                            us with your Order#.
+                                            We will send you wav format file(s) within 24 hours. Stems are available for
+                                            most of our music upon request. Feel free to contact us with your Order#.
                                         </p>
                                     </div>
                                 </div>
@@ -369,7 +369,6 @@ function CheckoutPanel({ visible, style }) {
                                                                     <CountryDropdown
                                                                         value={formCountry}
                                                                         onChange={(val) => {
-                                                                            console.log(val);
                                                                             setFieldValue('country', val);
                                                                             setFormCountry(val);
                                                                         }}
@@ -582,7 +581,7 @@ const _getOrderConfirmationHtml = (fields, subtotal, total, pItems, orderNo, lic
                     class="texts__text"
                     style="font-size: 14px;line-height: 20px;color: #444;"
                 >
-                    Stems are available for most of our music upon request. Feel free to
+                We will send you wav format file(s) within 24 hours. Stems are available for most of our music upon request. Feel free to
                     <a
                         href="mailto:patternbased@gmail.com"
                         style="color: #0092c5;font-size: 14px;line-height: 20px;"

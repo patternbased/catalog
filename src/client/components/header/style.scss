@@ -19,10 +19,6 @@
 
     @media screen and (max-width: $small) {
         padding: 12px 10px;
-
-        &--mobile {
-            box-shadow: none;
-        }
     }
 
     &__desktop-hide {
@@ -44,8 +40,6 @@
             position: absolute;
             right: 0;
             top: 0;
-            border-left: 1px solid $lighter-grey;
-            border-bottom: 1px solid $lighter-grey;
             display: flex;
             align-items: center;
             justify-content: center;

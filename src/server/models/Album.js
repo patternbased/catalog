@@ -4,8 +4,17 @@ const { Schema } = mongoose;
 const Album = new Schema({
     pbId: String,
     title: String,
+    slug: String,
     artistId: String,
+    artistName: String,
     songsIds: Array,
+    year: String,
+    tracks: String,
+    rate: String,
+    description: String,
+    upcCode: String,
+    coverArt: Array,
+    cover: String,
     dateAdded: { type: Date, default: Date.now },
     dateEdited: { type: Date, default: Date.now },
 });

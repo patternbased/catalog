@@ -7,6 +7,10 @@
     width: 95%;
     padding-bottom: 30px;
 
+    @media screen and (max-width: $small) {
+        padding-top: 60px;
+    }
+
     @media screen and (max-width: $large) {
         .popular-presets__presets {
             display: inline-grid;

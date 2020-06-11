@@ -14,10 +14,10 @@ import { api } from '../../services';
 import './style.scss';
 
 /**
- * Component to handle the about page
+ * Component to handle the Artists page
  * @returns {React.Component}
  */
-function ArtistPage() {
+function ArtistsPage() {
     const [artists, setArtists] = useState([]);
     const [writers, setWriters] = useState([]);
     const [all, setAll] = useState([]);
@@ -98,6 +98,6 @@ function ArtistPage() {
     );
 }
 
-ArtistPage.displayName = 'ArtistPage';
+ArtistsPage.displayName = 'ArtistsPage';
 
-export default ArtistPage;
+export default ArtistsPage;

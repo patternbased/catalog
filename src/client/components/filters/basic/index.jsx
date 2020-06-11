@@ -22,7 +22,6 @@ import '../style.scss';
 function BasicFilter({ name, isOpened, values, onRangeChange, onFilterCancel }) {
     const [openedTooltip, setOpenedTooltip] = useState(false);
     const [animated, setAnimated] = useState(false);
-    const isDuration = name === 'duration';
 
     const infoTooltipClass = useMemo(
         () =>
@@ -61,9 +60,7 @@ function BasicFilter({ name, isOpened, values, onRangeChange, onFilterCancel }) 
                 </div>
                 {!isInitial && (
                     <div className="filter__header__range flex flex--space-between">
-                        <p className="filter__header__range-numbers">
-                            {isDuration ? `${values[0]}m - ${values[1]}m` : `${values[0]} - ${values[1]}`}
-                        </p>
+                        <p className="filter__header__range-numbers">{`${values[0]} - ${values[1]}`}</p>
                         <img
                             className="filter__header__range-close"
                             src="/assets/images/close.png"
@@ -80,13 +77,13 @@ function BasicFilter({ name, isOpened, values, onRangeChange, onFilterCancel }) 
             {opened && (
                 <Range
                     min={0}
-                    max={isDuration ? 20 : 10}
+                    max={10}
                     onChange={onRangeChange}
                     onBeforeChange={() => setAnimated(true)}
                     onAfterChange={() => setAnimated(false)}
                     value={values}
                     railStyle={{ backgroundImage: `url(${FILTERS_BACKGROUNDS[name]}` }}
-                    step={isDuration ? 0.5 : 0.25}
+                    step={0.25}
                     allowCross={true}
                     pushable={0.25}
                     className={animated ? 'anim' : ''}
