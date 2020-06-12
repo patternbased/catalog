@@ -353,17 +353,17 @@ function MusicPlayer({ list, play }) {
                                 </Link>
                             )}
                             {!songHovered && (
-                                <Link to={`/project/${currentPlaying.artistName.toLowerCase().split(' ').join('-')}`}>
-                                    <div className="music-player__section--content__song__details">
-                                        <p className="music-player__section--content__song__details-author">
-                                            by {currentPlaying.artistName}
-                                        </p>
+                                // <Link to={`/project/${currentPlaying.artistName.toLowerCase().split(' ').join('-')}`}>
+                                <div className="music-player__section--content__song__details">
+                                    <p className="music-player__section--content__song__details-author">
+                                        by {currentPlaying.artistName}
+                                    </p>
 
-                                        <p className="music-player__section--content__song__details-duration">
-                                            {_formatTime(duration)}
-                                        </p>
-                                    </div>
-                                </Link>
+                                    <p className="music-player__section--content__song__details-duration">
+                                        {_formatTime(duration)}
+                                    </p>
+                                </div>
+                                // </Link>
                             )}
                             {songHovered && (
                                 <div className="music-player__section--content__song__details">
