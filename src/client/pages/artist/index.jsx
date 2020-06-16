@@ -51,8 +51,6 @@ function ArtistPage(props) {
 
     useEffect(() => {
         if (artistName) {
-            dispatch(setState('filtersOpened', false));
-
             api.get(`/api/artist/${artistName}`).then((res) => {
                 setArtist(res.artist);
             });

@@ -12,6 +12,15 @@ class AlbumController {
     }
 
     /**
+     * Returns album data
+     * @param {String} name name of the album to get
+     * @returns {Array}
+     */
+    getAlbumByName(name) {
+        return Album.findOne({ slug: name });
+    }
+
+    /**
      * Async insert data into db
      * @param {Object} data object with data
      * @returns {Data}

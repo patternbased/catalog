@@ -40,6 +40,7 @@ function HomePage({ history }) {
     const filtersValues = useSelector(selectors.filters.getApplied);
 
     useEffect(() => {
+        dispatch(setState('filtersOpened', true));
         !songList && dispatch(getSongList());
         if (!popularPresets) {
             api.get('/api/popular-presets').then((res) => {
@@ -81,6 +82,9 @@ function HomePage({ history }) {
                         history.push(
                             `/song/${sharedSongs[0].pbId}-${sharedSongs[0].title.toLowerCase().split(' ').join('-')}`
                         );
+                        break;
+                    case 'album':
+                        history.push(`/album/${shared.name.toLowerCase().split(' ').join('-')}/${shared.songs[0]}`);
                         break;
                     default:
                         break;
@@ -348,8 +352,18 @@ const _filterSongs = (songs, filters) => {
                 }
                 return similar === Object.keys(filters).length;
             })
-            .sort((a, b) => parseFloat(a.rate) - parseFloat(b.rate))
-            .reverse();
+            .sort((a, b) => {
+                const aSize = parseFloat(a.rate);
+                const bSize = parseFloat(b.rate);
+                const aLow = a.title;
+                const bLow = b.title;
+
+                if (aSize === bSize) {
+                    return aLow < bLow ? -1 : aLow > bLow ? 1 : 0;
+                } else {
+                    return aSize < bSize ? 1 : -1;
+                }
+            });
     } else {
         return [];
     }

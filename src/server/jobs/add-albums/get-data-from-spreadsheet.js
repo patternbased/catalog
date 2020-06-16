@@ -86,7 +86,7 @@ module.exports = async () => {
             description: row.description,
             upcCode: row.upccode,
             coverArt: coverArt,
-            cover: `https://pblibrary.s3.us-east-2.amazonaws.com/${row.albumid}/cover-thumb.jpg`,
+            cover: `https://pblibrary.s3.us-east-2.amazonaws.com/${row.albumid}/cover.jpg`,
         };
     });
 };

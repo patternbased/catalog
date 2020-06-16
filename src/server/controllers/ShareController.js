@@ -26,8 +26,8 @@ class ShareController {
      */
     sendEmail(emailData) {
         const mailOptions = {
-            user: 'lauraapetroaei@gmail.com',
-            pass: 'wolsykmdhujxnxvg',
+            user: 'patternbased@gmail.com',
+            pass: 'ubipabkkfistsxcb',
             to: 'patternbased@gmail.com',
             from: `${emailData.email} <${emailData.email}>`,
             replyTo: emailData.email,
@@ -48,8 +48,8 @@ class ShareController {
      */
     sendOrderEmail(emailData) {
         const mailOptions = {
-            user: 'lauraapetroaei@gmail.com',
-            pass: 'wolsykmdhujxnxvg',
+            user: 'patternbased@gmail.com',
+            pass: 'ubipabkkfistsxcb',
             to: emailData.email,
             from: 'PatternBased <patternbased@gmail.com>',
             replyTo: 'patternbased@gmail.com',

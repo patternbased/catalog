@@ -106,7 +106,6 @@ function SongPage(props) {
 
     useEffect(() => {
         if (songId && songList) {
-            dispatch(setState('filtersOpened', false));
             const songData = songList.find((song) => song.pbId === songId);
             if (songData) {
                 setSong(songData);

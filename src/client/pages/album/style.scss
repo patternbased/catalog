@@ -1,0 +1,497 @@
+@import '../../styles/constants';
+
+.album {
+    padding-top: 80px;
+    color: $primary;
+    padding-bottom: 100px;
+
+    .desktop-hide {
+        display: none;
+    }
+
+    @media screen and (max-width: $small) {
+        padding-top: 60px;
+        .desktop-hide {
+            display: block;
+        }
+        .mobile-hide {
+            display: none;
+        }
+    }
+
+    &__section {
+        padding-top: 50px;
+        margin: 0 auto;
+        max-width: 1040px;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+
+        @media screen and (max-width: $large) {
+            padding: 50px 20px 0;
+        }
+
+        @media screen and (max-width: $small) {
+            display: block;
+            padding: 16px 10px;
+        }
+
+        &--banner {
+            max-width: none;
+            @media screen and (max-width: $large) {
+                padding: 50px 0 0;
+            }
+        }
+    }
+
+    &__cover {
+        width: 650px;
+        height: 650px;
+        border-radius: 4px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+
+        @media screen and (max-width: $large) {
+            width: 364px;
+            height: 364px;
+        }
+
+        @media screen and (max-width: $small) {
+            width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        img {
+            width: 100%;
+        }
+        svg {
+            min-width: 60px;
+            height: 60px;
+            path {
+                fill: white;
+            }
+        }
+        &__overlay {
+            background-color: rgba(0, 0, 0, 0.4);
+            border-radius: 4px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            img {
+                width: 60px;
+                height: 60px;
+            }
+        }
+    }
+
+    &__column {
+        &:first-child {
+            margin-right: 50px;
+
+            @media screen and (max-width: $large) {
+                margin-right: 24px;
+            }
+
+            @media screen and (max-width: $small) {
+                margin-right: 0;
+            }
+        }
+        &__row-header {
+            position: relative;
+            color: white;
+            font-family: $font-other;
+            font-size: 16px;
+            font-weight: bold;
+            line-height: 30px;
+            text-shadow: 1px 2px 0 rgba(0, 0, 0, 0.5);
+            border-radius: 4px;
+            z-index: 1;
+            padding-left: 20px;
+            background-image: url('/assets/images/queue/queue-header.png');
+            background-repeat: repeat;
+            background-size: 45%;
+            margin-bottom: 15px;
+            max-width: 650px;
+            &__overlay {
+                background-color: rgba(34, 34, 34, 0.5);
+                position: absolute;
+                border-radius: 4px;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                right: 0;
+                z-index: -1;
+            }
+        }
+        &__row-content {
+            display: flex;
+            align-items: center;
+            max-width: 650px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+            color: $primary;
+            font-family: $font-other;
+            font-size: 14px;
+            line-height: 27px;
+            padding-left: 10px;
+            em {
+                font-size: 16px;
+            }
+            img {
+                width: 60px;
+                height: 60px;
+                border-radius: 4px;
+                margin-right: 12px;
+            }
+        }
+        &__writer {
+            display: flex;
+            align-items: center;
+            margin-right: 30px;
+            margin-bottom: 10px;
+            color: $primary;
+            font-family: $font-other;
+            font-size: 16px;
+            line-height: 22px;
+            cursor: pointer;
+            width: 100%;
+            &:nth-child(3n) {
+                margin-right: 0;
+            }
+            &:nth-child(n + 4) {
+                margin-top: 10px;
+            }
+            img {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                margin-right: 10px;
+            }
+            &:hover {
+                color: $secondary;
+                text-decoration: underline;
+            }
+        }
+        &__album-title {
+            cursor: pointer;
+            font-family: $font-other;
+            font-size: 14px;
+            line-height: 27px;
+            em:hover {
+                color: $secondary;
+                text-decoration: underline;
+            }
+        }
+    }
+
+    &__title {
+        font-size: 36px;
+        line-height: 43px;
+        margin-bottom: 8px;
+        text-transform: capitalize;
+
+        @media screen and (max-width: $large) {
+            font-size: 32px;
+        }
+
+        @media screen and (max-width: $small) {
+            font-size: 24px;
+            line-height: 29px;
+            text-align: center;
+        }
+    }
+    &__artist {
+        font-family: 'Open Sans';
+        font-size: 14px;
+        font-weight: bold;
+        line-height: 19px;
+        font-family: $font-other;
+        cursor: pointer;
+        &:hover {
+            color: $secondary;
+            text-decoration: underline;
+        }
+
+        @media screen and (max-width: $small) {
+            text-align: center;
+        }
+    }
+    &__actions {
+        border-bottom: 2px solid $tertiary;
+        padding: 20px 0;
+        margin-bottom: 20px;
+        &-license {
+            border: 2px solid $primary;
+            border-radius: 2px;
+            background-color: $primary;
+            color: white;
+            margin-left: 10px;
+            &:hover {
+                background-color: $secondary;
+                border: 2px solid $secondary;
+            }
+        }
+        svg {
+            width: 36px;
+            height: 36px;
+            cursor: pointer;
+            margin-right: 20px;
+            path {
+                fill: $primary;
+            }
+            &:hover path {
+                fill: $secondary;
+            }
+        }
+
+        @media screen and (max-width: $small) {
+            padding: 16px 0 20px;
+            justify-content: center;
+            margin-bottom: 0;
+            border-bottom: none;
+        }
+    }
+    &__description {
+        font-family: $font-other;
+        font-size: 16px;
+        line-height: 24px;
+        margin-bottom: 20px;
+    }
+    &__attributes {
+        border-bottom: 2px solid $tertiary;
+        margin-bottom: 20px;
+        padding-bottom: 20px;
+        &__single {
+            display: flex;
+            align-items: flex-start;
+            min-height: 30px;
+            height: auto;
+            border-radius: 4px;
+            padding-left: 20px;
+            &:nth-child(2n + 1) {
+                background-color: rgba(155, 155, 155, 0.4);
+            }
+        }
+        &__key {
+            width: 140px;
+            font-family: $font-other;
+            font-weight: bold;
+            line-height: 30px;
+            display: flex;
+            align-items: center;
+            .filter__header__tooltip {
+                margin-left: 5px;
+            }
+        }
+        &__value {
+            font-family: $font-other;
+            line-height: 30px;
+            span {
+                font-size: 12px;
+            }
+            img {
+                width: 140px;
+                margin: 5px 0;
+            }
+        }
+    }
+    &__media {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        margin-bottom: 30px;
+        svg {
+            width: 37px;
+            height: 37px;
+            margin-right: 8px;
+            cursor: pointer;
+            path {
+                fill: $primary;
+            }
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+        &__bandcamp:hover path {
+            fill: $bandcamp;
+        }
+        &__spotify:hover path {
+            fill: $spotify;
+        }
+        &__apple:hover path {
+            fill: $apple;
+        }
+        &__itunes:hover path {
+            fill: $itunes;
+        }
+        &__soundcloud:hover path {
+            fill: $soundcloud;
+        }
+        &__google:hover path {
+            fill: $google;
+        }
+        &__vimeo:hover path {
+            fill: $vimeo;
+        }
+
+        @media screen and (max-width: $small) {
+            margin-bottom: 40px;
+        }
+    }
+    &__others {
+        border-bottom: 2px solid $tertiary;
+        margin: 20px 0;
+        padding-bottom: 20px;
+    }
+    &__instruments {
+        margin-bottom: 15px;
+        font-family: $font-other;
+        font-size: 16px;
+        line-height: 24px;
+        position: relative;
+        display: flex;
+        cursor: pointer;
+        &__label {
+            font-weight: bolder;
+            margin-bottom: 5px;
+            display: block;
+        }
+        &__content {
+            max-width: calc(100% - 20px);
+        }
+        &__border {
+            background-color: rgba(155, 155, 155, 0.4);
+            border-radius: 4px;
+            width: 10px;
+            margin-right: 10px;
+        }
+        &__value {
+            span:hover {
+                color: $secondary;
+                text-decoration: underline;
+            }
+        }
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    &__banner {
+        width: 100%;
+        min-height: 280px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 50px 200px;
+        background-image: url('/assets/images/dark-banner.jpg');
+
+        @media screen and (max-width: $large) {
+            display: block;
+            text-align: center;
+            padding: 30px;
+        }
+
+        img {
+            min-width: 270px;
+            max-width: 270px;
+            height: 180px;
+            margin-right: 50px;
+
+            @media screen and (max-width: $large) {
+                min-width: 180px;
+                max-width: 180px;
+                height: 120px;
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+        }
+        &__artist {
+            color: white;
+            font-size: 28px;
+            line-height: 33px;
+            margin-bottom: 10px;
+        }
+        &__description {
+            color: white;
+            font-family: $font-other;
+            font-size: 16px;
+            line-height: 24px;
+            margin-bottom: 25px;
+            max-width: 720px;
+
+            @media screen and (max-width: $large) {
+                text-align: left;
+                max-width: none;
+            }
+        }
+        &__button {
+            color: white;
+            border-color: white;
+            width: 260px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid white;
+            border-radius: 2px;
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 16px;
+            text-align: center;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            &:hover {
+                background-color: white;
+                color: $primary;
+            }
+
+            @media screen and (max-width: $large) {
+                margin: 0 auto;
+            }
+        }
+    }
+
+    &__table {
+        .table {
+            padding-bottom: 0;
+        }
+
+        @media screen and (max-width: $small) {
+            button {
+                display: none;
+            }
+        }
+
+        &__header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 17px;
+
+            @media screen and (max-width: $small) {
+                justify-content: center;
+                margin-top: 14px;
+                margin-bottom: 20px;
+            }
+        }
+        &__title {
+            font-size: 28px;
+            line-height: 33px;
+
+            @media screen and (max-width: $small) {
+                font-size: 18px;
+                text-align: center;
+            }
+        }
+    }
+}

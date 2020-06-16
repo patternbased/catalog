@@ -30,7 +30,6 @@ function AboutPage() {
     useEffect(() => {
         dispatch(setState('menuOpened', false));
         dispatch(setState('presetsOpened', false));
-        dispatch(setState('filtersOpened', false));
     }, []);
 
     return (

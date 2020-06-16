@@ -53,8 +53,6 @@ function WriterPage(props) {
 
     useEffect(() => {
         if (artistName) {
-            dispatch(setState('filtersOpened', false));
-
             api.get(`/api/writer/${artistName}`).then((res) => {
                 setArtist(res.artist);
             });

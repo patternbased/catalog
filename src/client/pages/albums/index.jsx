@@ -35,7 +35,6 @@ function AlbumsPage() {
     useEffect(() => {
         dispatch(setState('menuOpened', false));
         dispatch(setState('presetsOpened', false));
-        dispatch(setState('filtersOpened', false));
         api.get('/api/all-albums').then((res) => {
             if (res.albums) {
                 setAlbums(res.albums);
@@ -47,17 +46,17 @@ function AlbumsPage() {
         <>
             <Header />
             <div className={artistClass}>
-                <div className="artists">
-                    <div className="artists__content">
-                        <div className="artists__title artists__title--big">Albums and Collections</div>
+                <div className="albums">
+                    <div className="albums__content">
+                        <div className="albums__title albums__title--big">Albums and Collections</div>
                     </div>
                 </div>
 
-                <div className="artists__tiles">
+                <div className="albums__tiles">
                     {albums.map((art, index) => (
                         <Link key={index} to={`/album/${art.slug}/${art.pbId}`}>
                             <div
-                                className="artists__tile"
+                                className="albums__tile"
                                 style={{
                                     backgroundImage: `linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.6)), url(${art.cover})`,
                                 }}
@@ -67,7 +66,7 @@ function AlbumsPage() {
                         </Link>
                     ))}
                 </div>
-                <div className="artists__footer">
+                <div className="albums__footer">
                     <MenuFooter full={true} />
                 </div>
             </div>

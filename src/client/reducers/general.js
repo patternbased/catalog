@@ -2,7 +2,7 @@ import { createReducer } from './utils';
 import { ACTIONS } from '../actions/general';
 
 const initialState = {
-    filtersOpened: true,
+    filtersOpened: false,
     presetsOpened: false,
     queueOpened: false,
     menuOpened: false,

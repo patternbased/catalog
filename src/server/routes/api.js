@@ -130,6 +130,14 @@ router.get('/artist/:name', async (req, res) => {
     });
 });
 
+router.get('/album/:name', async (req, res) => {
+    const album = await AlbumController.getAlbumByName(req.params.name);
+
+    res.send({
+        album,
+    });
+});
+
 router.get('/writer/:name', async (req, res) => {
     const artist = await ArtistController.getWriterByName(req.params.name);
 

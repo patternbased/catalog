@@ -561,7 +561,7 @@ const _getOrderConfirmationHtml = (fields, subtotal, total, pItems, orderNo, lic
                 >
                     Links will expire in 14 days. Please
                     <a
-                        href="mailto:patternbased@gmail.com"
+                        href="mailto:info@patternbased.com"
                         style="color: #0092c5;font-size: 14px;line-height: 20px;"
                     >
                         contact us
@@ -583,7 +583,7 @@ const _getOrderConfirmationHtml = (fields, subtotal, total, pItems, orderNo, lic
                 >
                 We will send you wav format file(s) within 24 hours. Stems are available for most of our music upon request. Feel free to
                     <a
-                        href="mailto:patternbased@gmail.com"
+                        href="mailto:info@patternbased.com"
                         style="color: #0092c5;font-size: 14px;line-height: 20px;"
                     >
                         contact us

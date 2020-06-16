@@ -37,7 +37,6 @@ function ArtistsPage() {
     useEffect(() => {
         dispatch(setState('menuOpened', false));
         dispatch(setState('presetsOpened', false));
-        dispatch(setState('filtersOpened', false));
         api.get('/api/all-artists').then((res) => {
             if (res.artists) {
                 const art = res.artists.filter((a) => a.show);
