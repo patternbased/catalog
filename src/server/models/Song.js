@@ -45,6 +45,13 @@ const Song = new Schema({
     image: String,
     cover: String,
     coverArt: Array,
+    bandcamp: String,
+    soundcloud: String,
+    spotify: String,
+    appleMusic: String,
+    deezer: String,
+    video: String,
+    tidal: String,
 });
 
 Song.options.toJSON = Song.options.toJSON || {};

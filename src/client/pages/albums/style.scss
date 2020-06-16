@@ -39,6 +39,11 @@
         background-repeat: no-repeat;
         background-size: cover;
 
+        @media screen and (max-width: $large) {
+            width: 240px;
+            margin: 10px auto;
+        }
+
         &:hover {
             opacity: 0.6;
             transform: scale(1.05);

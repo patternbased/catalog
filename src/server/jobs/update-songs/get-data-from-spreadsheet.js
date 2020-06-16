@@ -127,6 +127,13 @@ module.exports = async () => {
                 ? `https://pblibrary.s3.us-east-2.amazonaws.com/${row.catnum}/${row.id}_thumb.jpg`
                 : `https://pblibrary.s3.us-east-2.amazonaws.com/${row.catnum}/cover-thumb.jpg`,
             coverArt: coverArt,
+            bandcamp: row.bandcampurl,
+            soundcloud: row.soundcloudurl,
+            spotify: row.spotifyurl,
+            appleMusic: row.applemusicurl,
+            deezer: row.deezerurl,
+            video: row.videourl,
+            tidal: row.tidalurl,
         };
     });
 };

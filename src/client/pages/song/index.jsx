@@ -591,13 +591,21 @@ function SongPage(props) {
                                     </div>
                                 </div>
                                 <div className="song__media">
-                                    <BandcampSvg className="song__media__bandcamp" />
-                                    <SpotifySvg className="song__media__spotify" />
-                                    <AppleSvg className="song__media__apple" />
-                                    <ITunesSvg className="song__media__itunes" />
-                                    <SoundCloudSvg className="song__media__soundcloud" />
-                                    <GooglePlaySvg className="song__media__google" />
-                                    <VimeoSvg className="song__media__vimeo" />
+                                    <a href={song.bandcampurl} target="_blank" rel="noopener noreferrer">
+                                        <BandcampSvg className="song__media__bandcamp" />
+                                    </a>
+                                    <a href={song.spotifyurl} target="_blank" rel="noopener noreferrer">
+                                        <SpotifySvg className="song__media__spotify" />
+                                    </a>
+                                    <a href={song.applemusicurl} target="_blank" rel="noopener noreferrer">
+                                        <AppleSvg className="song__media__apple" />
+                                    </a>
+                                    <a href={song.soundcloudurl} target="_blank" rel="noopener noreferrer">
+                                        <SoundCloudSvg className="song__media__soundcloud" />
+                                    </a>
+                                    <a href={song.videourl} target="_blank" rel="noopener noreferrer">
+                                        <VimeoSvg className="song__media__vimeo" />
+                                    </a>
                                 </div>
                                 <span className="desktop-hide">
                                     <div className="song__column__row-header">
