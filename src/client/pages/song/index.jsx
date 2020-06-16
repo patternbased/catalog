@@ -69,7 +69,7 @@ function SongPage(props) {
     const filtersPanelState = useSelector(selectors.general.get('filtersOpened'));
     const presetsPanelState = useSelector(selectors.general.get('presetsOpened'));
     const similarOpened = useSelector(selectors.general.get('similarOpened'));
-    // const currentSong = useSelector(selectors.library.getCurrentSong);
+    const currentSong = useSelector(selectors.library.getCurrentSong);
     const appliedFilters = useSelector(selectors.filters.getApplied);
 
     const infoTooltipClass = useCallback(
@@ -134,16 +134,18 @@ function SongPage(props) {
     const shareSongId = uuid();
 
     const playSong = (val = song) => {
-        dispatch(setCurrentSong(val));
-        dispatch(addToQueue(val));
-        // setSongClicked(true);
-        // setSongPlaying(!songPlaying);
-        dispatch(setState('songPlaying', !songIsPlaying));
-        ReactGA.event({
-            category: 'Single song page',
-            action: 'Play button clicked',
-            label: `Play ${val.title}`,
-        });
+        if (val.pbId === currentSong.pbId && songIsPlaying) {
+            dispatch(setState('songPlaying', !songIsPlaying));
+        } else {
+            dispatch(setCurrentSong(val));
+            dispatch(addToQueue(val));
+            dispatch(setState('songPlaying', true));
+            ReactGA.event({
+                category: 'Single song page',
+                action: 'Play button clicked',
+                label: `Play ${val.title}`,
+            });
+        }
     };
 
     const openShareModal = () => {
@@ -248,7 +250,13 @@ function SongPage(props) {
                                 >
                                     {coverHover && (
                                         <div className="song__cover__overlay" onClick={() => playSong()}>
-                                            {!songIsPlaying ? <PlaySvg /> : <PauseSvg />}
+                                            {!songIsPlaying ? (
+                                                <PlaySvg />
+                                            ) : currentSong.pbId === song.pbId ? (
+                                                <PauseSvg />
+                                            ) : (
+                                                <PlaySvg />
+                                            )}
                                         </div>
                                     )}
 
