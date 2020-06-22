@@ -137,7 +137,7 @@ function SongsTable({ list, onSelect, listName, page, short = false, extraClass 
                 default:
                     break;
             }
-            label += ` ${appliedFilters[filter][0]}-${appliedFilters[filter][1]}, `;
+            label += appliedFilters[filter] ? ` ${appliedFilters[filter][0]}-${appliedFilters[filter][1]}, ` : '';
         });
         return label;
     };

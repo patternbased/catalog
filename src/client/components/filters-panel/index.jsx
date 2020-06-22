@@ -88,17 +88,23 @@ function FiltersPanel({ visible, style, showSearch, onSearchSelected }) {
 
     const wereFiltersChanged = useMemo(() => Object.keys(appliedFilters).length > 0, [appliedFilters]);
 
-    const changeSlider = useCallback(
-        (name) => (values) => {
-            dispatch(setFilter(name, values));
-            ReactGA.event({
-                category: 'Filters panel',
-                action: 'Filter used',
-                label: `Filter ${name}`,
-            });
-        },
-        [appliedFilters]
-    );
+    const [changedFilters, setChangedFilters] = useState(appliedFilters);
+
+    const changeSlider = (name) => (values) => {
+        console.log(values);
+        const copyFilters = { ...changedFilters };
+        copyFilters[name] = values;
+        setChangedFilters(copyFilters);
+    };
+
+    const applyFilters = (name) => {
+        dispatch(setFilter(name, changedFilters[name]));
+        ReactGA.event({
+            category: 'Filters panel',
+            action: 'Filter used',
+            label: `Filter ${name}`,
+        });
+    };
 
     const toggleFlow = useCallback(
         (shape) => {
@@ -157,6 +163,9 @@ function FiltersPanel({ visible, style, showSearch, onSearchSelected }) {
 
     const cancelFilter = useCallback(
         (name) => {
+            const copyFilters = { ...changedFilters };
+            copyFilters[name] = defaultFilters[name];
+            setChangedFilters(copyFilters);
             dispatch(resetFilter(name));
             ReactGA.event({
                 category: 'Filters panel',
@@ -247,31 +256,33 @@ function FiltersPanel({ visible, style, showSearch, onSearchSelected }) {
 
     const createPlaylistName = () => {
         let label = '';
-        Object.keys(appliedFilters).map((filter) => {
-            switch (filter) {
-                case 'rhythm':
-                    label += '<strong>RTM</strong>';
-                    break;
-                case 'speed':
-                    label += '<strong>SPD</strong>';
-                    break;
-                case 'experimental':
-                    label += '<strong>EXP</strong>';
-                    break;
-                case 'mood':
-                    label += '<strong>MOD</strong>';
-                    break;
-                case 'grid':
-                    label += '<strong>GRD</strong>';
-                    break;
-                case 'duration':
-                    label += '<strong>DUR</strong>';
-                    break;
-                default:
-                    break;
-            }
-            label += ` ${appliedFilters[filter][0]}-${appliedFilters[filter][1]}, `;
-        });
+        if (appliedFilters) {
+            Object.keys(appliedFilters).map((filter) => {
+                switch (filter) {
+                    case 'rhythm':
+                        label += '<strong>RTM</strong>';
+                        break;
+                    case 'speed':
+                        label += '<strong>SPD</strong>';
+                        break;
+                    case 'experimental':
+                        label += '<strong>EXP</strong>';
+                        break;
+                    case 'mood':
+                        label += '<strong>MOD</strong>';
+                        break;
+                    case 'grid':
+                        label += '<strong>GRD</strong>';
+                        break;
+                    case 'duration':
+                        label += '<strong>DUR</strong>';
+                        break;
+                    default:
+                        break;
+                }
+                label += ` ${appliedFilters[filter][0]}-${appliedFilters[filter][1]}, `;
+            });
+        }
         return label;
     };
 
@@ -299,6 +310,7 @@ function FiltersPanel({ visible, style, showSearch, onSearchSelected }) {
                                         width={60}
                                         height={32}
                                         onClick={() => {
+                                            setChangedFilters({});
                                             dispatch(resetAllFilters());
                                             setSimilarPresets([]);
                                             ReactGA.event({
@@ -347,8 +359,9 @@ function FiltersPanel({ visible, style, showSearch, onSearchSelected }) {
                                 <BasicFilter
                                     name={filter}
                                     isOpened={true}
-                                    values={appliedFilters[filter] || defaultFilters[filter]}
+                                    values={changedFilters[filter] || defaultFilters[filter]}
                                     onRangeChange={changeSlider(filter)}
+                                    onRangeApply={() => applyFilters(filter)}
                                     onFilterCancel={() => cancelFilter(filter)}
                                 />
                             </div>
@@ -367,6 +380,7 @@ function FiltersPanel({ visible, style, showSearch, onSearchSelected }) {
                             <div className="filters-panel__button">
                                 <Button
                                     onClick={() => {
+                                        setChangedFilters({});
                                         dispatch(resetAllFilters());
                                         setSimilarPresets([]);
                                         ReactGA.event({

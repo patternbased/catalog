@@ -15,11 +15,12 @@ import '../style.scss';
  * @param {String} name the name of the filter
  * @param {Boolean} isOpened boolean to determine if the range slider is displayed or toggled
  * @param {Array} values values of selected filters; default [1, 10]
- * @param {Function} onRangeChange action to call when slider changes
+ * @param {Function} onRangeChange action to call when slider values change
+ * @param {Function} onRangeApply action to call when applying filters
  * @param {Function} onFilterCancel action to call when slider is cancelled
  * @returns {React.Component}
  */
-function BasicFilter({ name, isOpened, values, onRangeChange, onFilterCancel }) {
+function BasicFilter({ name, isOpened, values, onRangeChange, onRangeApply, onFilterCancel }) {
     const [openedTooltip, setOpenedTooltip] = useState(false);
     const [animated, setAnimated] = useState(false);
 
@@ -80,7 +81,10 @@ function BasicFilter({ name, isOpened, values, onRangeChange, onFilterCancel }) 
                     max={10}
                     onChange={onRangeChange}
                     onBeforeChange={() => setAnimated(true)}
-                    onAfterChange={() => setAnimated(false)}
+                    onAfterChange={(val) => {
+                        setAnimated(false);
+                        onRangeApply(val);
+                    }}
                     value={values}
                     railStyle={{ backgroundImage: `url(${FILTERS_BACKGROUNDS[name]}` }}
                     step={0.25}
@@ -100,6 +104,7 @@ BasicFilter.propTypes = {
     isOpened: PropTypes.bool,
     values: PropTypes.array.isRequired,
     onRangeChange: PropTypes.func.isRequired,
+    onRangeApply: PropTypes.func.isRequired,
     onFilterCancel: PropTypes.func.isRequired,
 };
 
