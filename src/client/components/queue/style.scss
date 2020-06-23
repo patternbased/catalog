@@ -24,7 +24,7 @@
     &--big-header {
         height: calc(100vh - 140px);
         @media screen and (max-width: $small) {
-            height: calc(var(--vh, 1vh) * 100);
+            height: 100vh;
             bottom: 0px;
             z-index: 9999;
         }
