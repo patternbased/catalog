@@ -328,8 +328,8 @@ function MusicPlayer({ list, play }) {
                         <img src={currentPlaying.cover} className="music-player__section--content__song-image" />
                         <div
                             className="music-player__section--content__song__details"
-                            onMouseEnter={() => handleSongHover()}
-                            onMouseLeave={() => setSongHovered(false)}
+                            // onMouseEnter={() => handleSongHover()}
+                            // onMouseLeave={() => setSongHovered(false)}
                         >
                             <Link
                                 to={
@@ -345,13 +345,19 @@ function MusicPlayer({ list, play }) {
                                     {currentPlaying.title}
                                 </p>
                             </Link>
-                            {songHovered && (
-                                <Link to={`/project/${currentPlaying.artistName.toLowerCase().split(' ').join('-')}`}>
-                                    <p className="music-player__section--content__song__details-author music-player__section--content__song__details-author--inline">
-                                        by {currentPlaying.artistName}
-                                    </p>
-                                </Link>
-                            )}
+                            {/* {songHovered && ( */}
+                            <Link
+                                to={
+                                    Object.keys(currentPlaying).length
+                                        ? `/project/${currentPlaying.artistName.toLowerCase().split(' ').join('-')}`
+                                        : ''
+                                }
+                            >
+                                <p className="music-player__section--content__song__details-author music-player__section--content__song__details-author--inline">
+                                    by {currentPlaying.artistName}
+                                </p>
+                            </Link>
+                            {/* )}
                             {!songHovered && (
                                 // <Link to={`/project/${currentPlaying.artistName.toLowerCase().split(' ').join('-')}`}>
                                 <div className="music-player__section--content__song__details">
@@ -365,22 +371,22 @@ function MusicPlayer({ list, play }) {
                                 </div>
                                 // </Link>
                             )}
-                            {songHovered && (
-                                <div className="music-player__section--content__song__details">
-                                    <div className="music-player__section--content__song__details-progress">
-                                        <Slider
-                                            min={0}
-                                            max={duration}
-                                            value={elapsed}
-                                            step={0.0001}
-                                            onChange={(val) => updateElapsedTime(val)}
-                                        />
-                                    </div>
-                                    <p className="music-player__section--content__song__details-duration">
-                                        {_formatTime(elapsed)} <span>/ {_formatTime(duration)}</span>
-                                    </p>
+                            {songHovered && ( */}
+                            <div className="music-player__section--content__song__details">
+                                <div className="music-player__section--content__song__details-progress">
+                                    <Slider
+                                        min={0}
+                                        max={duration}
+                                        value={elapsed}
+                                        step={0.0001}
+                                        onChange={(val) => updateElapsedTime(val)}
+                                    />
                                 </div>
-                            )}
+                                <p className="music-player__section--content__song__details-duration">
+                                    {_formatTime(elapsed)} <span>/ {_formatTime(duration)}</span>
+                                </p>
+                            </div>
+                            {/* )} */}
                         </div>
                     </div>
                     <div className="music-player__section--content__actions">
