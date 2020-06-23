@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import ReactGA from 'react-ga';
 import { HEADER_HEIGHTS } from 'utils/constants';
 import FilterSvg from 'assets/images/header/filter.svg';
 import PresetSvg from 'assets/images/header/preset.svg';
@@ -78,6 +79,7 @@ function Header({ history }) {
     const checkoutPanelState = useSelector(selectors.general.get('checkoutOpened'));
     const chosenLicenseType = useSelector(selectors.library.getCustomLicenseType);
     const cartItemsNo = useSelector(selectors.cart.getCartItemsNo);
+    const queueSongs = useSelector(selectors.library.getQueue);
 
     useEffect(() => {
         setFiltersOpened(filtersPanelState);
@@ -124,6 +126,18 @@ function Header({ history }) {
             dispatch(setState('scrolled', false));
         }
     };
+
+    useEffect(() => {
+        window.addEventListener('beforeunload', (event) => {
+            ReactGA.event({
+                category: 'Session',
+                action: 'Session ended',
+                label: `No. of songs in queue: ${queueSongs.length}`,
+            });
+            // event.preventDefault();
+            // event.returnValue = '';
+        });
+    });
 
     useEffect(() => {
         window.addEventListener('scroll', scrollHandler);
