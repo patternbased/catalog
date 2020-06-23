@@ -94,6 +94,10 @@
 
             &--distanced {
                 bottom: 80px;
+
+                @media screen and (max-width: $small) {
+                    bottom: 0;
+                }
             }
         }
 
@@ -102,7 +106,7 @@
             height: calc(100% - 180px);
 
             @media screen and (max-width: $small) {
-                height: calc(100% - 80px);
+                height: calc(100% - 100px);
             }
 
             &__single {

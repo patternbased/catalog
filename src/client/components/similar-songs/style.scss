@@ -33,8 +33,9 @@
     &--big-header {
         height: calc(100vh - 80px);
         @media screen and (max-width: $small) {
-            height: calc(100vh - 60px);
+            height: 100vh;
             bottom: 0;
+            z-index: 9999;
         }
     }
     &--small-header {
