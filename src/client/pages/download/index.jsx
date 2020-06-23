@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { api } from '../../services';
 import JSZip from 'jszip';
+import { saveAs } from 'file-saver';
 import AWS from 'aws-sdk';
 
 AWS.config.update({
@@ -20,7 +21,7 @@ function Download(props) {
 
     useEffect(() => {
         if (id) {
-            api.get(`/api/invoice/${id}`).then(res => {
+            api.get(`/api/invoice/${id}`).then((res) => {
                 setItems(res.invoice.purchasedItems);
             });
         }
@@ -36,7 +37,7 @@ function Download(props) {
         const zip = new JSZip();
         let count = 0;
 
-        items.forEach(function(url) {
+        items.forEach(function (url) {
             const filename = `${url.song.title} - ${url.song.artist}`;
             // loading a file and add it in a zip file
             const s3 = new AWS.S3();
@@ -45,16 +46,24 @@ function Download(props) {
             const myKey = `${url.song.url.split('/')[3]}/${url.song.url.split('/')[4]}`;
             const signedUrlExpireSeconds = 60 * 60 * 24 * 7; // 7 days
 
-            const link = s3.getSignedUrl('getObject', {
-                Bucket: myBucket,
-                Key: myKey,
-                Expires: signedUrlExpireSeconds,
+            // const link = s3.getSignedUrl('getObject', {
+            //     Bucket: myBucket,
+            //     Key: myKey,
+            //     Expires: signedUrlExpireSeconds,
+            // });
+            // zip.file(`${filename}.txt`, link);
+            s3.getObject({ Bucket: myBucket, Key: myKey }, function (error, data) {
+                if (data) {
+                    zip.file(`${filename}.mp3`, data.Body);
+                }
             });
-            zip.file(`${filename}.txt`, link);
             count++;
             if (count === items.length) {
-                zip.generateAsync({ type: 'base64' }).then(function(base64) {
-                    window.location = 'data:application/zip;base64,' + base64;
+                // zip.generateAsync({ type: 'base64' }).then(function (base64) {
+                //     window.location = 'data:application/zip;base64,' + base64;
+                // });
+                zip.generateAsync({ type: 'blob' }).then(function (blob) {
+                    saveAs(blob, 'songs.zip');
                 });
             }
         });
