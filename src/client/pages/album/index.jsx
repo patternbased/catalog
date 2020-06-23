@@ -62,7 +62,7 @@ function AlbumPage(props) {
         let songs = [];
         songs = songList.filter((song) => song.albumId === albumId);
         if (songs.length > 0) {
-            songs = songs.sort((a, b) => parseFloat(b.sequence) - parseFloat(a.sequence));
+            songs = songs.sort((a, b) => parseFloat(a.sequence) - parseFloat(b.sequence));
         }
         setAlbumList(songs.slice(0, 5));
         setAlbumRestList(songs.slice(6));

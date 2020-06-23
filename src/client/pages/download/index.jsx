@@ -35,7 +35,6 @@ function Download(props) {
 
     const zipFiles = () => {
         const zip = new JSZip();
-        let count = 0;
 
         items.forEach(function (url, index) {
             const filename = `${url.song.title} - ${url.song.artist}`;

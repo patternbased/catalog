@@ -66,6 +66,10 @@
         height: calc(100% - 80px);
         position: relative;
 
+        @media screen and (max-width: $small) {
+            height: calc(100% - 60px);
+        }
+
         &__empty {
             font-size: 14px;
             line-height: 20px;
@@ -96,6 +100,10 @@
         &__songs {
             overflow: scroll;
             height: calc(100% - 180px);
+
+            @media screen and (max-width: $small) {
+                height: calc(100% - 80px);
+            }
 
             &__single {
                 padding: 30px 30px 20px;
@@ -209,6 +217,7 @@
 
             &__buttons {
                 padding: 50px 45px;
+                text-align: center;
 
                 button {
                     height: 40px;
