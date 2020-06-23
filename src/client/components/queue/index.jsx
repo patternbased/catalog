@@ -59,6 +59,8 @@ function QueuePanel({ visible, onClose }) {
 
     useEffect(() => {
         setWasScrolled(scrolled);
+        let vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
     }, [scrolled]);
 
     const addToHovered = (index) => {
