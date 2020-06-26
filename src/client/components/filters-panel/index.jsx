@@ -5,6 +5,7 @@ import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import selectors from 'selectors';
 import ReactGA from 'react-ga';
+import isEqual from 'lodash/isEqual';
 
 import BasicFilter from 'components/filters/basic';
 import FlowFilter from 'components/filters/flow';
@@ -88,10 +89,12 @@ function FiltersPanel({ visible, style, showSearch, onSearchSelected }) {
 
     const wereFiltersChanged = useMemo(() => Object.keys(appliedFilters).length > 0, [appliedFilters]);
 
-    const [changedFilters, setChangedFilters] = useState({});
+    const [changedFilters, setChangedFilters] = useState(appliedFilters);
 
     useEffect(() => {
-        setChangedFilters(appliedFilters);
+        if (!isEqual(changedFilters, appliedFilters)) {
+            setChangedFilters(appliedFilters);
+        }
     }, [appliedFilters]);
 
     const changeSlider = (name) => (values) => {
