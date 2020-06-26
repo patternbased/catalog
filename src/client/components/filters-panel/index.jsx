@@ -88,10 +88,13 @@ function FiltersPanel({ visible, style, showSearch, onSearchSelected }) {
 
     const wereFiltersChanged = useMemo(() => Object.keys(appliedFilters).length > 0, [appliedFilters]);
 
-    const [changedFilters, setChangedFilters] = useState(appliedFilters);
+    const [changedFilters, setChangedFilters] = useState({});
+
+    useEffect(() => {
+        setChangedFilters(appliedFilters);
+    }, [appliedFilters]);
 
     const changeSlider = (name) => (values) => {
-        console.log(values);
         const copyFilters = { ...changedFilters };
         copyFilters[name] = values;
         setChangedFilters(copyFilters);
