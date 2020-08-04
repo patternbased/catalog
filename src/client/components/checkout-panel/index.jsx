@@ -6,13 +6,14 @@ import PropTypes from 'prop-types';
 import { Formik, Form, Field } from 'formik';
 import { CountryDropdown } from 'react-country-region-selector';
 import Button from 'components/button';
+import PromoCode from 'components/promo-code';
 import PaymentForm from './payment-form';
 import selectors from 'selectors';
 
 import CloseIcon from 'assets/images/Close_Icon_Gray.svg';
 
 import { setState } from 'actions/general';
-import { clearCartData } from 'actions/cart';
+import { clearCartData, setPromoCode } from 'actions/cart';
 
 import './style.scss';
 
@@ -29,6 +30,7 @@ function CheckoutPanel({ visible, style }) {
     const [items, setItems] = useState([]);
     const [subtotal, setSubtotal] = useState(0);
     const [total, setTotal] = useState(0);
+    const [promoCode, setCartPromoCode] = useState(null);
     const [success, setSuccess] = useState(false);
     const [orderNo, setOrderNo] = useState('');
     const [invoiceId, setInvoiceId] = useState('');
@@ -98,6 +100,7 @@ function CheckoutPanel({ visible, style }) {
     const cartItems = useSelector(selectors.cart.getCartItems);
     const cartSubtotal = useSelector(selectors.cart.getCartSubtotal);
     const cartTotal = useSelector(selectors.cart.getCartTotal);
+    const pCode = useSelector(selectors.cart.getPromoCode);
 
     const panelClass = useMemo(
         () =>
@@ -112,8 +115,14 @@ function CheckoutPanel({ visible, style }) {
             setItems(cartItems);
             setSubtotal(cartSubtotal);
             setTotal(cartTotal);
+        } else {
+            dispatch(setPromoCode(null));
         }
-    }, [cartItems]);
+    }, [cartItems, pCode]);
+
+    useEffect(() => {
+        setCartPromoCode(pCode);
+    }, [pCode]);
 
     const _orderSummary = () => {
         return (
@@ -133,10 +142,18 @@ function CheckoutPanel({ visible, style }) {
                         Subtotal
                         <span>${subtotal}</span>
                     </div>
+                    {promoCode && (
+                        <div className="checkout-panel__body__summary__details__item">
+                            Promo Code (
+                            {promoCode.type === 'percentage' ? `${promoCode.value}%OFF` : `$${promoCode.value}OFF`})
+                            <span>-${promoCode.valueOff}</span>
+                        </div>
+                    )}
                     <div className="checkout-panel__body__summary__details__item checkout-panel__body__summary__details__item__bolded">
                         Total
                         <span className="checkout-panel__body__summary__details__item__bolded">${total}</span>
                     </div>
+                    {!promoCode && <PromoCode />}
                 </div>
             </div>
         );
@@ -540,7 +557,7 @@ const _getOrderConfirmationHtml = (fields, subtotal, total, pItems, orderNo, lic
             style="text-align: center;margin: 40px 0 30px;"
         >
             <a
-                href="${baseUrl}/download/${licenseId}}"
+                href="${baseUrl}/download/${licenseId}"
                 style="width: 210px;border-radius: 4px;background-color: #444444;display: block;text-align: center;padding: 10px 0;margin: 0 auto;color: white;text-decoration: none;font-size: 14px;font-weight: bold;line-height: 19px;"
             >
                 Download .mp3

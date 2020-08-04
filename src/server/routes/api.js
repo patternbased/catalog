@@ -6,6 +6,7 @@ const PresetController = require('../controllers/PresetController');
 const ShareController = require('../controllers/ShareController');
 const ArtistController = require('../controllers/ArtistController');
 const AlbumController = require('../controllers/AlbumController');
+const PromoController = require('../controllers/PromoController');
 const PaymentController = require('../controllers/PaymentController');
 const memoizeFunction = require('../utils/memoize-function');
 
@@ -136,6 +137,19 @@ router.get('/album/:name', async (req, res) => {
     res.send({
         album,
     });
+});
+
+router.get('/promo/:name', async (req, res) => {
+    const promo = await PromoController.getPromoByName(req.params.name);
+
+    if (promo && promo.startsOn <= Date.now() && promo.endsOn >= Date.now()) {
+        res.send({
+            promo,
+            status: 200,
+        });
+    } else {
+        res.send({ status: 404 });
+    }
 });
 
 router.get('/writer/:name', async (req, res) => {

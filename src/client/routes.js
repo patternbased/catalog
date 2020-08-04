@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import ReactGA from 'react-ga';
+import { useCookies } from 'react-cookie';
 
 import ScrollToTop from './components/scroll-to-top';
 import MusicPlayer from './components/music-player';
+import CookieBanner from './components/cookie-banner';
 import Home from './pages/home';
 import Song from './pages/song';
 import Artist from './pages/artist';
@@ -19,21 +21,37 @@ import Artists from './pages/artists';
 
 import selectors from 'selectors';
 
-ReactGA.initialize('UA-346260-11');
-ReactGA.pageview(window.location.pathname + window.location.search);
-
 /**
  * Router component
  * @returns {React.Component}
  */
 function Routes() {
+    const [cookies, setCookie] = useCookies(['pbcPpAll', 'pbcPpDec']);
+    const [showBanner, setShowBanner] = useState(false);
     const currentSong = useSelector(selectors.library.getCurrentSong);
     const playlist = useSelector(selectors.library.getCurrentPlaylist);
     const songPlaying = useSelector(selectors.general.get('songPlaying'));
 
+    useEffect(() => {
+        setShowBanner(!cookies.pbcPpAll && !cookies.pbcPpDec);
+        if (cookies.pbcPpAll) {
+            ReactGA.initialize('UA-346260-11');
+            ReactGA.pageview(window.location.pathname + window.location.search);
+        }
+    }, [cookies]);
+
+    let cookieExpires = new Date();
+    cookieExpires.setFullYear(cookieExpires.getFullYear() + 5);
+
     return (
         <Router>
             <ScrollToTop>
+                {showBanner && (
+                    <CookieBanner
+                        onAccept={() => setCookie('pbcPpAll', Date.now(), { path: '/', expires: cookieExpires })}
+                        onDecline={() => setCookie('pbcPpDec', Date.now(), { path: '/', expires: cookieExpires })}
+                    />
+                )}
                 <Switch>
                     <Route path="/" exact component={Home} />
                     <Route path="/song/:name" exact component={Song} />

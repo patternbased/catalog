@@ -425,6 +425,8 @@ function SongsTable({ list, onSelect, listName, page, short = false, extraClass 
                                                             artist: item.artistName,
                                                             image: item.cover,
                                                             url: item.url,
+                                                            album: item.albumTitle,
+                                                            trackNo: item.sequence,
                                                         })
                                                     );
                                                     dispatch(setState('licenseOpened', true));

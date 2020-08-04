@@ -2,6 +2,7 @@ export const ACTIONS = {
     ADD_TO_CART: 'cart.addToCart',
     REMOVE_FROM_CART: 'cart.removeFromCart',
     CLEAR_CART: 'cart.clearCartData',
+    SET_PROMO_CODE: 'cart.setPromoCode',
 };
 
 /**
@@ -23,7 +24,7 @@ export const addToCart = (licType, price, song) => ({
  * @param {String} songId the id of the cart item
  * @returns {Object}
  */
-export const removeFromCart = songId => ({
+export const removeFromCart = (songId) => ({
     type: ACTIONS.REMOVE_FROM_CART,
     songId,
 });
@@ -34,4 +35,14 @@ export const removeFromCart = songId => ({
  */
 export const clearCartData = () => ({
     type: ACTIONS.CLEAR_CART,
+});
+
+/**
+ * Adds a promo code
+ * @param {Object} promo the code
+ * @returns {Object}
+ */
+export const setPromoCode = (promo) => ({
+    type: ACTIONS.SET_PROMO_CODE,
+    promo,
 });

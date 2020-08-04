@@ -272,6 +272,8 @@ function MusicPlayer({ list, play }) {
                                             artist: currentPlaying.artistName,
                                             image: currentPlaying.cover,
                                             url: currentPlaying.url,
+                                            album: currentPlaying.albumTitle,
+                                            trackNo: currentPlaying.sequence,
                                         })
                                     );
                                     dispatch(setState('licenseOpened', true));
@@ -469,6 +471,8 @@ function MusicPlayer({ list, play }) {
                                         artist: currentPlaying.artistName,
                                         image: currentPlaying.cover,
                                         url: currentPlaying.url,
+                                        album: currentPlaying.albumTitle,
+                                        trackNo: currentPlaying.sequence,
                                     })
                                 );
                                 dispatch(setState('licenseOpened', true));

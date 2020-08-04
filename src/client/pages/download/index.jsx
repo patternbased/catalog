@@ -37,7 +37,7 @@ function Download(props) {
         const zip = new JSZip();
 
         items.forEach(function (url, index) {
-            const filename = `${url.song.title} - ${url.song.artist}`;
+            const filename = `${url.song.artist} - ${url.song.album} - ${url.song.trackNo} ${url.song.title}`;
             // loading a file and add it in a zip file
             const s3 = new AWS.S3();
 

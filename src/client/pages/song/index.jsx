@@ -229,6 +229,8 @@ function SongPage(props) {
                                                         artist: song.artistName,
                                                         image: song.cover,
                                                         url: song.url,
+                                                        album: song.albumTitle,
+                                                        trackNo: song.sequence,
                                                     })
                                                 );
                                                 dispatch(setState('licenseOpened', true));
@@ -363,6 +365,8 @@ function SongPage(props) {
                                                         artist: song.artistName,
                                                         image: song.cover,
                                                         url: song.url,
+                                                        album: song.albumTitle,
+                                                        trackNo: song.sequence,
                                                     })
                                                 );
                                                 dispatch(setState('licenseOpened', true));
