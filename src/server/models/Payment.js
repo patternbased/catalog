@@ -10,6 +10,7 @@ const Payment = new Schema({
     receipt: String,
     receiptUrl: String,
     orderNo: String,
+    promoCode: Object,
     dateAdded: { type: Date, default: Date.now },
     dateEdited: { type: Date, default: Date.now },
 });

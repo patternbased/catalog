@@ -28,7 +28,7 @@ class ShareController {
         const mailOptions = {
             user: 'patternbased@gmail.com',
             pass: 'ubipabkkfistsxcb',
-            to: 'patternbased@gmail.com',
+            to: 'lauraapetroaei@gmail.com',
             from: `${emailData.email} <${emailData.email}>`,
             replyTo: emailData.email,
             subject: emailData.subject,

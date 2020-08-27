@@ -50,7 +50,7 @@ class PaymentController {
      * @param {Object} address user and address data
      * @returns {Data}
      */
-    async createPayment(nonce, token, amount, items, address) {
+    async createPayment(nonce, token, amount, items, address, promo) {
         const payload = {
             source_id: nonce,
             verification_token: token,
@@ -83,6 +83,7 @@ class PaymentController {
                     receipt: response.data.payment.receipt_number,
                     receiptUrl: response.data.payment.receipt_url,
                     orderNo: orderCounter.count,
+                    promoCode: promo,
                 });
             })
             .catch(function (error) {

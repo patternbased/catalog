@@ -58,6 +58,7 @@ function CheckoutPanel({ visible, style }) {
                 subtotal,
                 total,
                 items,
+                promoCode,
                 val.data.orderNo,
                 val.data.orderId,
                 val.data.dateAdded
@@ -153,7 +154,7 @@ function CheckoutPanel({ visible, style }) {
                         Total
                         <span className="checkout-panel__body__summary__details__item__bolded">${total}</span>
                     </div>
-                    {!promoCode && <PromoCode />}
+                    {!success && !promoCode && <PromoCode />}
                 </div>
             </div>
         );
@@ -247,6 +248,7 @@ function CheckoutPanel({ visible, style }) {
                                             address={userFields}
                                             total={total}
                                             items={items}
+                                            promo={promoCode}
                                             onSuccess={(val) => completePurchase(val)}
                                         />
                                     </>
@@ -420,7 +422,7 @@ function CheckoutPanel({ visible, style }) {
  * Order confirmation email template
  * @returns {String}
  */
-const _getOrderConfirmationHtml = (fields, subtotal, total, pItems, orderNo, licenseId, dateAdded) => {
+const _getOrderConfirmationHtml = (fields, subtotal, total, pItems, promoCode, orderNo, licenseId, dateAdded) => {
     const renderItems = () => {
         return `<tbody>
                 ${pItems.map(
@@ -540,7 +542,26 @@ const _getOrderConfirmationHtml = (fields, subtotal, total, pItems, orderNo, lic
                             $${subtotal}
                         </td>
                     </tr>
-                </tbody>
+                    ${
+                        promoCode && (
+                            <tr class="border" style="border-top: 4px solid #d8d8d8;">
+                                <td
+                                    class="invoice__body__table__long"
+                                    style="padding-top: 10px;padding-bottom: 10px;color: #444;font-size: 14px;line-height: 20px;text-align: left;padding-left: 50px;"
+                                >
+                                    Promo Code (
+                                    {promoCode.type === 'percentage'
+                                        ? `${promoCode.value}%OFF`
+                                        : `$${promoCode.value}OFF`}
+                                    )
+                                </td>
+                                <td style="padding-top: 10px;padding-bottom: 10px;color: #444;font-size: 14px;line-height: 20px;text-align: center;"></td>
+                                <td style="padding-top: 10px;padding-bottom: 10px;color: #444;font-size: 14px;line-height: 20px;text-align: center;padding-right: 50px;">
+                                    -{promoCode.valueOff}
+                                </td>
+                            </tr>
+                        )
+                    }
                 <thead class="footer" style="background-color: #d8d8d8;">
                     <tr>
                         <th class="invoice__body__table__long" style="font-size: 14px;height: 30px;color: #444;font-weight: bold;line-height: 17px;text-align: center;padding-left: 50px;text-align: left;">

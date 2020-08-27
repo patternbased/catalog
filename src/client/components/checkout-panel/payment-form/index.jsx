@@ -18,7 +18,7 @@ import 'react-square-payment-form/lib/default.css';
  * Payment form component
  * @returns {React.Component}
  */
-function PaymentForm({ address, total, onSuccess, items }) {
+function PaymentForm({ address, total, onSuccess, items, promo }) {
     const [uiErrors, setUiErrors] = useState([]);
     const [processing, setProcessing] = useState(false);
 
@@ -43,6 +43,7 @@ function PaymentForm({ address, total, onSuccess, items }) {
                 amount: total,
                 items: items,
                 address: address,
+                promo: promo,
             }),
         })
             .then((response) => {

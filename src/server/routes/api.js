@@ -83,7 +83,8 @@ router.post('/payment/create', async (req, res) => {
         req.body.token,
         req.body.amount,
         req.body.items,
-        req.body.address
+        req.body.address,
+        req.body.promo
     );
 
     res.send({
