@@ -286,7 +286,9 @@ function SongsTable({ list, onSelect, listName, page, short = false, extraClass 
                                         {Object.keys(appliedFilters).map((filter, index) => (
                                             <div className="table__filters__applied__single" key={index}>
                                                 <span className="table__filters__applied__single-bold">
-                                                    {filter.charAt(0).toUpperCase() + filter.substring(1)}
+                                                    {filter === 'grid'
+                                                        ? 'Organic'
+                                                        : filter.charAt(0).toUpperCase() + filter.substring(1)}
                                                 </span>
 
                                                 {renderAppliedFilters(filter, appliedFilters[filter])}
