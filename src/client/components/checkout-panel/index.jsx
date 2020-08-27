@@ -117,7 +117,7 @@ function CheckoutPanel({ visible, style }) {
             setSubtotal(cartSubtotal);
             setTotal(cartTotal);
         } else {
-            dispatch(setPromoCode(null));
+            // dispatch(setPromoCode(null));
         }
     }, [cartItems, pCode]);
 
@@ -543,7 +543,7 @@ const _getOrderConfirmationHtml = (fields, subtotal, total, pItems, promoCode, o
                         </td>
                     </tr>
                     ${
-                        promoCode && (
+                        Object.keys(promoCode).length > 0 && (
                             <tr class="border" style="border-top: 4px solid #d8d8d8;">
                                 <td
                                     class="invoice__body__table__long"

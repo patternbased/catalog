@@ -175,7 +175,7 @@ function WriterPage(props) {
                         {allArtistTracks && (
                             <div className="artist__section">
                                 <div className="artist__table">
-                                    <div className="artist__table__title">Full Songography</div>
+                                    <div className="artist__table__title">Full PB Songography</div>
                                     <SongsTable list={allArtistTracks} onSelect={(val) => playSong(val)} page="home" />
                                 </div>
                             </div>

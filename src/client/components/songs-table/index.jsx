@@ -35,7 +35,7 @@ const headers = {
     SPD: true,
     EXP: true,
     MOD: true,
-    GRD: true,
+    ORG: true,
 };
 const songsToDisplay = 20;
 const baseUrl =
@@ -129,7 +129,7 @@ function SongsTable({ list, onSelect, listName, page, short = false, extraClass 
                     label += isShare ? '<strong>M</strong> ' : '<strong>MOD</strong>';
                     break;
                 case 'grid':
-                    label += isShare ? '<strong>G</strong> ' : '<strong>GRD</strong>';
+                    label += isShare ? '<strong>O</strong> ' : '<strong>ORG</strong>';
                     break;
                 case 'duration':
                     label += isShare ? '<strong>D</strong> ' : '<strong>DUR</strong>';

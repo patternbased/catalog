@@ -278,7 +278,7 @@ function FiltersPanel({ visible, style, showSearch, onSearchSelected }) {
                         label += '<strong>MOD</strong>';
                         break;
                     case 'grid':
-                        label += '<strong>GRD</strong>';
+                        label += '<strong>ORG</strong>';
                         break;
                     case 'duration':
                         label += '<strong>DUR</strong>';

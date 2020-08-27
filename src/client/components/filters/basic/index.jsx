@@ -47,7 +47,7 @@ function BasicFilter({ name, isOpened, values, onRangeChange, onRangeApply, onFi
         <div className="filter">
             <div className="filter__header flex flex--space-between">
                 <div className="flex flex--space-between">
-                    <p className="filter__header-name">{name}</p>
+                    <p className="filter__header-name">{name === 'grid' ? 'organic' : name}</p>
                     {FILTERS_DESCRIPTIONS[name].length > 0 && (
                         <div className="filter__header__tooltip">
                             <div onMouseOut={() => setOpenedTooltip(false)}>
