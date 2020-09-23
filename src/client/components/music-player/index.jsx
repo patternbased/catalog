@@ -75,7 +75,6 @@ function MusicPlayer({ list, play }) {
     };
 
     const goToNextSong = () => {
-        setElapsed(0);
         const currentIndex = currentPlaylist.findIndex((x) => x.pbId === currentPlaying.pbId);
         let nextSong = {};
         const queueList = currentPlaylist.find((x) => x.list);
@@ -96,6 +95,7 @@ function MusicPlayer({ list, play }) {
             dispatch(setCurrentSong(nextSong));
             dispatch(addToQueue(nextSong));
         }
+        setElapsed(0);
     };
 
     const onPrev = () => {

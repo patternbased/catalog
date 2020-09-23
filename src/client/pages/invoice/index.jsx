@@ -96,6 +96,19 @@ function Invoice(props) {
                                         <td></td>
                                         <td>${invoice.amount}</td>
                                     </tr>
+                                    {Object.keys(invoice.promoCode).length > 0 && (
+                                        <tr>
+                                            <td className="invoice__body__table__long">
+                                                Promo Code Discount(
+                                                {invoice.promoCode.type === 'percentage'
+                                                    ? `${invoice.promoCode.value}%OFF`
+                                                    : `$${invoice.promoCode.value}OFF`}
+                                                )
+                                            </td>
+                                            <td></td>
+                                            <td>-${invoice.promoCode.valueOff}</td>
+                                        </tr>
+                                    )}
                                 </tbody>
                                 <thead className="footer">
                                     <tr>

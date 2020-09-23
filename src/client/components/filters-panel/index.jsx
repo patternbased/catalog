@@ -53,7 +53,7 @@ const generateSearchResults = (songList, artists, writers) => {
  * @param {Boolean} showSearch boolean to determine if search input is opened/closed
  * @returns {React.Component}
  */
-function FiltersPanel({ visible, style, showSearch, onSearchSelected }) {
+function FiltersPanel({ history, visible, style, showSearch, onSearchSelected }) {
     const [similarPresets, setSimilarPresets] = useState([]);
     const [selectedSearch, setSelectedSearch] = useState([]);
     const [artists, setArtists] = useState([]);
@@ -93,14 +93,21 @@ function FiltersPanel({ visible, style, showSearch, onSearchSelected }) {
 
     useEffect(() => {
         if (!isEqual(changedFilters, appliedFilters)) {
-            setChangedFilters(appliedFilters);
+            applyFilterValue(appliedFilters);
         }
     }, [appliedFilters]);
+
+    const applyFilterValue = (filters) => {
+        setChangedFilters(filters);
+        if (location.pathname !== '/') {
+            window.location = '/';
+        }
+    };
 
     const changeSlider = (name) => (values) => {
         const copyFilters = { ...changedFilters };
         copyFilters[name] = values;
-        setChangedFilters(copyFilters);
+        applyFilterValue(copyFilters);
     };
 
     const applyFilters = (name) => {
@@ -171,7 +178,7 @@ function FiltersPanel({ visible, style, showSearch, onSearchSelected }) {
         (name) => {
             const copyFilters = { ...changedFilters };
             copyFilters[name] = defaultFilters[name];
-            setChangedFilters(copyFilters);
+            applyFilterValue(copyFilters);
             dispatch(resetFilter(name));
             ReactGA.event({
                 category: 'Filters panel',
@@ -316,7 +323,7 @@ function FiltersPanel({ visible, style, showSearch, onSearchSelected }) {
                                         width={60}
                                         height={32}
                                         onClick={() => {
-                                            setChangedFilters({});
+                                            applyFilterValue({});
                                             dispatch(resetAllFilters());
                                             setSimilarPresets([]);
                                             ReactGA.event({
@@ -386,7 +393,7 @@ function FiltersPanel({ visible, style, showSearch, onSearchSelected }) {
                             <div className="filters-panel__button">
                                 <Button
                                     onClick={() => {
-                                        setChangedFilters({});
+                                        applyFilterValue({});
                                         dispatch(resetAllFilters());
                                         setSimilarPresets([]);
                                         ReactGA.event({

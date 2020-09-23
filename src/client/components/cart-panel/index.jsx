@@ -12,7 +12,7 @@ import CloseIcon from 'assets/images/Close_Icon_Gray.svg';
 import CartSvg from 'assets/images/header/cart.svg';
 
 import { setState } from 'actions/general';
-import { removeFromCart } from 'actions/cart';
+import { removeFromCart, setPromoCode } from 'actions/cart';
 
 import './style.scss';
 
@@ -43,20 +43,23 @@ function CartPanel({ visible, style }) {
     );
 
     useEffect(() => {
+        if (!cartItems.length) {
+            dispatch(setPromoCode(null));
+        }
         setItems(cartItems);
         setSubtotal(cartSubtotal);
         setTotal(cartTotal);
     }, [cartItems]);
 
-    const addToHover = idx => {
+    const addToHover = (idx) => {
         let hovCopy = [...itemsHovered];
         hovCopy.push(idx);
         setItemsHovered(hovCopy);
     };
 
-    const removeFromHover = idx => {
+    const removeFromHover = (idx) => {
         let hovCopy = [...itemsHovered];
-        hovCopy = hovCopy.filter(x => x !== idx);
+        hovCopy = hovCopy.filter((x) => x !== idx);
         setItemsHovered(hovCopy);
     };
 

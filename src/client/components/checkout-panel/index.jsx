@@ -13,7 +13,7 @@ import selectors from 'selectors';
 import CloseIcon from 'assets/images/Close_Icon_Gray.svg';
 
 import { setState } from 'actions/general';
-import { clearCartData, setPromoCode } from 'actions/cart';
+import { clearCartData } from 'actions/cart';
 
 import './style.scss';
 
@@ -116,14 +116,9 @@ function CheckoutPanel({ visible, style }) {
             setItems(cartItems);
             setSubtotal(cartSubtotal);
             setTotal(cartTotal);
-        } else {
-            // dispatch(setPromoCode(null));
+            setCartPromoCode(pCode);
         }
     }, [cartItems, pCode]);
-
-    useEffect(() => {
-        setCartPromoCode(pCode);
-    }, [pCode]);
 
     const _orderSummary = () => {
         return (
@@ -437,6 +432,22 @@ const _getOrderConfirmationHtml = (fields, subtotal, total, pItems, promoCode, o
                 )}
             </tbdoy>`;
     };
+    const renderPromo = () => {
+        return `<tr>
+        <td
+            class="invoice__body__table__long"
+            style="padding-top: 10px;padding-bottom: 10px;color: #444;font-size: 14px;line-height: 20px;text-align: left;padding-left: 50px;"
+        >
+            Promo Code (
+            ${promoCode.type === 'percentage' ? `${promoCode.value}%OFF` : `$${promoCode.value}OFF`}
+            )
+        </td>
+        <td style="padding-top: 10px;padding-bottom: 10px;color: #444;font-size: 14px;line-height: 20px;text-align: center;"></td>
+        <td style="padding-top: 10px;padding-bottom: 10px;color: #444;font-size: 14px;line-height: 20px;text-align: center;padding-right: 50px;">
+            -$${promoCode.valueOff}
+        </td>
+    </tr>`;
+    };
     const template = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
     <html>
     
@@ -542,26 +553,7 @@ const _getOrderConfirmationHtml = (fields, subtotal, total, pItems, promoCode, o
                             $${subtotal}
                         </td>
                     </tr>
-                    ${
-                        Object.keys(promoCode).length > 0 && (
-                            <tr class="border" style="border-top: 4px solid #d8d8d8;">
-                                <td
-                                    class="invoice__body__table__long"
-                                    style="padding-top: 10px;padding-bottom: 10px;color: #444;font-size: 14px;line-height: 20px;text-align: left;padding-left: 50px;"
-                                >
-                                    Promo Code (
-                                    {promoCode.type === 'percentage'
-                                        ? `${promoCode.value}%OFF`
-                                        : `$${promoCode.value}OFF`}
-                                    )
-                                </td>
-                                <td style="padding-top: 10px;padding-bottom: 10px;color: #444;font-size: 14px;line-height: 20px;text-align: center;"></td>
-                                <td style="padding-top: 10px;padding-bottom: 10px;color: #444;font-size: 14px;line-height: 20px;text-align: center;padding-right: 50px;">
-                                    -{promoCode.valueOff}
-                                </td>
-                            </tr>
-                        )
-                    }
+                    ${Object.keys(promoCode).length > 0 && renderPromo()}
                 <thead class="footer" style="background-color: #d8d8d8;">
                     <tr>
                         <th class="invoice__body__table__long" style="font-size: 14px;height: 30px;color: #444;font-weight: bold;line-height: 17px;text-align: center;padding-left: 50px;text-align: left;">
