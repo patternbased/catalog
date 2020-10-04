@@ -11,11 +11,17 @@ import './style.scss';
 function Invoice(props) {
     const id = props.match.params.id;
     const [invoice, setInvoice] = useState(null);
+    const [subtotalValue, setSubtotalValue] = useState(null);
 
     useEffect(() => {
         if (id) {
             api.get(`/api/invoice/${id}`).then((res) => {
                 setInvoice(res.invoice);
+                setSubtotalValue(
+                    res.invoice.promoCode && Object.keys(res.invoice.promoCode).length
+                        ? parseFloat(res.invoice.amount) + parseFloat(res.invoice.promoCode.valueOff)
+                        : res.invoice.amount
+                );
             });
         }
     }, [id]);
@@ -94,9 +100,9 @@ function Invoice(props) {
                                     <tr className="border">
                                         <td className="invoice__body__table__long">Subtotal</td>
                                         <td></td>
-                                        <td>${invoice.amount}</td>
+                                        <td>${subtotalValue}</td>
                                     </tr>
-                                    {Object.keys(invoice.promoCode).length > 0 && (
+                                    {invoice.promoCode && Object.keys(invoice.promoCode).length > 0 && (
                                         <tr>
                                             <td className="invoice__body__table__long">
                                                 Promo Code Discount(
