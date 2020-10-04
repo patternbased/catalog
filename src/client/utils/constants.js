@@ -286,7 +286,7 @@ export const FLOW_SHAPES = [
     },
     { name: 'build', image: '/assets/images/flow-build.png', activeImage: '/assets/images/flow-build-active.png' },
     {
-        name: 'descending',
+        name: 'beat',
         image: '/assets/images/flow-descending.png',
         activeImage: '/assets/images/flow-descending-active.png',
     },
@@ -319,8 +319,8 @@ export const TABLE_FLOW_SHAPES = [
     },
     { name: 'build', image: '/assets/images/table/build.svg' },
     {
-        name: 'descending',
-        image: '/assets/images/table/descending.svg',
+        name: 'beat',
+        image: '/assets/images/table/beat.svg',
     },
     {
         name: 'multiBuild',

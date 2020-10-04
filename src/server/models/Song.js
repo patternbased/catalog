@@ -28,6 +28,7 @@ const Song = new Schema({
     similarArtists: Array,
     licenseType: String,
     artistName: String,
+    featArtist: Array,
     writers: Array,
     label: String,
     albumId: String,
@@ -50,8 +51,9 @@ const Song = new Schema({
     spotify: String,
     appleMusic: String,
     deezer: String,
-    video: String,
+    vimeo: String,
     tidal: String,
+    youtube: String,
 });
 
 Song.options.toJSON = Song.options.toJSON || {};

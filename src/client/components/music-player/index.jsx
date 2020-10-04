@@ -349,17 +349,19 @@ function MusicPlayer({ list, play }) {
                                 </p>
                             </Link>
                             {/* {songHovered && ( */}
-                            <Link
-                                to={
-                                    Object.keys(currentPlaying).length
-                                        ? `/project/${currentPlaying.artistName.toLowerCase().split(' ').join('-')}`
-                                        : ''
-                                }
-                            >
-                                <p className="music-player__section--content__song__details-author music-player__section--content__song__details-author--inline">
-                                    by {currentPlaying.artistName}
-                                </p>
-                            </Link>
+
+                            <p className="music-player__section--content__song__details-author music-player__section--content__song__details-author--inline">
+                                by{' '}
+                                <Link
+                                    to={
+                                        Object.keys(currentPlaying).length
+                                            ? `/project/${currentPlaying.artistName.toLowerCase().split(' ').join('-')}`
+                                            : ''
+                                    }
+                                >
+                                    {currentPlaying.artistName}
+                                </Link>
+                            </p>
                             {/* )}
                             {!songHovered && (
                                 // <Link to={`/project/${currentPlaying.artistName.toLowerCase().split(' ').join('-')}`}>

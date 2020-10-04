@@ -33,7 +33,23 @@
         height: 60px;
     }
 
+    &__filter-count {
+        background: #0092c5;
+        border-radius: 50%;
+        width: 10px;
+        height: 10px;
+        position: absolute;
+        right: 32px;
+        top: 2px;
+    }
+
+    &__filter-button {
+        position: relative;
+    }
+
     &__buttons {
+        display: flex;
+
         &-close {
             width: 60px;
             height: 60px;

@@ -1,5 +1,6 @@
 const Artist = require('../models/Artist');
 const Writer = require('../models/Writer');
+const Song = require('../models/Song');
 
 class ArtistController {
     /**
@@ -29,6 +30,21 @@ class ArtistController {
      */
     getArtistByName(name) {
         return Artist.findOne({ slug: name });
+    }
+
+    /**
+     * Return artist's featured tracks mentioned in DB
+     * @param {String} tracks
+     * @returns {Array}
+     */
+    async getArtistFeatured(tracks) {
+        const allTracks = tracks.split(new RegExp([';', '; '].join('|'), 'g'));
+        const songs = [];
+        for (var i = 0; i < allTracks.length; i++) {
+            const song = await Song.findOne({ pbId: allTracks[i].trim() });
+            song && songs.push(song);
+        }
+        return songs;
     }
 
     /**

@@ -108,6 +108,7 @@ module.exports = async () => {
             similarArtists: row.similarartists ? row.similarartists.split(new RegExp(separators.join('|'), 'g')) : [],
             licenseType: row.licensetype,
             artistName: row.artistname,
+            featArtist: row.featartist ? row.featartist.split(new RegExp(separators.join('|'), 'g')) : [],
             writers: row.writers ? row.writers.split(new RegExp(separators.join('|'), 'g')) : [],
             label: row.label,
             albumId: row.catnum === 'PBL01' || row.catnum === '' ? 'PBC01' : row.catnum,
@@ -132,8 +133,9 @@ module.exports = async () => {
             spotify: row.spotifyurl,
             appleMusic: row.applemusicurl,
             deezer: row.deezerurl,
-            video: row.videourl,
+            vimeo: row.vimeourl,
             tidal: row.tidalurl,
+            youtube: row.youtubeurl,
         };
     });
 };

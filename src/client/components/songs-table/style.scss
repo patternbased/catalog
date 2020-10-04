@@ -93,7 +93,6 @@
         justify-content: flex-start;
 
         @media screen and (max-width: $small) {
-            text-indent: -9999999px;
             height: 4px;
         }
 
@@ -128,7 +127,8 @@
 
             @media screen and (max-width: $medium) {
                 &.mobile-hide,
-                &.hide-when-opened {
+                &.hide-when-opened,
+                &.hide-all {
                     display: none !important;
                 }
             }

@@ -328,17 +328,20 @@
         &__apple:hover path {
             fill: $apple;
         }
-        &__itunes:hover path {
-            fill: $itunes;
-        }
         &__soundcloud:hover path {
             fill: $soundcloud;
         }
-        &__google:hover path {
-            fill: $google;
-        }
         &__vimeo:hover path {
             fill: $vimeo;
+        }
+        &__deezer:hover path {
+            fill: $deezer;
+        }
+        &__tidal:hover path {
+            fill: $tidal;
+        }
+        &__youtube:hover path {
+            fill: $youtube;
         }
 
         @media screen and (max-width: $small) {

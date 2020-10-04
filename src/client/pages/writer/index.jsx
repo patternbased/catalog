@@ -55,6 +55,11 @@ function WriterPage(props) {
         if (artistName) {
             api.get(`/api/writer/${artistName}`).then((res) => {
                 setArtist(res.artist);
+                if (res.artist.featuredTracks) {
+                    api.get(`/api/artist-featured/${res.artist.featuredTracks}`).then((resp) => {
+                        setFeaturedTracks(resp.songs);
+                    });
+                }
             });
         }
     }, [artistName]);
@@ -70,13 +75,14 @@ function WriterPage(props) {
                 });
             });
             artistSongs.length && setAllArtistTracks(artistSongs);
-            artistSongs.length &&
+            if (!featuredTracks && artistSongs.length) {
                 setFeaturedTracks(
                     artistSongs
                         .sort((a, b) => parseFloat(a.rate) - parseFloat(b.rate))
                         .reverse()
                         .slice(0, 6)
                 );
+            }
         }
     }, [songList, artist]);
 

@@ -132,6 +132,14 @@ router.get('/artist/:name', async (req, res) => {
     });
 });
 
+router.get('/artist-featured/:tracks', async (req, res) => {
+    const songs = await ArtistController.getArtistFeatured(req.params.tracks);
+
+    res.send({
+        songs,
+    });
+});
+
 router.get('/album/:name', async (req, res) => {
     const album = await AlbumController.getAlbumByName(req.params.name);
 

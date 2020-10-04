@@ -26,12 +26,13 @@ import PianoSvg from 'assets/images/single-song/CustomWork_dark.svg';
 import PlaySvg from 'assets/images/single-song/Single-Song_Play.svg';
 import PauseSvg from 'assets/images/Single-Song_Pause.svg';
 import BandcampSvg from 'assets/images/single-song/Single-Song_Bandcamp.svg';
+import SoundCloudSvg from 'assets/images/single-song/Single-Song_SoundCloud.svg';
 import SpotifySvg from 'assets/images/single-song/Single-Song_Spotify.svg';
 import AppleSvg from 'assets/images/single-song/Single-Song_Apple.svg';
-import ITunesSvg from 'assets/images/single-song/Single-Song_iTunes.svg';
-import SoundCloudSvg from 'assets/images/single-song/Single-Song_SoundCloud.svg';
-import GooglePlaySvg from 'assets/images/single-song/Single-Song_GooglePlay.svg';
 import VimeoSvg from 'assets/images/single-song/Single-Song_Vimeo.svg';
+import DeezerSvg from 'assets/images/single-song/Single-Song_Deezer.svg';
+import TidalSvg from 'assets/images/single-song/Single-Song_Tidal.svg';
+import YoutubeSvg from 'assets/images/single-song/Single-Song_Youtube.svg';
 import CopyLinkSvg from 'assets/images/copy-link.svg';
 import DoneSvg from 'assets/images/done-check.svg';
 
@@ -595,21 +596,46 @@ function SongPage(props) {
                                     </div>
                                 </div>
                                 <div className="song__media">
-                                    <a href={song.bandcampurl} target="_blank" rel="noopener noreferrer">
-                                        <BandcampSvg className="song__media__bandcamp" />
-                                    </a>
-                                    <a href={song.spotifyurl} target="_blank" rel="noopener noreferrer">
-                                        <SpotifySvg className="song__media__spotify" />
-                                    </a>
-                                    <a href={song.applemusicurl} target="_blank" rel="noopener noreferrer">
-                                        <AppleSvg className="song__media__apple" />
-                                    </a>
-                                    <a href={song.soundcloudurl} target="_blank" rel="noopener noreferrer">
-                                        <SoundCloudSvg className="song__media__soundcloud" />
-                                    </a>
-                                    <a href={song.videourl} target="_blank" rel="noopener noreferrer">
-                                        <VimeoSvg className="song__media__vimeo" />
-                                    </a>
+                                    {song.bandcamp && (
+                                        <a href={song.bandcamp} target="_blank" rel="noopener noreferrer">
+                                            <BandcampSvg className="song__media__bandcamp" />
+                                        </a>
+                                    )}
+                                    {song.soundcloud && (
+                                        <a href={song.soundcloud} target="_blank" rel="noopener noreferrer">
+                                            <SoundCloudSvg className="song__media__soundcloud" />
+                                        </a>
+                                    )}
+                                    {song.spotify && (
+                                        <a href={song.spotify} target="_blank" rel="noopener noreferrer">
+                                            <SpotifySvg className="song__media__spotify" />
+                                        </a>
+                                    )}
+                                    {song.applemusic && (
+                                        <a href={song.applemusic} target="_blank" rel="noopener noreferrer">
+                                            <AppleSvg className="song__media__apple" />
+                                        </a>
+                                    )}
+                                    {song.deezer && (
+                                        <a href={song.deezer} target="_blank" rel="noopener noreferrer">
+                                            <DeezerSvg className="song__media__deezer" />
+                                        </a>
+                                    )}
+                                    {song.tidal && (
+                                        <a href={song.tidal} target="_blank" rel="noopener noreferrer">
+                                            <TidalSvg className="song__media__tidal" />
+                                        </a>
+                                    )}
+                                    {song.vimeo && (
+                                        <a href={song.vimeo} target="_blank" rel="noopener noreferrer">
+                                            <VimeoSvg className="song__media__vimeo" />
+                                        </a>
+                                    )}
+                                    {song.youtube && (
+                                        <a href={song.youtube} target="_blank" rel="noopener noreferrer">
+                                            <YoutubeSvg className="song__media__youtube" />
+                                        </a>
+                                    )}
                                 </div>
                                 <span className="desktop-hide">
                                     <div className="song__column__row-header">

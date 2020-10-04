@@ -10,6 +10,9 @@ import InstagramSvg from 'assets/images/menu/SM_Instagram.svg';
 import ElloSvg from 'assets/images/menu/SM_Ello.svg';
 import GithubSvg from 'assets/images/menu/SM_Github.svg';
 import FacebookSvg from 'assets/images/menu/SM_Facebook.svg';
+import BandcampSvg from 'assets/images/menu/SM_Bandcamp.svg';
+import TikTokSvg from 'assets/images/menu/SM_TikTok.svg';
+import LinkedinSvg from 'assets/images/menu/SM_Linkedin.svg';
 
 import './style.scss';
 
@@ -69,29 +72,38 @@ function MenuFooter({ full = false }) {
                     'menu-footer__social--full': full,
                 })}
             >
+                <a href="https://albums.patternbased.com" target="_blank" rel="noopener noreferrer">
+                    <BandcampSvg />
+                </a>
+                <a href="https://instagram.com/patternbased" target="_blank" rel="noopener noreferrer">
+                    <InstagramSvg />
+                </a>
+                <a href="https://github.com/patternbased" target="_blank" rel="noopener noreferrer">
+                    <GithubSvg />
+                </a>
+                <a href="https://ello.co/patternbased" target="_blank" rel="noopener noreferrer">
+                    <ElloSvg />
+                </a>
+                <a href="https://facebook.com/patternbased" target="_blank" rel="noopener noreferrer">
+                    <FacebookSvg />
+                </a>
                 <a href="https://soundcloud.com/patternbased" target="_blank" rel="noopener noreferrer">
                     <SoundCloudSvg />
                 </a>
                 <a href="http://patternbased.tumblr.com/" target="_blank" rel="noopener noreferrer">
                     <TumblrSvg />
                 </a>
-                <a href="https://vimeo.com/patternbased" target="_blank" rel="noopener noreferrer">
-                    <VimeoSvg />
-                </a>
                 <a href="https://www.youtube.com/user/patternbased/" target="_blank" rel="noopener noreferrer">
                     <YoutubeSvg />
                 </a>
-                <a href="https://instagram.com/patternbased" target="_blank" rel="noopener noreferrer">
-                    <InstagramSvg />
+                <a href="https://vimeo.com/patternbased" target="_blank" rel="noopener noreferrer">
+                    <VimeoSvg />
                 </a>
-                <a href="https://ello.co/patternbased" target="_blank" rel="noopener noreferrer">
-                    <ElloSvg />
+                <a href="https://www.linkedin.com/company/435813/" target="_blank" rel="noopener noreferrer">
+                    <LinkedinSvg />
                 </a>
-                <a href="https://github.com/patternbased" target="_blank" rel="noopener noreferrer">
-                    <GithubSvg />
-                </a>
-                <a href="https://facebook.com/patternbased" target="_blank" rel="noopener noreferrer">
-                    <FacebookSvg />
+                <a href="https://www.tiktok.com/@patternbased" target="_blank" rel="noopener noreferrer">
+                    <TikTokSvg />
                 </a>
             </div>
             {full && (

@@ -77,6 +77,7 @@ module.exports = async () => {
                     facebook: row.facebookurl,
                     spotify: row.spotifyurl,
                     show: row.show === 'Y' ? true : false,
+                    featuredTracks: row.featuredsongs,
                     relatedArtists: row.relatedentities.split(new RegExp(separators.join('|'), 'g')).map((artist) => {
                         const artistImg = wRows.find(
                             (r) => r.artistname.trim().toLowerCase() === artist.trim().toLowerCase()

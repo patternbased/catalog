@@ -17,6 +17,7 @@ const Writer = new Schema({
     albumsIds: Array,
     relatedArtists: Array,
     show: Boolean,
+    featuredTracks: String,
     dateAdded: { type: Date, default: Date.now },
     dateEdited: { type: Date, default: Date.now },
 });

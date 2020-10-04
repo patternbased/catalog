@@ -47,7 +47,7 @@ function Header({ history }) {
     const [panelStyle, setPanelStyle] = useState({
         top: `${window.innerWidth > 768 ? HEADER_HEIGHTS.big : HEADER_HEIGHTS.small}px`,
     });
-    const [filtersOpened, setFiltersOpened] = useState(true);
+    const [filtersOpened, setFiltersOpened] = useState(false);
     const [presetsOpened, setPresetsOpened] = useState(false);
     const [menuOpened, setMenuOpened] = useState(false);
     const [reqSuggestionsOpened, setReqSuggestionsOpened] = useState(false);
@@ -62,6 +62,7 @@ function Header({ history }) {
     const [cartOpened, setCartOpened] = useState(false);
     const [checkoutOpened, setCheckoutOpened] = useState(false);
     const [licenseType, setLicenseType] = useState('none');
+    const [activeFilterCount, setActiveFilterCount] = useState(0);
     const filtersValues = useSelector(selectors.filters.getApplied);
 
     const filtersPanelState = useSelector(selectors.general.get('filtersOpened'));
@@ -80,6 +81,11 @@ function Header({ history }) {
     const chosenLicenseType = useSelector(selectors.library.getCustomLicenseType);
     const cartItemsNo = useSelector(selectors.cart.getCartItemsNo);
     const queueSongs = useSelector(selectors.library.getQueue);
+    const appliedFilters = useSelector(selectors.filters.getApplied);
+
+    useEffect(() => {
+        setActiveFilterCount(Object.keys(appliedFilters).length);
+    }, [appliedFilters]);
 
     useEffect(() => {
         setFiltersOpened(filtersPanelState);
@@ -207,11 +213,18 @@ function Header({ history }) {
         <>
             <header className={headerModifier}>
                 <div className="header__buttons">
-                    <FilterSvg
-                        className="header__buttons-icon header__buttons-icon--apart"
-                        onClick={() => openFiltersPanel()}
-                        fill={filtersOpened ? svgActiveFill : svgDefaultFill}
-                    />
+                    <div className="header__filter-button">
+                        <div
+                            className={classnames('header__filter-count', {
+                                hide: !activeFilterCount,
+                            })}
+                        />
+                        <FilterSvg
+                            className="header__buttons-icon header__buttons-icon--apart"
+                            onClick={() => openFiltersPanel()}
+                            fill={filtersOpened ? svgActiveFill : svgDefaultFill}
+                        />
+                    </div>
                     <PresetSvg
                         className={classnames('header__buttons-icon header__buttons-icon--apart', {
                             'header__mobile-hide': !filtersOpened && window.innerWidth < 541,

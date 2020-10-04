@@ -53,6 +53,11 @@ function ArtistPage(props) {
         if (artistName) {
             api.get(`/api/artist/${artistName}`).then((res) => {
                 setArtist(res.artist);
+                if (res.artist.featuredTracks) {
+                    api.get(`/api/artist-featured/${res.artist.featuredTracks}`).then((resp) => {
+                        setFeaturedTracks(resp.songs);
+                    });
+                }
             });
         }
     }, [artistName]);
@@ -61,13 +66,14 @@ function ArtistPage(props) {
         if (songList && artist) {
             const artistSongs = songList.filter((s) => s.artistName.toLowerCase() === artist.name.toLowerCase());
             artistSongs.length && setAllArtistTracks(artistSongs);
-            artistSongs.length &&
+            if (!featuredTracks && artistSongs.length) {
                 setFeaturedTracks(
                     artistSongs
                         .sort((a, b) => parseFloat(a.rate) - parseFloat(b.rate))
                         .reverse()
                         .slice(0, 6)
                 );
+            }
         }
     }, [songList, artist]);
 

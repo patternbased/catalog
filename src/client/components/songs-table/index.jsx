@@ -319,6 +319,7 @@ function SongsTable({ list, onSelect, listName, page, short = false, extraClass 
                                     'hide-when-opened':
                                         !item.includes('NAME') &&
                                         (filtersPanelOpened || presetsPanelOpened || window.innerWidth < 541),
+                                    'hide-all': item.includes('NAME') && window.innerWidth < 541,
                                 })}
                                 key={index}
                             >
