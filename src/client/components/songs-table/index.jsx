@@ -23,6 +23,7 @@ import DoneSvg from 'assets/images/done-check.svg';
 import PianoSvg from 'assets/images/single-song/CustomWork_dark.svg';
 import SimilarSvg from 'assets/images/SimilarSong_Icon_dark.svg';
 import ShareSvg from 'assets/images/share-icon-dark.svg';
+import AddToQueueSvg from 'assets/images/add-to-queue.svg';
 
 import './style.scss';
 
@@ -388,6 +389,17 @@ function SongsTable({ list, onSelect, listName, page, short = false, extraClass 
                                             </div>
                                         </div>
                                         <div className="table__body__row-title__actions">
+                                            <AddToQueueSvg
+                                                className="table__body__row-title__actions-button table__body__row-title__actions-button--smaller"
+                                                onClick={() => {
+                                                    dispatch(addToQueue(item));
+                                                    ReactGA.event({
+                                                        category: 'Songs table',
+                                                        action: 'Add to Queue clicked',
+                                                        label: `Add to Queue ${item.artistName} - ${item.title}`,
+                                                    });
+                                                }}
+                                            />
                                             <PianoSvg
                                                 className="table__body__row-title__actions-button"
                                                 onClick={() => {

@@ -287,8 +287,8 @@ export const FLOW_SHAPES = [
     { name: 'build', image: '/assets/images/flow-build.png', activeImage: '/assets/images/flow-build-active.png' },
     {
         name: 'beat',
-        image: '/assets/images/flow-descending.png',
-        activeImage: '/assets/images/flow-descending-active.png',
+        image: '/assets/images/flow-beat.png',
+        activeImage: '/assets/images/flow-beat-active.png',
     },
     {
         name: 'multiBuild',

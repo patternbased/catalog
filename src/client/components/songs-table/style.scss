@@ -183,6 +183,11 @@
                                 fill: $primary;
                             }
                         }
+
+                        &--smaller {
+                            height: 30px;
+                            width: 30px;
+                        }
                     }
 
                     &-license {

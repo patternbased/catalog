@@ -17,6 +17,7 @@ import Modal from 'components/modal';
 import ShareIcon from 'assets/images/share-icon-dark.svg';
 import CopyLinkSvg from 'assets/images/copy-link.svg';
 import DoneSvg from 'assets/images/done-check.svg';
+import AddToQueueSvg from 'assets/images/add-to-queue.svg';
 
 import './style.scss';
 
@@ -206,6 +207,17 @@ function SimilarSongsPanel({ visible, onClose, similarTo }) {
                                         label: `Play ${song.title}`,
                                     });
                                 })}
+                                <AddToQueueSvg
+                                    onClick={() => {
+                                        dispatch(addToQueue(song));
+                                        ReactGA.event({
+                                            category: 'Similar songs panel',
+                                            action: 'Add to Queue clicked',
+                                            label: `Add to Queue ${song.title}`,
+                                        });
+                                    }}
+                                    className="similar__song__add-to-queue"
+                                />
                             </div>
                         ))}
                     </div>

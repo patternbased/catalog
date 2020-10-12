@@ -6,6 +6,7 @@ import classnames from 'classnames';
 import uuid from 'react-uuid';
 import ReactGA from 'react-ga';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { Helmet } from 'react-helmet';
 import selectors from 'selectors';
 
 import Header from 'components/header';
@@ -27,6 +28,7 @@ import ITunesSvg from 'assets/images/single-song/Single-Song_iTunes.svg';
 import SoundCloudSvg from 'assets/images/single-song/Single-Song_SoundCloud.svg';
 import GooglePlaySvg from 'assets/images/single-song/Single-Song_GooglePlay.svg';
 import VimeoSvg from 'assets/images/single-song/Single-Song_Vimeo.svg';
+import AddToQueueSvg from 'assets/images/add-to-queue.svg';
 
 import { api } from '../../services';
 
@@ -148,6 +150,22 @@ function AlbumPage(props) {
                                         <div className="album__artist">by {album.artistName}</div>
                                     </Link>
                                     <div className="album__actions">
+                                        <AddToQueueSvg
+                                            onClick={() => {
+                                                dispatch(
+                                                    addToQueue({
+                                                        list: albumList.concat(albumRestList),
+                                                        name: album.title,
+                                                    })
+                                                );
+                                                ReactGA.event({
+                                                    category: 'Album page',
+                                                    action: 'Add to Queue clicked',
+                                                    label: `Add to queue ${album.title}`,
+                                                });
+                                            }}
+                                            className="smaller-action"
+                                        />
                                         <ShareIcon onClick={() => openShareModal()} />
                                     </div>
                                 </span>
@@ -176,6 +194,22 @@ function AlbumPage(props) {
                                         <div className="album__artist">by {album.artistName}</div>
                                     </Link>
                                     <div className="album__actions">
+                                        <AddToQueueSvg
+                                            onClick={() => {
+                                                dispatch(
+                                                    addToQueue({
+                                                        list: albumList.concat(albumRestList),
+                                                        name: album.title,
+                                                    })
+                                                );
+                                                ReactGA.event({
+                                                    category: 'Album page',
+                                                    action: 'Add to Queue clicked',
+                                                    label: `Add to Queue ${album.title}`,
+                                                });
+                                            }}
+                                            className="smaller-action"
+                                        />
                                         <ShareIcon onClick={() => openShareModal()} />
                                     </div>
                                 </span>
@@ -294,6 +328,12 @@ function AlbumPage(props) {
                         </CopyToClipboard>
                     </Modal>
                 )}
+                <Helmet>
+                    <meta property="og:title" content={shareItem.title} />
+                    <meta property="og:description" content={`by ${shareItem.artistName}`} />
+                    <meta property="og:image" content={shareItem.cover} />
+                    <meta property="og:url" content={`${baseUrl}?shareId=${shareAlbumId}`} />
+                </Helmet>
             </div>
         </>
     );

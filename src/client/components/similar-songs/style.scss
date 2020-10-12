@@ -88,7 +88,7 @@
             background-color: $secondary;
         }
         &__wrapper {
-            width: 75%;
+            width: 65%;
             text-align: left;
         }
         &__cover {
@@ -146,6 +146,16 @@
         &__more {
             font-size: 40px;
             font-weight: 300;
+        }
+        &__add-to-queue {
+            width: 25px;
+            height: 25px;
+            fill: $primary;
+            cursor: pointer;
+
+            &:hover {
+                fill: white;
+            }
         }
     }
 }

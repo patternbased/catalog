@@ -4,9 +4,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import uuid from 'react-uuid';
 import ReactGA from 'react-ga';
-import selectors from 'selectors';
+import { Helmet } from 'react-helmet';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import classnames from 'classnames';
+import selectors from 'selectors';
 import Button from 'components/button';
 import SongsTable from 'components/songs-table';
 import SimilarSongsPanel from 'components/similar-songs';
@@ -35,6 +36,7 @@ import TidalSvg from 'assets/images/single-song/Single-Song_Tidal.svg';
 import YoutubeSvg from 'assets/images/single-song/Single-Song_Youtube.svg';
 import CopyLinkSvg from 'assets/images/copy-link.svg';
 import DoneSvg from 'assets/images/done-check.svg';
+import AddToQueueSvg from 'assets/images/add-to-queue.svg';
 
 import { api } from '../../services';
 
@@ -191,6 +193,17 @@ function SongPage(props) {
                                         <div className="song__artist">by {song.artistName}</div>
                                     </Link>
                                     <div className="song__actions">
+                                        <AddToQueueSvg
+                                            onClick={() => {
+                                                dispatch(addToQueue(song));
+                                                ReactGA.event({
+                                                    category: 'Single song',
+                                                    action: 'Add to Queue clicked',
+                                                    label: `Add to Queue ${song.title}`,
+                                                });
+                                            }}
+                                            className="smaller-action"
+                                        />
                                         <PianoSvg
                                             onClick={() => {
                                                 dispatch(setState('customWorkOpened', true));
@@ -327,6 +340,17 @@ function SongPage(props) {
                                         <div className="song__artist">by {song.artistName}</div>
                                     </Link>
                                     <div className="song__actions">
+                                        <AddToQueueSvg
+                                            onClick={() => {
+                                                dispatch(addToQueue(song));
+                                                ReactGA.event({
+                                                    category: 'Single song',
+                                                    action: 'Add to Queue clicked',
+                                                    label: `Add to Queue ${song.title}`,
+                                                });
+                                            }}
+                                            className="smaller-action"
+                                        />
                                         <PianoSvg
                                             onClick={() => {
                                                 dispatch(setState('customWorkOpened', true));
@@ -744,6 +768,14 @@ function SongPage(props) {
                             )}
                         </CopyToClipboard>
                     </Modal>
+                )}
+                {song && (
+                    <Helmet>
+                        <meta property="og:title" content={song.title} />
+                        <meta property="og:description" content={`by ${song.artistName}`} />
+                        <meta property="og:image" content={song.cover} />
+                        <meta property="og:url" content={`${baseUrl}?shareId=${shareSongId}`} />
+                    </Helmet>
                 )}
                 <SimilarSongsPanel
                     visible={similarOpened}

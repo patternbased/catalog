@@ -253,6 +253,10 @@
             &:hover path {
                 fill: $secondary;
             }
+            &.smaller-action {
+                width: 30px;
+                height: 30px;
+            }
         }
 
         @media screen and (max-width: $small) {

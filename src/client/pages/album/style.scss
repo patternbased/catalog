@@ -251,11 +251,17 @@
             &:hover path {
                 fill: $secondary;
             }
+
+            &.smaller-action {
+                width: 30px;
+            }
         }
 
         @media screen and (max-width: $small) {
             padding: 16px 0 20px;
             justify-content: center;
+            align-items: center;
+            display: flex;
             margin-bottom: 0;
             border-bottom: none;
         }
