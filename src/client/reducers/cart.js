@@ -24,7 +24,7 @@ const addToCart = (state, action) => {
     current.map((i) => (subtotal += i.price));
     const promoCode = state.promo;
     if (promoCode) {
-        if (promoCode.type === 'percentage') {
+        if (promoCode.type === 'percent') {
             const vOff = (promoCode.value / 100) * subtotal;
             total = subtotal - vOff;
         } else {
@@ -69,7 +69,7 @@ const setPromoCode = (state, action) => {
     const sttl = state.subtotal;
     let total = 0;
     if (promoCode) {
-        if (promoCode.type === 'percentage') {
+        if (promoCode.type === 'percent') {
             const vOff = (promoCode.value / 100) * sttl;
             total = sttl - vOff;
             promoCode.valueOff = vOff;

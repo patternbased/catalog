@@ -151,11 +151,36 @@ router.get('/album/:name', async (req, res) => {
 router.get('/promo/:name', async (req, res) => {
     const promo = await PromoController.getPromoByName(req.params.name);
 
-    if (promo && promo.startsOn <= Date.now() && promo.endsOn >= Date.now()) {
-        res.send({
-            promo,
-            status: 200,
-        });
+    if (promo) {
+        if (promo.expMethod === 'date') {
+            if (promo.startsOn <= Date.now() && promo.endsOn >= Date.now()) {
+                res.send({
+                    promo,
+                    status: 200,
+                });
+            } else {
+                res.send({ status: 404 });
+            }
+        } else {
+            const existingCookie = req.cookies[req.params.name];
+            if (existingCookie) {
+                if (parseInt(existingCookie) < promo.usePerUser) {
+                    res.cookie(req.params.name, parseInt(existingCookie) + 1, { maxAge: 3600 * 1000 * 24 * 365 * 10 });
+                    res.send({
+                        promo,
+                        status: 200,
+                    });
+                } else {
+                    res.send({ status: 404 });
+                }
+            } else {
+                res.cookie(req.params.name, '1', { maxAge: 3600 * 1000 * 24 * 365 * 10 });
+                res.send({
+                    promo,
+                    status: 200,
+                });
+            }
+        }
     } else {
         res.send({ status: 404 });
     }

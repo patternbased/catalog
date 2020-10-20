@@ -106,7 +106,7 @@ function Invoice(props) {
                                         <tr>
                                             <td className="invoice__body__table__long">
                                                 Promo Code Discount(
-                                                {invoice.promoCode.type === 'percentage'
+                                                {invoice.promoCode.type === 'percent'
                                                     ? `${invoice.promoCode.value}%OFF`
                                                     : `$${invoice.promoCode.value}OFF`}
                                                 )

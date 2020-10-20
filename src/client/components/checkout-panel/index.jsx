@@ -141,7 +141,7 @@ function CheckoutPanel({ visible, style }) {
                     {promoCode && (
                         <div className="checkout-panel__body__summary__details__item">
                             Promo Code (
-                            {promoCode.type === 'percentage' ? `${promoCode.value}%OFF` : `$${promoCode.value}OFF`})
+                            {promoCode.type === 'percent' ? `${promoCode.value}%OFF` : `$${promoCode.value}OFF`})
                             <span>-${promoCode.valueOff}</span>
                         </div>
                     )}
@@ -439,7 +439,7 @@ const _getOrderConfirmationHtml = (fields, subtotal, total, pItems, promoCode, o
                 style="padding-top: 10px;padding-bottom: 10px;color: #444;font-size: 14px;line-height: 20px;text-align: left;padding-left: 50px;"
             >
                 Promo Code (
-                ${promoCode.type === 'percentage' ? `${promoCode.value}%OFF` : `$${promoCode.value}OFF`}
+                ${promoCode.type === 'percent' ? `${promoCode.value}%OFF` : `$${promoCode.value}OFF`}
                 )
             </td>
             <td style="padding-top: 10px;padding-bottom: 10px;color: #444;font-size: 14px;line-height: 20px;text-align: center;"></td>

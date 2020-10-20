@@ -15,7 +15,7 @@ class PromoController {
      * @param {Object} data object with data
      * @returns {Data}
      */
-    async create(data) {
+    async createPromo(data) {
         return await Promo.create(data);
     }
 }
