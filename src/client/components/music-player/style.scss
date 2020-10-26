@@ -20,6 +20,7 @@
 
     .mobile-control {
         display: none;
+        padding: 10px 10px 8px 10px;
     }
 
     .desktop-control {
@@ -33,13 +34,13 @@
         background-color: white;
         box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
         position: absolute;
-        bottom: 69px;
-        right: 200px;
+        bottom: 60px;
+        right: 115px;
         padding: 10px 0;
 
         @media screen and (max-width: $medium) {
-            bottom: 57px;
-            right: 100px;
+            bottom: 60px;
+            left: 10px;
         }
 
         div {
@@ -74,7 +75,7 @@
     }
 
     @media screen and (max-width: $medium) {
-        height: 120px;
+        height: auto;
         display: block;
         padding: 0;
 
@@ -86,6 +87,7 @@
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
+                padding: 0 10px 10px;
             }
         }
 
@@ -117,12 +119,22 @@
             border-right: none;
         }
 
+        @media screen and (max-width: $large) {
+            &:nth-child(2) {
+                border-right: none;
+                padding-right: 0;
+            }
+        }
+
+        @media screen and (max-width: $medium) {
+            height: auto;
+        }
+
         &--controls {
             width: 136px;
 
             @media screen and (max-width: $medium) {
                 border-right: none;
-                padding-left: 10px;
             }
 
             &-button {
@@ -142,12 +154,12 @@
             justify-content: space-between;
 
             @media screen and (max-width: $medium) {
-                padding: 10px 10px 8px 10px;
+                padding: 0;
                 border-right: none;
+                justify-content: flex-start;
 
                 &-changed {
-                    justify-content: flex-end;
-                    padding-right: 10px;
+                    border-right: none;
                 }
 
                 .player-mobile-link {
@@ -175,6 +187,11 @@
                 &__details {
                     cursor: pointer;
 
+                    &-all {
+                        display: flex;
+                        margin-bottom: 3px;
+                    }
+
                     &-title {
                         font-size: 14px;
                         line-height: 16px;
@@ -184,6 +201,17 @@
 
                         &:hover {
                             color: $secondary;
+
+                            @media screen and (max-width: $medium) {
+                                color: white;
+                                cursor: none;
+                            }
+                        }
+
+                        @media screen and (max-width: $medium) {
+                            line-height: normal;
+                            font-size: 12px;
+                            font-weight: bold;
                         }
                     }
 
@@ -213,6 +241,10 @@
                     &-author {
                         &:hover {
                             color: $secondary;
+                            @media screen and (max-width: $medium) {
+                                color: white;
+                                cursor: none;
+                            }
                         }
 
                         &--inline {
@@ -227,23 +259,40 @@
                         display: inline-block;
                         vertical-align: middle;
 
+                        .rc-slider {
+                            height: 20px;
+
+                            &:hover {
+                                .rc-slider-handle {
+                                    display: block;
+                                }
+                            }
+                        }
+
                         .rc-slider-rail {
                             background-color: $tertiary;
                             border-radius: 0;
+                            height: 15px;
+                        }
+
+                        .rc-slider-step {
+                            height: 15px;
                         }
 
                         .rc-slider-track {
                             background-color: $secondary;
                             border-radius: 0;
+                            height: 15px;
                         }
 
                         .rc-slider-handle {
                             border: none;
-                            height: 18px;
-                            width: 18px;
-                            border-radius: 9px;
+                            height: 25px;
+                            width: 10px;
+                            border-radius: 3px;
                             background-color: white;
-                            margin-top: -7px;
+                            margin-top: -5px;
+                            display: none;
 
                             &:hover {
                                 color: $secondary;
@@ -255,12 +304,27 @@
                             vertical-align: top;
                             .rc-slider {
                                 padding: 0;
-                                height: 4px;
+                                height: 20px;
+                            }
+                            .rc-slider-rail {
+                                height: 20px;
                             }
                             .rc-slider-handle {
                                 display: none;
+                                margin-top: -2.5px;
+                            }
+                            .rc-slider-step {
+                                height: 20px;
+                            }
+                            .rc-slider-track {
+                                height: 20px;
                             }
                         }
+                    }
+
+                    @media screen and (max-width: $medium) {
+                        cursor: none;
+                        width: 100%;
                     }
                 }
             }
@@ -283,10 +347,21 @@
                         fill: white;
                     }
 
+                    &--license {
+                        circle {
+                            fill: $tertiary;
+                        }
+                    }
+
                     &:hover {
                         path,
                         circle {
                             fill: $secondary;
+                        }
+                        &--license {
+                            circle {
+                                fill: white;
+                            }
                         }
                     }
 
@@ -312,6 +387,10 @@
                     &:hover {
                         color: $dark-grey;
                     }
+
+                    @media screen and (max-width: $large) {
+                        display: none;
+                    }
                 }
             }
         }
@@ -330,6 +409,10 @@
 
                 &:hover {
                     background-image: url('/assets/images/player/playlist-on.png');
+                }
+
+                @media screen and (max-width: $medium) {
+                    margin-left: 0;
                 }
             }
         }

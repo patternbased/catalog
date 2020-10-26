@@ -25,6 +25,9 @@ import PianoSvg from 'assets/images/single-song/CustomWork_dark.svg';
 import SimilarSvg from 'assets/images/SimilarSong_Icon_dark.svg';
 import ShareSvg from 'assets/images/share-icon-dark.svg';
 import ActionsSvg from 'assets/images/actions.svg';
+import CartSvg from 'assets/images/header/cart.svg';
+import SeeArtistSvg from 'assets/images/see-artist.svg';
+import SeeSongSvg from 'assets/images/see-song.svg';
 
 import './style.scss';
 
@@ -38,7 +41,6 @@ const baseUrl =
 function MusicPlayer({ list, play }) {
     const [currentPlaying, setCurrentPlaying] = useState({});
     const [isPlaying, setIsPlaying] = useState(false);
-    const [songHovered, setSongHovered] = useState(false);
     const [elapsed, setElapsed] = useState(0);
     const [duration, setDuration] = useState(null);
     const [shareOpened, setShareOpened] = useState(false);
@@ -62,12 +64,6 @@ function MusicPlayer({ list, play }) {
     useEffect(() => {
         setIsPlaying(play);
     }, [play]);
-
-    const handleSongHover = () => {
-        if (isPlaying) {
-            setSongHovered(true);
-        }
-    };
 
     const updateElapsedTime = (val) => {
         musicPlayer.current.seekTo(parseFloat(val, 'seconds'));
@@ -177,56 +173,32 @@ function MusicPlayer({ list, play }) {
                             className="player-mobile-link"
                         >
                             <img src={currentPlaying.cover} className="music-player__section--content__song-image" />
-                            <div className="music-player__section--content__song__details">
-                                <p className="music-player__section--content__song__details-title">
-                                    {currentPlaying.title}
-                                </p>
-                                <div className="music-player__section--content__song__details">
-                                    <p className="music-player__section--content__song__details-author">
-                                        by {currentPlaying.artistName}
-                                    </p>
-                                    <p className="music-player__section--content__song__details-duration">
-                                        {_formatTime(duration)}
-                                    </p>
-                                </div>
-                            </div>
                         </Link>
-                        <div
-                            className="music-player__section--extra-button"
-                            onClick={() => dispatch(setState('queueOpened', !queueOpened))}
-                        />
-                    </div>
-                    <div className="music-player__section--content__song__details-progress">
-                        <Slider
-                            min={0}
-                            max={duration}
-                            value={elapsed}
-                            step={0.0001}
-                            onChange={(val) => updateElapsedTime(val)}
-                        />
+                        <div className="music-player__section--content__song__details">
+                            <div className="music-player__section--content__song__details music-player__section--content__song__details-all">
+                                <p className="music-player__section--content__song__details-title">
+                                    {currentPlaying.title}&nbsp;
+                                </p>
+                                <p className="music-player__section--content__song__details-author">
+                                    by {currentPlaying.artistName}
+                                </p>
+                                <p className="music-player__section--content__song__details-duration">
+                                    {_formatTime(duration)}
+                                </p>
+                            </div>
+                            <div className="music-player__section--content__song__details-progress">
+                                <Slider
+                                    min={0}
+                                    max={duration}
+                                    value={elapsed}
+                                    step={0.0001}
+                                    onChange={(val) => updateElapsedTime(val)}
+                                />
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div className="mobile-control">
-                    <div className="music-player__section music-player__section--controls">
-                        <img
-                            src="/assets/images/player/prev.png"
-                            className="music-player__section--controls-button"
-                            onClick={() => onPrev()}
-                        />
-                        <img
-                            src={`/assets/images/player/${isPlaying ? 'pause' : 'play'}.png`}
-                            className="music-player__section--controls-button"
-                            onClick={() => {
-                                setIsPlaying(isPlaying ? false : true);
-                                dispatch(setState('songPlaying', isPlaying ? false : true));
-                            }}
-                        />
-                        <img
-                            src="/assets/images/player/next.png"
-                            className="music-player__section--controls-button"
-                            onClick={() => onNext()}
-                        />
-                    </div>
                     <div className="music-player__section music-player__section--content-changed">
                         <div className="music-player__section--content__actions">
                             <ActionsSvg
@@ -237,6 +209,37 @@ function MusicPlayer({ list, play }) {
                             />
                             {actionsOpened && (
                                 <div className="actions-menu">
+                                    <Link
+                                        to={
+                                            currentPlaying
+                                                ? `/song/${currentSong.pbId}-${currentSong.title
+                                                      .toLowerCase()
+                                                      .split(' ')
+                                                      .join('-')}`
+                                                : ''
+                                        }
+                                        className="player-mobile-link"
+                                    >
+                                        <div>
+                                            <SeeSongSvg className="music-player__section--content__actions-button" />
+                                            See This Song
+                                        </div>
+                                    </Link>
+                                    <Link
+                                        to={
+                                            Object.keys(currentPlaying).length
+                                                ? `/project/${currentPlaying.artistName
+                                                      .toLowerCase()
+                                                      .split(' ')
+                                                      .join('-')}`
+                                                : ''
+                                        }
+                                    >
+                                        <div>
+                                            <SeeArtistSvg className="music-player__section--content__actions-button" />
+                                            See This Artist
+                                        </div>
+                                    </Link>
                                     <div
                                         onClick={() => {
                                             dispatch(
@@ -260,35 +263,57 @@ function MusicPlayer({ list, play }) {
                                         <ShareSvg className="music-player__section--content__actions-button" />
                                         Share Song
                                     </div>
+                                    <div
+                                        onClick={() => {
+                                            dispatch(
+                                                setLicenseSong({
+                                                    title: currentPlaying.title,
+                                                    artist: currentPlaying.artistName,
+                                                    image: currentPlaying.cover,
+                                                    url: currentPlaying.url,
+                                                    album: currentPlaying.albumTitle,
+                                                    trackNo: currentPlaying.sequence,
+                                                })
+                                            );
+                                            dispatch(setState('licenseOpened', true));
+                                            ReactGA.event({
+                                                category: 'Music player',
+                                                action: 'Click on License',
+                                                label: `License for ${currentPlaying.title}`,
+                                            });
+                                        }}
+                                    >
+                                        <CartSvg className="music-player__section--content__actions-button music-player__section--content__actions-button--license" />
+                                        License
+                                    </div>
                                 </div>
                             )}
-                            <Button
-                                className="music-player__section--content__actions-license"
-                                width={80}
-                                height={40}
-                                onClick={() => {
-                                    dispatch(
-                                        setLicenseSong({
-                                            title: currentPlaying.title,
-                                            artist: currentPlaying.artistName,
-                                            image: currentPlaying.cover,
-                                            url: currentPlaying.url,
-                                            album: currentPlaying.albumTitle,
-                                            trackNo: currentPlaying.sequence,
-                                        })
-                                    );
-                                    dispatch(setState('licenseOpened', true));
-                                    ReactGA.event({
-                                        category: 'Music player',
-                                        action: 'Click on License',
-                                        label: `License for ${currentPlaying.title}`,
-                                    });
-                                }}
-                            >
-                                License
-                            </Button>
                         </div>
                     </div>
+                    <div className="music-player__section music-player__section--controls">
+                        <img
+                            src="/assets/images/player/prev.png"
+                            className="music-player__section--controls-button"
+                            onClick={() => onPrev()}
+                        />
+                        <img
+                            src={`/assets/images/player/${isPlaying ? 'pause' : 'play'}.png`}
+                            className="music-player__section--controls-button"
+                            onClick={() => {
+                                setIsPlaying(isPlaying ? false : true);
+                                dispatch(setState('songPlaying', isPlaying ? false : true));
+                            }}
+                        />
+                        <img
+                            src="/assets/images/player/next.png"
+                            className="music-player__section--controls-button"
+                            onClick={() => onNext()}
+                        />
+                    </div>
+                    <div
+                        className="music-player__section--extra-button"
+                        onClick={() => dispatch(setState('queueOpened', !queueOpened))}
+                    />
                 </div>
                 <div className="music-player__section music-player__section--controls desktop-control">
                     <img
@@ -329,11 +354,7 @@ function MusicPlayer({ list, play }) {
                 <div className="music-player__section music-player__section--content desktop-control">
                     <div className="music-player__section--content__song">
                         <img src={currentPlaying.cover} className="music-player__section--content__song-image" />
-                        <div
-                            className="music-player__section--content__song__details"
-                            // onMouseEnter={() => handleSongHover()}
-                            // onMouseLeave={() => setSongHovered(false)}
-                        >
+                        <div className="music-player__section--content__song__details">
                             <Link
                                 to={
                                     currentPlaying
@@ -348,8 +369,6 @@ function MusicPlayer({ list, play }) {
                                     {currentPlaying.title}
                                 </p>
                             </Link>
-                            {/* {songHovered && ( */}
-
                             <p className="music-player__section--content__song__details-author music-player__section--content__song__details-author--inline">
                                 by{' '}
                                 <Link
@@ -362,21 +381,6 @@ function MusicPlayer({ list, play }) {
                                     {currentPlaying.artistName}
                                 </Link>
                             </p>
-                            {/* )}
-                            {!songHovered && (
-                                // <Link to={`/project/${currentPlaying.artistName.toLowerCase().split(' ').join('-')}`}>
-                                <div className="music-player__section--content__song__details">
-                                    <p className="music-player__section--content__song__details-author">
-                                        by {currentPlaying.artistName}
-                                    </p>
-
-                                    <p className="music-player__section--content__song__details-duration">
-                                        {_formatTime(duration)}
-                                    </p>
-                                </div>
-                                // </Link>
-                            )}
-                            {songHovered && ( */}
                             <div className="music-player__section--content__song__details">
                                 <div className="music-player__section--content__song__details-progress">
                                     <Slider
@@ -391,7 +395,6 @@ function MusicPlayer({ list, play }) {
                                     {_formatTime(elapsed)} <span>/ {_formatTime(duration)}</span>
                                 </p>
                             </div>
-                            {/* )} */}
                         </div>
                     </div>
                     <div className="music-player__section--content__actions">
@@ -403,6 +406,34 @@ function MusicPlayer({ list, play }) {
                         />
                         {actionsOpened && (
                             <div className="desktop-hide actions-menu">
+                                <Link
+                                    to={
+                                        currentPlaying
+                                            ? `/song/${currentSong.pbId}-${currentSong.title
+                                                  .toLowerCase()
+                                                  .split(' ')
+                                                  .join('-')}`
+                                            : ''
+                                    }
+                                    className="player-mobile-link"
+                                >
+                                    <div>
+                                        <SeeSongSvg className="music-player__section--content__actions-button" />
+                                        See This Song
+                                    </div>
+                                </Link>
+                                <Link
+                                    to={
+                                        Object.keys(currentPlaying).length
+                                            ? `/project/${currentPlaying.artistName.toLowerCase().split(' ').join('-')}`
+                                            : ''
+                                    }
+                                >
+                                    <div>
+                                        <SeeArtistSvg className="music-player__section--content__actions-button" />
+                                        See This Artist
+                                    </div>
+                                </Link>
                                 <div
                                     onClick={() => {
                                         dispatch(
@@ -425,6 +456,29 @@ function MusicPlayer({ list, play }) {
                                 <div onClick={() => openShareModal()}>
                                     <ShareSvg className="music-player__section--content__actions-button" />
                                     Share Song
+                                </div>
+                                <div
+                                    onClick={() => {
+                                        dispatch(
+                                            setLicenseSong({
+                                                title: currentPlaying.title,
+                                                artist: currentPlaying.artistName,
+                                                image: currentPlaying.cover,
+                                                url: currentPlaying.url,
+                                                album: currentPlaying.albumTitle,
+                                                trackNo: currentPlaying.sequence,
+                                            })
+                                        );
+                                        dispatch(setState('licenseOpened', true));
+                                        ReactGA.event({
+                                            category: 'Music player',
+                                            action: 'Click on License',
+                                            label: `License for ${currentPlaying.title}`,
+                                        });
+                                    }}
+                                >
+                                    <CartSvg className="music-player__section--content__actions-button music-player__section--content__actions-button--license" />
+                                    License
                                 </div>
                             </div>
                         )}

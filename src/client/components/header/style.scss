@@ -41,6 +41,11 @@
         position: absolute;
         right: 32px;
         top: 2px;
+
+        @media screen and (max-width: $small) {
+            right: 2px;
+            top: 4px;
+        }
     }
 
     &__filter-button {
