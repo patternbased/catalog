@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
-import ReactGA from 'react-ga';
+import { initialize, pageview } from 'react-ga';
 import { useCookies } from 'react-cookie';
 
 import ScrollToTop from './components/scroll-to-top';
@@ -35,8 +35,8 @@ function Routes() {
     useEffect(() => {
         setShowBanner(!cookies.pbcPpAll && !cookies.pbcPpDec);
         if (cookies.pbcPpAll) {
-            ReactGA.initialize('UA-346260-11');
-            ReactGA.pageview(window.location.pathname + window.location.search);
+            initialize('UA-346260-11');
+            pageview(window.location.pathname + window.location.search);
         }
     }, [cookies]);
 

@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 import uuid from 'react-uuid';
-import ReactGA from 'react-ga';
+import { event } from 'react-ga';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Helmet } from 'react-helmet';
 import selectors from 'selectors';
@@ -99,25 +99,11 @@ function AlbumPage(props) {
     const shareAlbumId = uuid();
 
     const copyShareAlbumLink = () => {
-        const shareData = {
-            name: shareItem.title,
-            type: 'album',
-            songs: [shareItem.pbId],
-            shareId: shareAlbumId,
-        };
-        fetch('/api/create-share', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ data: shareData }),
-        }).then((res) => {
-            setShareAlbumLinkCopied(true);
-            ReactGA.event({
-                category: 'Album page',
-                action: 'Single album share',
-                label: `Share ${shareItem.title}`,
-            });
+        setShareAlbumLinkCopied(true);
+        event({
+            category: 'Album page',
+            action: 'Single album share',
+            label: `Share ${shareItem.title}`,
         });
     };
 
@@ -125,7 +111,7 @@ function AlbumPage(props) {
         dispatch(setCurrentSong(val));
         dispatch(addToQueue(val));
         dispatch(setState('songPlaying', !songIsPlaying));
-        ReactGA.event({
+        event({
             category: 'Album page',
             action: 'Play song clicked',
             label: `Play ${val.title}`,
@@ -158,7 +144,7 @@ function AlbumPage(props) {
                                                         name: album.title,
                                                     })
                                                 );
-                                                ReactGA.event({
+                                                event({
                                                     category: 'Album page',
                                                     action: 'Add to Queue clicked',
                                                     label: `Add to queue ${album.title}`,
@@ -202,7 +188,7 @@ function AlbumPage(props) {
                                                         name: album.title,
                                                     })
                                                 );
-                                                ReactGA.event({
+                                                event({
                                                     category: 'Album page',
                                                     action: 'Add to Queue clicked',
                                                     label: `Add to Queue ${album.title}`,
@@ -311,7 +297,9 @@ function AlbumPage(props) {
                             </div>
                         </div>
                         <CopyToClipboard
-                            text={`${baseUrl}?shareId=${shareAlbumId}`}
+                            text={`${baseUrl}album/${shareItem.title.toLowerCase().split(' ').join('-')}/${
+                                shareItem.pbId
+                            }`}
                             onCopy={() => copyShareAlbumLink()}
                         >
                             {shareAlbumLinkCopied ? (
@@ -328,12 +316,14 @@ function AlbumPage(props) {
                         </CopyToClipboard>
                     </Modal>
                 )}
-                <Helmet>
-                    <meta property="og:title" content={shareItem.title} />
-                    <meta property="og:description" content={`by ${shareItem.artistName}`} />
-                    <meta property="og:image" content={shareItem.cover} />
-                    <meta property="og:url" content={`${baseUrl}?shareId=${shareAlbumId}`} />
-                </Helmet>
+                {album && (
+                    <Helmet>
+                        <meta property="og:title" content={album.title} />
+                        <meta property="og:description" content={`by ${album.artistName}`} />
+                        <meta property="og:image" content={album.cover} />
+                        <meta property="og:url" content={`${baseUrl}?shareId=${shareAlbumId}`} />
+                    </Helmet>
+                )}
             </div>
         </>
     );

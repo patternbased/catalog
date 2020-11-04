@@ -8,7 +8,7 @@ import Slider from 'rc-slider';
 import uuid from 'react-uuid';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import classnames from 'classnames';
-import ReactGA from 'react-ga';
+import { event } from 'react-ga';
 import selectors from 'selectors';
 
 import Button from 'components/button';
@@ -134,25 +134,11 @@ function MusicPlayer({ list, play }) {
     };
 
     const copyShareSongLink = () => {
-        const shareData = {
-            name: shareItem.title,
-            type: 'song',
-            songs: [shareItem.pbId],
-            shareId: shareSongId,
-        };
-        fetch('/api/create-share', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ data: shareData }),
-        }).then((res) => {
-            setShareSongLinkCopied(true);
-            ReactGA.event({
-                category: 'Music player',
-                action: 'Share song clicked',
-                label: `Share ${currentPlaying.title}`,
-            });
+        setShareSongLinkCopied(true);
+        event({
+            category: 'Music player',
+            action: 'Share song clicked',
+            label: `Share ${currentPlaying.title}`,
         });
     };
 
@@ -276,7 +262,7 @@ function MusicPlayer({ list, play }) {
                                                 })
                                             );
                                             dispatch(setState('licenseOpened', true));
-                                            ReactGA.event({
+                                            event({
                                                 category: 'Music player',
                                                 action: 'Click on License',
                                                 label: `License for ${currentPlaying.title}`,
@@ -470,7 +456,7 @@ function MusicPlayer({ list, play }) {
                                             })
                                         );
                                         dispatch(setState('licenseOpened', true));
-                                        ReactGA.event({
+                                        event({
                                             category: 'Music player',
                                             action: 'Click on License',
                                             label: `License for ${currentPlaying.title}`,
@@ -494,7 +480,7 @@ function MusicPlayer({ list, play }) {
                                         })
                                     );
                                     dispatch(setState('customWorkOpened', true));
-                                    ReactGA.event({
+                                    event({
                                         category: 'Music player',
                                         action: 'Custom work clicked',
                                         label: `Custom work for ${currentPlaying.title}`,
@@ -505,7 +491,7 @@ function MusicPlayer({ list, play }) {
                                 className="music-player__section--content__actions-button"
                                 onClick={() => {
                                     dispatch(setState('similarOpened', !similarOpened));
-                                    ReactGA.event({
+                                    event({
                                         category: 'Music player',
                                         action: 'Similar songs clicked',
                                         label: `Similar songs for ${currentPlaying.title}`,
@@ -533,7 +519,7 @@ function MusicPlayer({ list, play }) {
                                     })
                                 );
                                 dispatch(setState('licenseOpened', true));
-                                ReactGA.event({
+                                event({
                                     category: 'Music player',
                                     action: 'License clicked',
                                     label: `License for ${currentPlaying.title}`,
@@ -572,7 +558,10 @@ function MusicPlayer({ list, play }) {
                             <div className="share__item__artist">by {shareItem.artistName}</div>
                         </div>
                     </div>
-                    <CopyToClipboard text={`${baseUrl}?shareId=${shareSongId}`} onCopy={() => copyShareSongLink()}>
+                    <CopyToClipboard
+                        text={`${baseUrl}song/${shareItem.pbId}-${shareItem.title.toLowerCase().split(' ').join('-')}`}
+                        onCopy={() => copyShareSongLink()}
+                    >
                         {shareSongLinkCopied ? (
                             <div className="share__button share__button--copied">
                                 <DoneSvg />

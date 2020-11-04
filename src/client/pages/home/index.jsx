@@ -4,7 +4,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router';
 import selectors from 'selectors';
 import classnames from 'classnames';
-import ReactGA from 'react-ga';
+import { event } from 'react-ga';
+import { Helmet } from 'react-helmet';
 import { PRESETS } from 'utils/constants';
 
 import Header from 'components/header';
@@ -19,6 +20,9 @@ import qs from 'query-string';
 import { api } from '../../services';
 
 import './style.scss';
+
+const baseUrl =
+    process.env.NODE_ENV === 'production' ? 'https://catalog.patternbased.com' : 'https://patternbased.herokuapp.com/';
 
 /**
  * Component to handle the home page
@@ -129,7 +133,7 @@ function HomePage({ history }) {
             body: JSON.stringify({ preset: name }),
         });
         dispatch(setState('filtersOpened', true));
-        ReactGA.event({
+        event({
             category: 'Homepage',
             action: 'Preset clicked',
             label: `Preset ${name}`,
@@ -259,6 +263,15 @@ function HomePage({ history }) {
                     )}
                 </main>
             </div>
+            <Helmet>
+                <meta property="og:title" content="PB Catalog Home" />
+                <meta
+                    property="og:description"
+                    content="The PatternBased Catalog is an ever expanding collection of textural/emotive sound &amp; music that ranges from sparse tones and drones to rhythmic works over a variety of styles and moods."
+                />
+                <meta property="og:image" content={`${baseUrl}assets/images/PB_catalog_PreviewImg.jpg`} />
+                <meta property="og:url" content={`${baseUrl}`} />
+            </Helmet>
         </>
     );
 }

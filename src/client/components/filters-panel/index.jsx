@@ -4,8 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import selectors from 'selectors';
-import ReactGA from 'react-ga';
-import isEqual from 'lodash/isEqual';
+import { event } from 'react-ga';
 
 import BasicFilter from 'components/filters/basic';
 import FlowFilter from 'components/filters/flow';
@@ -53,7 +52,7 @@ const generateSearchResults = (songList, artists, writers) => {
  * @param {Boolean} showSearch boolean to determine if search input is opened/closed
  * @returns {React.Component}
  */
-function FiltersPanel({ history, visible, style, showSearch, onSearchSelected }) {
+function FiltersPanel({ visible, style, showSearch, onSearchSelected }) {
     const [similarPresets, setSimilarPresets] = useState([]);
     const [selectedSearch, setSelectedSearch] = useState([]);
     const [artists, setArtists] = useState([]);
@@ -89,35 +88,17 @@ function FiltersPanel({ history, visible, style, showSearch, onSearchSelected })
 
     const wereFiltersChanged = useMemo(() => Object.keys(appliedFilters).length > 0, [appliedFilters]);
 
-    const [changedFilters, setChangedFilters] = useState(appliedFilters);
-
-    useEffect(() => {
-        if (!isEqual(changedFilters, appliedFilters)) {
-            applyFilterValue(appliedFilters);
-        }
-    }, [appliedFilters]);
-
-    const applyFilterValue = (filters) => {
-        setChangedFilters(filters);
-        if (location.pathname !== '/') {
-            window.location = '/';
-        }
-    };
-
-    const changeSlider = (name) => (values) => {
-        const copyFilters = { ...changedFilters };
-        copyFilters[name] = values;
-        applyFilterValue(copyFilters);
-    };
-
-    const applyFilters = (name) => {
-        dispatch(setFilter(name, changedFilters[name]));
-        ReactGA.event({
-            category: 'Filters panel',
-            action: 'Filter used',
-            label: `Filter ${name}`,
-        });
-    };
+    const changeSlider = useCallback(
+        (name) => (values) => {
+            dispatch(setFilter(name, values));
+            event({
+                category: 'Filters panel',
+                action: 'Filter used',
+                label: `Filter ${name}`,
+            });
+        },
+        [appliedFilters]
+    );
 
     const toggleFlow = useCallback(
         (shape) => {
@@ -129,14 +110,14 @@ function FiltersPanel({ history, visible, style, showSearch, onSearchSelected })
                         flowsCopy.filter((x) => x !== shape)
                     )
                 );
-                ReactGA.event({
+                event({
                     category: 'Filters panel',
                     action: 'Clear filter',
                     label: `Filter Flow ${shape}`,
                 });
             } else {
                 dispatch(setFilter('flow', flowsCopy.concat(shape)));
-                ReactGA.event({
+                event({
                     category: 'Filters panel',
                     action: 'Filter used',
                     label: `Filter Flow ${shape}`,
@@ -156,7 +137,7 @@ function FiltersPanel({ history, visible, style, showSearch, onSearchSelected })
                         durationCopy.filter((x) => x !== shape)
                     )
                 );
-                ReactGA.event({
+                event({
                     category: 'Filters panel',
                     action: 'Clear filter',
                     label: `Filter Duration ${shape}`,
@@ -164,7 +145,7 @@ function FiltersPanel({ history, visible, style, showSearch, onSearchSelected })
             } else {
                 durationCopy.push(shape);
                 dispatch(setFilter('duration', durationCopy));
-                ReactGA.event({
+                event({
                     category: 'Filters panel',
                     action: 'Filter used',
                     label: `Filter Duration ${shape}`,
@@ -176,11 +157,8 @@ function FiltersPanel({ history, visible, style, showSearch, onSearchSelected })
 
     const cancelFilter = useCallback(
         (name) => {
-            const copyFilters = { ...changedFilters };
-            copyFilters[name] = defaultFilters[name];
-            applyFilterValue(copyFilters);
             dispatch(resetFilter(name));
-            ReactGA.event({
+            event({
                 category: 'Filters panel',
                 action: 'Clear filter',
                 label: `Filter ${name}`,
@@ -193,7 +171,7 @@ function FiltersPanel({ history, visible, style, showSearch, onSearchSelected })
         Object.keys(filters).forEach((filter) => {
             dispatch(setFilter(filter, filters[filter]));
         });
-        ReactGA.event({
+        event({
             category: 'Filters panel',
             action: 'Similar Preset clicked',
             label: `Preset ${name}`,
@@ -219,7 +197,7 @@ function FiltersPanel({ history, visible, style, showSearch, onSearchSelected })
     const selectResult = (item) => {
         if (item.type === 'song') {
             window.location = `/song/${item.id}-${item.value.toLowerCase().split(' ').join('-')}`;
-            ReactGA.event({
+            event({
                 category: 'Search',
                 action: 'Search suggestion selected',
                 label: `Selected song ${item.value}`,
@@ -229,13 +207,13 @@ function FiltersPanel({ history, visible, style, showSearch, onSearchSelected })
             setSelectedSearch(selectedSearchCopy.concat(item));
             dispatch(setFilter('search', selectedSearchCopy.concat(item)));
             if (item.type === 'inst.') {
-                ReactGA.event({
+                event({
                     category: 'Search',
                     action: 'Search suggestion selected',
                     label: `Selected Instrument ${item.value}`,
                 });
             } else {
-                ReactGA.event({
+                event({
                     category: 'Search',
                     action: 'Search suggestion selected',
                     label: `Selected suggestion ${item.type} - ${item.value}`,
@@ -254,7 +232,7 @@ function FiltersPanel({ history, visible, style, showSearch, onSearchSelected })
         } else {
             dispatch(setFilter('search', selectedSearchCopy));
         }
-        ReactGA.event({
+        event({
             category: 'Search',
             action: 'Clear search',
             label: `Clear search ${value}`,
@@ -266,7 +244,6 @@ function FiltersPanel({ history, visible, style, showSearch, onSearchSelected })
         dispatch(setCurrentSong(playlist[0]));
         dispatch(addToQueue({ list: playlist, name: createPlaylistName() }));
     };
-
     const createPlaylistName = () => {
         let label = '';
         if (appliedFilters) {
@@ -314,7 +291,6 @@ function FiltersPanel({ history, visible, style, showSearch, onSearchSelected })
                                             className="table__filters__icon"
                                             onClick={() => addListToQueue()}
                                         />
-
                                         <div className="filters-panel__results__tracks">
                                             <span>{playlist.length}</span> Tracks
                                         </div>
@@ -323,10 +299,9 @@ function FiltersPanel({ history, visible, style, showSearch, onSearchSelected })
                                         width={60}
                                         height={32}
                                         onClick={() => {
-                                            applyFilterValue({});
                                             dispatch(resetAllFilters());
                                             setSimilarPresets([]);
-                                            ReactGA.event({
+                                            event({
                                                 category: 'Filter panel',
                                                 action: 'Clear filters',
                                                 label: 'Mobile Clear all',
@@ -372,9 +347,8 @@ function FiltersPanel({ history, visible, style, showSearch, onSearchSelected })
                                 <BasicFilter
                                     name={filter}
                                     isOpened={true}
-                                    values={changedFilters[filter] || defaultFilters[filter]}
+                                    values={appliedFilters[filter] || defaultFilters[filter]}
                                     onRangeChange={changeSlider(filter)}
-                                    onRangeApply={() => applyFilters(filter)}
                                     onFilterCancel={() => cancelFilter(filter)}
                                 />
                             </div>
@@ -393,10 +367,9 @@ function FiltersPanel({ history, visible, style, showSearch, onSearchSelected })
                             <div className="filters-panel__button">
                                 <Button
                                     onClick={() => {
-                                        applyFilterValue({});
                                         dispatch(resetAllFilters());
                                         setSimilarPresets([]);
-                                        ReactGA.event({
+                                        event({
                                             category: 'Filter panel',
                                             action: 'Clear filters',
                                             label: 'Clear all',

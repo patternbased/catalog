@@ -3,15 +3,20 @@ import React, { useMemo, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
+import { Helmet } from 'react-helmet';
+import selectors from 'selectors';
+
 import Header from 'components/header';
 import MenuFooter from 'components/menu-panel/menu-footer';
-import selectors from 'selectors';
 
 import { setState } from 'actions/general';
 
 import { api } from '../../services';
 
 import './style.scss';
+
+const baseUrl =
+    process.env.NODE_ENV === 'production' ? 'https://catalog.patternbased.com' : 'https://patternbased.herokuapp.com/';
 
 /**
  * Component to handle the Artists page
@@ -93,6 +98,15 @@ function ArtistsPage() {
                     <MenuFooter full={true} />
                 </div>
             </div>
+            <Helmet>
+                <meta property="og:title" content="PB Projects and Artists" />
+                <meta
+                    property="og:description"
+                    content="The PatternBased Catalog is an ever expanding collection of textural/emotive sound &amp; music that ranges from sparse tones and drones to rhythmic works over a variety of styles and moods."
+                />
+                <meta property="og:image" content={`${baseUrl}assets/images/PB_catalog_PreviewImg.jpg`} />
+                <meta property="og:url" content={`${baseUrl}`} />
+            </Helmet>
         </>
     );
 }

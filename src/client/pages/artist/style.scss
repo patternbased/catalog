@@ -56,7 +56,7 @@
     }
 
     &__info {
-        height: 350px;
+        height: 400px;
         width: 500px;
         background-color: rgba(0, 0, 0, 0.7);
         padding: 32px 50px;
@@ -89,6 +89,9 @@
             cursor: pointer;
             &:hover {
                 opacity: 1;
+            }
+            &.with-margin-r {
+                margin-right: 20px;
             }
         }
     }

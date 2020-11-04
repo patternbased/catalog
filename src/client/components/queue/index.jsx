@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import ReactGA from 'react-ga';
+import { event } from 'react-ga';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import uuid from 'react-uuid';
 import selectors from 'selectors';
@@ -148,7 +148,7 @@ function QueuePanel({ visible, onClose }) {
             body: JSON.stringify({ data: shareData }),
         }).then((res) => {
             setShareLinkCopied(true);
-            ReactGA.event({
+            event({
                 category: 'Queue panel',
                 action: 'Share queue clicked',
                 label: `Share queue ${shareQueueName}`,
@@ -185,7 +185,7 @@ function QueuePanel({ visible, onClose }) {
                             onClick={() => {
                                 dispatch(clearQueue());
                                 setShowMore(false);
-                                ReactGA.event({
+                                event({
                                     category: 'Queue panel',
                                     action: 'Delete queue clicked',
                                 });
@@ -339,7 +339,7 @@ function QueuePanel({ visible, onClose }) {
                                                         () => removeSongFromQueue(song),
                                                         () => {
                                                             dispatch(setCurrentSong(song));
-                                                            ReactGA.event({
+                                                            event({
                                                                 category: 'Queue panel',
                                                                 action: 'Play song clicked',
                                                                 label: `Play song ${song.title}`,
@@ -364,7 +364,7 @@ function QueuePanel({ visible, onClose }) {
                                                                 () => removeSongFromQueue(song),
                                                                 () => {
                                                                     dispatch(setCurrentSong(song));
-                                                                    ReactGA.event({
+                                                                    event({
                                                                         category: 'Queue panel',
                                                                         action: 'Play song clicked',
                                                                         label: `Play song ${song.title}`,

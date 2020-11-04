@@ -2,13 +2,18 @@
 import React, { useMemo, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import classnames from 'classnames';
+import { Helmet } from 'react-helmet';
+import selectors from 'selectors';
+
 import Header from 'components/header';
 import MenuFooter from 'components/menu-panel/menu-footer';
-import selectors from 'selectors';
 
 import { setState } from 'actions/general';
 
 import './style.scss';
+
+const baseUrl =
+    process.env.NODE_ENV === 'production' ? 'https://catalog.patternbased.com' : 'https://patternbased.herokuapp.com/';
 
 /**
  * Component to handle the about page
@@ -151,6 +156,15 @@ function AboutPage() {
             <div className="about__footer">
                 <MenuFooter full={true} />
             </div>
+            <Helmet>
+                <meta property="og:title" content="About PB Catalog" />
+                <meta
+                    property="og:description"
+                    content="The PatternBased Catalog is an ever expanding collection of textural/emotive sound &amp; music that ranges from sparse tones and drones to rhythmic works over a variety of styles and moods."
+                />
+                <meta property="og:image" content={`${baseUrl}assets/images/PB_catalog_PreviewImg.jpg`} />
+                <meta property="og:url" content={`${baseUrl}about`} />
+            </Helmet>
         </>
     );
 }

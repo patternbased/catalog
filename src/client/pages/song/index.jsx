@@ -3,7 +3,7 @@ import React, { useMemo, useEffect, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import uuid from 'react-uuid';
-import ReactGA from 'react-ga';
+import { event } from 'react-ga';
 import { Helmet } from 'react-helmet';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import classnames from 'classnames';
@@ -143,7 +143,7 @@ function SongPage(props) {
             dispatch(setCurrentSong(val));
             dispatch(addToQueue(val));
             dispatch(setState('songPlaying', true));
-            ReactGA.event({
+            event({
                 category: 'Single song page',
                 action: 'Play button clicked',
                 label: `Play ${val.title}`,
@@ -157,25 +157,11 @@ function SongPage(props) {
     };
 
     const copyShareSongLink = () => {
-        const shareData = {
-            name: shareItem.title,
-            type: 'song',
-            songs: [shareItem.pbId],
-            shareId: shareSongId,
-        };
-        fetch('/api/create-share', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ data: shareData }),
-        }).then((res) => {
-            setShareSongLinkCopied(true);
-            ReactGA.event({
-                category: 'Music player',
-                action: 'Share song clicked',
-                label: `Share ${shareItem.title}`,
-            });
+        setShareSongLinkCopied(true);
+        event({
+            category: 'Music player',
+            action: 'Share song clicked',
+            label: `Share ${shareItem.title}`,
         });
     };
 
@@ -196,7 +182,7 @@ function SongPage(props) {
                                         <AddToQueueSvg
                                             onClick={() => {
                                                 dispatch(addToQueue(song));
-                                                ReactGA.event({
+                                                event({
                                                     category: 'Single song',
                                                     action: 'Add to Queue clicked',
                                                     label: `Add to Queue ${song.title}`,
@@ -214,7 +200,7 @@ function SongPage(props) {
                                                         image: song.cover,
                                                     })
                                                 );
-                                                ReactGA.event({
+                                                event({
                                                     category: 'Single song',
                                                     action: 'Custom work clicked',
                                                     label: `Custom work for ${song.title}`,
@@ -224,7 +210,7 @@ function SongPage(props) {
                                         <SimilarIcon
                                             onClick={() => {
                                                 dispatch(setState('similarOpened', !similarOpened));
-                                                ReactGA.event({
+                                                event({
                                                     category: 'Single song',
                                                     action: 'Similar songs clicked',
                                                     label: `Similar songs for ${song.title}`,
@@ -248,7 +234,7 @@ function SongPage(props) {
                                                     })
                                                 );
                                                 dispatch(setState('licenseOpened', true));
-                                                ReactGA.event({
+                                                event({
                                                     category: 'Single song',
                                                     action: 'License clicked',
                                                     label: `License for ${song.title}`,
@@ -343,7 +329,7 @@ function SongPage(props) {
                                         <AddToQueueSvg
                                             onClick={() => {
                                                 dispatch(addToQueue(song));
-                                                ReactGA.event({
+                                                event({
                                                     category: 'Single song',
                                                     action: 'Add to Queue clicked',
                                                     label: `Add to Queue ${song.title}`,
@@ -361,7 +347,7 @@ function SongPage(props) {
                                                         image: song.cover,
                                                     })
                                                 );
-                                                ReactGA.event({
+                                                event({
                                                     category: 'Single song',
                                                     action: 'Custom work clicked',
                                                     label: `Custom work for ${song.title}`,
@@ -371,7 +357,7 @@ function SongPage(props) {
                                         <SimilarIcon
                                             onClick={() => {
                                                 dispatch(setState('similarOpened', !similarOpened));
-                                                ReactGA.event({
+                                                event({
                                                     category: 'Single song',
                                                     action: 'Similar songs clicked',
                                                     label: `Similar songs for ${song.title}`,
@@ -395,7 +381,7 @@ function SongPage(props) {
                                                     })
                                                 );
                                                 dispatch(setState('licenseOpened', true));
-                                                ReactGA.event({
+                                                event({
                                                     category: 'Single song',
                                                     action: 'License clicked',
                                                     label: `License for ${song.title}`,
@@ -754,7 +740,13 @@ function SongPage(props) {
                                 <div className="share__item__artist">by {shareItem.artistName}</div>
                             </div>
                         </div>
-                        <CopyToClipboard text={`${baseUrl}?shareId=${shareSongId}`} onCopy={() => copyShareSongLink()}>
+                        <CopyToClipboard
+                            text={`${baseUrl}song/${shareItem.pbId}-${shareItem.title
+                                .toLowerCase()
+                                .split(' ')
+                                .join('-')}`}
+                            onCopy={() => copyShareSongLink()}
+                        >
                             {shareSongLinkCopied ? (
                                 <div className="share__button share__button--copied">
                                     <DoneSvg />
@@ -774,7 +766,10 @@ function SongPage(props) {
                         <meta property="og:title" content={song.title} />
                         <meta property="og:description" content={`by ${song.artistName}`} />
                         <meta property="og:image" content={song.cover} />
-                        <meta property="og:url" content={`${baseUrl}?shareId=${shareSongId}`} />
+                        <meta
+                            property="og:url"
+                            content={`${baseUrl}song/${song.pbId}-${song.title.toLowerCase().split(' ').join('-')}`}
+                        />
                     </Helmet>
                 )}
                 <SimilarSongsPanel

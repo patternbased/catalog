@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import uuid from 'react-uuid';
-import ReactGA from 'react-ga';
+import { event } from 'react-ga';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import classnames from 'classnames';
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -95,7 +95,7 @@ function SongsTable({ list, onSelect, listName, page, short = false, extraClass 
         onSelect(item);
         dispatch(setCurrentSong(item));
         dispatch(addToQueue(item));
-        ReactGA.event({
+        event({
             category: 'Songs table',
             action: 'Play song',
             label: `Play ${item.artistName} - ${item.title}`,
@@ -234,7 +234,7 @@ function SongsTable({ list, onSelect, listName, page, short = false, extraClass 
             body: JSON.stringify({ data: shareData }),
         }).then((res) => {
             setShareLinkCopied(true);
-            ReactGA.event({
+            event({
                 category: 'Songs table',
                 action: 'Share song clicked',
                 label: `Share ${shareResultsName}`,
@@ -243,25 +243,11 @@ function SongsTable({ list, onSelect, listName, page, short = false, extraClass 
     };
 
     const copyShareSongLink = () => {
-        const shareData = {
-            name: shareItem.title,
-            type: 'song',
-            songs: [shareItem.pbId],
-            shareId: shareSongId,
-        };
-        fetch('/api/create-share', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ data: shareData }),
-        }).then((res) => {
-            setShareSongLinkCopied(true);
-            ReactGA.event({
-                category: 'Songs table',
-                action: 'Share song clicked',
-                label: `Share ${shareItem.title}`,
-            });
+        setShareSongLinkCopied(true);
+        event({
+            category: 'Songs table',
+            action: 'Share song clicked',
+            label: `Share ${shareItem.title}`,
         });
     };
 
@@ -393,7 +379,7 @@ function SongsTable({ list, onSelect, listName, page, short = false, extraClass 
                                                 className="table__body__row-title__actions-button table__body__row-title__actions-button--smaller"
                                                 onClick={() => {
                                                     dispatch(addToQueue(item));
-                                                    ReactGA.event({
+                                                    event({
                                                         category: 'Songs table',
                                                         action: 'Add to Queue clicked',
                                                         label: `Add to Queue ${item.artistName} - ${item.title}`,
@@ -418,7 +404,7 @@ function SongsTable({ list, onSelect, listName, page, short = false, extraClass 
                                                 onClick={() => {
                                                     setSimilarTo(item);
                                                     dispatch(setState('similarOpened', true));
-                                                    ReactGA.event({
+                                                    event({
                                                         category: 'Songs table',
                                                         action: 'Similar songs clicked',
                                                         label: `Similar to ${item.artistName} - ${item.title}`,
@@ -445,7 +431,7 @@ function SongsTable({ list, onSelect, listName, page, short = false, extraClass 
                                                         })
                                                     );
                                                     dispatch(setState('licenseOpened', true));
-                                                    ReactGA.event({
+                                                    event({
                                                         category: 'Songs table',
                                                         action: 'License clicked',
                                                         label: `License for ${item.artistName} - ${item.title}`,
@@ -599,7 +585,10 @@ function SongsTable({ list, onSelect, listName, page, short = false, extraClass 
                             <div className="share__item__artist">by {shareItem.artistName}</div>
                         </div>
                     </div>
-                    <CopyToClipboard text={`${baseUrl}?shareId=${shareSongId}`} onCopy={() => copyShareSongLink()}>
+                    <CopyToClipboard
+                        text={`${baseUrl}song/${shareItem.pbId}-${shareItem.title.toLowerCase().split(' ').join('-')}`}
+                        onCopy={() => copyShareSongLink()}
+                    >
                         {shareSongLinkCopied ? (
                             <div className="share__button share__button--copied">
                                 <DoneSvg />

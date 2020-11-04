@@ -3,7 +3,7 @@ import React, { memo, useMemo, useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import ReactGA from 'react-ga';
+import { event } from 'react-ga';
 import selectors from 'selectors';
 import SpecialLicenseBanner from 'components/special-license-banner';
 import { BUY_LICENSE_TYPES } from 'utils/constants';
@@ -104,14 +104,14 @@ function LicensePanel({ visible, style }) {
                                 if (isCustom) {
                                     dispatch(setCustomLicenseType(key));
                                     dispatch(setState('customLicenseOpened', true));
-                                    ReactGA.event({
+                                    event({
                                         category: 'License panel',
                                         action: 'Custom license clicked',
                                         label: `Custom license for ${key}`,
                                     });
                                 } else {
                                     setChildNav(key);
-                                    ReactGA.event({
+                                    event({
                                         category: 'License panel',
                                         action: 'License clicked',
                                         label: `License type ${key}`,
@@ -242,7 +242,7 @@ function LicensePanel({ visible, style }) {
     const addItemToCart = (licType, price) => {
         dispatch(addToCart(licType, price, song));
         dispatch(setState('cartOpened', true));
-        ReactGA.event({
+        event({
             category: 'License panel',
             action: 'License clicked',
             label: `Add to cart license ${licType} for ${song.title}`,
