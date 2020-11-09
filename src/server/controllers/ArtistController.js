@@ -1,5 +1,6 @@
 const Artist = require('../models/Artist');
 const Writer = require('../models/Writer');
+const FeatArtist = require('../models/FeatArtist');
 const Song = require('../models/Song');
 
 class ArtistController {
@@ -72,6 +73,24 @@ class ArtistController {
      */
     async createWriter(data) {
         return await Writer.create(data);
+    }
+
+    /**
+     * Async insert data into db
+     * @param {Object} data object with data
+     * @returns {Data}
+     */
+    async createFeatArtist(data) {
+        return await FeatArtist.create(data);
+    }
+
+    /**
+     * Returns feat artist by name
+     * @param {String} name name of the feat artist to get
+     * @returns {Array}
+     */
+    getFeatArtistByName(name) {
+        return FeatArtist.findOne({ slug: name });
     }
 }
 

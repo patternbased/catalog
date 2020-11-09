@@ -13,6 +13,7 @@ import Button from 'components/button';
 import SimilarSongsPanel from 'components/similar-songs';
 import BackToTop from 'components/back-to-top';
 import Modal from 'components/modal';
+import SongBy from 'components/song-by';
 import selectors from 'selectors';
 
 import { addToQueue, setCurrentSong, setCustomWorkSong, setLicenseSong } from 'actions/library';
@@ -353,21 +354,18 @@ function SongsTable({ list, onSelect, listName, page, short = false, extraClass 
                                                     >
                                                         <span>{item.title}</span>{' '}
                                                     </Link>
-                                                    <Link
-                                                        to={`/project/${item.artistName
-                                                            .toLowerCase()
-                                                            .split(' ')
-                                                            .join('-')}`}
-                                                    >
-                                                        <span className="table__body__row-title__wrapper-song-title table__body__row-title__wrapper-song-title--artist">
-                                                            by {item.artistName}
-                                                        </span>
-                                                    </Link>
+                                                    <SongBy
+                                                        project={item.artistName}
+                                                        feat={item.featArtist}
+                                                        classNames="table__body__row-title__wrapper-song-title table__body__row-title__wrapper-song-title--artist"
+                                                    />
                                                 </p>
                                                 <p className="table__body__row-title__wrapper-song-artist">
-                                                    <span className="table__body__row-title__wrapper-song-artist--name">
-                                                        by {item.artistName}
-                                                    </span>
+                                                    <SongBy
+                                                        project={item.artistName}
+                                                        feat={item.featArtist}
+                                                        classNames="table__body__row-title__wrapper-song-artist--name"
+                                                    />
                                                     <span className="table__body__row-title__wrapper-song-artist--description">
                                                         {`${item.description.substr(0, 150)}...`}
                                                     </span>

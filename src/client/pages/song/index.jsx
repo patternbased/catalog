@@ -14,6 +14,7 @@ import SimilarSongsPanel from 'components/similar-songs';
 import Modal from 'components/modal';
 import Header from 'components/header';
 import Tooltip from 'components/filters/tooltip';
+import SongBy from 'components/song-by';
 
 import { setState } from 'actions/general';
 import { getSongList, setCurrentSong, setCustomWorkSong, setLicenseSong, addToQueue } from 'actions/library';
@@ -175,9 +176,11 @@ function SongPage(props) {
                             <div className="song__column">
                                 <span className="desktop-hide">
                                     <div className="song__title">{song.title}</div>
-                                    <Link to={`/project/${song.artistName.toLowerCase().split(' ').join('-')}`}>
-                                        <div className="song__artist">by {song.artistName}</div>
-                                    </Link>
+                                    <SongBy
+                                        project={song.artistName}
+                                        feat={song.featArtist}
+                                        classNames="song__artist"
+                                    />
                                     <div className="song__actions">
                                         <AddToQueueSvg
                                             onClick={() => {
@@ -322,9 +325,11 @@ function SongPage(props) {
                             <div className="song__column">
                                 <span className="mobile-hide">
                                     <div className="song__title">{song.title}</div>
-                                    <Link to={`/project/${song.artistName.toLowerCase().split(' ').join('-')}`}>
-                                        <div className="song__artist">by {song.artistName}</div>
-                                    </Link>
+                                    <SongBy
+                                        project={song.artistName}
+                                        feat={song.featArtist}
+                                        classNames="song__artist"
+                                    />
                                     <div className="song__actions">
                                         <AddToQueueSvg
                                             onClick={() => {
@@ -737,7 +742,11 @@ function SongPage(props) {
                             <img src={shareItem.cover} />
                             <div>
                                 <div className="share__item__title">{shareItem.title}</div>
-                                <div className="share__item__artist">by {shareItem.artistName}</div>
+                                <SongBy
+                                    project={song.artistName}
+                                    feat={song.featArtist}
+                                    classNames="share__item__artist"
+                                />
                             </div>
                         </div>
                         <CopyToClipboard

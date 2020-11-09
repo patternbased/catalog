@@ -10,6 +10,7 @@ import uuid from 'react-uuid';
 import selectors from 'selectors';
 
 import Modal from 'components/modal';
+import SongBy from 'components/song-by';
 
 import { setState } from 'actions/general';
 import { removeFromQueue, reorderQueue, setCurrentSong, clearQueue } from 'actions/library';
@@ -423,7 +424,7 @@ function _renderQueueSong(song, current, hovered, onRemove, playSong) {
                             current === song ? 'queue__song__artist queue__song__artist--blue' : 'queue__song__artist'
                         }
                     >
-                        by {song.artistName} | {song.length}
+                        <SongBy project={song.artistName} feat={song.featArtist} /> | {song.length}
                     </div>
                 </Link>
             </div>

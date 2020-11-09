@@ -58,13 +58,15 @@ module.exports = async () => {
     const songsSheet = sheets.find((s) => s.title === 'Songs');
     const albumsSheet = sheets.find((s) => s.title === 'Albums');
     const allArtistsSheet = sheets.find((s) => s.title === 'Artists');
+    const featArtistsSheet = sheets.find((s) => s.title === 'FeatArtists');
 
     const rows = await getRows(songsSheet, 2, songsSheet.rowCount);
     const albums = await getRows(albumsSheet, 1, albumsSheet.rowCount);
     let visualArtists = await getRows(allArtistsSheet, 2, allArtistsSheet.rowCount);
+    const featArtists = await getRows(featArtistsSheet, 1, featArtistsSheet.rowCount);
     visualArtists = visualArtists.filter((a) => a.type === 'V');
 
-    var separators = [',', ';', ', ', '; '];
+    var separators = [', ', '; ', ',', ';'];
 
     return rows.map((row) => {
         const songArt = albums.find((a) => a.albumid === row.catnum);
@@ -80,6 +82,21 @@ module.exports = async () => {
                     });
                 }
             });
+        }
+        const featArts = [];
+        if (row.featartist) {
+            const allArtists = row.featartist.split(new RegExp(separators.join('|'), 'g'));
+            for (var i = 0; i < allArtists.length; i++) {
+                const found = featArtists.find(
+                    (v) => v.artistname.toLowerCase().trim() === allArtists[i].toLowerCase().trim()
+                );
+                if (found) {
+                    featArts.push({
+                        name: found.artistname,
+                        url: found.url,
+                    });
+                }
+            }
         }
         return {
             pbId: row.id,
@@ -108,7 +125,7 @@ module.exports = async () => {
             similarArtists: row.similarartists ? row.similarartists.split(new RegExp(separators.join('|'), 'g')) : [],
             licenseType: row.licensetype,
             artistName: row.artistname,
-            featArtist: row.featartist ? row.featartist.split(new RegExp(separators.join('|'), 'g')) : [],
+            featArtist: featArts,
             writers: row.writers ? row.writers.split(new RegExp(separators.join('|'), 'g')) : [],
             label: row.label,
             albumId: row.catnum === 'PBL01' || row.catnum === '' ? 'PBC01' : row.catnum,

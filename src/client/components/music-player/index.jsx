@@ -15,6 +15,7 @@ import Button from 'components/button';
 import QueuePanel from 'components/queue';
 import SimilarSongsPanel from 'components/similar-songs';
 import Modal from 'components/modal';
+import SongBy from 'components/song-by';
 
 import { setState } from 'actions/general';
 import { addToQueue, setCurrentSong, setCustomWorkSong, setLicenseSong } from 'actions/library';
@@ -165,9 +166,11 @@ function MusicPlayer({ list, play }) {
                                 <p className="music-player__section--content__song__details-title">
                                     {currentPlaying.title}&nbsp;
                                 </p>
-                                <p className="music-player__section--content__song__details-author">
-                                    by {currentPlaying.artistName}
-                                </p>
+                                <SongBy
+                                    project={currentPlaying.artistName}
+                                    feat={currentPlaying.featArtist}
+                                    classNames="music-player__section--content__song__details-author"
+                                />
                                 <p className="music-player__section--content__song__details-duration">
                                     {_formatTime(duration)}
                                 </p>
@@ -355,18 +358,11 @@ function MusicPlayer({ list, play }) {
                                     {currentPlaying.title}
                                 </p>
                             </Link>
-                            <p className="music-player__section--content__song__details-author music-player__section--content__song__details-author--inline">
-                                by{' '}
-                                <Link
-                                    to={
-                                        Object.keys(currentPlaying).length
-                                            ? `/project/${currentPlaying.artistName.toLowerCase().split(' ').join('-')}`
-                                            : ''
-                                    }
-                                >
-                                    {currentPlaying.artistName}
-                                </Link>
-                            </p>
+                            <SongBy
+                                project={currentPlaying.artistName}
+                                feat={currentPlaying.featArtist}
+                                classNames="music-player__section--content__song__details-author music-player__section--content__song__details-author--inline"
+                            />
                             <div className="music-player__section--content__song__details">
                                 <div className="music-player__section--content__song__details-progress">
                                     <Slider

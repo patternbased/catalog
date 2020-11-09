@@ -13,6 +13,7 @@ import { setState } from 'actions/general';
 import { addToQueue, setCurrentSong } from 'actions/library';
 
 import Modal from 'components/modal';
+import SongBy from 'components/song-by';
 
 import ShareIcon from 'assets/images/share-icon-dark.svg';
 import CopyLinkSvg from 'assets/images/copy-link.svg';
@@ -182,7 +183,8 @@ function SimilarSongsPanel({ visible, onClose, similarTo }) {
                                 }
                             >
                                 <div className="similar__song__artist">
-                                    by {similarTo.artistName} | {similarTo.length}
+                                    <SongBy project={similarTo.artistName} feat={similarTo.featArtist} /> |{' '}
+                                    {similarTo.length}
                                 </div>
                             </Link>
                         </div>
@@ -288,11 +290,10 @@ function _renderSimilarSong(song, hovered, playSimilarSong) {
                 >
                     <div className="similar__song__title">{song.title}</div>
                 </Link>
-                <Link to={`/project/${song.artistName.toLowerCase().split(' ').join('-')}`}>
-                    <div className="similar__song__artist">
-                        by {song.artistName} | {song.length}
-                    </div>
-                </Link>
+
+                <div className="similar__song__artist">
+                    <SongBy project={song.artistName} feat={song.featArtist} /> | {song.length}
+                </div>
             </div>
         </>
     );
