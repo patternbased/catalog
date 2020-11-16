@@ -98,13 +98,15 @@ function AboutPage() {
                             and emotions. A good composer can make that happen whether you are telling a story about the
                             struggles of college athletes in the Mississippi swamplands, the future of technology in
                             Singapore or you just need a unique bombastic build for the unveiling of your new label.
-                            <br /> We love the composing process and have created custom music for just about anything
-                            one could think of from films and Netflix/streaming shows to VR and interactive
-                            installations. We like working on unique original projects from around the world and are
-                            open to a wide range of budgets depending on the project. We dream of working on a colorful
-                            cartoon like Tuca and Bertie or Adventure Time or a VR experience that increases empathy or
-                            creates meditative states or perhaps UI sound design for the next generation of electric
-                            vehicles. Get at us with your wildest ideas.
+                        </div>
+                        <div className="about__copy">
+                            We love the composing process and have created custom music for just about anything one
+                            could think of from films and Netflix/streaming shows to VR and interactive installations.
+                            We like working on unique original projects from around the world and are open to a wide
+                            range of budgets depending on the project. We dream of working on a colorful cartoon like
+                            Tuca and Bertie or Adventure Time or a VR experience that increases empathy or creates
+                            meditative states or perhaps UI sound design for the next generation of electric vehicles.
+                            Get at us with your wildest ideas.
                         </div>
                         <div className="about__title">Customizing</div>
                         <div className="about__copy">

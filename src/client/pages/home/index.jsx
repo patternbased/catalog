@@ -363,7 +363,9 @@ const _filterSongs = (songs, filters) => {
                         }
                     });
                 }
-                return similar === Object.keys(filters).length;
+                return filters.search
+                    ? similar === Object.keys(filters).length - 1 + filters.search.length
+                    : similar === Object.keys(filters).length;
             })
             .sort((a, b) => {
                 const aSize = parseFloat(a.rate);

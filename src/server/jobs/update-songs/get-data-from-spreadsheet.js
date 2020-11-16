@@ -111,7 +111,7 @@ module.exports = async () => {
             mood: row.pbmood,
             experimental: row.pbexperimental,
             grid: row.pborganic,
-            stems: row.stemsapspn,
+            stems: row.stems,
             description: row.description,
             genre: row.genre,
             subgenreA: row.subgenrea,

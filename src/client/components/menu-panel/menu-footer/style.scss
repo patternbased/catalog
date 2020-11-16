@@ -1,7 +1,7 @@
 @import '../../../styles/constants';
 
 .menu-footer {
-    padding: 40px 55px;
+    padding: 40px 0;
     background-color: $lighter-grey;
     height: 400px;
 
@@ -90,7 +90,7 @@
                 margin-right: 0;
             }
 
-            &:nth-child(n + 5) {
+            &:nth-child(n + 7) {
                 margin-bottom: 0;
             }
 
@@ -101,6 +101,7 @@
 
         &--full {
             max-width: 360px;
+            text-align: center;
 
             a {
                 margin-bottom: 0;

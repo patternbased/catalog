@@ -143,6 +143,9 @@
                 color: white;
             }
         }
+        &__nohover {
+            cursor: default;
+        }
         &__more {
             font-size: 40px;
             font-weight: 300;

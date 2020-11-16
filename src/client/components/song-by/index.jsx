@@ -17,12 +17,12 @@ function SongBy({ project, feat, classNames }) {
                 <>
                     (feat.
                     {feat.map((art, index) => (
-                        <>
-                            <a href={art.url} key={index} target="_blank" rel="noopener noreferrer">
+                        <span key={index}>
+                            <a href={art.url} target="_blank" rel="noopener noreferrer">
                                 {art.name}
                             </a>
                             {index < feat.length - 1 && ', '}
-                        </>
+                        </span>
                     ))}
                     )
                 </>

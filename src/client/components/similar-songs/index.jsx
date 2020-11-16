@@ -91,14 +91,6 @@ function SimilarSongsPanel({ visible, onClose, similarTo }) {
         onClose();
     };
 
-    const mainHoverClass = useMemo(
-        () =>
-            classnames('similar__song similar__song--main', {
-                'similar__song--main-hovered': checkIfHovered('main'),
-            }),
-        [hovered]
-    );
-
     const openShareModal = () => {
         setShareItem(similarTo);
         setShareOpened(true);
@@ -154,12 +146,8 @@ function SimilarSongsPanel({ visible, onClose, similarTo }) {
                         )}
                     </div>
 
-                    <div
-                        className={mainHoverClass}
-                        onMouseEnter={() => addToHovered('main')}
-                        onMouseLeave={() => removeFromHovered('main')}
-                    >
-                        <div className="similar__song__cover">
+                    <div className="similar__song similar__song--main">
+                        <div className="similar__song__cover similar__song__nohover">
                             <img src={similarTo.cover} />
                         </div>
                         <div className="similar__song__wrapper">
@@ -173,7 +161,7 @@ function SimilarSongsPanel({ visible, onClose, similarTo }) {
                                         : ''
                                 }
                             >
-                                <div className="similar__song__title">{similarTo.title}</div>
+                                <div className="similar__song__title similar__song__nohover">{similarTo.title}</div>
                             </Link>
                             <Link
                                 to={
@@ -182,7 +170,7 @@ function SimilarSongsPanel({ visible, onClose, similarTo }) {
                                         : ''
                                 }
                             >
-                                <div className="similar__song__artist">
+                                <div className="similar__song__artist similar__song__nohover">
                                     <SongBy project={similarTo.artistName} feat={similarTo.featArtist} /> |{' '}
                                     {similarTo.length}
                                 </div>

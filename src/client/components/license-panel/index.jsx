@@ -207,7 +207,7 @@ function LicensePanel({ visible, style }) {
                                 key={index}
                                 onClick={() => addItemToCart(price, child.details.prices[price])}
                                 onMouseOverCapture={() => showAddToCart(index)}
-                                onMouseOutCapture={() => hideAddToCart(index)}
+                                onMouseLeave={() => hideAddToCart(index)}
                             >
                                 {priceHovered.includes(index) ? (
                                     <>
