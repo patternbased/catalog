@@ -109,7 +109,7 @@ function AlbumPage(props) {
 
     const playSong = (val) => {
         dispatch(setCurrentSong(val));
-        dispatch(addToQueue(val));
+        addToQueue(dispatch, val);
         dispatch(setState('songPlaying', !songIsPlaying));
         event({
             category: 'Album page',
@@ -138,12 +138,10 @@ function AlbumPage(props) {
                                     <div className="album__actions">
                                         <AddToQueueSvg
                                             onClick={() => {
-                                                dispatch(
-                                                    addToQueue({
-                                                        list: albumList.concat(albumRestList),
-                                                        name: album.title,
-                                                    })
-                                                );
+                                                addToQueue(dispatch, {
+                                                    list: albumList.concat(albumRestList),
+                                                    name: album.title,
+                                                });
                                                 event({
                                                     category: 'Album page',
                                                     action: 'Add to Queue clicked',
@@ -182,12 +180,10 @@ function AlbumPage(props) {
                                     <div className="album__actions">
                                         <AddToQueueSvg
                                             onClick={() => {
-                                                dispatch(
-                                                    addToQueue({
-                                                        list: albumList.concat(albumRestList),
-                                                        name: album.title,
-                                                    })
-                                                );
+                                                addToQueue(dispatch, {
+                                                    list: albumList.concat(albumRestList),
+                                                    name: album.title,
+                                                });
                                                 event({
                                                     category: 'Album page',
                                                     action: 'Add to Queue clicked',

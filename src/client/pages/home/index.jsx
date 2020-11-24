@@ -141,7 +141,6 @@ function HomePage({ history }) {
     };
 
     const playSong = (song) => {
-        dispatch(setCurrentSong(song));
         dispatch(setState('songPlaying', true));
     };
 

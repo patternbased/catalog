@@ -20,7 +20,7 @@ export const ACTIONS = {
  * Populates redux stock list
  * @returns {Function}
  */
-export const getSongList = () => async dispatch => {
+export const getSongList = () => async (dispatch) => {
     const data = await api.get('/api/all-songs');
 
     if (!data.error) {
@@ -36,7 +36,7 @@ export const getSongList = () => async dispatch => {
  * @param {Array} value the value to set
  * @returns {Object}
  */
-export const setCurrentPlaylist = value => ({
+export const setCurrentPlaylist = (value) => ({
     type: ACTIONS.SET_CURRENT_PLAYLIST,
     value,
 });
@@ -46,7 +46,7 @@ export const setCurrentPlaylist = value => ({
  * @param {Array} value the value to set
  * @returns {Object}
  */
-export const setCurrentQueue = value => ({
+export const setCurrentQueue = (value) => ({
     type: ACTIONS.SET_CURRENT_QUEUE,
     value,
 });
@@ -56,27 +56,37 @@ export const setCurrentQueue = value => ({
  * @param {Array} value the value to set
  * @returns {Object}
  */
-export const reorderQueue = value => ({
+export const reorderQueue = (value) => ({
     type: ACTIONS.REORDER_QUEUE,
     value,
 });
 
 /**
  * Adds songs to the queue
+ * @param {Function} dispatch dispatch
  * @param {Object} value the song to add
- * @returns {Object}
+ * @param {Boolean} inBetween if song should be added after current playing
  */
-export const addToQueue = value => ({
-    type: ACTIONS.ADD_TO_QUEUE,
-    value,
-});
+export const addToQueue = (dispatch, value, inBetween = false) => {
+    dispatch({
+        type: ACTIONS.ADD_TO_QUEUE,
+        inBetween,
+        value,
+    });
+    if (inBetween) {
+        dispatch({
+            type: ACTIONS.SET_CURRENT_SONG,
+            value,
+        });
+    }
+};
 
 /**
  * Sets the current song
  * @param {Object} value the song to add
  * @returns {Object}
  */
-export const setCurrentSong = value => ({
+export const setCurrentSong = (value) => ({
     type: ACTIONS.SET_CURRENT_SONG,
     value,
 });
@@ -86,7 +96,7 @@ export const setCurrentSong = value => ({
  * @param {Object} value the song to add
  * @returns {Object}
  */
-export const setCustomWorkSong = value => ({
+export const setCustomWorkSong = (value) => ({
     type: ACTIONS.SET_CUSTOM_WORK_SONG,
     value,
 });
@@ -96,7 +106,7 @@ export const setCustomWorkSong = value => ({
  * @param {Object} value the song to add
  * @returns {Object}
  */
-export const setLicenseSong = value => ({
+export const setLicenseSong = (value) => ({
     type: ACTIONS.SET_LICENSE_SONG,
     value,
 });
@@ -106,7 +116,7 @@ export const setLicenseSong = value => ({
  * @param {Object} value the song to add
  * @returns {Object}
  */
-export const setCustomLicenseSong = value => ({
+export const setCustomLicenseSong = (value) => ({
     type: ACTIONS.SET_CUSTOM_LICENSE_SONG,
     value,
 });
@@ -116,7 +126,7 @@ export const setCustomLicenseSong = value => ({
  * @param {String} value the type
  * @returns {Object}
  */
-export const setCustomLicenseType = value => ({
+export const setCustomLicenseType = (value) => ({
     type: ACTIONS.SET_CUSTOM_LICENSE_TYPE,
     value,
 });
@@ -134,7 +144,7 @@ export const clearQueue = () => ({
  * @param {Object} value the song to add
  * @returns {Object}
  */
-export const removeFromQueue = value => ({
+export const removeFromQueue = (value) => ({
     type: ACTIONS.REMOVE_FROM_QUEUE,
     value,
 });

@@ -190,7 +190,7 @@ function SimilarSongsPanel({ visible, onClose, similarTo }) {
                             >
                                 {_renderSimilarSong(song, checkIfHovered(index), () => {
                                     dispatch(setCurrentSong(song));
-                                    dispatch(addToQueue(song));
+                                    addToQueue(dispatch, song);
                                     event({
                                         category: 'Similar songs panel',
                                         action: 'Play song clicked',
@@ -199,7 +199,7 @@ function SimilarSongsPanel({ visible, onClose, similarTo }) {
                                 })}
                                 <AddToQueueSvg
                                     onClick={() => {
-                                        dispatch(addToQueue(song));
+                                        addToQueue(dispatch, song);
                                         event({
                                             category: 'Similar songs panel',
                                             action: 'Add to Queue clicked',

@@ -28,12 +28,22 @@ const setCurrentQueue = (state, action) => ({
 
 const addToQueue = (state, action) => {
     const copy = [...state.queue];
-    const found = copy.find(i => i.pbId === action.value.pbId);
+    const found = copy.find((i) => i.pbId === action.value.pbId);
     if (found) {
         return {
             ...state,
         };
     } else {
+        if (state.currentSong && action.inBetween) {
+            const foundCurrentIndex = copy.indexOf(copy.find((i) => i.pbId === state.currentSong.pbId));
+            if (foundCurrentIndex > -1) {
+                copy.splice(foundCurrentIndex + 1, 0, action.value);
+                return {
+                    ...state,
+                    queue: copy,
+                };
+            }
+        }
         return {
             ...state,
             queue: [...state.queue, action.value],
@@ -61,14 +71,14 @@ const setCustomLicenseType = (state, action) => ({
     customLicenseType: action.value,
 });
 
-const clearQueue = state => ({
+const clearQueue = (state) => ({
     ...state,
     queue: [],
 });
 
 const removeFromQueue = (state, action) => ({
     ...state,
-    queue: [...state.queue.filter(x => x !== action.value)],
+    queue: [...state.queue.filter((x) => x !== action.value)],
 });
 
 const reorderQueue = (state, action) => ({

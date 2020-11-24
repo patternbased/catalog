@@ -242,7 +242,7 @@ function FiltersPanel({ visible, style, showSearch, onSearchSelected }) {
     const addListToQueue = () => {
         dispatch(setState('songPlaying', true));
         dispatch(setCurrentSong(playlist[0]));
-        dispatch(addToQueue({ list: playlist, name: createPlaylistName() }));
+        addToQueue(dispatch, { list: playlist, name: createPlaylistName() });
     };
     const createPlaylistName = () => {
         let label = '';

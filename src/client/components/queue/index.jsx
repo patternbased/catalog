@@ -117,6 +117,16 @@ function QueuePanel({ visible, onClose }) {
             return;
         }
 
+        if (result.destination.index > result.source.index) {
+            if (songs[result.destination.index] && songs[result.destination.index].list) {
+                return;
+            }
+        } else if (result.destination.index < result.source.index) {
+            if (songs[result.destination.index - 1] && songs[result.destination.index - 1].list) {
+                return;
+            }
+        }
+
         if (result.destination.index === result.source.index) {
             return;
         }
@@ -158,197 +168,145 @@ function QueuePanel({ visible, onClose }) {
     };
 
     return (
-        <div className={panelClass}>
-            <div className="queue__header">
-                <img
-                    src="/assets/images/close-icon.png"
-                    onClick={() => {
-                        closeQueue();
-                        setShowMore(false);
-                    }}
-                />
-                <div className="queue__header__name">QUEUE</div>
-                <img src="/assets/images/more-icon.png" onClick={() => setShowMore(!showMore)} />
-                {showMore && (
-                    <ul className="queue__more">
-                        <li
-                            className="queue__more__item"
-                            onClick={() => {
-                                setShareOpened(true);
-                                setShowMore(false);
-                            }}
-                        >
-                            <ShareIcon />
-                            Share This Queue
-                        </li>
-                        <li
-                            className="queue__more__item"
-                            onClick={() => {
-                                dispatch(clearQueue());
-                                setShowMore(false);
-                                event({
-                                    category: 'Queue panel',
-                                    action: 'Delete queue clicked',
-                                });
-                            }}
-                        >
-                            <DeleteIcon />
-                            Delete All Tracks
-                        </li>
-                    </ul>
-                )}
-                {shareOpened && (
-                    <Modal opened={shareOpened} modifier="share queue-share">
-                        <img
-                            src="/assets/images/close-icon.png"
-                            onClick={() => setShareOpened(false)}
-                            className="share__close"
-                        />
-                        <div className="share__header">Share This Queue</div>
-                        <div className="share__item">
-                            <img src="/assets/images/table/results-play.png" />
-                            <div>
-                                {nameEditing ? (
-                                    <input
-                                        type="text"
-                                        className="share__input"
-                                        placeholder={shareQueueName}
-                                        value={editedName}
-                                        onChange={(e) => setEditedName(e.target.value)}
-                                    />
-                                ) : (
-                                    <div className="share__item__title" onClick={() => setNameEditing(true)}>
-                                        {shareQueueName}
-                                        <EditIconSvg fill={'#0092c5'} />
-                                    </div>
-                                )}
-                                {!nameEditing && <div className="share__item__artist">{songs.length} Tracks</div>}
-                            </div>
-                        </div>
-                        {nameEditing ? (
-                            <div
-                                className={classnames('share__button', {
-                                    'share__button--disabled': editedName === '',
-                                    'share__button--active': editedName.length,
-                                })}
+        <>
+            <div className={panelClass}>
+                <div className="queue__header">
+                    <img
+                        src="/assets/images/close-icon.png"
+                        onClick={() => {
+                            closeQueue();
+                            setShowMore(false);
+                        }}
+                    />
+                    <div className="queue__header__name">QUEUE</div>
+                    <img src="/assets/images/more-icon.png" onClick={() => setShowMore(!showMore)} />
+                    {showMore && (
+                        <ul className="queue__more">
+                            <li
+                                className="queue__more__item"
                                 onClick={() => {
-                                    if (editedName.length) {
-                                        setShareQueueName(editedName);
-                                        setNameEditing(false);
-                                    }
+                                    setShareOpened(true);
+                                    setShowMore(false);
                                 }}
                             >
-                                <DoneSvg />
-                                Done
-                            </div>
-                        ) : (
-                            <CopyToClipboard text={`${baseUrl}?shareId=${shareListId}`} onCopy={() => copyShareLink()}>
-                                {shareLinkCopied ? (
-                                    <div className="share__button share__button--copied">
-                                        <DoneSvg />
-                                        Copied to clipboard!
-                                    </div>
-                                ) : (
-                                    <div className="share__button">
-                                        <CopyLinkSvg />
-                                        Copy Share Link
-                                    </div>
-                                )}
-                            </CopyToClipboard>
-                        )}
-                    </Modal>
-                )}
-            </div>
-            <DragDropContext onDragEnd={onDragEnd}>
-                <Droppable droppableId="list">
-                    {(provided) => (
-                        <div className="queue__content" ref={provided.innerRef} {...provided.droppableProps}>
-                            {songs.map((song, index) => (
-                                <Draggable
-                                    key={song.name || song.pbId}
-                                    draggableId={song.name || song.pbId}
-                                    index={index}
-                                >
-                                    {(provided, snapshot) => (
-                                        <div
-                                            ref={provided.innerRef}
-                                            {...provided.draggableProps}
-                                            {...provided.dragHandleProps}
+                                <ShareIcon />
+                                Share This Queue
+                            </li>
+                            <li
+                                className="queue__more__item"
+                                onClick={() => {
+                                    dispatch(clearQueue());
+                                    setShowMore(false);
+                                    event({
+                                        category: 'Queue panel',
+                                        action: 'Delete queue clicked',
+                                    });
+                                }}
+                            >
+                                <DeleteIcon />
+                                Delete All Tracks
+                            </li>
+                        </ul>
+                    )}
+                </div>
+                <DragDropContext onDragEnd={onDragEnd}>
+                    <Droppable droppableId="list">
+                        {(provided) => (
+                            <div className="queue__content" ref={provided.innerRef} {...provided.droppableProps}>
+                                {songs.map((song, index) => (
+                                    <>
+                                        <Draggable
+                                            key={song.name || song.pbId}
+                                            draggableId={song.name || song.pbId}
+                                            index={index}
                                         >
-                                            <div
-                                                key={index}
-                                                className={songWrapperClass(index)}
-                                                onMouseOver={() => addToHovered(index)}
-                                                onMouseLeave={() => removeFromHovered(index)}
-                                            >
-                                                {song.name ? (
-                                                    <>
-                                                        {checkIfHovered(index) && (
-                                                            <img
-                                                                src="/assets/images/queue/handle.png"
-                                                                className="queue__song__handle"
-                                                            />
-                                                        )}
-                                                        <img
-                                                            src="/assets/images/queue/stack.png"
-                                                            className="queue__song__cover"
-                                                        />
-                                                        <div
-                                                            className={
-                                                                checkIfHovered(index)
-                                                                    ? 'queue__song__wrapper queue__song__wrapper--hovered'
-                                                                    : 'queue__song__wrapper'
-                                                            }
-                                                        >
-                                                            <div
-                                                                className="queue__song__name"
-                                                                dangerouslySetInnerHTML={{ __html: song.name }}
-                                                            ></div>
-                                                            <div className="queue__song__count">
-                                                                {song.list.length} Tracks
-                                                            </div>
-                                                        </div>
-                                                        {checkIfHovered(index) && (
+                                            {(provided, snapshot) => (
+                                                <div
+                                                    ref={provided.innerRef}
+                                                    {...provided.draggableProps}
+                                                    {...provided.dragHandleProps}
+                                                >
+                                                    <div
+                                                        key={index}
+                                                        className={songWrapperClass(index)}
+                                                        onMouseOver={() => addToHovered(index)}
+                                                        onMouseLeave={() => removeFromHovered(index)}
+                                                    >
+                                                        {song.name ? (
                                                             <>
+                                                                {checkIfHovered(index) && (
+                                                                    <img
+                                                                        src="/assets/images/queue/handle.png"
+                                                                        className="queue__song__handle"
+                                                                    />
+                                                                )}
                                                                 <img
-                                                                    src="/assets/images/queue/delete.png"
-                                                                    className="queue__song__delete"
-                                                                    onClick={() => removeSongFromQueue(song)}
+                                                                    src="/assets/images/queue/stack.png"
+                                                                    className="queue__song__cover"
                                                                 />
                                                                 <div
-                                                                    className="queue__song__more"
-                                                                    onClick={() => addToExpanded(index)}
+                                                                    className={
+                                                                        checkIfHovered(index)
+                                                                            ? 'queue__song__wrapper queue__song__wrapper--hovered'
+                                                                            : 'queue__song__wrapper'
+                                                                    }
                                                                 >
-                                                                    {checkIfExpanded(index) ? '' : '+'}
+                                                                    <div
+                                                                        className="queue__song__name"
+                                                                        dangerouslySetInnerHTML={{ __html: song.name }}
+                                                                    ></div>
+                                                                    <div className="queue__song__count">
+                                                                        {song.list.length} Tracks
+                                                                    </div>
                                                                 </div>
+                                                                {checkIfHovered(index) && (
+                                                                    <>
+                                                                        <img
+                                                                            src="/assets/images/queue/delete.png"
+                                                                            className="queue__song__delete"
+                                                                            onClick={() => removeSongFromQueue(song)}
+                                                                        />
+                                                                        <div
+                                                                            className="queue__song__more"
+                                                                            onClick={() => addToExpanded(index)}
+                                                                        >
+                                                                            {checkIfExpanded(index) ? '' : '+'}
+                                                                        </div>
+                                                                    </>
+                                                                )}
+                                                                {checkIfExpanded(index) && (
+                                                                    <div
+                                                                        className="queue__song__more"
+                                                                        onClick={() => addToExpanded(index)}
+                                                                    >
+                                                                        -
+                                                                    </div>
+                                                                )}
                                                             </>
+                                                        ) : (
+                                                            _renderQueueSong(
+                                                                song,
+                                                                currentSong,
+                                                                true,
+                                                                checkIfHovered(index),
+                                                                true,
+                                                                () => removeSongFromQueue(song),
+                                                                () => {
+                                                                    dispatch(setCurrentSong(song));
+                                                                    dispatch(setState('songPlaying', true));
+                                                                    event({
+                                                                        category: 'Queue panel',
+                                                                        action: 'Play song clicked',
+                                                                        label: `Play song ${song.title}`,
+                                                                    });
+                                                                }
+                                                            )
                                                         )}
-                                                        {checkIfExpanded(index) && (
-                                                            <div
-                                                                className="queue__song__more"
-                                                                onClick={() => addToExpanded(index)}
-                                                            >
-                                                                -
-                                                            </div>
-                                                        )}
-                                                    </>
-                                                ) : (
-                                                    _renderQueueSong(
-                                                        song,
-                                                        currentSong,
-                                                        checkIfHovered(index),
-                                                        () => removeSongFromQueue(song),
-                                                        () => {
-                                                            dispatch(setCurrentSong(song));
-                                                            event({
-                                                                category: 'Queue panel',
-                                                                action: 'Play song clicked',
-                                                                label: `Play song ${song.title}`,
-                                                            });
-                                                        }
-                                                    )
-                                                )}
-                                            </div>
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </Draggable>
+                                        <>
                                             {checkIfExpanded(index) && (
                                                 <div className="queue__sublist">
                                                     {song.list.map((song, index) => (
@@ -361,10 +319,13 @@ function QueuePanel({ visible, onClose }) {
                                                             {_renderQueueSong(
                                                                 song,
                                                                 currentSong,
+                                                                false,
                                                                 checkIfHovered(`sublist-${index}`),
-                                                                () => removeSongFromQueue(song),
+                                                                false,
+                                                                () => {},
                                                                 () => {
                                                                     dispatch(setCurrentSong(song));
+                                                                    dispatch(setState('songPlaying', true));
                                                                     event({
                                                                         category: 'Queue panel',
                                                                         action: 'Play song clicked',
@@ -376,16 +337,77 @@ function QueuePanel({ visible, onClose }) {
                                                     ))}
                                                 </div>
                                             )}
-                                        </div>
-                                    )}
-                                </Draggable>
-                            ))}
-                            {provided.placeholder}
+                                        </>
+                                    </>
+                                ))}
+                                {provided.placeholder}
+                            </div>
+                        )}
+                    </Droppable>
+                </DragDropContext>
+            </div>
+            {shareOpened && (
+                <Modal opened={shareOpened} modifier="share queue-share">
+                    <img
+                        src="/assets/images/close-icon.png"
+                        onClick={() => setShareOpened(false)}
+                        className="share__close"
+                    />
+                    <div className="share__header">Share This Queue</div>
+                    <div className="share__item">
+                        <img src="/assets/images/table/results-play.png" />
+                        <div>
+                            {nameEditing ? (
+                                <input
+                                    type="text"
+                                    className="share__input"
+                                    placeholder={shareQueueName}
+                                    value={editedName}
+                                    onChange={(e) => setEditedName(e.target.value)}
+                                />
+                            ) : (
+                                <div className="share__item__title" onClick={() => setNameEditing(true)}>
+                                    {shareQueueName}
+                                    <EditIconSvg fill={'#0092c5'} />
+                                </div>
+                            )}
+                            {!nameEditing && <div className="share__item__artist">{songs.length} Tracks</div>}
                         </div>
+                    </div>
+                    {nameEditing ? (
+                        <div
+                            className={classnames('share__button', {
+                                'share__button--disabled': editedName === '',
+                                'share__button--active': editedName.length,
+                            })}
+                            onClick={() => {
+                                if (editedName.length) {
+                                    setShareQueueName(editedName);
+                                    setNameEditing(false);
+                                }
+                            }}
+                        >
+                            <DoneSvg />
+                            Done
+                        </div>
+                    ) : (
+                        <CopyToClipboard text={`${baseUrl}?shareId=${shareListId}`} onCopy={() => copyShareLink()}>
+                            {shareLinkCopied ? (
+                                <div className="share__button share__button--copied">
+                                    <DoneSvg />
+                                    Copied to clipboard!
+                                </div>
+                            ) : (
+                                <div className="share__button">
+                                    <CopyLinkSvg />
+                                    Copy Share Link
+                                </div>
+                            )}
+                        </CopyToClipboard>
                     )}
-                </Droppable>
-            </DragDropContext>
-        </div>
+                </Modal>
+            )}
+        </>
     );
 }
 
@@ -393,15 +415,17 @@ function QueuePanel({ visible, onClose }) {
  * Renders the songs in the queue
  * @param {Object} song song to render
  * @param {Object} current current song playing
+ * @param {Boolean} moveActive show/hide move button
  * @param {Boolean} hovered song hovered
+ * @param {Boolean} removeActive show/hide delete button
  * @param {Function} onRemove action when delete icon is clicked
  * @param {Function} playSong action when cover icon is clicked
  * @returns {React.Component}
  */
-function _renderQueueSong(song, current, hovered, onRemove, playSong) {
+function _renderQueueSong(song, current, moveActive, hovered, removeActive, onRemove, playSong) {
     return (
         <>
-            {hovered && <img src="/assets/images/queue/handle.png" className="queue__song__handle" />}
+            {hovered && moveActive && <img src="/assets/images/queue/handle.png" className="queue__song__handle" />}
             <img
                 src={current === song ? '/assets/images/table/play-active.svg' : song.cover}
                 className="queue__song__cover"
@@ -429,7 +453,7 @@ function _renderQueueSong(song, current, hovered, onRemove, playSong) {
                 </Link>
             </div>
 
-            {hovered && (
+            {hovered && removeActive && (
                 <img
                     src="/assets/images/queue/delete.png"
                     className="queue__song__delete queue__song__delete--single"

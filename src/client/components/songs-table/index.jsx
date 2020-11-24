@@ -94,8 +94,7 @@ function SongsTable({ list, onSelect, listName, page, short = false, extraClass 
 
     const playSong = (item) => {
         onSelect(item);
-        dispatch(setCurrentSong(item));
-        dispatch(addToQueue(item));
+        addToQueue(dispatch, item, true);
         event({
             category: 'Songs table',
             action: 'Play song',
@@ -111,7 +110,7 @@ function SongsTable({ list, onSelect, listName, page, short = false, extraClass 
     const addListToQueue = () => {
         onSelect(list[0]);
         dispatch(setCurrentSong(list[0]));
-        dispatch(addToQueue({ list: list, name: createPlaylistName() }));
+        addToQueue(dispatch, { list: list, name: createPlaylistName() });
     };
 
     const createPlaylistName = (isShare = false) => {
@@ -136,10 +135,17 @@ function SongsTable({ list, onSelect, listName, page, short = false, extraClass 
                 case 'duration':
                     label += isShare ? '<strong>D</strong> ' : '<strong>DUR</strong>';
                     break;
+                case 'search':
+                    label += isShare ? '<strong>S</strong> ' : '<strong>SRC</strong>';
+                    break;
                 default:
                     break;
             }
-            label += appliedFilters[filter] ? ` ${appliedFilters[filter][0]}-${appliedFilters[filter][1]}, ` : '';
+            if (filter === 'search') {
+                label += appliedFilters[filter][0].value;
+            } else {
+                label += appliedFilters[filter] ? ` ${appliedFilters[filter][0]}-${appliedFilters[filter][1]}, ` : '';
+            }
         });
         return label;
     };
@@ -376,7 +382,7 @@ function SongsTable({ list, onSelect, listName, page, short = false, extraClass 
                                             <AddToQueueSvg
                                                 className="table__body__row-title__actions-button table__body__row-title__actions-button--smaller"
                                                 onClick={() => {
-                                                    dispatch(addToQueue(item));
+                                                    addToQueue(dispatch, item);
                                                     event({
                                                         category: 'Songs table',
                                                         action: 'Add to Queue clicked',

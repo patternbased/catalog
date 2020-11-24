@@ -90,7 +90,7 @@ function MusicPlayer({ list, play }) {
                 nextSong = currentPlaylist[0];
             }
             dispatch(setCurrentSong(nextSong));
-            dispatch(addToQueue(nextSong));
+            addToQueue(dispatch, nextSong);
         }
         setElapsed(0);
     };
@@ -99,7 +99,7 @@ function MusicPlayer({ list, play }) {
         const currentIndex = currentPlaylist.findIndex((x) => x.pbId === currentPlaying.pbId);
         const prev = currentPlaylist[currentIndex - 1];
         dispatch(setCurrentSong(prev));
-        dispatch(addToQueue(prev));
+        addToQueue(dispatch, prev);
     };
 
     const onNext = () => {
@@ -121,7 +121,7 @@ function MusicPlayer({ list, play }) {
                 next = currentPlaylist[0];
             }
             dispatch(setCurrentSong(next));
-            dispatch(addToQueue(next));
+            addToQueue(dispatch, next);
         }
 
         setElapsed(0);

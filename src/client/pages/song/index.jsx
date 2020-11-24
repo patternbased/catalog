@@ -142,7 +142,7 @@ function SongPage(props) {
             dispatch(setState('songPlaying', !songIsPlaying));
         } else {
             dispatch(setCurrentSong(val));
-            dispatch(addToQueue(val));
+            addToQueue(dispatch, val);
             dispatch(setState('songPlaying', true));
             event({
                 category: 'Single song page',
@@ -184,7 +184,7 @@ function SongPage(props) {
                                     <div className="song__actions">
                                         <AddToQueueSvg
                                             onClick={() => {
-                                                dispatch(addToQueue(song));
+                                                addToQueue(dispatch, song);
                                                 event({
                                                     category: 'Single song',
                                                     action: 'Add to Queue clicked',
@@ -333,7 +333,7 @@ function SongPage(props) {
                                     <div className="song__actions">
                                         <AddToQueueSvg
                                             onClick={() => {
-                                                dispatch(addToQueue(song));
+                                                addToQueue(dispatch, song);
                                                 event({
                                                     category: 'Single song',
                                                     action: 'Add to Queue clicked',
