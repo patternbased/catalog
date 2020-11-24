@@ -63,6 +63,7 @@
     "polyfill-array-includes": "^2.0.0",
     "postcss-loader": "^3.0.0",
     "postcss-preset-env": "^6.7.0",
+    "prerender-node": "^3.2.5",
     "query-string": "^6.9.0",
     "rc-slider": "^8.6.13",
     "react": "^16.12.0",
