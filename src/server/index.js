@@ -12,7 +12,6 @@ const args = require('yargs').argv;
 const passport = require('passport');
 const routes = require('./routes');
 const config = require('./config');
-const prerender = require('prerender-node');
 
 const PORT = args.PORT || config.port;
 const handlebarsEngine = expressHandlebars.create({ extname: '.hbs' });
@@ -23,7 +22,7 @@ app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(connectFlash());
-app.use(prerender);
+app.use(require('prerender-node'));
 app.use(
     session({
         secret: 'Br84!3LEP5!%)^',
