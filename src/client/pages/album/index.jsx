@@ -29,6 +29,7 @@ import SoundCloudSvg from 'assets/images/single-song/Single-Song_SoundCloud.svg'
 import GooglePlaySvg from 'assets/images/single-song/Single-Song_GooglePlay.svg';
 import VimeoSvg from 'assets/images/single-song/Single-Song_Vimeo.svg';
 import AddToQueueSvg from 'assets/images/add-to-queue.svg';
+import PlayAll from 'assets/images/PlayResultBtn.svg';
 
 import { api } from '../../services';
 
@@ -53,6 +54,7 @@ function AlbumPage(props) {
     const [shareAlbumLinkCopied, setShareAlbumLinkCopied] = useState(false);
     const [coverHover, setCoverHover] = useState(false);
     const [artistInfo, setArtistInfo] = useState(null);
+    const [fullAlbum, setFullAlbum] = useState([]);
     const dispatch = useDispatch();
 
     const songList = useSelector(selectors.library.getAll);
@@ -66,6 +68,7 @@ function AlbumPage(props) {
         if (songs.length > 0) {
             songs = songs.sort((a, b) => parseFloat(a.sequence) - parseFloat(b.sequence));
         }
+        setFullAlbum(songs);
         setAlbumList(songs.slice(0, 5));
         setAlbumRestList(songs.slice(6));
         if (!album) {
@@ -118,6 +121,12 @@ function AlbumPage(props) {
         });
     };
 
+    const addListToQueue = () => {
+        dispatch(setCurrentSong(fullAlbum[0]));
+        dispatch(setState('songPlaying', true));
+        addToQueue(dispatch, { list: fullAlbum, name: album.title });
+    };
+
     return (
         <>
             <Header />
@@ -136,6 +145,7 @@ function AlbumPage(props) {
                                         <div className="album__artist">by {album.artistName}</div>
                                     </Link>
                                     <div className="album__actions">
+                                        <PlayAll className="album__actions__icon" onClick={() => addListToQueue()} />
                                         <AddToQueueSvg
                                             onClick={() => {
                                                 addToQueue(dispatch, {
@@ -178,6 +188,7 @@ function AlbumPage(props) {
                                         <div className="album__artist">by {album.artistName}</div>
                                     </Link>
                                     <div className="album__actions">
+                                        <PlayAll className="album__actions__icon" onClick={() => addListToQueue()} />
                                         <AddToQueueSvg
                                             onClick={() => {
                                                 addToQueue(dispatch, {

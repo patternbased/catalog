@@ -12,7 +12,8 @@ import Header from 'components/header';
 import SongsTable from 'components/songs-table';
 import Modal from 'components/modal';
 
-import { getSongList, setCurrentSong } from 'actions/library';
+import { getSongList, setCurrentSong, addToQueue } from 'actions/library';
+import { setState } from 'actions/general';
 
 import BandcampSvg from 'assets/images/artist/Single-Artist_BC.svg';
 import SpotifySvg from 'assets/images/artist/Single-Artist_SP.svg';
@@ -23,6 +24,7 @@ import WebsiteSvg from 'assets/images/artist/Single-Artist_ws.svg';
 import ShareSvg from 'assets/images/share-icon-dark.svg';
 import CopyLinkSvg from 'assets/images/copy-link.svg';
 import DoneSvg from 'assets/images/done-check.svg';
+import PlayAll from 'assets/images/PlayResultBtn.svg';
 
 import { api } from '../../services';
 
@@ -106,6 +108,18 @@ function ArtistPage(props) {
         });
     };
 
+    const addFeaturedToQueue = () => {
+        dispatch(setCurrentSong(featuredTracks[0]));
+        dispatch(setState('songPlaying', true));
+        addToQueue(dispatch, { list: featuredTracks, name: `${artist.name} Featured Tracks` });
+    };
+
+    const addSonoToQueue = () => {
+        dispatch(setCurrentSong(allArtistTracks[0]));
+        dispatch(setState('songPlaying', true));
+        addToQueue(dispatch, { list: allArtistTracks, name: `${artist.name} Full PB Sonography` });
+    };
+
     return (
         <>
             <Header />
@@ -167,7 +181,13 @@ function ArtistPage(props) {
                         {featuredTracks && (
                             <div className="artist__section">
                                 <div className="artist__table">
-                                    <div className="artist__table__title">Featured Tracks</div>
+                                    <div className="artist__table__title">
+                                        <PlayAll
+                                            className="artist__table__action"
+                                            onClick={() => addFeaturedToQueue()}
+                                        />
+                                        Featured Tracks
+                                    </div>
                                     <SongsTable list={featuredTracks} onSelect={(val) => playSong(val)} page="home" />
                                 </div>
                             </div>
@@ -197,7 +217,10 @@ function ArtistPage(props) {
                         {allArtistTracks && (
                             <div className="artist__section">
                                 <div className="artist__table">
-                                    <div className="artist__table__title">Full PB Songography</div>
+                                    <div className="artist__table__title">
+                                        <PlayAll className="artist__table__action" onClick={() => addSonoToQueue()} />
+                                        Full PB Songography
+                                    </div>
                                     <SongsTable list={allArtistTracks} onSelect={(val) => playSong(val)} page="home" />
                                 </div>
                             </div>

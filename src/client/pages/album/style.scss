@@ -247,14 +247,26 @@
             margin-right: 20px;
             path {
                 fill: $primary;
+                &.st-transp {
+                    fill: white;
+                }
             }
             &:hover path {
                 fill: $secondary;
+                &.st-transp {
+                    fill: white;
+                }
             }
-
             &.smaller-action {
                 width: 30px;
             }
+        }
+
+        &__icon {
+            width: 36px;
+            height: 36px;
+            cursor: pointer;
+            margin-right: 20px;
         }
 
         @media screen and (max-width: $small) {

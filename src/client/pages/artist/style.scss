@@ -119,6 +119,8 @@
             font-size: 28px;
             line-height: 33px;
             margin-bottom: 17px;
+            display: flex;
+            align-items: center;
 
             @media screen and (max-width: $small) {
                 font-size: 18px;
@@ -127,6 +129,23 @@
         }
         .table {
             padding-bottom: 0;
+        }
+        &__action {
+            width: 36px;
+            height: 36px;
+            cursor: pointer;
+            margin-right: 20px;
+            path {
+                &.st-transp {
+                    fill: white;
+                }
+            }
+            &:hover path {
+                fill: $secondary;
+                &.st-transp {
+                    fill: white;
+                }
+            }
         }
     }
 
