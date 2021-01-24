@@ -15,7 +15,7 @@ function SongBy({ project, feat, classNames }) {
             by <Link to={`/project/${project.toLowerCase().split(' ').join('-')}`}>{project}</Link>
             {feat.length > 0 && (
                 <>
-                    (feat.
+                    &nbsp;(feat.&nbsp;
                     {feat.map((art, index) => (
                         <span key={index}>
                             <a href={art.url} target="_blank" rel="noopener noreferrer">

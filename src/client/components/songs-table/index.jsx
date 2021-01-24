@@ -41,7 +41,7 @@ const headers = {
 };
 const songsToDisplay = 20;
 const baseUrl =
-    process.env.NODE_ENV === 'production' ? 'https://catalog.patternbased.com' : 'https://patternbased.herokuapp.com/';
+    process.env.NODE_ENV === 'production' ? 'https://catalog.patternbased.com' : 'https://patternbased.herokuapp.com';
 /**
  * Songs table component
  * @param {Array} list list of song objects
@@ -590,7 +590,7 @@ function SongsTable({ list, onSelect, listName, page, short = false, extraClass 
                         </div>
                     </div>
                     <CopyToClipboard
-                        text={`${baseUrl}song/${shareItem.pbId}-${shareItem.title.toLowerCase().split(' ').join('-')}`}
+                        text={`${baseUrl}/song/${shareItem.pbId}-${shareItem.title.toLowerCase().split(' ').join('-')}`}
                         onCopy={() => copyShareSongLink()}
                     >
                         {shareSongLinkCopied ? (

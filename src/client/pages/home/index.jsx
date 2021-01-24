@@ -22,7 +22,7 @@ import { api } from '../../services';
 import './style.scss';
 
 const baseUrl =
-    process.env.NODE_ENV === 'production' ? 'https://catalog.patternbased.com' : 'https://patternbased.herokuapp.com/';
+    process.env.NODE_ENV === 'production' ? 'https://catalog.patternbased.com' : 'https://patternbased.herokuapp.com';
 
 /**
  * Component to handle the home page
@@ -268,8 +268,9 @@ function HomePage({ history }) {
                     property="og:description"
                     content="The PatternBased Catalog is an ever expanding collection of textural/emotive sound &amp; music that ranges from sparse tones and drones to rhythmic works over a variety of styles and moods."
                 />
-                <meta property="og:image" content={`${baseUrl}assets/images/PB_catalog_PreviewImg.jpg`} />
+                <meta property="og:image" content={`${baseUrl}/assets/images/PB_catalog_PreviewImg.jpg`} />
                 <meta property="og:url" content={`${baseUrl}`} />
+                <meta name="twitter:card" content="summary_large_image" />
             </Helmet>
         </>
     );

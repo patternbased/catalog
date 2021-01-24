@@ -33,7 +33,7 @@ import SeeSongSvg from 'assets/images/see-song.svg';
 import './style.scss';
 
 const baseUrl =
-    process.env.NODE_ENV === 'production' ? 'https://catalog.patternbased.com' : 'https://patternbased.herokuapp.com/';
+    process.env.NODE_ENV === 'production' ? 'https://catalog.patternbased.com/' : 'https://patternbased.herokuapp.com/';
 
 /**
  * Music Player component

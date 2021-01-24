@@ -44,7 +44,7 @@ import { api } from '../../services';
 import './style.scss';
 
 const baseUrl =
-    process.env.NODE_ENV === 'production' ? 'https://catalog.patternbased.com' : 'https://patternbased.herokuapp.com/';
+    process.env.NODE_ENV === 'production' ? 'https://catalog.patternbased.com/' : 'https://patternbased.herokuapp.com/';
 
 /**
  * Component to handle the single song page
@@ -779,6 +779,7 @@ function SongPage(props) {
                             property="og:url"
                             content={`${baseUrl}song/${song.pbId}-${song.title.toLowerCase().split(' ').join('-')}`}
                         />
+                        <meta name="twitter:card" content="summary_large_image" />
                     </Helmet>
                 )}
                 <SimilarSongsPanel

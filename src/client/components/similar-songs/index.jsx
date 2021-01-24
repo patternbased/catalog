@@ -23,7 +23,7 @@ import AddToQueueSvg from 'assets/images/add-to-queue.svg';
 import './style.scss';
 
 const baseUrl =
-    process.env.NODE_ENV === 'production' ? 'https://catalog.patternbased.com' : 'https://patternbased.herokuapp.com/';
+    process.env.NODE_ENV === 'production' ? 'https://catalog.patternbased.com' : 'https://patternbased.herokuapp.com';
 
 /**
  * Similar songs panel component

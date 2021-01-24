@@ -13,7 +13,7 @@ import { setState } from 'actions/general';
 import './style.scss';
 
 const baseUrl =
-    process.env.NODE_ENV === 'production' ? 'https://catalog.patternbased.com' : 'https://patternbased.herokuapp.com/';
+    process.env.NODE_ENV === 'production' ? 'https://catalog.patternbased.com/' : 'https://patternbased.herokuapp.com/';
 
 /**
  * Component to handle the about page
@@ -166,6 +166,7 @@ function AboutPage() {
                 />
                 <meta property="og:image" content={`${baseUrl}assets/images/PB_catalog_PreviewImg.jpg`} />
                 <meta property="og:url" content={`${baseUrl}about`} />
+                <meta name="twitter:card" content="summary_large_image" />
             </Helmet>
         </>
     );

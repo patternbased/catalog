@@ -36,7 +36,7 @@ import { api } from '../../services';
 import './style.scss';
 
 const baseUrl =
-    process.env.NODE_ENV === 'production' ? 'https://catalog.patternbased.com' : 'https://patternbased.herokuapp.com/';
+    process.env.NODE_ENV === 'production' ? 'https://catalog.patternbased.com' : 'https://patternbased.herokuapp.com';
 
 /**
  * Component to handle the album page
@@ -304,7 +304,7 @@ function AlbumPage(props) {
                             </div>
                         </div>
                         <CopyToClipboard
-                            text={`${baseUrl}album/${shareItem.title.toLowerCase().split(' ').join('-')}/${
+                            text={`${baseUrl}/album/${shareItem.title.toLowerCase().split(' ').join('-')}/${
                                 shareItem.pbId
                             }`}
                             onCopy={() => copyShareAlbumLink()}
@@ -328,7 +328,13 @@ function AlbumPage(props) {
                         <meta property="og:title" content={album.title} />
                         <meta property="og:description" content={`by ${album.artistName}`} />
                         <meta property="og:image" content={album.cover} />
-                        <meta property="og:url" content={`${baseUrl}?shareId=${shareAlbumId}`} />
+                        <meta
+                            property="og:url"
+                            content={`${baseUrl}/album/${shareItem.title.toLowerCase().split(' ').join('-')}/${
+                                shareItem.pbId
+                            }`}
+                        />
+                        <meta name="twitter:card" content="summary_large_image" />
                     </Helmet>
                 )}
             </div>

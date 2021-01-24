@@ -29,7 +29,7 @@ import { api } from '../../services';
 import './style.scss';
 
 const baseUrl =
-    process.env.NODE_ENV === 'production' ? 'https://catalog.patternbased.com' : 'https://patternbased.herokuapp.com/';
+    process.env.NODE_ENV === 'production' ? 'https://catalog.patternbased.com/' : 'https://patternbased.herokuapp.com/';
 
 /**
  * Component to handle the single song page
@@ -252,6 +252,7 @@ function WriterPage(props) {
                             property="og:url"
                             content={`${baseUrl}project/${artist.name.toLowerCase().split(' ').join('-')}`}
                         />
+                        <meta name="twitter:card" content="summary_large_image" />
                     </Helmet>
                 )}
             </div>
