@@ -116,11 +116,11 @@ router.get('/album-songs/:id', async (req, res) => {
     });
 });
 
-router.get('/song/:name', async (req, res) => {
-    const shared = await SongController.getSongByName(req.params.name);
+router.get('/song/:id', async (req, res) => {
+    const song = await SongController.getSongByPBId(req.params.id);
 
     res.send({
-        shared,
+        song,
     });
 });
 

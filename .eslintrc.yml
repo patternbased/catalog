@@ -19,6 +19,7 @@ rules:
     padded-blocks: off
     require-jsdoc: off
     no-invalid-this: off
+    no-inner-declarations: off
 
     # Warning rules
     no-console: [1, { allow: ['warn', 'error'] }]

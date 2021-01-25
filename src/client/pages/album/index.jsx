@@ -330,9 +330,7 @@ function AlbumPage(props) {
                         <meta property="og:image" content={album.cover} />
                         <meta
                             property="og:url"
-                            content={`${baseUrl}/album/${shareItem.title.toLowerCase().split(' ').join('-')}/${
-                                shareItem.pbId
-                            }`}
+                            content={`${baseUrl}/album/${album.title.toLowerCase().split(' ').join('-')}/${album.pbId}`}
                         />
                         <meta name="twitter:card" content="summary_large_image" />
                     </Helmet>

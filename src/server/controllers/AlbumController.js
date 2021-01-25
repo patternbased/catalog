@@ -14,7 +14,7 @@ class AlbumController {
     /**
      * Returns album data
      * @param {String} name name of the album to get
-     * @returns {Array}
+     * @returns {Object}
      */
     getAlbumByName(name) {
         return Album.findOne({ slug: name });

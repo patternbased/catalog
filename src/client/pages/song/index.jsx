@@ -106,36 +106,37 @@ function SongPage(props) {
 
     useEffect(() => {
         !songList && dispatch(getSongList());
+        api.get(`/api/song/${songId}`).then((res) => {
+            if (res.song) {
+                setSong(res.song);
+            }
+        });
     }, []);
 
     useEffect(() => {
-        if (songId && songList) {
-            const songData = songList.find((song) => song.pbId === songId);
-            if (songData) {
-                setSong(songData);
-                if (songData.altVersions) {
-                    const altSongs = [];
-                    songData.altVersions.map((version) => {
-                        const altSong = songList.find((song) => song.pbId === version);
-                        altSong && altSongs.push(altSong);
-                    });
-                    setAltVersions(altSongs);
-                }
-                const similar = _getSimilarSongs(songList, songData);
-                similar && setSimilarTracks(similar);
-                const songMoodGenre = [];
-                songData.genre.length && songMoodGenre.push(songData.genre);
-                songData.primaryMood.length && songMoodGenre.push(songData.primaryMood);
-                songData.secondaryMoods.length && songData.secondaryMoods.map((mood) => songMoodGenre.push(mood));
-                setSongMoods(songMoodGenre);
+        if (song && songList) {
+            if (song.altVersions) {
+                const altSongs = [];
+                song.altVersions.map((version) => {
+                    const altSong = songList.find((song) => song.pbId === version);
+                    altSong && altSongs.push(altSong);
+                });
+                setAltVersions(altSongs);
             }
-            api.get(`/api/artist/${songData.artistName.toLowerCase().split(' ').join('-')}`).then((res) => {
+            const similar = _getSimilarSongs(songList, song);
+            similar && setSimilarTracks(similar);
+            const songMoodGenre = [];
+            song.genre && song.genre.length && songMoodGenre.push(song.genre);
+            song.primaryMood && song.primaryMood.length && songMoodGenre.push(song.primaryMood);
+            song.secondaryMoods &&
+                song.secondaryMoods.length &&
+                song.secondaryMoods.map((mood) => songMoodGenre.push(mood));
+            setSongMoods(songMoodGenre);
+            api.get(`/api/artist/${song.artistName.toLowerCase().split(' ').join('-')}`).then((res) => {
                 setArtistInfo(res.artist);
             });
         }
-    }, [songId, songList]);
-
-    const shareSongId = uuid();
+    }, [song, songList]);
 
     const playSong = (val = song) => {
         if (val.pbId === currentSong.pbId && songIsPlaying) {
@@ -601,12 +602,13 @@ function SongPage(props) {
                                         <div className="song__instruments__border" />
                                         <div className="song__instruments__content">
                                             <span className="song__instruments__label">Genres/Mood</span>
-                                            {songMoods.map((s, index) => (
-                                                <span key={index} className="song__instruments__value">
-                                                    <span>{s}</span>
-                                                    {index < songMoods.length - 1 ? ', ' : ''}
-                                                </span>
-                                            ))}
+                                            {songMoods &&
+                                                songMoods.map((s, index) => (
+                                                    <span key={index} className="song__instruments__value">
+                                                        <span>{s}</span>
+                                                        {index < songMoods.length - 1 ? ', ' : ''}
+                                                    </span>
+                                                ))}
                                         </div>
                                     </div>
                                 </div>

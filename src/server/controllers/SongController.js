@@ -18,19 +18,10 @@ class SongController {
     /**
      * Returns songs by PB id
      * @param {String} id id of the song
-     * @returns {Array}
+     * @returns {Object}
      */
     getSongByPBId(id) {
-        return Song.find({ pbId: id });
-    }
-
-    /**
-     * Returns songs by name
-     * @param {String} name name of the song
-     * @returns {Array}
-     */
-    getSongByName(name) {
-        return Song.find({ title: { $regex: name, options: 'i' } });
+        return Song.findOne({ pbId: id });
     }
 
     /**
