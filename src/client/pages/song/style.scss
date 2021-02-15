@@ -12,6 +12,7 @@
         padding-top: 60px;
         .desktop-hide {
             display: block;
+            text-align: center;
         }
         .mobile-hide {
             display: none;
@@ -494,5 +495,11 @@
                 text-align: center;
             }
         }
+    }
+}
+
+.share-social-buttons {
+    svg {
+        margin-right: 10px;
     }
 }

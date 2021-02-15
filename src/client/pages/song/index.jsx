@@ -2,11 +2,18 @@
 import React, { useMemo, useEffect, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import uuid from 'react-uuid';
 import { event } from 'react-ga';
 import { Helmet } from 'react-helmet';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import classnames from 'classnames';
+import {
+    FacebookShareButton,
+    RedditShareButton,
+    TelegramShareButton,
+    TwitterShareButton,
+    WhatsappShareButton,
+} from 'react-share';
+import { FacebookIcon, RedditIcon, TelegramIcon, TwitterIcon, WhatsappIcon } from 'react-share';
 import selectors from 'selectors';
 import Button from 'components/button';
 import SongsTable from 'components/songs-table';
@@ -770,6 +777,48 @@ function SongPage(props) {
                                 </div>
                             )}
                         </CopyToClipboard>
+                        <div className="share-social-buttons">
+                            <FacebookShareButton
+                                url={`${baseUrl}song/${shareItem.pbId}-${shareItem.title
+                                    .toLowerCase()
+                                    .split(' ')
+                                    .join('-')}`}
+                            >
+                                <FacebookIcon size={32} round={true} />
+                            </FacebookShareButton>
+                            <RedditShareButton
+                                url={`${baseUrl}song/${shareItem.pbId}-${shareItem.title
+                                    .toLowerCase()
+                                    .split(' ')
+                                    .join('-')}`}
+                            >
+                                <RedditIcon size={32} round={true} />
+                            </RedditShareButton>
+                            <TelegramShareButton
+                                url={`${baseUrl}song/${shareItem.pbId}-${shareItem.title
+                                    .toLowerCase()
+                                    .split(' ')
+                                    .join('-')}`}
+                            >
+                                <TelegramIcon size={32} round={true} />
+                            </TelegramShareButton>
+                            <TwitterShareButton
+                                url={`${baseUrl}song/${shareItem.pbId}-${shareItem.title
+                                    .toLowerCase()
+                                    .split(' ')
+                                    .join('-')}`}
+                            >
+                                <TwitterIcon size={32} round={true} />
+                            </TwitterShareButton>
+                            <WhatsappShareButton
+                                url={`${baseUrl}song/${shareItem.pbId}-${shareItem.title
+                                    .toLowerCase()
+                                    .split(' ')
+                                    .join('-')}`}
+                            >
+                                <WhatsappIcon size={32} round={true} />
+                            </WhatsappShareButton>
+                        </div>
                     </Modal>
                 )}
                 {song && (

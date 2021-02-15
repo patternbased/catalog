@@ -6,6 +6,14 @@ import classnames from 'classnames';
 import { Helmet } from 'react-helmet';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { event } from 'react-ga';
+import {
+    FacebookShareButton,
+    RedditShareButton,
+    TelegramShareButton,
+    TwitterShareButton,
+    WhatsappShareButton,
+} from 'react-share';
+import { FacebookIcon, RedditIcon, TelegramIcon, TwitterIcon, WhatsappIcon } from 'react-share';
 import selectors from 'selectors';
 
 import Header from 'components/header';
@@ -241,6 +249,34 @@ function WriterPage(props) {
                                 </div>
                             )}
                         </CopyToClipboard>
+                        <div className="share-social-buttons">
+                            <FacebookShareButton
+                                url={`${baseUrl}project/${artist.name.toLowerCase().split(' ').join('-')}`}
+                            >
+                                <FacebookIcon size={32} round={true} />
+                            </FacebookShareButton>
+                            <RedditShareButton
+                                url={`${baseUrl}project/${artist.name.toLowerCase().split(' ').join('-')}`}
+                            >
+                                <RedditIcon size={32} round={true} />
+                            </RedditShareButton>
+
+                            <TelegramShareButton
+                                url={`${baseUrl}project/${artist.name.toLowerCase().split(' ').join('-')}`}
+                            >
+                                <TelegramIcon size={32} round={true} />
+                            </TelegramShareButton>
+                            <TwitterShareButton
+                                url={`${baseUrl}project/${artist.name.toLowerCase().split(' ').join('-')}`}
+                            >
+                                <TwitterIcon size={32} round={true} />
+                            </TwitterShareButton>
+                            <WhatsappShareButton
+                                url={`${baseUrl}project/${artist.name.toLowerCase().split(' ').join('-')}`}
+                            >
+                                <WhatsappIcon size={32} round={true} />
+                            </WhatsappShareButton>
+                        </div>
                     </Modal>
                 )}
                 {artist && (
@@ -250,7 +286,7 @@ function WriterPage(props) {
                         <meta property="og:image" content={artist.image} />
                         <meta
                             property="og:url"
-                            content={`${baseUrl}project/${artist.name.toLowerCase().split(' ').join('-')}`}
+                            content={`${baseUrl}artist/${artist.name.toLowerCase().split(' ').join('-')}`}
                         />
                         <meta name="twitter:card" content="summary_large_image" />
                     </Helmet>

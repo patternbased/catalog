@@ -7,6 +7,14 @@ import uuid from 'react-uuid';
 import { event } from 'react-ga';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Helmet } from 'react-helmet';
+import {
+    FacebookShareButton,
+    RedditShareButton,
+    TelegramShareButton,
+    TwitterShareButton,
+    WhatsappShareButton,
+} from 'react-share';
+import { FacebookIcon, RedditIcon, TelegramIcon, TwitterIcon, WhatsappIcon } from 'react-share';
 import selectors from 'selectors';
 
 import Header from 'components/header';
@@ -321,6 +329,44 @@ function AlbumPage(props) {
                                 </div>
                             )}
                         </CopyToClipboard>
+                        <div className="share-social-buttons">
+                            <FacebookShareButton
+                                url={`${baseUrl}/album/${shareItem.title.toLowerCase().split(' ').join('-')}/${
+                                    shareItem.pbId
+                                }`}
+                            >
+                                <FacebookIcon size={32} round={true} />
+                            </FacebookShareButton>
+                            <RedditShareButton
+                                url={`${baseUrl}/album/${shareItem.title.toLowerCase().split(' ').join('-')}/${
+                                    shareItem.pbId
+                                }`}
+                            >
+                                <RedditIcon size={32} round={true} />
+                            </RedditShareButton>
+
+                            <TelegramShareButton
+                                url={`${baseUrl}/album/${shareItem.title.toLowerCase().split(' ').join('-')}/${
+                                    shareItem.pbId
+                                }`}
+                            >
+                                <TelegramIcon size={32} round={true} />
+                            </TelegramShareButton>
+                            <TwitterShareButton
+                                url={`${baseUrl}/album/${shareItem.title.toLowerCase().split(' ').join('-')}/${
+                                    shareItem.pbId
+                                }`}
+                            >
+                                <TwitterIcon size={32} round={true} />
+                            </TwitterShareButton>
+                            <WhatsappShareButton
+                                url={`${baseUrl}/album/${shareItem.title.toLowerCase().split(' ').join('-')}/${
+                                    shareItem.pbId
+                                }`}
+                            >
+                                <WhatsappIcon size={32} round={true} />
+                            </WhatsappShareButton>
+                        </div>
                     </Modal>
                 )}
                 {album && (

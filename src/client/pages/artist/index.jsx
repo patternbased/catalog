@@ -6,6 +6,14 @@ import classnames from 'classnames';
 import { Helmet } from 'react-helmet';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { event } from 'react-ga';
+import {
+    FacebookShareButton,
+    RedditShareButton,
+    TelegramShareButton,
+    TwitterShareButton,
+    WhatsappShareButton,
+} from 'react-share';
+import { FacebookIcon, RedditIcon, TelegramIcon, TwitterIcon, WhatsappIcon } from 'react-share';
 import selectors from 'selectors';
 
 import Header from 'components/header';
@@ -46,6 +54,7 @@ function ArtistPage(props) {
     const [allArtistTracks, setAllArtistTracks] = useState(null);
     const [shareOpened, setShareOpened] = useState(false);
     const [shareProjectLinkCopied, setShareProjectLinkCopied] = useState(false);
+    const [replaceFeatured, setReplaceFeatured] = useState(true);
 
     const songList = useSelector(selectors.library.getAll);
     const filtersPanelState = useSelector(selectors.general.get('filtersOpened'));
@@ -65,11 +74,13 @@ function ArtistPage(props) {
 
     useEffect(() => {
         if (artistName) {
+            setReplaceFeatured(true);
             api.get(`/api/artist/${artistName}`).then((res) => {
                 setArtist(res.artist);
                 if (res.artist.featuredTracks) {
                     api.get(`/api/artist-featured/${res.artist.featuredTracks}`).then((resp) => {
                         setFeaturedTracks(resp.songs);
+                        setReplaceFeatured(false);
                     });
                 }
             });
@@ -80,7 +91,7 @@ function ArtistPage(props) {
         if (songList && artist) {
             const artistSongs = songList.filter((s) => s.artistName.toLowerCase() === artist.name.toLowerCase());
             artistSongs.length && setAllArtistTracks(artistSongs);
-            if (!featuredTracks && artistSongs.length) {
+            if (replaceFeatured && artistSongs.length) {
                 setFeaturedTracks(
                     artistSongs
                         .sort((a, b) => parseFloat(a.rate) - parseFloat(b.rate))
@@ -159,6 +170,7 @@ function ArtistPage(props) {
                                 <div className="artist__pb">PB Project</div>
                                 <div className="artist__name">{artist.name}</div>
                                 <div className="artist__social">
+                                    <ShareSvg onClick={() => openShareModal()} className="with-margin-r" />
                                     <a href={artist.website} target="_blank" rel="noopener noreferrer">
                                         <WebsiteSvg />
                                     </a>
@@ -257,6 +269,34 @@ function ArtistPage(props) {
                                 </div>
                             )}
                         </CopyToClipboard>
+                        <div className="share-social-buttons">
+                            <FacebookShareButton
+                                url={`${baseUrl}project/${artist.name.toLowerCase().split(' ').join('-')}`}
+                            >
+                                <FacebookIcon size={32} round={true} />
+                            </FacebookShareButton>
+                            <RedditShareButton
+                                url={`${baseUrl}project/${artist.name.toLowerCase().split(' ').join('-')}`}
+                            >
+                                <RedditIcon size={32} round={true} />
+                            </RedditShareButton>
+
+                            <TelegramShareButton
+                                url={`${baseUrl}project/${artist.name.toLowerCase().split(' ').join('-')}`}
+                            >
+                                <TelegramIcon size={32} round={true} />
+                            </TelegramShareButton>
+                            <TwitterShareButton
+                                url={`${baseUrl}project/${artist.name.toLowerCase().split(' ').join('-')}`}
+                            >
+                                <TwitterIcon size={32} round={true} />
+                            </TwitterShareButton>
+                            <WhatsappShareButton
+                                url={`${baseUrl}project/${artist.name.toLowerCase().split(' ').join('-')}`}
+                            >
+                                <WhatsappIcon size={32} round={true} />
+                            </WhatsappShareButton>
+                        </div>
                     </Modal>
                 )}
                 {artist && (
