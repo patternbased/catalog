@@ -47,7 +47,7 @@
     "file-saver": "^2.0.2",
     "formik": "^2.1.4",
     "gmail-send": "^1.8.10",
-    "google-spreadsheet": "^2.0.8",
+    "google-spreadsheet": "^3.1.15",
     "html-webpack-plugin": "^3.2.0",
     "ie-array-find-polyfill": "^1.1.0",
     "jszip": "^3.2.2",

@@ -8,7 +8,7 @@ class SongController {
     getAll() {
         return Song.find({})
             .select(
-                'pbId url title sequence rate length musicKey bpm rhythm speed mood experimental grid description instruments arc similarTracks artistName featArtist writers albumId albumTitle image cover'
+                'pbId url title sequence rate length musicKey bpm rhythm speed mood experimental grid description instruments arc similarTracks artistName featArtist writers albumId albumTitle image cover convertedUrl'
             )
             .sort({
                 created: -1,

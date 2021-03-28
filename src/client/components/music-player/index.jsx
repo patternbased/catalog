@@ -325,7 +325,7 @@ function MusicPlayer({ list, play }) {
                     />
                     <ReactPlayer
                         ref={musicPlayer}
-                        url={currentPlaying.url}
+                        url={currentPlaying.convertedUrl}
                         playing={isPlaying}
                         onReady={(e) => {
                             setDuration(e.getDuration());
@@ -338,6 +338,11 @@ function MusicPlayer({ list, play }) {
                             dispatch(setState('songPlaying', true));
                         }}
                         onEnded={() => goToNextSong()}
+                        config={{
+                            file: {
+                                forceHLS: true,
+                            },
+                        }}
                     />
                 </div>
                 <div className="music-player__section music-player__section--content desktop-control">

@@ -234,7 +234,7 @@ function WriterPage(props) {
                             </div>
                         </div>
                         <CopyToClipboard
-                            text={`${baseUrl}project/${artist.name.toLowerCase().split(' ').join('-')}`}
+                            text={`${baseUrl}artist/${artist.name.toLowerCase().split(' ').join('-')}`}
                             onCopy={() => copyShareArtistLink()}
                         >
                             {shareArtistLinkCopied ? (
@@ -251,28 +251,28 @@ function WriterPage(props) {
                         </CopyToClipboard>
                         <div className="share-social-buttons">
                             <FacebookShareButton
-                                url={`${baseUrl}project/${artist.name.toLowerCase().split(' ').join('-')}`}
+                                url={`${baseUrl}artist/${artist.name.toLowerCase().split(' ').join('-')}`}
                             >
                                 <FacebookIcon size={32} round={true} />
                             </FacebookShareButton>
                             <RedditShareButton
-                                url={`${baseUrl}project/${artist.name.toLowerCase().split(' ').join('-')}`}
+                                url={`${baseUrl}artist/${artist.name.toLowerCase().split(' ').join('-')}`}
                             >
                                 <RedditIcon size={32} round={true} />
                             </RedditShareButton>
 
                             <TelegramShareButton
-                                url={`${baseUrl}project/${artist.name.toLowerCase().split(' ').join('-')}`}
+                                url={`${baseUrl}artist/${artist.name.toLowerCase().split(' ').join('-')}`}
                             >
                                 <TelegramIcon size={32} round={true} />
                             </TelegramShareButton>
                             <TwitterShareButton
-                                url={`${baseUrl}project/${artist.name.toLowerCase().split(' ').join('-')}`}
+                                url={`${baseUrl}artist/${artist.name.toLowerCase().split(' ').join('-')}`}
                             >
                                 <TwitterIcon size={32} round={true} />
                             </TwitterShareButton>
                             <WhatsappShareButton
-                                url={`${baseUrl}project/${artist.name.toLowerCase().split(' ').join('-')}`}
+                                url={`${baseUrl}artist/${artist.name.toLowerCase().split(' ').join('-')}`}
                             >
                                 <WhatsappIcon size={32} round={true} />
                             </WhatsappShareButton>

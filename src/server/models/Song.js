@@ -54,6 +54,7 @@ const Song = new Schema({
     vimeo: String,
     tidal: String,
     youtube: String,
+    convertedUrl: String,
 });
 
 Song.options.toJSON = Song.options.toJSON || {};
